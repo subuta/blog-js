@@ -1,0 +1,19 @@
+{
+  "name": "blog-js",
+  "version": "1.0.0",
+  "description": "example project built-with js-to-builder and matryoshka.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/subuta/blog-js.git"
+  },
+  "author": "subuta <shunta.3110@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/subuta/blog-js/issues"
+  },
+  "homepage": "https://github.com/subuta/blog-js#readme"
+}
