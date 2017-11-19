@@ -1,0 +1,22 @@
+{
+  "presets": [
+    "es2015",
+    "stage-2",
+    "react"
+  ],
+  "plugins": [
+    "add-module-exports",
+    "transform-object-rest-spread",
+    ["module-resolver",
+      {
+        "root": ["./"]
+      }
+    ],
+    ["transform-runtime", {
+      "helpers": false,
+      "polyfill": false,
+      "regenerator": true,
+      "moduleName": "babel-runtime"
+    }]
+  ]
+}
