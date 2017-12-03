@@ -1,55 +1,6 @@
 /** @jsx h */
 
-import { toBuilder, print, format, h, components, shorthand } from 'js-to-builder'
-
-// expose h to window for eval
-const {
-  Program,
-
-  ForStatement,
-  ForInStatement,
-  ForOfStatement,
-  DebuggerStatement,
-  ReturnStatement,
-  ExpressionStatement,
-
-  CallExpression,
-  ArrayExpression,
-  ObjectExpression,
-  ArrowFunctionExpression,
-  MemberExpression,
-  BinaryExpression,
-  AssignmentExpression,
-  UpdateExpression,
-  FunctionExpression,
-
-  BlockStatement,
-  IfStatement,
-  LabeledStatement,
-  BreakStatement,
-  DoWhileStatement,
-  WhileStatement,
-  ContinueStatement,
-
-  Property,
-
-  ImportDeclaration,
-  ImportDefaultSpecifier,
-  ImportNamespaceSpecifier,
-  ImportSpecifier,
-
-  ExportDefaultDeclaration,
-  ExportNamedDeclaration,
-
-  AssignmentPattern,
-  ObjectPattern,
-
-  VariableDeclaration,
-  VariableDeclarator,
-
-  Identifier,
-  Literal,
-} = components
+import { toBuilder, print, format, h, simple } from 'js-to-builder'
 
 const {
   Const,
@@ -58,24 +9,25 @@ const {
   Value,
   ArrowFn,
   FnStatement,
-  FnCall
-} = shorthand
+  FnCall,
+  Fn,
+  Declarator,
+  Import,
+  Export,
+  JSX,
+  ClassDef,
+  Method
+} = simple
 
 export default (props) => {
   return (
-    <Const name={props.name}>
+    <Const name="hoge">
       <ArrowFn>
-        <Identifier>str</Identifier>
-        <BlockStatement>
-          <ReturnStatement>
-            <Value>
-              {{
-                type: 'HOGE',
-                payload: 'PIYO'
-              }}
-            </Value>
-          </ReturnStatement>
-        </BlockStatement>
+        <blockStatement>
+          <returnStatement>
+            <Value>piyo</Value>
+          </returnStatement>
+        </blockStatement>
       </ArrowFn>
     </Const>
   )

@@ -1,6 +1,5 @@
-const piyo = str => {
-  return {
-    type: 'HOGE',
-    payload: 'PIYO'
-  }
+const hoge = 'fuga'
+
+const hoge = () => {
+  return 'piyo'
 }
