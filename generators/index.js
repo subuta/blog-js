@@ -28,12 +28,9 @@ export default (ctx) => {
   const render = () => {
     return (
       <program>
-        <variableDeclaration kind="const">
-          <variableDeclarator>
-            <identifier name="hoge" />
-            <literal value="fuga" />
-          </variableDeclarator>
-        </variableDeclaration>
+        <FnCall callee="console.log" es>
+          <Value>hoge</Value>
+        </FnCall>
 
         <Action />
       </program>

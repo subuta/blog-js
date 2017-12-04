@@ -21,11 +21,16 @@ const {
 
 export default (props) => {
   return (
-    <Const name="hoge">
+    <Const name="piyo">
       <ArrowFn>
         <blockStatement>
           <returnStatement>
-            <Value>piyo</Value>
+            <Value>
+              {{
+                type: 'HOGA',
+                payload: true
+              }}
+            </Value>
           </returnStatement>
         </blockStatement>
       </ArrowFn>

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "poi build",
-    "watch": "poi",
+    "watch": "poi --port 4001",
     "mat": "mat"
   },
   "repository": {
@@ -32,8 +32,9 @@
   },
   "dependencies": {
     "bluebird": "^3.5.1",
-    "js-to-builder": "^0.2.0",
+    "js-to-builder": "^0.2.2",
     "lodash": "^4.17.4",
+    "matryoshka.js": "^0.1.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-free-style": "^7.0.0",

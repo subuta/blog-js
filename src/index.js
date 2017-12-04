@@ -1,5 +1,8 @@
-const hoge = 'fuga'
+console.log('hoge')
 
-const hoge = () => {
-  return 'piyo'
+const piyo = () => {
+  return {
+    type: 'HOGA',
+    payload: true
+  }
 }
