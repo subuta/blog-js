@@ -1,0 +1,27 @@
+{
+  "name": "blog-js-front",
+  "version": "1.0.0",
+  "description": "example project built-with js-to-builder and matryoshka.js",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "poi build",
+    "watch": "poi --port 4001",
+    "mat": "mat"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/subuta/blog-js.git"
+  },
+  "author": "subuta <shunta.3110@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/subuta/blog-js/issues"
+  },
+  "homepage": "https://github.com/subuta/blog-js#readme",
+  "devDependencies": {
+    "poi": "^9.5.0",
+    "poi-preset-react": "^9.2.0"
+  },
+  "dependencies": {
+  }
+}
