@@ -1,0 +1,27 @@
+version: '2'
+services:
+  db:
+    image: postgres:10-alpine
+    env_file: .env
+    restart: always
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  api:
+    build: .
+    env_file: .env
+    command: "npm run watch"
+    # force bundler to ignore .bundle/config inside docker.
+    volumes:
+      - api-sync:/app:nocopy
+    expose:
+      - "3000"
+    ports:
+      - "3000:3000"
+    links:
+      - db
+volumes:
+  # for docker-sync
+  api-sync:
+    external: true

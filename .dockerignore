@@ -1,0 +1,11 @@
+.git*
+.docker-sync*
+postgres
+front
+tmp/*
+log/*
+.idea*
+build
+Dockerfile
+docker-compose.yml
+docker-sync.yml

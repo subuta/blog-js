@@ -12,6 +12,34 @@
     "type": "git",
     "url": "git+https://github.com/subuta/blog-js.git"
   },
+  "ava": {
+    "files": [
+      "test/**/*.test.js"
+    ],
+    "source": [
+      "lib/**/*.js"
+    ],
+    "concurrency": 5,
+    "failFast": true,
+    "failWithoutAssertions": false,
+    "require": "babel-register",
+    "babel": {
+      "extends": ".babelrc",
+      "plugins": [
+        [
+          "module-resolver",
+          {
+            "root": [
+              "./"
+            ],
+            "alias": {
+              "test": "./test"
+            }
+          }
+        ]
+      ]
+    }
+  },
   "author": "subuta <shunta.3110@gmail.com>",
   "license": "MIT",
   "bugs": {

@@ -1,0 +1,9 @@
+version: "2"
+options:
+  verbose: false
+syncs:
+  api-sync:
+    src: './'
+    sync_excludes: ['.idea', 'build', 'node_modules', 'front', '.gitignore', '.git', 'log', 'README.md', 'postgres', '.docker*']
+    # optional: use this to switch to fswatch verbose mode
+    # watch_args: '-v'
