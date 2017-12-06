@@ -10,3 +10,7 @@ docker-compose up
 #### Start front-end
 cd front
 npm run watch
+
+#### Open 
+open http://localhost:3000 -> API
+open http://localhost:4001 -> front-end
