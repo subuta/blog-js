@@ -1,5 +1,6 @@
 import Umzug from 'umzug'
 import sequelize from '../src/utils/sequelize'
+import _ from 'lodash'
 
 import { MIGRATION_DIR, DB_DIR } from '../config'
 import path from 'path'
@@ -18,14 +19,17 @@ const umzug = new Umzug({
       sequelize.getQueryInterface(), // queryInterface
       sequelize.constructor // DataTypes
     ]
-  }
+  },
+  logging: function () {
+    console.log.apply(null, arguments)
+  },
 })
 
 const run = async ([action]) => {
-  const up = () => umzug.up().then(function (migrations) {
+  const up = () => umzug.up().then((migrations) => {
     // "migrations" will be an Array with the names of the
     // executed migrations.
-    console.log('migrations = ', migrations)
+    console.log('done migrations = ', _.map(migrations, 'file'))
   })
 
   if (action === 'migrate') {

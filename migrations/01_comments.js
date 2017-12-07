@@ -1,8 +1,8 @@
 import Promise from 'bluebird'
 
 export default {
-  up: (query, DataTypes) => {
-    return query.createTable('comments', {
+  up: async (query, DataTypes) => {
+    await query.createTable('comments', {
       id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -19,11 +19,20 @@ export default {
       updatedAt: {
         type: DataTypes.DATE,
         allowNull: false,
-      },
+      }
     })
-  },
 
-  down: (query, DataTypes) => {
+    return query.bulkInsert('comments', [{
+      comment: 'hoge',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      comment: 'fuga',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }])
+  },
+  down: async (query, DataTypes) => {
     return query.dropTable('comments')
   }
 }
