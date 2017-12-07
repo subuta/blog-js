@@ -4,8 +4,10 @@ services:
     image: postgres:10-alpine
     env_file: .env
     restart: always
+    environment:
+      - POSTGRES_HOST=db
     volumes:
-      - ./postgres:/var/lib/postgresql/data
+      - ./db/postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
   api:
@@ -16,7 +18,7 @@ services:
     volumes:
       - api-sync:/app:nocopy
     expose:
-      - "3000"
+      - 3000
     ports:
       - "3000:3000"
     links:

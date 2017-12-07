@@ -1,6 +1,6 @@
 .git*
 .docker-sync*
-postgres
+db/postgres
 front
 tmp/*
 log/*

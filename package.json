@@ -8,6 +8,8 @@
     "serve": "node dist/main.js",
     "watch": "backpack dev",
     "build": "backpack build",
+    "db:migrate": "babel-node ./bin/umzug.js migrate",
+    "db:migrate:reset": "babel-node ./bin/umzug.js reset",
     "mat": "mat"
   },
   "quokka": {
@@ -50,7 +52,9 @@
   },
   "dependencies": {
     "bluebird": "^3.5.1",
+    "boom": "^7.1.1",
     "koa": "^2.4.1",
+    "koa-router": "^7.3.0",
     "lodash": "^4.17.4",
     "pg": "^6.4.2",
     "pg-hstore": "^2.3.2",
@@ -58,6 +62,7 @@
     "react-dom": "^16.0.0",
     "react-free-style": "^7.0.0",
     "recompose": "^0.26.0",
-    "sequelize": "^4.26.0"
+    "sequelize": "^4.26.0",
+    "umzug": "^2.1.0"
   }
 }

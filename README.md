@@ -7,6 +7,11 @@ example my blogging project built-on top of `js-to-builder` and `matryoshka.js`
 docker-sync start
 docker-compose up
 
+or
+
+npm i
+env $(cat .env | xargs) npm run watch
+
 #### Start front-end
 cd front
 npm run watch

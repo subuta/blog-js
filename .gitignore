@@ -1,6 +1,6 @@
 # Created by .ignore support plugin (hsz.mobi)
 .env
 node_modules
-postgres
+db/postgres
 dist
 .docker-sync
