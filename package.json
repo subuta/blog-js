@@ -59,6 +59,7 @@
     "lodash": "^4.17.4",
     "pg": "^6.4.2",
     "pg-hstore": "^2.3.2",
+    "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-free-style": "^7.0.0",

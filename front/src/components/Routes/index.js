@@ -10,6 +10,7 @@ import {
   renderComponent
 } from 'recompose'
 
+import Layout from './Layout'
 import Login from './Login'
 
 const ensureAuthorized = branch(
@@ -18,13 +19,14 @@ const ensureAuthorized = branch(
   _.identity
 )
 
+const AuthorizedRoutes = ensureAuthorized(Layout)
+
 let routes = (
   <ConnectedRouter history={history}>
     <Switch>
-      <Route exact path='/' component={() => <h1>top</h1>} />
       <Route path='/login' component={Login} />
-      <Route exact path='/test' component={ensureAuthorized(() => <h1>authorized!!!</h1>)} />
-      <Route component={() => <Redirect to='/' />} />
+      <Route exact path='/' component={AuthorizedRoutes} />
+      <Route path='/' component={AuthorizedRoutes} />
     </Switch>
   </ConnectedRouter>
 )

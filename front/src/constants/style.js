@@ -1,1 +1,7 @@
-export const BLACK_COLOR = '#333333'
+export const BLACK_COLOR = '#4A4A4A'
+export const ACCENT_COLOR = '#7CC09E'
+export const ACCENT2_COLOR = '#E74F4B'
+export const ACCENT3_COLOR = '#6B6998'
+export const ACCENT4_COLOR = '#4881C3'
+export const PRIMARY_COLOR = '#EEECF5'
+export const PRIMARY2_COLOR = '#FEFAEA'
