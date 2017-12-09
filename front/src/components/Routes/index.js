@@ -1,8 +1,16 @@
 import React from 'react'
 import _ from 'lodash'
-import { Route } from 'react-router'
+import { Route, Switch, Redirect } from 'react-router'
 import { ConnectedRouter } from 'react-router-redux'
 import history from 'src/utils/history'
+
+import {
+  compose,
+  branch,
+  renderComponent
+} from 'recompose'
+
+import Login from './Login'
 
 // const authorize = (nextState, replace, cb) => {
 //   store.dispatch(me())
@@ -19,9 +27,19 @@ import history from 'src/utils/history'
 //   console.error('[router.onError]:', err)
 // }
 
+const ensureAuthorized = branch(
+  (props) => false,
+  renderComponent(() => <Redirect to='/' />),
+  _.identity
+)
+
 let routes = (
   <ConnectedRouter history={history}>
-    <Route exact path="/" component={() => (<h1>home</h1>)}/>
+    <Switch>
+      <Route exact path='/' component={Login} />
+      <Route exact path='/test' component={ensureAuthorized(() => <h1>authorized!!!</h1>)} />
+      <Route component={() => <Redirect to='/' />} />
+    </Switch>
   </ConnectedRouter>
 )
 
