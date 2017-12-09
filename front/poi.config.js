@@ -5,7 +5,6 @@ const path = require('path')
 module.exports = (options, req) => ({
   entry: './src/index.js',
   dist: 'public',
-  homepage: '/blog-js/',
   presets: [
     require('poi-preset-react')(options)
   ],
