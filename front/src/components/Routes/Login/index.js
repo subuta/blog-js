@@ -1,9 +1,14 @@
 import React from 'react'
+import { Route, Switch } from 'react-router'
+
+import Callback from './Callback'
+import Login from './Login'
 
 export default () => {
   return (
-    <div>
-      <h1>Login!</h1>
-    </div>
+    <Switch>
+      <Route exact path='/login' component={Login} />
+      <Route exact path='/login/cb' component={Callback} />
+    </Switch>
   )
 }
