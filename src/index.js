@@ -6,6 +6,7 @@ import sequelize from 'src/utils/sequelize'
 
 import api from './api'
 
+import cors from '@koa/cors'
 import logger from 'koa-logger'
 import serve from 'koa-static'
 import koaBody from 'koa-body'
@@ -22,6 +23,9 @@ app.use(koaBody({
     uploadDir: __dirname + '/uploads'
   }
 }))
+
+// cors
+app.use(cors());
 
 // handle /api requests
 app.use(api.routes())

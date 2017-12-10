@@ -53,6 +53,7 @@
     "standard": "^10.0.2"
   },
   "dependencies": {
+    "@koa/cors": "^2.2.1",
     "aws-sdk": "^2.167.0",
     "bluebird": "^3.5.1",
     "boom": "^7.1.1",

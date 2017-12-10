@@ -8,8 +8,8 @@ comments.get('/', async (ctx) => {
 })
 
 comments.post('/', async (ctx) => {
-  console.log(ctx.request.body);
-  ctx.body = 'comments'
+  const { comment } = ctx.request.body
+  ctx.body = await Comment.create(comment)
 })
 
 export default comments

@@ -1,8 +1,24 @@
 import React from 'react'
+import _ from 'lodash'
 
 import classes from './style'
+import connect from './connect'
 
-export default () => {
+import {
+  compose,
+  lifecycle
+} from 'recompose'
+
+const enhance = compose(
+  connect,
+  lifecycle({
+    componentWillMount() {
+      this.props.requestComments()
+    }
+  })
+)
+
+export default enhance(({ comments }) => {
   return (
     <div className={classes.Channels}>
       <div className={classes.Header}>
@@ -15,8 +31,10 @@ export default () => {
         </p>
       </div>
       <div className={classes.Content}>
-        dfdfdfd
+        {_.map(comments, ({ id, comment }) => {
+          return <p key={id}>{comment}</p>
+        })}
       </div>
     </div>
   )
-}
+})
