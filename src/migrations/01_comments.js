@@ -10,7 +10,7 @@ export default {
         primaryKey: true,
         autoIncrement: true
       },
-      comment: {
+      text: {
         type: Sequelize.TEXT,
         allowNull: false
       },
@@ -25,9 +25,9 @@ export default {
     })
 
     await Comment.bulkCreate([{
-      comment: 'hoge'
+      text: 'hoge'
     }, {
-      comment: 'fuga'
+      text: 'fuga'
     }])
   },
   down: async (query, Sequelize) => {

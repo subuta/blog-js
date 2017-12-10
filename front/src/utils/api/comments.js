@@ -13,8 +13,8 @@ export const index = () => {
   return request.get(`/comments`).then(data => normalize(data, commentList))
 }
 
-export const create = (comment) => {
-  return request.post(`/comments`, {comment: {comment}}).then(data => normalize(data, comment))
+export const create = (params) => {
+  return request.post(`/comments`, {comment: params}).then(data => normalize(data, comment))
 }
 
 export default {

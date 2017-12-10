@@ -29,6 +29,15 @@ export const requestComments = () => {
   }
 }
 
+export const createComment = (params) => {
+  return (dispatch) => {
+    dispatch({type: REQUEST_COMMENTS})
+    return api.comments.create(params).then((data) => {
+      dispatch(setComments(data))
+    })
+  }
+}
+
 // -------------
 // Reducers
 // -------------
@@ -41,7 +50,10 @@ const entities = (state = {}, action) => {
 
 const ids = (state = [], action) => {
   if (action.type === SET_COMMENTS) {
-    return _.uniq([...state, ...action.payload.result])
+    if (_.isArray(action.payload.result)) {
+      return _.uniq([...state, ...action.payload.result])
+    }
+    return _.uniq([...state, action.payload.result])
   }
   return state
 }

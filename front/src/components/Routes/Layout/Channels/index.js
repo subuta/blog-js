@@ -1,26 +1,47 @@
 import React from 'react'
 import _ from 'lodash'
+import keycode from 'keycode'
 
-import Textarea from "react-textarea-autosize";
+import Textarea from 'react-textarea-autosize'
 
 import classes from './style'
 import connect from './connect'
 
 import {
   compose,
-  lifecycle
+  lifecycle,
+  withState,
+  withHandlers
 } from 'recompose'
 
 const enhance = compose(
   connect,
+  withState('draftText', 'setDraftText', ''),
   lifecycle({
-    componentWillMount() {
+    componentWillMount () {
       this.props.requestComments()
+    }
+  }),
+  withHandlers({
+    onKeyPress: ({createComment, draftText}) => (e) => {
+      const key = keycode(e)
+
+      // if enter pressed(without shift-key)
+      if (key === 'enter' && !e.shiftKey) {
+        e.preventDefault()
+        createComment({text: draftText})
+      }
     }
   })
 )
 
-export default enhance(({ comments }) => {
+export default enhance((props) => {
+  const {
+    comments,
+    onKeyPress,
+    setDraftText,
+    draftText
+  } = props
   return (
     <div className={classes.Channels}>
       <div className={classes.Header}>
@@ -34,8 +55,10 @@ export default enhance(({ comments }) => {
       </div>
       <div className={classes.Content}>
         <div className={classes.Comments}>
-          {_.map(comments, ({ id, comment, createdAt }) => {
-            return <p key={id}>{comment} <small>{createdAt}</small></p>
+          {_.map(comments, ({id, text, createdAt}) => {
+            return <p key={id}>{text}
+              <small>{createdAt}</small>
+            </p>
           })}
         </div>
 
@@ -43,7 +66,12 @@ export default enhance(({ comments }) => {
           <div className={classes.TextAreaWrapper}>
             <button>+</button>
             <div className="textarea">
-              <Textarea className={classes.TextArea}/>
+              <Textarea
+                className={classes.TextArea}
+                onKeyPress={onKeyPress}
+                onChange={(e) => setDraftText(e.target.value)}
+                value={draftText}
+              />
             </div>
           </div>
         </div>

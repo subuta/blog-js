@@ -7,7 +7,8 @@ import _ from 'lodash'
 import {
   getAll as getComments,
   getIsProgress,
-  requestComments
+  requestComments,
+  createComment
 } from 'src/modules/comments'
 
 const mapStateToProps = (state) => {
@@ -17,7 +18,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  requestComments
+  requestComments,
+  createComment
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)

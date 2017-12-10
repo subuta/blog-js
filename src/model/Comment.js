@@ -9,7 +9,7 @@ const Comment = sequelize.define('comment', {
     primaryKey: true,
     autoIncrement: true
   },
-  comment: {
+  text: {
     type: Sequelize.TEXT
   },
   createdAt: {
