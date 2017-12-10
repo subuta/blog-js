@@ -2,5 +2,7 @@
 .env
 node_modules
 db/postgres
+db/s3
+front/public
 dist
 .docker-sync

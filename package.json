@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "example project built-with js-to-builder and matryoshka.js",
   "main": "src/index.js",
+  "engines": {
+    "node": ">=9.0.0"
+  },
   "scripts": {
     "test": "nyc ava",
     "serve": "node dist/main.js",
@@ -31,10 +34,10 @@
   },
   "homepage": "https://github.com/subuta/blog-js#readme",
   "devDependencies": {
+    "@babel/core": "^7.0.0-beta.34",
     "@babel/preset-env": "^7.0.0-beta.34",
     "ava": "^0.23.0",
     "babel-cli": "^6.24.1",
-    "@babel/core": "^7.0.0-beta.34",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-module-resolver": "^2.7.1",
     "babel-preset-react": "^6.24.1",
@@ -50,12 +53,16 @@
     "standard": "^10.0.2"
   },
   "dependencies": {
+    "aws-sdk": "^2.167.0",
     "bluebird": "^3.5.1",
     "boom": "^7.1.1",
     "history": "^4.7.2",
     "inline-style-prefixer": "^3.0.8",
     "koa": "^2.4.1",
+    "koa-body": "^2.5.0",
+    "koa-logger": "^3.1.0",
     "koa-router": "^7.3.0",
+    "koa-static": "^4.0.2",
     "lodash": "^4.17.4",
     "pg": "^6.4.2",
     "pg-hstore": "^2.3.2",

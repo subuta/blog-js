@@ -11,7 +11,8 @@ const Icon = {
   display: 'inline-block',
   height: '100%',
   width: '100%',
-  color: 'inherit'
+  color: 'inherit',
+  verticalAlign: 'top'
 }
 
 export default registerStyles({

@@ -3,14 +3,17 @@ import Style, {
 } from 'src/utils/style'
 
 import {
-  BLACK_COLOR
+  ACCENT3_COLOR,
+  PRIMARY_COLOR,
+  BLACK_COLOR,
+  SANS_FONT
 } from 'src/constants/style'
 
 import WebFont from 'webfontloader'
 
 WebFont.load({
   google: {
-    families: ['Lato']
+    families: ['Lato:400,700,900']
   }
 })
 
@@ -20,10 +23,11 @@ const html = {
 
 const body = {
   backgroundColor: '#FFFFFF',
-  fontFamily: `"Lato", serif`,
+  fontFamily: SANS_FONT,
   fontWeight: 400,
   lineHeight: 1.45,
-  color: BLACK_COLOR
+  color: BLACK_COLOR,
+  '-webkit-font-smoothing': 'antialiased'
 }
 
 const p = {
@@ -31,8 +35,8 @@ const p = {
 }
 
 const headings = {
-  margin: '1.414em 0 0.5em',
-  fontFamily: `"Lato", serif`,
+  margin: '32px 0 16px',
+  fontFamily: SANS_FONT,
   fontWeight: 'inherit',
   lineHeight: 1.2
 }

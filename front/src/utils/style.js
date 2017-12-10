@@ -11,6 +11,10 @@ export const registerStyles = (styles) => {
   }, {})
 }
 
+export const registerKeyFrames = (style) => {
+  return Style.registerKeyframes(style);
+}
+
 export const registerRules = (styles) => {
   return _.each(styles, (style, key) => {
     Style.registerRule(key, prefixAll(style))

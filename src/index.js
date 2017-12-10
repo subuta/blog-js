@@ -1,19 +1,34 @@
 import Koa from 'koa'
+
+import { PUBLIC_DIR } from '../config'
+
 import sequelize from 'src/utils/sequelize'
 
-import router from './routes'
+import api from './api'
+
+import logger from 'koa-logger'
+import serve from 'koa-static'
+import koaBody from 'koa-body'
 
 const app = new Koa()
 
-app.use(async (ctx, next) => {
-  const start = Date.now()
-  await next()
-  const ms = Date.now() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
-})
+// log requests
+app.use(logger())
 
-app.use(router.routes())
-app.use(router.allowedMethods())
+// parse body
+app.use(koaBody({
+  multipart: true,
+  formidable: {
+    uploadDir: __dirname + '/uploads'
+  }
+}))
+
+// handle /api requests
+app.use(api.routes())
+app.use(api.allowedMethods())
+
+// otherwise PUBLIC_DIR
+app.use(serve(PUBLIC_DIR));
 
 // sequelize
 //   .authenticate()

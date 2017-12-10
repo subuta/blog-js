@@ -4,10 +4,15 @@ import {
 
 import {
   ACCENT3_COLOR,
-  PRIMARY_COLOR
+  PRIMARY_COLOR,
+  PRIMARY2_COLOR,
+  LATO_WITH_SANS_FONT,
+  NOISE_PATTERN,
+  SANS_FONT
 } from 'src/constants/style'
 
 const Container = {
+  ...NOISE_PATTERN,
   display: 'flex',
   alignItems: 'flex-start',
   justifyContent: 'flex-start'
@@ -18,7 +23,71 @@ const Sidebar = {
   height: '100vh',
   flex: '0 0 204px',
   background: ACCENT3_COLOR,
-  color: PRIMARY_COLOR
+  color: PRIMARY_COLOR,
+  fontFamily: LATO_WITH_SANS_FONT,
+
+  '& > h4': {
+    fontWeight: '900'
+  }
+}
+
+const Channels = {
+  margin: 0,
+  padding: 0,
+  listStyle: 'none',
+
+  '& > li': {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    margin: '0 0 8px 0',
+    padding: 0,
+    fontWeight: 'bold',
+    lineHeight: 1,
+    '& .list-icon': {
+      margin: '1px 4px 0 0'
+    },
+    '&:last-of-type': {
+      margin: 0
+    }
+  }
+}
+
+const Notes = {
+  margin: 0,
+  padding: 0,
+  listStyle: 'none',
+
+  '& > li': {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    margin: '0 0 8px 0',
+    padding: 0,
+    fontWeight: 'bold',
+    fontFamily: SANS_FONT,
+    '& > span': {
+      marginTop: -2,
+      lineHeight: 1.3
+    },
+    '& .list-icon': {
+      margin: '0 4px 0 0',
+      padding: 4,
+      display: 'inline-block',
+      backgroundColor: PRIMARY2_COLOR,
+      borderRadius: 4,
+      lineHeight: 1,
+      // boxShadow: '0 2px 2px 0 rgba(0,0,0,0.24)',
+      '& > .svg-icon': {
+        height: 16,
+        width: 16,
+        color: ACCENT3_COLOR
+      }
+    },
+    '&:last-of-type': {
+      margin: 0
+    }
+  }
 }
 
 const Logo = {
@@ -26,18 +95,16 @@ const Logo = {
 }
 
 const Content = {
+  ...NOISE_PATTERN,
   minHeight: '100vh',
-  flex: 1,
-  '& h1': {
-    fontFamily: `"Noto Sans Japanese" !important`,
-    fontWeight: 'bold'
-    // fontFamily: `"Noto Serif Japanese"`,
-  }
+  flex: 1
 }
 
 export default registerStyles({
   Container,
   Sidebar,
   Logo,
-  Content
+  Content,
+  Channels,
+  Notes
 })
