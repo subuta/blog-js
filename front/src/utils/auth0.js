@@ -6,17 +6,18 @@ import {
 } from 'src/constants/config'
 
 export const redirectUri = `${window.location.origin}/login/cb`
-export const API_IDENTIFIER = 'sub-labo.auth0.com'
+
+export const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID
+export const AUTH0_API_IDENTIFIER = process.env.AUTH0_API_IDENTIFIER
+export const AUTH0_AUDIENCE = process.env.AUTH0_AUDIENCE
 
 const storage = window.localStorage
 
-const audience = `https://sub-labo.com/api`
-
 const auth0 = new Auth0.WebAuth({
   redirectUri,
-  domain: API_IDENTIFIER,
-  audience,
-  clientID: 'H73AOTV2ugkFB2qo8j0p75ZFY6YVXKvD',
+  domain: AUTH0_API_IDENTIFIER,
+  audience: AUTH0_AUDIENCE,
+  clientID: AUTH0_CLIENT_ID,
   responseType: 'token id_token',
   scope: 'openid profile email'
 })

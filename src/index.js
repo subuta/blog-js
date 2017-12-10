@@ -11,6 +11,9 @@ import logger from 'koa-logger'
 import serve from 'koa-static'
 import koaBody from 'koa-body'
 
+// load .env
+require('dotenv').config()
+
 const app = new Koa()
 
 // log requests
