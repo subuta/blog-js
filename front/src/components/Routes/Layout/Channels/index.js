@@ -1,6 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
 
+import Textarea from "react-textarea-autosize";
+
 import classes from './style'
 import connect from './connect'
 
@@ -31,9 +33,20 @@ export default enhance(({ comments }) => {
         </p>
       </div>
       <div className={classes.Content}>
-        {_.map(comments, ({ id, comment }) => {
-          return <p key={id}>{comment}</p>
-        })}
+        <div className={classes.Comments}>
+          {_.map(comments, ({ id, comment, createdAt }) => {
+            return <p key={id}>{comment} <small>{createdAt}</small></p>
+          })}
+        </div>
+
+        <div className={classes.Footer}>
+          <div className={classes.TextAreaWrapper}>
+            <button>+</button>
+            <div className="textarea">
+              <Textarea className={classes.TextArea}/>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

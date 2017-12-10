@@ -4,19 +4,26 @@ import {
 
 import {
   BORDER_COLOR,
+  DIMMED_BLACK_COLOR,
   PRIMARY_COLOR,
+  LIGHT_ACCENT3_COLOR,
   BLACK_COLOR,
-  GLAY_COLOR,
+  GRAY_COLOR,
   LATO_WITH_SANS_FONT,
-  SANS_FONT
+  SANS_FONT,
+
+  HEADER_HEIGHT
 } from 'src/constants/style'
+
+const MIN_TEXT_AREA_HEIGHT = 39
 
 const Channels = {
 }
 
 const Header = {
+  height: HEADER_HEIGHT,
   padding: '8px 16px',
-  background: PRIMARY_COLOR,
+  background: LIGHT_ACCENT3_COLOR,
   borderBottom: `1px solid ${BORDER_COLOR}`,
   fontFamily: SANS_FONT
 }
@@ -44,7 +51,79 @@ const Description = {
 }
 
 const Content = {
-  padding: '8px 16px'
+  position: 'relative'
+}
+
+const Comments = {
+  padding: `8px 16px ${MIN_TEXT_AREA_HEIGHT + 32}px`, // plus padding
+  height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+  overflowY: 'scroll',
+  '& > p': {
+    '&:first-of-type': {
+      margin: 0
+    },
+    '&:last-of-type': {
+      margin: '16px 0 0'
+    }
+  }
+}
+
+const Footer = {
+  padding: '0 16px 16px',
+  position: 'absolute',
+  right: 0,
+  bottom: 0,
+  left: 0,
+  minHeight: MIN_TEXT_AREA_HEIGHT,
+  background: PRIMARY_COLOR
+}
+
+const TextAreaWrapper = {
+  position: 'relative',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'flex-start',
+  border: `2px solid ${DIMMED_BLACK_COLOR}`,
+  borderRadius: 4,
+  '& > button': {
+    border: 'none',
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 0,
+    padding: '8px 16px',
+    outline: 'none',
+    color: DIMMED_BLACK_COLOR,
+    flex: '0 0 auto'
+  },
+
+  '& > .textarea': {
+    position: 'relative',
+    flex: '1 1 auto',
+    minHeight: MIN_TEXT_AREA_HEIGHT,
+    lineHeight: 0,
+    '&:before': {
+      content: '\"\"',
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      width: 1,
+      display: 'block',
+      borderLeft: `2px solid ${DIMMED_BLACK_COLOR}`,
+    }
+  }
+}
+
+const TextArea = {
+  minHeight: MIN_TEXT_AREA_HEIGHT,
+  padding: '8px',
+  height: '100%',
+  width: '100%',
+  border: 'none',
+  resize: 'none',
+  outline: 'none',
+  lineHeight: 1.4,
+  fontFamily: SANS_FONT,
+  fontSize: 16
 }
 
 export default registerStyles({
@@ -52,5 +131,9 @@ export default registerStyles({
   Header,
   Title,
   Description,
-  Content
+  Content,
+  Comments,
+  Footer,
+  TextAreaWrapper,
+  TextArea
 })

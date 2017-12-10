@@ -5,12 +5,16 @@ export const ACCENT_COLOR = '#7CC09E'
 export const ACCENT2_COLOR = '#E74F4B'
 export const ACCENT3_COLOR = '#6B6998'
 export const ACCENT4_COLOR = '#4881C3'
-export const PRIMARY_COLOR = '#EEECF5'
+export const LIGHT_ACCENT3_COLOR = '#EEECF5'
+export const PRIMARY_COLOR = '#FFFFFF'
 export const PRIMARY2_COLOR = '#FEFAEA'
 export const GRAY_COLOR = '#EEEEEE'
 export const DIMMED_BLACK_COLOR = color(BLACK_COLOR).fade(0.4).string()
 export const BORDER_COLOR = '#D4D4D5'
 export const SHADOW_COLOR = 'rgba(34, 36, 38, 0.15)'
+
+// header(description area)
+export const HEADER_HEIGHT = 56
 
 // FONTS
 export const LATO_WITH_SANS_FONT = "'Lato', 'Noto Sans Japanese', 'Noto Serif Japanese', '游ゴシック', 'Yu Gothic', 'HiraKakuProN-W3', 'Hiragino Kaku Gothic ProN', 'メイリオ', 'Meiryo', 'ＭＳ Ｐゴシック', sans-serif"
