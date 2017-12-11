@@ -1,6 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import keycode from 'keycode'
+import { Redirect } from 'react-router'
 
 import Textarea from 'react-textarea-autosize'
 import MdAddIcon from 'react-icons/lib/md/add'
@@ -22,8 +23,7 @@ import {
 } from 'recompose'
 
 const withLoading = branch(
-  ({channel, isChannelProgress}) => !channel || isChannelProgress,
-  // ({channel, isChannelProgress}) => true,
+  ({channel, isChannelProgress}) => !channel && isChannelProgress,
   renderComponent(() => {
     return (
       <div className={classes.Channels}>
@@ -56,11 +56,21 @@ const withLoading = branch(
 const enhance = compose(
   connect,
   withState('draftText', 'setDraftText', ''),
+  withProps(({channels, match}) => {
+    // find channel using path params.
+    const name = _.get(match, 'params.channelName', '')
+    const channel = _.find(channels, {name})
+    return {
+      channel
+    }
+  }),
   withLoading,
   lifecycle({
     componentWillMount () {
       const { channel, requestChannel } = this.props
-      // requestChannel(channel.id)
+      console.log('channel = ', channel);
+      if (!channel) return
+      requestChannel(channel.id)
     }
   }),
   withHandlers({
@@ -83,8 +93,14 @@ export default enhance((props) => {
     onKeyPress,
     setDraftText,
     draftText,
+    channels,
     channel
   } = props
+
+  // redirect to first channel if channel not specified.
+  if (!channel && _.first(channels)) {
+    return <Redirect to={`/${_.first(channels).name}`} />
+  }
 
   return (
     <div className={classes.Channels}>
@@ -101,7 +117,7 @@ export default enhance((props) => {
       </div>
       <div className={classes.Content}>
         <div className={classes.Comments}>
-          {_.map(comments, ({id, text, createdAt}) => {
+          {_.map(channel.comments, ({id, text, createdAt}) => {
             return <p key={id}>{text}
               <small>{createdAt}</small>
             </p>

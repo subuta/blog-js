@@ -1,14 +1,19 @@
 import _ from 'lodash'
 import { combineReducers } from 'redux'
 import { createSelector } from 'reselect'
+import { denormalize } from 'src/utils/schema'
 
 import api from 'src/utils/api'
+
+import {
+  SET_CHANNELS
+} from './channels'
 
 // -------------
 // Constants
 // -------------
-const REQUEST_COMMENTS = 'REQUEST_COMMENTS'
-const SET_COMMENTS = 'SET_COMMENTS'
+export const REQUEST_COMMENTS = 'REQUEST_COMMENTS'
+export const SET_COMMENTS = 'SET_COMMENTS'
 
 // -------------
 // ActionCreators
@@ -42,7 +47,8 @@ export const createComment = (params) => {
 // Reducers
 // -------------
 const entities = (state = {}, action) => {
-  if (action.type === SET_COMMENTS) {
+  if (action.type === SET_COMMENTS ||
+      action.type === SET_CHANNELS) {
     return {...state, ...action.payload.entities.comments}
   }
   return state
@@ -82,5 +88,8 @@ export const getIsProgress = state => state.comments.isProgress
 export const getAll = createSelector(
   getEntities,
   getIds,
-  (entities, ids) => ids.map(id => entities[id])
+  _.identity,
+  (entities, ids, state) => ids.map(id => {
+    return denormalize(entities[id], 'comments', state)
+  })
 )

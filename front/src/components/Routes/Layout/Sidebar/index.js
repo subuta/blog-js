@@ -1,9 +1,10 @@
 import React from 'react'
 import _ from 'lodash'
-import { Route, Switch, Redirect, withRouter } from 'react-router'
+import { Route, Switch } from 'react-router'
 import { NavLink } from 'react-router-dom'
 
 import classes from './style'
+import connect from './connect'
 
 import SvgIcon from 'src/components/common/SvgIcon'
 import Placeholder from 'src/components/common/Placeholder'
@@ -11,6 +12,7 @@ import Placeholder from 'src/components/common/Placeholder'
 import {
   compose,
   branch,
+  lifecycle,
   renderComponent
 } from 'recompose'
 
@@ -63,11 +65,19 @@ const withLoading = branch(
   _.identity
 )
 
-export default withLoading((props) => {
+const enhance = compose(
+  connect,
+  lifecycle({
+    componentWillMount () {
+      this.props.requestChannels()
+    }
+  }),
+  withLoading
+)
+
+export default enhance((props) => {
   const {
-    match,
     channels,
-    channel
   } = props
 
   return (
@@ -81,8 +91,8 @@ export default withLoading((props) => {
       <ul className={classes.Channels}>
         {_.map(channels, ({id, name}) => {
           return (
-            <li key={id} className={id === channel.id ? 'is-active' : ''}>
-              <NavLink to={`/${name}`}>
+            <li key={id}>
+              <NavLink to={`/${name}`} activeClassName="is-active">
                 <span className="list-icon">#</span>
                 <span>{name}</span>
               </NavLink>

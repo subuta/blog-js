@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
+import { denormalize } from 'src/utils/schema'
 
 import { combineReducers } from 'redux'
 import { createSelector } from 'reselect'
@@ -10,8 +11,8 @@ import { withWait } from 'src/utils/wait'
 // -------------
 // Constants
 // -------------
-const REQUEST_CHANNELS = 'REQUEST_CHANNELS'
-const SET_CHANNELS = 'SET_CHANNELS'
+export const REQUEST_CHANNELS = 'REQUEST_CHANNELS'
+export const SET_CHANNELS = 'SET_CHANNELS'
 
 // -------------
 // ActionCreators
@@ -95,5 +96,8 @@ export const getIsProgress = state => state.channels.isProgress
 export const getAll = createSelector(
   getEntities,
   getIds,
-  (entities, ids) => ids.map(id => entities[id])
+  _.identity,
+  (entities, ids, state) => ids.map(id => {
+    return denormalize(entities[id], 'channels', state)
+  })
 )
