@@ -20,6 +20,25 @@ import {
 const MIN_TEXT_AREA_HEIGHT = 40
 
 const Channels = {
+  position: 'relative'
+}
+
+const DropTarget = {
+  display: 'none',
+  position: 'absolute',
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0,
+  backgroundColor: DIMMED_BLACK_COLOR,
+  color: PRIMARY_COLOR,
+  fontWeight: '900',
+  zIndex: 100,
+  '.can-drop > &': {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 }
 
 const Header = {
@@ -164,6 +183,7 @@ const AddIcon = {
 
 export default registerStyles({
   Channels,
+  DropTarget,
   Header,
   Title,
   Description,

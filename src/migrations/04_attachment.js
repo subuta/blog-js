@@ -1,25 +1,26 @@
 import Promise from 'bluebird'
-import Comment from 'src/model/Comment'
+import Channel from 'src/model/Channel'
 
 export default {
   up: async (query, Sequelize) => {
-    await query.createTable('comments', {
+    await query.createTable('attachments', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
         autoIncrement: true
       },
-      channelId: {
-        type: Sequelize.INTEGER,
+      name: {
+        type: Sequelize.STRING,
         allowNull: false
       },
-      attachmentId: {
-        type: Sequelize.INTEGER,
-        allowNull: true
+      type: {
+        type: Sequelize.STRING,
+        allowNull: false
       },
-      text: {
-        type: Sequelize.TEXT,
+      url: {
+        type: Sequelize.STRING,
+        isUrl: true,
         allowNull: false
       },
       createdAt: {
@@ -31,16 +32,8 @@ export default {
         defaultValue: Sequelize.NOW
       }
     })
-
-    await Comment.bulkCreate([{
-      text: 'first comment of channel=1',
-      channelId: 1
-    }, {
-      text: 'first comment of channel=2',
-      channelId: 2
-    }])
   },
   down: async (query, Sequelize) => {
-    return query.dropTable('comments')
+    return query.dropTable('attachments')
   }
 }

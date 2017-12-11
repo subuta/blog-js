@@ -2,40 +2,39 @@ import sequelize from 'src/utils/sequelize'
 
 const Sequelize = sequelize.constructor
 
-const Comment = sequelize.define('comment', {
+const Attachment = sequelize.define('attachments', {
   id: {
     type: Sequelize.INTEGER,
     allowNull: false,
     primaryKey: true,
     autoIncrement: true
   },
-  channelId: {
-    type: Sequelize.INTEGER,
+  name: {
+    type: Sequelize.STRING,
     allowNull: false
   },
-  attachmentId: {
-    type: Sequelize.INTEGER,
-    allowNull: true
+  type: {
+    type: Sequelize.STRING,
+    allowNull: false
   },
-  text: {
-    type: Sequelize.TEXT
+  url: {
+    type: Sequelize.STRING,
+    isUrl: true,
+    allowNull: false
   },
   createdAt: {
     type: Sequelize.DATE,
-    allowNull: false,
     defaultValue: Sequelize.NOW
   },
   updatedAt: {
     type: Sequelize.DATE,
-    allowNull: false,
     defaultValue: Sequelize.NOW
   }
 })
 
 // register associations
-Comment.register = (models) => {
-  Comment.belongsTo(models.Channel)
-  Comment.hasOne(models.Attachment)
+Attachment.register = (models) => {
+  Attachment.belongsTo(models.Comment)
 }
 
-export default Comment
+export default Attachment

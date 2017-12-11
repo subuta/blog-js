@@ -1,5 +1,6 @@
 [
   "01_comments.js",
   "02_users.js",
-  "03_channels.js"
+  "03_channels.js",
+  "04_attachment.js"
 ]

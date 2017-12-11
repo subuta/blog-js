@@ -1,6 +1,11 @@
 import React from 'react'
 import { findDOMNode } from 'react-dom'
 
+import { DropTarget } from 'react-dnd'
+import { NativeTypes } from 'react-dnd-html5-backend'
+
+const {FILE} = NativeTypes
+
 import _ from 'lodash'
 import keycode from 'keycode'
 import { Redirect } from 'react-router'
@@ -55,6 +60,24 @@ const withLoading = branch(
     )
   }),
   _.identity
+)
+
+const dropTarget = {
+  drop (props, monitor) {
+    if (props.handleFileDrop) {
+      props.handleFileDrop(props, monitor)
+    }
+  }
+}
+
+const withFileDropHandler = DropTarget(
+  () => [FILE],
+  dropTarget,
+  (connect, monitor) => ({
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+    canDrop: monitor.canDrop(),
+  })
 )
 
 const enhance = compose(
@@ -115,8 +138,16 @@ const enhance = compose(
           scrollComments()
         })
       }
+    },
+
+    handleFileDrop: () => (item, monitor) => {
+      if (monitor) {
+        const droppedFiles = monitor.getItem().files
+        console.log(droppedFiles)
+      }
     }
-  })
+  }),
+  withFileDropHandler
 )
 
 export default enhance((props) => {
@@ -127,16 +158,29 @@ export default enhance((props) => {
     setDraftText,
     draftText,
     channels,
-    channel
+    channel,
+    handleFileDrop,
+    isOver,
+    canDrop,
+    connectDropTarget
   } = props
+
+  let channelsClass = classes.Channels
+  if (isOver && canDrop) {
+    channelsClass += ' can-drop'
+  }
 
   // redirect to first channel if channel not specified.
   if (!channel && _.first(channels)) {
     return <Redirect to={`/${_.first(channels).name}`} />
   }
 
-  return (
-    <div className={classes.Channels}>
+  return connectDropTarget(
+    <div className={channelsClass}>
+      <div className={classes.DropTarget}>
+        <h1>Drop file for upload.</h1>
+      </div>
+
       <div className={classes.Header}>
         <h4 className={classes.Title}>
           <span className="list-icon">#</span>
