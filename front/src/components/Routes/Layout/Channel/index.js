@@ -104,14 +104,16 @@ const enhance = compose(
     }
   }),
   withHandlers({
-    onKeyPress: ({createChannelComment, channel, draftText, setDraftText}) => (e) => {
+    onKeyPress: ({createChannelComment, channel, draftText, setDraftText, scrollComments}) => (e) => {
       const key = keycode(e)
 
       // if enter pressed(without shift-key)
       if (key === 'enter' && !e.shiftKey) {
         e.preventDefault()
-        createChannelComment(channel.id, {text: draftText})
         setDraftText('')
+        createChannelComment(channel.id, {text: draftText}).then(() => {
+          scrollComments()
+        })
       }
     }
   })

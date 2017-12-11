@@ -73,6 +73,7 @@ const Comments = {
   height: `calc(100vh - ${HEADER_HEIGHT}px)`,
   overflowY: 'scroll',
   '& > p': {
+    whiteSpace: 'pre',
     '&:first-of-type': {
       margin: '0 !important'
     },
