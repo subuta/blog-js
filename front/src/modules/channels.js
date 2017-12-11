@@ -28,7 +28,7 @@ export const requestChannels = () => {
   return (dispatch) => {
     dispatch({type: REQUEST_CHANNELS})
     return withWait(api.channels.index()).then((data) => {
-      dispatch(setChannels(data))
+      return dispatch(setChannels(data))
     })
   }
 }
@@ -37,7 +37,7 @@ export const requestChannel = (id) => {
   return (dispatch) => {
     dispatch({type: REQUEST_CHANNELS})
     return withWait(api.channels.show(id)).then((data) => {
-      dispatch(setChannels(data))
+      return dispatch(setChannels(data))
     })
   }
 }

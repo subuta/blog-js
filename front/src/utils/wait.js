@@ -6,9 +6,9 @@ export const wait = (ms = 300) => new Promise((resolve) => _.delay(resolve, ms))
 
 // wrap promise with wait.
 // wait at-least 300ms for better ux.
-export const withWait = (promise, ms = 300) => new Promise((resolve, reject) => {
-  Promise.all([promise, wait(ms)])
-    .then(([data]) => resolve(data))
+export const withWait = (p, ms = 300) => new Promise((resolve, reject) => {
+  Promise.all([p, wait(ms)])
+    .then(([data, _]) => resolve(data))
     .catch(reject)
 })
 

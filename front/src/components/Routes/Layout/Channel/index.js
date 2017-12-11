@@ -68,31 +68,29 @@ const enhance = compose(
     }
   }),
   withLoading,
-  // compare props by deepEqual.
-  shouldUpdate((props, nextProps) => {
-    const keys = ['channel', 'draftText', 'channelName']
-    return !_.isEqual(_.pick(props, keys), _.pick(nextProps, keys))
-  }),
   lifecycle({
     componentWillMount () {
-      const { channel, requestChannel } = this.props
+      const { channel, fetchChannelComments } = this.props
       if (!channel) return
-      requestChannel(channel.id)
+      fetchChannelComments(channel.id)
     },
 
-    componentDidUpdate () {
-      const { channel, requestChannel } = this.props
-      requestChannel(channel.id)
+    componentDidUpdate (prevProps) {
+      const { channel, channelName, fetchChannelComments } = this.props
+      // fetch channel only if channelName updated.
+      if (channelName !== prevProps.channelName) {
+        fetchChannelComments(channel.id)
+      }
     }
   }),
   withHandlers({
-    onKeyPress: ({createComment, channel, draftText, setDraftText}) => (e) => {
+    onKeyPress: ({createChannelComment, channel, draftText, setDraftText}) => (e) => {
       const key = keycode(e)
 
       // if enter pressed(without shift-key)
       if (key === 'enter' && !e.shiftKey) {
         e.preventDefault()
-        createComment(channel.id, {text: draftText})
+        createChannelComment(channel.id, {text: draftText})
         setDraftText('')
       }
     }
@@ -101,7 +99,7 @@ const enhance = compose(
 
 export default enhance((props) => {
   const {
-    comments,
+    channelComments,
     onKeyPress,
     setDraftText,
     draftText,
@@ -129,7 +127,7 @@ export default enhance((props) => {
       </div>
       <div className={classes.Content}>
         <div className={classes.Comments}>
-          {_.map(channel.comments, ({id, text, createdAt}) => {
+          {_.map(channelComments, ({id, text, createdAt}) => {
             return <p key={id}>{text}
               <small>{createdAt}</small>
             </p>
