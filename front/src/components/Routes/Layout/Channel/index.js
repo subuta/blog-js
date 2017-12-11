@@ -15,6 +15,7 @@ import Placeholder from 'src/components/common/Placeholder'
 import {
   compose,
   branch,
+  onlyUpdateForKeys,
   shouldUpdate,
   renderComponent,
   lifecycle,
@@ -67,11 +68,10 @@ const enhance = compose(
     }
   }),
   withLoading,
-  // check if channel or channelName changed.
+  // compare props by deepEqual.
   shouldUpdate((props, nextProps) => {
-    const isNotSameChannelName = !_.isEqual(props.channelName, nextProps.channelName)
-    const isNotSameChannel = !_.isEqual(props.channel, nextProps.channel)
-    return isNotSameChannelName || isNotSameChannel
+    const keys = ['channel', 'draftText', 'channelName']
+    return !_.isEqual(_.pick(props, keys), _.pick(nextProps, keys))
   }),
   lifecycle({
     componentWillMount () {
@@ -86,13 +86,13 @@ const enhance = compose(
     }
   }),
   withHandlers({
-    onKeyPress: ({createComment, draftText, setDraftText}) => (e) => {
+    onKeyPress: ({createComment, channel, draftText, setDraftText}) => (e) => {
       const key = keycode(e)
 
       // if enter pressed(without shift-key)
       if (key === 'enter' && !e.shiftKey) {
         e.preventDefault()
-        createComment({text: draftText})
+        createComment(channel.id, {text: draftText})
         setDraftText('')
       }
     }

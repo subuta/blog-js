@@ -1,7 +1,10 @@
 import Router from 'koa-router'
-import models, { Channel } from 'src/model'
+import _ from 'lodash'
+import models, { Channel, Comment } from 'src/model'
 
-const channels = new Router({prefix: '/channels'})
+import Comments from './Comments'
+
+const channels = new Router()
 
 channels.get('/', async (ctx) => {
   ctx.body = await Channel.findAll()
@@ -18,4 +21,10 @@ channels.post('/', async (ctx) => {
   ctx.body = await Channel.create(channel)
 })
 
-export default channels
+// export default channels
+export default {
+  routes: () => _.cloneDeep(channels.routes()),
+  register: (routers) => {
+    channels.use('/:channelId/comments', routers.Comments.routes());
+  }
+}

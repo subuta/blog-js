@@ -10,6 +10,7 @@ import {
   PRIMARY_COLOR,
   PRIMARY2_COLOR,
   LATO_WITH_SANS_FONT,
+  EASE_STANDARD,
   SANS_FONT
 } from 'src/constants/style'
 
@@ -43,6 +44,7 @@ const Channels = {
       lineHeight: 1,
       textDecoration: 'none',
       color: 'inherit',
+      transition: `background-color 0.2s ${EASE_STANDARD}`,
 
       '& .list-icon': {
         margin: '1px 4px 0 0'

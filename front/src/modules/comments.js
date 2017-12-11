@@ -34,10 +34,10 @@ export const requestChannelComments = (channelId) => {
   }
 }
 
-export const createComment = (params) => {
+export const createComment = (channelId, params) => {
   return (dispatch) => {
     dispatch({type: REQUEST_COMMENTS})
-    return api.comments.create(params).then((data) => {
+    return api.comments.create(channelId, params).then((data) => {
       dispatch(setComments(data))
     })
   }

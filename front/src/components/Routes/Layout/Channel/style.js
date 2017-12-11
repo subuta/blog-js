@@ -74,7 +74,7 @@ const Comments = {
   overflowY: 'scroll',
   '& > p': {
     '&:first-of-type': {
-      margin: 0
+      margin: '0 !important'
     },
     '&:last-of-type': {
       margin: '16px 0 0'
