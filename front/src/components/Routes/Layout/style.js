@@ -10,6 +10,7 @@ import {
   NOISE_PATTERN,
   SANS_FONT
 } from 'src/constants/style'
+import { GRAY_COLOR } from '../../../constants/style'
 
 const Container = {
   ...NOISE_PATTERN,
@@ -37,18 +38,24 @@ const Channels = {
   listStyle: 'none',
 
   '& > li': {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
     margin: '0 0 8px 0',
     padding: 0,
     fontWeight: 'bold',
-    lineHeight: 1,
-    '& .list-icon': {
-      margin: '1px 4px 0 0'
-    },
-    '&:last-of-type': {
-      margin: 0
+
+    '& > a': {
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'flex-start',
+      lineHeight: 1,
+      textDecoration: 'none',
+      color: 'inherit',
+
+      '& .list-icon': {
+        margin: '1px 4px 0 0'
+      },
+      '&:last-of-type': {
+        margin: 0
+      }
     }
   }
 }
@@ -66,10 +73,13 @@ const Notes = {
     padding: 0,
     fontWeight: 'bold',
     fontFamily: SANS_FONT,
-    '& > span': {
+    lineHeight: 1,
+
+    '& > div': {
       marginTop: -2,
       lineHeight: 1.3
     },
+
     '& .list-icon': {
       margin: '0 4px 0 0',
       padding: 4,

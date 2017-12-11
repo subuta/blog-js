@@ -1,5 +1,5 @@
 import Router from 'koa-router'
-import Comment from 'src/model/Comment'
+import models, { Comment } from 'src/model'
 
 const comments = new Router({prefix: '/comments'})
 

@@ -9,15 +9,15 @@ import {
   commentList
 } from 'src/utils/schema'
 
-export const index = () => {
-  return request.get(`/comments`).then(data => normalize(data, commentList))
+export const indexByChannel = (channelId) => {
+  return request.get(`/channels/${channelId}/comments`).then(data => normalize(data, commentList))
 }
 
-export const create = (params) => {
-  return request.post(`/comments`, {comment: params}).then(data => normalize(data, comment))
+export const create = (channelId, params) => {
+  return request.post(`/channels/${channelId}/comments`, {comment: params}).then(data => normalize(data, comment))
 }
 
 export default {
-  index,
+  indexByChannel,
   create
 }

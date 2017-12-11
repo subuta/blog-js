@@ -20,10 +20,10 @@ export const setComments = (comments) => {
   }
 }
 
-export const requestComments = () => {
+export const requestChannelComments = (channelId) => {
   return (dispatch) => {
     dispatch({type: REQUEST_COMMENTS})
-    return api.comments.index().then((data) => {
+    return api.comments.indexByChannel(channelId).then((data) => {
       dispatch(setComments(data))
     })
   }

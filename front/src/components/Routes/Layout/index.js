@@ -1,50 +1,51 @@
 import React from 'react'
+import _ from 'lodash'
 import { Route, Switch, Redirect } from 'react-router'
 
-import Channels from './Channels'
+import Sidebar from './Sidebar'
+import Content from './Content'
 
 import classes from './style'
+import connect from './connect'
 
-import SvgIcon from 'src/components/common/SvgIcon'
+import {
+  compose,
+  withProps,
+  lifecycle,
+  branch,
+  renderComponent
+} from 'recompose'
 
-export default () => {
+const enhance = compose(
+  connect,
+  withProps(({channels, match}) => {
+    // find channel using path params.
+    const name = _.get(match, 'params.channelName', '')
+    const channel = _.find(channels, { name })
+    return { channel }
+  }),
+  lifecycle({
+    componentWillMount () {
+      this.props.requestChannels()
+    }
+  })
+)
+
+export default enhance((props) => {
+  const {
+    channel,
+    channels
+  } = props
+
+  // redirect to first channel if channel not specified.
+  if (!channel && _.first(channels)) {
+    return <Redirect to={`/${_.first(channels).name}`} />
+  }
+
   return (
     <div className={classes.Container}>
-      <div className={classes.Sidebar}>
-        <div className={classes.Logo}>
-          <SvgIcon name="logo-white" />
-        </div>
-
-        <h4>Channels</h4>
-
-        <ul className={classes.Channels}>
-          <li>
-            <span className="list-icon">#</span>
-            <span>i_subuta</span>
-          </li>
-
-          <li>
-            <span className="list-icon">#</span>
-            <span>react</span>
-          </li>
-        </ul>
-
-        <h4>Note</h4>
-
-        <ul className={classes.Notes}>
-          <li>
-            <span className="list-icon"><SvgIcon name="note" /></span>
-            <span>ReactでHOCを作るのに必要なものほげほげほげほげ</span>
-          </li>
-        </ul>
-      </div>
-
-      <div className={classes.Content}>
-        <Switch>
-          <Route exact path='/' component={Channels} />
-          <Route component={() => <Redirect to='/' />} /> {/* 404 */}
-        </Switch>
-      </div>
+      <Sidebar {...props} />
+      <Content {...props} />
     </div>
   )
-}
+})

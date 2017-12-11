@@ -23,4 +23,9 @@ const Channel = sequelize.define('channel', {
   }
 })
 
+// register associations
+Channel.register = (models) => {
+  Channel.hasMany(models.Comment)
+}
+
 export default Channel

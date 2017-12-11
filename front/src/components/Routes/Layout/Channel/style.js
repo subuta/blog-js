@@ -46,14 +46,26 @@ const Title = {
 }
 
 const Description = {
-  margin: 0,
   fontSize: 13,
   color: BLACK_COLOR,
-  opacity: 0.8
+  opacity: 0.8,
+  lineHeight: 0,
+  '& > *': {
+    margin: 0,
+    lineHeight: 1
+  }
 }
 
 const Content = {
   position: 'relative'
+}
+
+const CenteredContent = {
+  position: 'relative',
+  height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center'
 }
 
 const Comments = {
@@ -155,6 +167,7 @@ export default registerStyles({
   Title,
   Description,
   Content,
+  CenteredContent,
   Comments,
   Footer,
   TextAreaWrapper,

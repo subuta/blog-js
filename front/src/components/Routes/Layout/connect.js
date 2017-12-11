@@ -5,21 +5,22 @@ import { push } from 'react-router-redux'
 import _ from 'lodash'
 
 import {
-  getAll as getComments,
-  getIsProgress,
-  requestComments,
-  createComment
-} from 'src/modules/comments'
+  getAll as getChannels,
+  getIsProgress as getIsChannelProgress,
+  requestChannels,
+  createChannel
+} from 'src/modules/channels'
 
 const mapStateToProps = (state) => {
   return {
-    comments: getComments(state)
+    channels: getChannels(state),
+    isChannelProgress: getIsChannelProgress(state)
   }
 }
 
 const mapDispatchToProps = {
-  requestComments,
-  createComment
+  requestChannels,
+  createChannel
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)

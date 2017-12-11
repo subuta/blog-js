@@ -1,5 +1,4 @@
 import sequelize from 'src/utils/sequelize'
-import Channel from './Channel'
 
 const Sequelize = sequelize.constructor
 
@@ -9,6 +8,10 @@ const Comment = sequelize.define('comment', {
     allowNull: false,
     primaryKey: true,
     autoIncrement: true
+  },
+  channelId: {
+    type: Sequelize.INTEGER,
+    allowNull: false
   },
   text: {
     type: Sequelize.TEXT
@@ -25,7 +28,9 @@ const Comment = sequelize.define('comment', {
   }
 })
 
-// associations
-Comment.belongsTo(Channel)
+// register associations
+Comment.register = (models) => {
+  Comment.belongsTo(models.Channel)
+}
 
 export default Comment

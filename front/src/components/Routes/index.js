@@ -25,8 +25,8 @@ let routes = (
   <ConnectedRouter history={history}>
     <Switch>
       <Route path='/login' component={Login} />
-      <Route exact path='/' component={AuthorizedRoutes} />
-      <Route path='/' component={AuthorizedRoutes} />
+      <Route path='/:channelName?' component={AuthorizedRoutes} />
+      <Route component={() => <Redirect to='/' />} /> {/* 404 */}
     </Switch>
   </ConnectedRouter>
 )

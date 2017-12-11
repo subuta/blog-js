@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 
+import channels from './channels'
 import comments from './comments'
 
 const reducers = {
   routing: routerReducer,
+  channels,
   comments
 }
 
