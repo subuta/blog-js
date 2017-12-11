@@ -1,4 +1,6 @@
 import React from 'react'
+import { findDOMNode } from 'react-dom'
+
 import _ from 'lodash'
 import keycode from 'keycode'
 import { Redirect } from 'react-router'
@@ -58,6 +60,20 @@ const withLoading = branch(
 const enhance = compose(
   connect,
   withState('draftText', 'setDraftText', ''),
+  withHandlers(() => {
+    let $comments
+    return {
+      setCommentsRef: () => (ref) => {
+        $comments = findDOMNode(ref)
+      },
+
+      scrollComments: () => () => {
+        requestAnimationFrame(() => {
+          $comments.scrollTop = $comments.scrollHeight
+        })
+      }
+    }
+  }),
   withProps(({channels, match}) => {
     // find channel using path params.
     const name = _.get(match, 'params.channelName', '')
@@ -70,16 +86,20 @@ const enhance = compose(
   withLoading,
   lifecycle({
     componentWillMount () {
-      const { channel, fetchChannelComments } = this.props
+      const {channel, fetchChannelComments, scrollComments} = this.props
       if (!channel) return
-      fetchChannelComments(channel.id)
+      fetchChannelComments(channel.id).then(() => {
+        scrollComments()
+      })
     },
 
     componentDidUpdate (prevProps) {
-      const { channel, channelName, fetchChannelComments } = this.props
+      const {channel, channelName, fetchChannelComments, scrollComments} = this.props
       // fetch channel only if channelName updated.
       if (channelName !== prevProps.channelName) {
-        fetchChannelComments(channel.id)
+        fetchChannelComments(channel.id).then(() => {
+          scrollComments()
+        })
       }
     }
   }),
@@ -101,6 +121,7 @@ export default enhance((props) => {
   const {
     channelComments,
     onKeyPress,
+    setCommentsRef,
     setDraftText,
     draftText,
     channels,
@@ -126,7 +147,7 @@ export default enhance((props) => {
         </div>
       </div>
       <div className={classes.Content}>
-        <div className={classes.Comments}>
+        <div className={classes.Comments} ref={setCommentsRef}>
           {_.map(channelComments, ({id, text, createdAt}) => {
             return <p key={id}>{text}
               <small>{createdAt}</small>
