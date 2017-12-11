@@ -3,6 +3,7 @@ import _ from 'lodash'
 import keycode from 'keycode'
 
 import Textarea from 'react-textarea-autosize'
+import MdAddIcon from 'react-icons/lib/md/add'
 
 import classes from './style'
 import connect from './connect'
@@ -23,13 +24,14 @@ const enhance = compose(
     }
   }),
   withHandlers({
-    onKeyPress: ({createComment, draftText}) => (e) => {
+    onKeyPress: ({createComment, draftText, setDraftText}) => (e) => {
       const key = keycode(e)
 
       // if enter pressed(without shift-key)
       if (key === 'enter' && !e.shiftKey) {
         e.preventDefault()
         createComment({text: draftText})
+        setDraftText('')
       }
     }
   })
@@ -64,7 +66,7 @@ export default enhance((props) => {
 
         <div className={classes.Footer}>
           <div className={classes.TextAreaWrapper}>
-            <button>+</button>
+            <button><MdAddIcon className={classes.AddIcon} /></button>
             <div className="textarea">
               <Textarea
                 className={classes.TextArea}

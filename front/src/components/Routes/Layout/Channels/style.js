@@ -6,16 +6,18 @@ import {
   BORDER_COLOR,
   DIMMED_BLACK_COLOR,
   PRIMARY_COLOR,
+  ACCENT_COLOR,
   LIGHT_ACCENT3_COLOR,
   BLACK_COLOR,
   GRAY_COLOR,
   LATO_WITH_SANS_FONT,
   SANS_FONT,
 
+  EASE_STANDARD,
   HEADER_HEIGHT
 } from 'src/constants/style'
 
-const MIN_TEXT_AREA_HEIGHT = 39
+const MIN_TEXT_AREA_HEIGHT = 40
 
 const Channels = {
 }
@@ -83,23 +85,39 @@ const TextAreaWrapper = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'flex-start',
-  border: `2px solid ${DIMMED_BLACK_COLOR}`,
-  borderRadius: 4,
   '& > button': {
-    border: 'none',
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    border: `2px solid ${DIMMED_BLACK_COLOR}`,
+    borderRight: 0,
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
-    padding: '8px 16px',
+    padding: '8px',
     outline: 'none',
     color: DIMMED_BLACK_COLOR,
-    flex: '0 0 auto'
+    width: 40,
+    flex: '0 0 auto',
+    lineHeight: 0,
+    transition: `all 0.2s ${EASE_STANDARD}`,
+    cursor: 'pointer',
+    '&:hover': {
+      border: `2px solid ${ACCENT_COLOR}`,
+      backgroundColor: ACCENT_COLOR,
+      color: PRIMARY_COLOR
+    }
   },
 
   '& > .textarea': {
+    margin: '0 0 0 40px',
     position: 'relative',
     flex: '1 1 auto',
     minHeight: MIN_TEXT_AREA_HEIGHT,
     lineHeight: 0,
+    border: `2px solid ${DIMMED_BLACK_COLOR}`,
+    borderLeft: 0,
+    borderRadius: '0 4px 4px 0',
     '&:before': {
       content: '\"\"',
       position: 'absolute',
@@ -126,6 +144,11 @@ const TextArea = {
   fontSize: 16
 }
 
+const AddIcon = {
+  height: 24,
+  width: 24
+}
+
 export default registerStyles({
   Channels,
   Header,
@@ -135,5 +158,6 @@ export default registerStyles({
   Comments,
   Footer,
   TextAreaWrapper,
-  TextArea
+  TextArea,
+  AddIcon
 })

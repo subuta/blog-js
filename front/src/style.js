@@ -27,7 +27,8 @@ const body = {
   fontWeight: 400,
   lineHeight: 1.45,
   color: BLACK_COLOR,
-  '-webkit-font-smoothing': 'antialiased'
+  '-webkit-font-smoothing': 'antialiased',
+  'text-rendering': 'optimizeLegibility'
 }
 
 const p = {
