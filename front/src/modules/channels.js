@@ -71,8 +71,7 @@ const ids = (state = [], action) => {
   return state
 }
 
-// start with true for initial loading view.
-const isProgress = (state = true, action) => {
+const isProgress = (state = false, action) => {
   if (action.type === REQUEST_CHANNELS) {
     return true
   } else if (action.type === SET_CHANNELS) {

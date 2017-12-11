@@ -15,6 +15,7 @@ import Placeholder from 'src/components/common/Placeholder'
 import {
   compose,
   branch,
+  shouldUpdate,
   renderComponent,
   lifecycle,
   withState,
@@ -61,15 +62,26 @@ const enhance = compose(
     const name = _.get(match, 'params.channelName', '')
     const channel = _.find(channels, {name})
     return {
-      channel
+      channel,
+      channelName: name
     }
   }),
   withLoading,
+  // check if channel or channelName changed.
+  shouldUpdate((props, nextProps) => {
+    const isNotSameChannelName = !_.isEqual(props.channelName, nextProps.channelName)
+    const isNotSameChannel = !_.isEqual(props.channel, nextProps.channel)
+    return isNotSameChannelName || isNotSameChannel
+  }),
   lifecycle({
     componentWillMount () {
       const { channel, requestChannel } = this.props
-      console.log('channel = ', channel);
       if (!channel) return
+      requestChannel(channel.id)
+    },
+
+    componentDidUpdate () {
+      const { channel, requestChannel } = this.props
       requestChannel(channel.id)
     }
   }),

@@ -19,10 +19,6 @@ const enhance = compose(
 )
 
 export default enhance((props) => {
-  const {
-    channel
-  } = props
-
   return (
     <div className={classes.Container}>
       <Sidebar {...props} />
