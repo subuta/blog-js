@@ -4,10 +4,9 @@ const Sequelize = sequelize.constructor
 
 const Attachment = sequelize.define('attachments', {
   id: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     allowNull: false,
-    primaryKey: true,
-    autoIncrement: true
+    primaryKey: true
   },
   name: {
     type: Sequelize.STRING,

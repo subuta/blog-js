@@ -9,19 +9,25 @@ export const commentList = new schema.Array(comment)
 export const channel = new schema.Entity('channels')
 export const channelList = new schema.Array(channel)
 
+export const attachment = new schema.Entity('attachments')
+export const attachmentList = new schema.Array(attachment)
+
 channel.define({
   comments: [comment]
 })
 
 comment.define({
-  channel
+  channel,
+  attachment
 })
 
 const models = {
   comment,
   commentList,
   channel,
-  channelList
+  channelList,
+  attachment,
+  attachmentList
 }
 
 // denormalize data using schema.

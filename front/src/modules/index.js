@@ -2,11 +2,13 @@ import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import _ from 'lodash'
 
+import attachments from './attachments'
 import channels from './channels'
 import comments from './comments'
 
 const reducers = {
   routing: routerReducer,
+  attachments,
   channels,
   comments
 }

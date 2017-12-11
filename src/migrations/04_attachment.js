@@ -5,10 +5,9 @@ export default {
   up: async (query, Sequelize) => {
     await query.createTable('attachments', {
       id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
         allowNull: false,
-        primaryKey: true,
-        autoIncrement: true
+        primaryKey: true
       },
       name: {
         type: Sequelize.STRING,

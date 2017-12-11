@@ -21,10 +21,7 @@ app.use(logger())
 
 // parse body
 app.use(koaBody({
-  multipart: true,
-  formidable: {
-    uploadDir: __dirname + '/uploads'
-  }
+  multipart: true
 }))
 
 // cors

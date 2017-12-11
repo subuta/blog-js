@@ -3,14 +3,14 @@ import _ from 'lodash'
 
 import Channels from './Channels'
 import Comments from './Comments'
-import Upload from './Upload'
+import Attachments from './Attachments'
 
 const api = new Router({prefix: '/api'})
 
 const routers = {
   Channels,
   Comments,
-  Upload
+  Attachments
 }
 
 _.each(routers, (router, name) => {

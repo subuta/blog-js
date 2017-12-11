@@ -21,6 +21,12 @@ import {
   requestChannel
 } from 'src/modules/channels'
 
+import {
+  getIsProgress as getIsAttachmentProgress,
+  createAttachment,
+  uploadAttachment
+} from 'src/modules/attachments'
+
 const mapStateToProps = (state) => {
   return {
     channels: getChannels(state),
@@ -31,7 +37,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   fetchChannelComments,
-  createChannelComment
+  createChannelComment,
+  createAttachment,
+  uploadAttachment
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)

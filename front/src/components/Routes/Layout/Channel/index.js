@@ -140,10 +140,18 @@ const enhance = compose(
       }
     },
 
-    handleFileDrop: () => (item, monitor) => {
+    handleFileDrop: ({createAttachment, uploadAttachment}) => (item, monitor) => {
       if (monitor) {
         const droppedFiles = monitor.getItem().files
-        console.log(droppedFiles)
+        const file = _.first(droppedFiles)
+        const {name, type} = file
+        createAttachment({name, type}).then(({result}) => {
+          const {signedRequest, url} = result
+          uploadAttachment(file, signedRequest, url).then((res) => {
+            console.log('done!!!')
+            console.log('res', res)
+          })
+        })
       }
     }
   }),

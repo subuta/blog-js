@@ -14,7 +14,7 @@ const Comment = sequelize.define('comment', {
     allowNull: false
   },
   attachmentId: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     allowNull: true
   },
   text: {
