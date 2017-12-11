@@ -37,6 +37,8 @@ const run = async ([action]) => {
   } else if (action === 'reset') {
     await umzug.down({to: 0}) // rollback all migration
     await up()
+  } else if (action === 'drop') {
+    await umzug.down({to: 0}) // rollback all migration
   }
 
   process.exit(0)

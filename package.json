@@ -12,6 +12,7 @@
     "watch": "backpack dev",
     "build": "backpack build",
     "db:migrate": "babel-node ./bin/umzug.js migrate",
+    "db:migrate:drop": "babel-node ./bin/umzug.js drop",
     "db:migrate:reset": "babel-node ./bin/umzug.js reset",
     "mat": "mat"
   },

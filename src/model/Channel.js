@@ -1,31 +1,26 @@
 import sequelize from 'src/utils/sequelize'
-import Channel from './Channel'
 
 const Sequelize = sequelize.constructor
 
-const Comment = sequelize.define('comment', {
+const Channel = sequelize.define('channel', {
   id: {
     type: Sequelize.INTEGER,
     allowNull: false,
     primaryKey: true,
     autoIncrement: true
   },
-  text: {
-    type: Sequelize.TEXT
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false
   },
   createdAt: {
     type: Sequelize.DATE,
-    allowNull: false,
     defaultValue: Sequelize.NOW
   },
   updatedAt: {
     type: Sequelize.DATE,
-    allowNull: false,
     defaultValue: Sequelize.NOW
   }
 })
 
-// associations
-Comment.belongsTo(Channel)
-
-export default Comment
+export default Channel
