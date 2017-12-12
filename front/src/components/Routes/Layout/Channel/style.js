@@ -91,6 +91,11 @@ const Comments = {
   padding: `8px 16px ${MIN_TEXT_AREA_HEIGHT + 32}px`, // plus padding
   height: `calc(100vh - ${HEADER_HEIGHT}px)`,
   overflowY: 'scroll',
+}
+
+const Comment = {
+  position: 'relative',
+
   '& > p': {
     whiteSpace: 'pre',
     '&:first-of-type': {
@@ -99,6 +104,12 @@ const Comments = {
     '&:last-of-type': {
       margin: '16px 0 0'
     }
+  },
+
+  '& > img': {
+    display: 'block',
+    height: 'auto',
+    maxWidth: '100%'
   }
 }
 
@@ -190,6 +201,7 @@ export default registerStyles({
   Content,
   CenteredContent,
   Comments,
+  Comment,
   Footer,
   TextAreaWrapper,
   TextArea,

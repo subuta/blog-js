@@ -12,7 +12,13 @@ channels.get('/', async (ctx) => {
 
 channels.get('/:id', async (ctx) => {
   ctx.body = await Channel.findById(ctx.params.id, {
-    include: [models.Comment]
+    include: [
+      {
+        model: models.Comment,
+        include: [models.Attachment],
+        required: false
+      }
+    ]
   })
 })
 
@@ -25,6 +31,6 @@ channels.post('/', async (ctx) => {
 export default {
   routes: () => _.cloneDeep(channels.routes()),
   register: (routers) => {
-    channels.use('/:channelId/comments', routers.Comments.routes());
+    channels.use('/:channelId/comments', routers.Comments.routes())
   }
 }

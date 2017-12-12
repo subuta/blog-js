@@ -4,6 +4,11 @@ import { createSelector } from 'reselect'
 import { denormalize } from 'src/utils/schema'
 
 import api from 'src/utils/api'
+
+import {
+  SET_CHANNELS
+} from './channels'
+
 // -------------
 // Constants
 // -------------
@@ -21,11 +26,15 @@ export const setAttachments = (attachments) => {
 }
 
 export const createAttachment = (params) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({type: REQUEST_ATTACHMENTS})
-    return api.attachments.create(params).then((data) => {
-      dispatch(setAttachments(data.normalized))
-      return data
+    return api.attachments.create(params).then(({normalized, result}) => {
+      dispatch(setAttachments(normalized))
+      const attachment = denormalize(normalized.result, 'attachments', getState())
+      return {
+        result,
+        attachment
+      }
     })
   }
 }
@@ -40,7 +49,8 @@ export const uploadAttachment = (file, signedRequest, url) => {
 // Reducers
 // -------------
 const entities = (state = {}, action) => {
-  if (action.type === SET_ATTACHMENTS) {
+  if (action.type === SET_ATTACHMENTS ||
+      action.type === SET_CHANNELS) {
     return {...state, ...action.payload.entities.attachments}
   }
   return state

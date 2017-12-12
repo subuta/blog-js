@@ -1,0 +1,29 @@
+// load .env first.
+require('dotenv').config()
+
+const {
+  POSTGRES_USER,
+  POSTGRES_PASSWORD,
+  POSTGRES_DB,
+  S3_BUCKET,
+  DATABASE_URL,
+  NODE_ENV
+} = process.env
+
+export {
+  POSTGRES_USER,
+  POSTGRES_PASSWORD,
+  POSTGRES_DB,
+  S3_BUCKET,
+  DATABASE_URL,
+  NODE_ENV
+}
+
+export default {
+  POSTGRES_USER,
+  POSTGRES_PASSWORD,
+  POSTGRES_DB,
+  S3_BUCKET,
+  DATABASE_URL,
+  NODE_ENV
+}

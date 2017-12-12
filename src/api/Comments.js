@@ -9,7 +9,10 @@ comments.get('/', async (ctx) => {
   if (_.get(ctx, 'params.channelId')) {
     params['channelId'] = _.get(ctx, 'params.channelId')
   }
-  ctx.body = await Comment.findAll({ where: params })
+  ctx.body = await Comment.findAll({
+    where: params,
+    include: [models.Attachment]
+  })
 })
 
 comments.post('/', async (ctx) => {
@@ -17,11 +20,17 @@ comments.post('/', async (ctx) => {
   if (_.get(ctx, 'params.channelId')) {
     params['channelId'] = _.get(ctx, 'params.channelId')
   }
-  const { comment } = ctx.request.body
-  ctx.body = await Comment.create({
+
+  const {comment} = ctx.request.body
+
+  // FIXME: https://github.com/sequelize/sequelize/issues/3807
+  // association won't loaded by passing options.include to `create`
+  const record = await Comment.create({
     ...comment,
     ...params
   })
+
+  ctx.body = await record.reload({include: [models.Attachment]})
 })
 
 export default {

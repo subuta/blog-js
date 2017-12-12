@@ -33,7 +33,6 @@ const Attachment = sequelize.define('attachments', {
 
 // register associations
 Attachment.register = (models) => {
-  Attachment.belongsTo(models.Comment)
 }
 
 export default Attachment

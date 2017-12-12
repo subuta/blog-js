@@ -140,19 +140,21 @@ const enhance = compose(
       }
     },
 
-    handleFileDrop: ({createAttachment, uploadAttachment}) => (item, monitor) => {
-      if (monitor) {
-        const droppedFiles = monitor.getItem().files
-        const file = _.first(droppedFiles)
-        const {name, type} = file
-        createAttachment({name, type}).then(({result}) => {
-          const {signedRequest, url} = result
-          uploadAttachment(file, signedRequest, url).then((res) => {
-            console.log('done!!!')
-            console.log('res', res)
-          })
-        })
-      }
+    handleFileDrop: ({createAttachment, channel, uploadAttachment, createChannelComment}) => async (item, monitor) => {
+      if (!monitor) return
+      const droppedFiles = monitor.getItem().files
+      const file = _.first(droppedFiles)
+      const {name, type} = file
+
+      // create attachment from file
+      const {result, attachment} = await createAttachment({name, type})
+
+      // then upload it to s3
+      const {signedRequest, url} = result
+      await uploadAttachment(file, signedRequest, url)
+
+      // finally relate attachment to blank comment.
+      createChannelComment(channel.id, {text: '', attachmentId: attachment.id})
     }
   }),
   withFileDropHandler
@@ -202,10 +204,16 @@ export default enhance((props) => {
       </div>
       <div className={classes.Content}>
         <div className={classes.Comments} ref={setCommentsRef}>
-          {_.map(channelComments, ({id, text, createdAt}) => {
-            return <p key={id}>{text}
-              <small>{createdAt}</small>
-            </p>
+          {_.map(channelComments, ({id, text, createdAt, attachment}) => {
+            return (
+              <div key={id} className={classes.Comment}>
+                <p>{text}</p>
+                {attachment && (
+                  <img src={attachment.url} alt={attachment.name} />
+                )}
+                <small>{createdAt}</small>
+              </div>
+            )
           })}
         </div>
 

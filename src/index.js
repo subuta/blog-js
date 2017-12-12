@@ -1,5 +1,4 @@
 import Koa from 'koa'
-
 import { PUBLIC_DIR } from '../config'
 
 import sequelize from 'src/utils/sequelize'
@@ -10,9 +9,6 @@ import cors from '@koa/cors'
 import logger from 'koa-logger'
 import serve from 'koa-static'
 import koaBody from 'koa-body'
-
-// load .env
-require('dotenv').config()
 
 const app = new Koa()
 

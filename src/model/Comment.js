@@ -35,7 +35,7 @@ const Comment = sequelize.define('comment', {
 // register associations
 Comment.register = (models) => {
   Comment.belongsTo(models.Channel)
-  Comment.hasOne(models.Attachment)
+  Comment.belongsTo(models.Attachment)
 }
 
 export default Comment
