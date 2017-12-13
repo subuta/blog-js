@@ -15,6 +15,10 @@ import {
 } from 'src/constants/style'
 
 const Sidebar = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'flex-start',
+  flexDirection: 'column',
   padding: 16,
   height: '100vh',
   flex: '0 0 204px',
@@ -106,9 +110,19 @@ const Logo = {
   height: 72
 }
 
+const Menus = {
+  width: '100%'
+}
+
+const Login = {
+  width: '100%'
+}
+
 export default registerStyles({
   Sidebar,
   Logo,
   Channels,
-  Notes
+  Notes,
+  Menus,
+  Login
 })

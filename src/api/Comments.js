@@ -22,12 +22,14 @@ comments.post('/', async (ctx) => {
   }
 
   const {comment} = ctx.request.body
+  const currentUser = await ctx.state.getCurrentUser()
 
   // FIXME: https://github.com/sequelize/sequelize/issues/3807
   // association won't loaded by passing options.include to `create`
   const record = await Comment.create({
     ...comment,
-    ...params
+    ...params,
+    commentedBy: currentUser.id
   })
 
   ctx.body = await record.reload({include: [models.Attachment]})

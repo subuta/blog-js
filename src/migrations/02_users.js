@@ -10,6 +10,16 @@ export default {
         autoIncrement: true
       },
       auth0Id: {
+        type: Sequelize.TEXT,
+        allowNull: false,
+        primaryKey: true
+      },
+      locale: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: 'ja'
+      },
+      nickname: {
         type: Sequelize.STRING,
         allowNull: false
       },
@@ -20,12 +30,19 @@ export default {
         },
         unique: true
       },
+      avatar: {
+        type: Sequelize.STRING,
+        isUrl: true,
+        allowNull: false
+      },
       createdAt: {
         type: Sequelize.DATE,
+        allowNull: false,
         defaultValue: Sequelize.NOW
       },
       updatedAt: {
         type: Sequelize.DATE,
+        allowNull: false,
         defaultValue: Sequelize.NOW
       }
     })

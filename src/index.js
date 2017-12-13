@@ -21,14 +21,14 @@ app.use(koaBody({
 }))
 
 // cors
-app.use(cors());
+app.use(cors())
 
 // handle /api requests
 app.use(api.routes())
 app.use(api.allowedMethods())
 
 // otherwise PUBLIC_DIR
-app.use(serve(PUBLIC_DIR));
+app.use(serve(PUBLIC_DIR))
 
 // sequelize
 //   .authenticate()

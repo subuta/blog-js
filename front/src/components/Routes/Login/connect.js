@@ -5,29 +5,18 @@ import { push } from 'react-router-redux'
 import _ from 'lodash'
 
 import {
-  getAll as getChannels,
-  getIsProgress as getIsChannelProgress,
-  requestChannels,
-  createChannel
-} from 'src/modules/channels'
-
-import {
-  requestMe,
-  getCurrentUser,
+  getAll as getUsers,
+  requestUpdateUser
 } from 'src/modules/users'
 
 const mapStateToProps = (state) => {
   return {
-    channels: getChannels(state),
-    currentUser: getCurrentUser(state),
-    isChannelProgress: getIsChannelProgress(state)
+    users: getUsers(state)
   }
 }
 
 const mapDispatchToProps = {
-  requestChannels,
-  requestMe,
-  createChannel
+  requestUpdateUser
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)

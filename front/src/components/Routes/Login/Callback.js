@@ -7,13 +7,18 @@ import {
   lifecycle
 } from 'recompose'
 
+import connect from './connect'
+
 const enhance = compose(
+  connect,
   lifecycle({
     componentWillMount () {
-      const {history} = this.props
+      const {history, requestUpdateUser} = this.props
       auth0.parseHash().then((result) => {
+        const {email, locale, nickname, picture, sub} = result.idTokenPayload
         auth0.setSession(result)
-        window.requestAnimationFrame(() => history.push('/login'))
+        requestUpdateUser({email, locale, nickname, auth0Id: sub, avatar: picture})
+          .then(() => history.push('/login'))
       })
     }
   })

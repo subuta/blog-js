@@ -5,12 +5,14 @@ import _ from 'lodash'
 import attachments from './attachments'
 import channels from './channels'
 import comments from './comments'
+import users from './users'
 
 const reducers = {
   routing: routerReducer,
   attachments,
   channels,
-  comments
+  comments,
+  users
 }
 
 const makeRootReducer = (injectedReducers) => {

@@ -14,6 +14,10 @@ export default {
         type: Sequelize.INTEGER,
         allowNull: false
       },
+      commentedBy: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       attachmentId: {
         type: Sequelize.STRING,
         allowNull: true
@@ -31,14 +35,6 @@ export default {
         defaultValue: Sequelize.NOW
       }
     })
-
-    await Comment.bulkCreate([{
-      text: 'first comment of channel=1',
-      channelId: 1
-    }, {
-      text: 'first comment of channel=2',
-      channelId: 2
-    }])
   },
   down: async (query, Sequelize) => {
     return query.dropTable('comments')

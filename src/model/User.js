@@ -10,6 +10,16 @@ const User = sequelize.define('user', {
     autoIncrement: true
   },
   auth0Id: {
+    type: Sequelize.TEXT,
+    allowNull: false,
+    primaryKey: true
+  },
+  locale: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    defaultValue: 'ja'
+  },
+  nickname: {
     type: Sequelize.STRING,
     allowNull: false
   },
@@ -19,6 +29,11 @@ const User = sequelize.define('user', {
       isEmail: true
     },
     unique: true
+  },
+  avatar: {
+    type: Sequelize.STRING,
+    isUrl: true,
+    allowNull: false
   },
   createdAt: {
     type: Sequelize.DATE,
