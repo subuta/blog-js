@@ -13,9 +13,10 @@ const Comment = sequelize.define('comment', {
     type: Sequelize.INTEGER,
     allowNull: false
   },
-  commentedBy: {
+  commentedById: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: true,
+    as: 'commentedBy'
   },
   attachmentId: {
     type: Sequelize.STRING,
@@ -39,7 +40,7 @@ const Comment = sequelize.define('comment', {
 // register associations
 Comment.register = (models) => {
   Comment.belongsTo(models.Channel)
-  Comment.belongsTo(models.User, {foreignKey: 'commentedBy'})
+  Comment.belongsTo(models.User, {as: 'commentedBy'})
   Comment.belongsTo(models.Attachment)
 }
 

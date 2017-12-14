@@ -16,23 +16,33 @@ comments.get('/', async (ctx) => {
 })
 
 comments.post('/', async (ctx) => {
+  const {comment} = ctx.request.body
   let params = {}
   if (_.get(ctx, 'params.channelId')) {
     params['channelId'] = _.get(ctx, 'params.channelId')
   }
 
-  const {comment} = ctx.request.body
   const currentUser = await ctx.state.getCurrentUser()
+  if (currentUser) {
+    params['commentedById'] = currentUser.id
+  }
 
   // FIXME: https://github.com/sequelize/sequelize/issues/3807
   // association won't loaded by passing options.include to `create`
   const record = await Comment.create({
     ...comment,
-    ...params,
-    commentedBy: currentUser.id
+    ...params
   })
 
-  ctx.body = await record.reload({include: [models.Attachment]})
+  ctx.body = await record.reload({
+    include: [
+      models.Attachment,
+      {
+        model: models.User,
+        as: 'commentedBy'
+      }
+    ]
+  })
 })
 
 export default {

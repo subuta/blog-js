@@ -23,13 +23,6 @@ export default {
         type: Sequelize.STRING,
         allowNull: false
       },
-      email: {
-        type: Sequelize.STRING,
-        validate: {
-          isEmail: true
-        },
-        unique: true
-      },
       avatar: {
         type: Sequelize.STRING,
         isUrl: true,

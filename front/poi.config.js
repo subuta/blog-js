@@ -34,6 +34,7 @@ module.exports = (options, req) => ({
         fs: 'empty'
       }
     })
+
     return config
   }
 })

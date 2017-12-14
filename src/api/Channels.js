@@ -14,8 +14,13 @@ channels.get('/:id', async (ctx) => {
     include: [
       {
         model: models.Comment,
-        include: [models.Attachment],
-        required: false
+        include: [
+          models.Attachment,
+          {
+            model: models.User,
+            as: 'commentedBy'
+          }
+        ]
       }
     ]
   })

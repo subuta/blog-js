@@ -1,8 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 
-import { DragDropContext, DragDropContextProvider } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
+import withDragDropContext from 'src/utils/withDragDropContext'
 
 import { Route, Switch, Redirect } from 'react-router'
 
@@ -21,22 +20,20 @@ import {
 } from 'recompose'
 
 const enhance = compose(
-  DragDropContext(HTML5Backend),
+  withDragDropContext,
   toClass
 )
 
 export default enhance((props) => {
   return (
-    <DragDropContextProvider backend={HTML5Backend}>
-      <div className={classes.Container}>
-        <Sidebar {...props} />
+    <div className={classes.Container}>
+      <Sidebar {...props} />
 
-        <div className={classes.Content}>
-          <Switch>
-            <Route exact path='/:channelName?' component={Channel} />
-          </Switch>
-        </div>
+      <div className={classes.Content}>
+        <Switch>
+          <Route exact path='/:channelName?' component={Channel} />
+        </Switch>
       </div>
-    </DragDropContextProvider>
+    </div>
   )
 })

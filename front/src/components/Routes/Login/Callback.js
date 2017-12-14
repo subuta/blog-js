@@ -15,9 +15,9 @@ const enhance = compose(
     componentWillMount () {
       const {history, requestUpdateUser} = this.props
       auth0.parseHash().then((result) => {
-        const {email, locale, nickname, picture, sub} = result.idTokenPayload
+        const {locale, nickname, picture, sub} = result.idTokenPayload
         auth0.setSession(result)
-        requestUpdateUser({email, locale, nickname, auth0Id: sub, avatar: picture})
+        requestUpdateUser({locale, nickname, auth0Id: sub, avatar: picture})
           .then(() => history.push('/login'))
       })
     }

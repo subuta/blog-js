@@ -21,7 +21,8 @@ channel.define({
 
 comment.define({
   channel,
-  attachment
+  attachment,
+  commentedBy: user
 })
 
 const models = {

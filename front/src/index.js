@@ -4,11 +4,20 @@ import { Provider } from 'react-redux'
 
 import store from './store'
 import Routes from './components/Routes'
+
 import { wrap } from 'src/utils/style'
 
 import './style'
 
-let App = () => {
+import {
+  compose
+} from 'recompose'
+
+const enhance = compose(
+  wrap // inject style
+)
+
+let App = enhance(() => {
   return (
     <div>
       <Provider store={store}>
@@ -16,10 +25,7 @@ let App = () => {
       </Provider>
     </div>
   )
-}
-
-// styleを注入する。
-App = wrap(App)
+})
 
 let render = () => {
   const appNode = document.getElementById('app')

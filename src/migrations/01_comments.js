@@ -14,9 +14,10 @@ export default {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      commentedBy: {
+      commentedById: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: true,
+        as: 'commentedBy'
       },
       attachmentId: {
         type: Sequelize.STRING,
