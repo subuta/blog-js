@@ -18,6 +18,7 @@ import connect from './connect'
 
 import CustomLoader from 'src/components/common/CustomLoader'
 import Placeholder from 'src/components/common/Placeholder'
+import Comment from 'src/components/common/Comment'
 
 import {
   compose,
@@ -204,15 +205,9 @@ export default enhance((props) => {
       </div>
       <div className={classes.Content}>
         <div className={classes.Comments} ref={setCommentsRef}>
-          {_.map(channelComments, ({id, text, createdAt, attachment}) => {
+          {_.map(channelComments, (comment) => {
             return (
-              <div key={id} className={classes.Comment}>
-                <p>{text}</p>
-                {attachment && (
-                  <img src={attachment.url} alt={attachment.name} />
-                )}
-                <small>{createdAt}</small>
-              </div>
+              <Comment key={comment.id} comment={comment} />
             )
           })}
         </div>

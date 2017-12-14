@@ -23,6 +23,11 @@ const User = sequelize.define('user', {
     type: Sequelize.STRING,
     allowNull: false
   },
+  status: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    defaultValue: ''
+  },
   avatar: {
     type: Sequelize.STRING,
     isUrl: true,

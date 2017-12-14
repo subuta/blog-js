@@ -16,6 +16,9 @@ export const SHADOW_COLOR = 'rgba(34, 36, 38, 0.15)'
 // header(description area)
 export const HEADER_HEIGHT = 56
 
+// sidebar
+export const SIDEBAR_WIDTH = 204
+
 // FONTS
 export const LATO_WITH_SANS_FONT = '\'Lato\', \'Noto Sans Japanese\', \'Noto Serif Japanese\', \'游ゴシック\', \'Yu Gothic\', \'HiraKakuProN-W3\', \'Hiragino Kaku Gothic ProN\', \'メイリオ\', \'Meiryo\', \'ＭＳ Ｐゴシック\', sans-serif'
 export const SANS_FONT = '\'Noto Sans Japanese\', \'Noto Serif Japanese\', \'游ゴシック\', \'Yu Gothic\', \'HiraKakuProN-W3\', \'Hiragino Kaku Gothic ProN\', \'メイリオ\', \'Meiryo\', \'ＭＳ\ Ｐゴシック\', sans-serif'

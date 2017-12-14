@@ -88,7 +88,7 @@ const CenteredContent = {
 }
 
 const Comments = {
-  padding: `8px 16px ${MIN_TEXT_AREA_HEIGHT + 32}px`, // plus padding
+  padding: `16px 16px ${MIN_TEXT_AREA_HEIGHT + 24 + 16}px`, // plus padding
   height: `calc(100vh - ${HEADER_HEIGHT}px)`,
   overflowY: 'scroll',
 }
@@ -183,7 +183,7 @@ const TextArea = {
   outline: 'none',
   lineHeight: 1.4,
   fontFamily: SANS_FONT,
-  fontSize: 16
+  fontSize: 14
 }
 
 const AddIcon = {

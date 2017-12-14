@@ -11,6 +11,7 @@ import {
   PRIMARY2_COLOR,
   LATO_WITH_SANS_FONT,
   EASE_STANDARD,
+  SIDEBAR_WIDTH,
   SANS_FONT
 } from 'src/constants/style'
 
@@ -21,7 +22,8 @@ const Sidebar = {
   flexDirection: 'column',
   padding: 16,
   height: '100vh',
-  flex: '0 0 204px',
+  width: SIDEBAR_WIDTH,
+  flex: '0 0 auto',
   background: ACCENT3_COLOR,
   color: PRIMARY_COLOR,
   fontFamily: LATO_WITH_SANS_FONT,
