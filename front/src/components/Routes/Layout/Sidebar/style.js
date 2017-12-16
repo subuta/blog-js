@@ -3,8 +3,6 @@ import {
 } from 'src/utils/style'
 
 import {
-  NOISE_PATTERN,
-  GRAY_COLOR,
   ACCENT3_COLOR,
   ACCENT4_COLOR,
   PRIMARY_COLOR,
@@ -28,7 +26,8 @@ const Sidebar = {
   color: PRIMARY_COLOR,
   fontFamily: LATO_WITH_SANS_FONT,
 
-  '& > h4': {
+  '& h4': {
+    fontFamily: 'inherit',
     fontWeight: '900'
   }
 }

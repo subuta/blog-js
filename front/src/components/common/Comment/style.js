@@ -4,7 +4,8 @@ import {
 
 import {
   DIMMED_BLACK_COLOR,
-  SANS_FONT
+  SANS_FONT,
+  LATO_WITH_SANS_FONT
 } from 'src/constants/style'
 
 const CommentWrapper = {
@@ -45,7 +46,8 @@ const Comment = {
 
 const Nickname = {
   fontSize: 13,
-  fontWeight: 'bold'
+  fontWeight: 'bold',
+  fontFamily: LATO_WITH_SANS_FONT,
 }
 
 const CommentedAt = {
