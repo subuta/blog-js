@@ -52,9 +52,9 @@ const withLoading = branch(
 
         <div className={classes.CenteredContent}>
           <CustomLoader
-            isShow={true}
             label='Channel is loading...'
             size={48}
+            isShow
           />
         </div>
       </div>

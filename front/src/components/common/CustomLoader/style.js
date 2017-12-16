@@ -22,9 +22,8 @@ const Loader = {
   '&:before': {
     position: 'absolute',
     content: '\'\'',
-    // FIXME: なんで右下にちょっとずれるかを解決する。
-    top: '-14%',
-    left: '-14%',
+    top: 0,
+    left: 0,
     width: '100%',
     height: '100%',
     borderRadius: '500rem',
@@ -33,8 +32,8 @@ const Loader = {
   '&:after': {
     position: 'absolute',
     content: '\'\'',
-    top: '-14%',
-    left: '-14%',
+    top: 0,
+    left: 0,
     width: '100%',
     height: '100%',
     animation: `${loaderAnimation} 0.6s linear`,
@@ -55,7 +54,7 @@ const Container = {
 }
 
 const Label = {
-  marginTop: 4
+  marginTop: 8
 }
 
 export default registerStyles({

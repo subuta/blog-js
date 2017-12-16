@@ -84,7 +84,9 @@ const CenteredContent = {
   height: `calc(100vh - ${HEADER_HEIGHT}px)`,
   display: 'flex',
   justifyContent: 'center',
-  alignItems: 'center'
+  alignItems: 'center',
+  fontFamily: LATO_WITH_SANS_FONT,
+  fontWeight: 900
 }
 
 const Comments = {
