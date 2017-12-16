@@ -18,7 +18,7 @@ module.exports = function (wallaby) {
       type: 'node',
       runner: 'node',
       params: {
-        env: 'POSTGRES_DB=blog-js-test;NODE_ENV=test;NODE_PATH=' + path.join(wallaby.projectCacheDir, '../')
+        env: 'LOG_QUERIES=true;POSTGRES_DB=blog-js-test;NODE_ENV=test;NODE_PATH=' + path.join(wallaby.projectCacheDir, '../')
       }
     },
 

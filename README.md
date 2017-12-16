@@ -12,6 +12,19 @@ or
 npm i
 env $(cat .env | xargs) npm run watch
 
+#### Migrate Database
+##### Generate migration
+
+```
+npm run knex migrate:make name
+```
+
+##### Generate seed
+
+```
+npm run knex seed:make name
+```
+
 #### Start front-end
 cd front
 npm run watch
