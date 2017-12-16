@@ -1,9 +1,9 @@
-import Promise from 'bluebird'
+import { fixSchema } from 'src/utils/sequelize'
 import Channel from 'src/model/Channel'
 
 export default {
   up: async (query, Sequelize) => {
-    await query.createTable('channels', {
+    await query.createTable('channels', fixSchema({
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -22,7 +22,7 @@ export default {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
       }
-    })
+    }))
 
     await Channel.bulkCreate([{
       name: 'i_subuta'

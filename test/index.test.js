@@ -11,12 +11,14 @@ import { createToken } from 'jwks-rsa/tests/mocks/tokens'
 
 import { currentUser } from 'test/helper/user'
 
+import fixtures from 'test/helper/fixtures'
+
 const sandbox = sinon.sandbox.create()
 
 const proxyquire = require('proxyquire').noCallThru()
 
 test.beforeEach(async (t) => {
-  await Channel.sync({force: true})
+  await fixtures('test/fixtures/*.yml')
   t.context = {
     request: request(app.listen(0))
   }
@@ -45,5 +47,5 @@ test('should return 200 with Authorization header', async (t) => {
   const response = await request.get('/api/channels').set('Authorization', `Bearer ${token}`)
 
   t.is(response.status, 200)
-  t.deepEqual(response.body, [])
+  t.deepEqual(response.body.length, 3)
 })

@@ -1,9 +1,8 @@
-import Promise from 'bluebird'
-import Channel from 'src/model/Channel'
+import { fixSchema } from 'src/utils/sequelize'
 
 export default {
   up: async (query, Sequelize) => {
-    await query.createTable('attachments', {
+    await query.createTable('attachments', fixSchema({
       id: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -30,7 +29,7 @@ export default {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
       }
-    })
+    }))
   },
   down: async (query, Sequelize) => {
     return query.dropTable('attachments')

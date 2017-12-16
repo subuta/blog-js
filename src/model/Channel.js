@@ -1,8 +1,8 @@
-import sequelize from 'src/utils/sequelize'
+import sequelize, { fixSchema } from 'src/utils/sequelize'
 
 const Sequelize = sequelize.constructor
 
-const Channel = sequelize.define('channel', {
+const Channel = sequelize.define('channel', fixSchema({
   id: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -21,7 +21,7 @@ const Channel = sequelize.define('channel', {
     type: Sequelize.DATE,
     defaultValue: Sequelize.NOW
   }
-})
+}))
 
 // register associations
 Channel.register = (models) => {

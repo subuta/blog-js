@@ -1,8 +1,8 @@
-import sequelize from 'src/utils/sequelize'
+import sequelize, { fixSchema } from 'src/utils/sequelize'
 
 const Sequelize = sequelize.constructor
 
-const Attachment = sequelize.define('attachments', {
+const Attachment = sequelize.define('attachments', fixSchema({
   id: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -29,7 +29,7 @@ const Attachment = sequelize.define('attachments', {
     type: Sequelize.DATE,
     defaultValue: Sequelize.NOW
   }
-})
+}))
 
 // register associations
 Attachment.register = (models) => {

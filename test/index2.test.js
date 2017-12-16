@@ -4,12 +4,14 @@ import sinon from 'sinon'
 import path from 'path'
 import { Channel } from 'src/model'
 
+import fixtures from 'test/helper/fixtures'
+
 const sandbox = sinon.sandbox.create()
 
 const proxyquire = require('proxyquire').noCallThru()
 
 test.beforeEach(async (t) => {
-  await Channel.sync({force: true})
+  await fixtures('test/fixtures/*.yml')
 })
 
 test.afterEach((t) => {
@@ -18,9 +20,8 @@ test.afterEach((t) => {
 
 test('should run test a', async (t) => {
   const channel = await Channel.findAll()
-  await Channel.create({name: 'hoge'})
   const nextChannel = await Channel.findAll()
-  console.log(channel)
+  console.log(channel.length)
   console.log(nextChannel)
   t.is(true, true)
 })

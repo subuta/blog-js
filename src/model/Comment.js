@@ -1,13 +1,13 @@
-import sequelize from 'src/utils/sequelize'
+import sequelize, { fixSchema } from 'src/utils/sequelize'
 
 const Sequelize = sequelize.constructor
 
-const Comment = sequelize.define('comment', {
+const Comment = sequelize.define('comment', fixSchema({
   id: {
     type: Sequelize.INTEGER,
     allowNull: false,
-    primaryKey: true,
-    autoIncrement: true
+    primaryKey: true
+    // autoIncrement: true
   },
   channelId: {
     type: Sequelize.INTEGER,
@@ -35,7 +35,7 @@ const Comment = sequelize.define('comment', {
     allowNull: false,
     defaultValue: Sequelize.NOW
   }
-})
+}))
 
 // register associations
 Comment.register = (models) => {

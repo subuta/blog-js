@@ -1,0 +1,13 @@
+fixtures:
+  - model: Channel
+    data:
+      id: 1
+      name: hoge
+  - model: Channel
+    data:
+      id: 2
+      name: fuga
+  - model: Channel
+    data:
+      id: 3
+      name: piyo

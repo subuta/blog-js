@@ -1,8 +1,8 @@
-import Promise from 'bluebird'
+import { fixSchema } from 'src/utils/sequelize'
 
 export default {
   up: async (query, Sequelize) => {
-    await query.createTable('users', {
+    await query.createTable('users', fixSchema({
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -11,8 +11,7 @@ export default {
       },
       auth0Id: {
         type: Sequelize.TEXT,
-        allowNull: false,
-        primaryKey: true
+        allowNull: false
       },
       locale: {
         type: Sequelize.STRING,
@@ -43,7 +42,7 @@ export default {
         allowNull: false,
         defaultValue: Sequelize.NOW
       }
-    })
+    }))
   },
   down: async (query, Sequelize) => {
     return query.dropTable('users')

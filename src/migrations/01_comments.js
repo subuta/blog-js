@@ -1,9 +1,8 @@
-import Promise from 'bluebird'
-import Comment from 'src/model/Comment'
+import { fixSchema } from 'src/utils/sequelize'
 
 export default {
   up: async (query, Sequelize) => {
-    await query.createTable('comments', {
+    await query.createTable('comments', fixSchema({
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -35,7 +34,7 @@ export default {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
       }
-    })
+    }))
   },
   down: async (query, Sequelize) => {
     return query.dropTable('comments')

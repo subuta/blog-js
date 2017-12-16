@@ -1,8 +1,8 @@
-import sequelize from 'src/utils/sequelize'
+import sequelize, { fixSchema } from 'src/utils/sequelize'
 
 const Sequelize = sequelize.constructor
 
-const User = sequelize.define('user', {
+const User = sequelize.define('user', fixSchema({
   id: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -11,8 +11,7 @@ const User = sequelize.define('user', {
   },
   auth0Id: {
     type: Sequelize.TEXT,
-    allowNull: false,
-    primaryKey: true
+    allowNull: false
   },
   locale: {
     type: Sequelize.STRING,
@@ -43,6 +42,6 @@ const User = sequelize.define('user', {
     allowNull: false,
     defaultValue: Sequelize.NOW
   }
-})
+}))
 
 export default User
