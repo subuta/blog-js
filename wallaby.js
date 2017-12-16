@@ -4,6 +4,7 @@ const babel = require('babel-core')
 module.exports = function (wallaby) {
   return {
     files: [
+      'config.js',
       'src/**/*.js'
     ],
 
