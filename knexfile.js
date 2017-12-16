@@ -10,8 +10,6 @@ const password = env.POSTGRES_PASSWORD || 'password' // for development
 
 let databaseUrl = env.DATABASE_URL || `postgres://${username}:${password}@${host}:5432/${database}`
 
-console.log(`${SOURCE_DIR}/migrations`)
-
 const opts = {
   client: 'pg',
   connection: databaseUrl,
