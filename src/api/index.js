@@ -2,6 +2,7 @@ import Router from 'koa-router'
 import _ from 'lodash'
 
 import auth, { getCurrentUser } from './middlewares/auth'
+import koaBody from 'koa-body'
 
 import Channels from './Channels'
 import Comments from './Comments'
@@ -19,6 +20,10 @@ const registerRouters = (routers) => {
 }
 
 // routers set before auth middleware will not be protected
+// parse body
+api.use(koaBody({
+  multipart: true
+}))
 
 // set jwt middleware
 api.use(auth)

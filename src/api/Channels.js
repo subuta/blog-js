@@ -1,7 +1,6 @@
 import Router from 'koa-router'
 import _ from 'lodash'
 import models, { Channel } from 'src/model'
-import Comments from './Comments'
 
 const channels = new Router()
 
