@@ -73,7 +73,9 @@
     "babel-register": "^6.24.1",
     "backpack-core": "^0.4.3",
     "js-to-builder": "^0.2.2",
+    "jsonwebtoken": "^8.1.0",
     "matryoshka.js": "^0.1.0",
+    "nock": "^9.1.4",
     "nyc": "^11.3.0",
     "power-assert": "^1.4.4",
     "proxyquire": "^1.8.0",
@@ -84,7 +86,6 @@
   "dependencies": {
     "@koa/cors": "^2.2.1",
     "aws-sdk": "^2.167.0",
-    "axios": "^0.17.1",
     "bluebird": "^3.5.1",
     "boom": "^7.1.1",
     "dotenv": "^4.0.0",
@@ -114,6 +115,7 @@
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "sequelize": "^4.26.0",
+    "supertest": "^3.0.0",
     "umzug": "^2.1.0",
     "uuid": "^3.1.0"
   }

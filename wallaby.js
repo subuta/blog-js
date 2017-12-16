@@ -40,7 +40,11 @@ module.exports = function (wallaby) {
     testFramework: 'ava',
 
     setup: function () {
-      require('babel-register')
+      require('babel-register')({
+        only: [
+          '/node_modules/jwks-rsa'
+        ]
+      })
     }
   }
 }

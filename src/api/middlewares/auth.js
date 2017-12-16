@@ -8,6 +8,18 @@ export const getCurrentUser = (ctx, next) => {
   return next()
 }
 
+let jwksUri = `https://${process.env.AUTH0_API_IDENTIFIER}/.well-known/jwks.json`
+let opts = {
+  // Validate the audience and the issuer.
+  audience: process.env.AUTH0_AUDIENCE,
+  issuer: `https://${process.env.AUTH0_API_IDENTIFIER}/`
+}
+
+if (process.env.NODE_ENV === 'test') {
+  jwksUri = 'http://localhost/.well-known/jwks.json'
+  opts = {debug: true}
+}
+
 // https://auth0.com/docs/quickstart/backend/nodejs
 // Middleware below this line is only reached if JWT token is valid
 export default jwt({
@@ -15,10 +27,8 @@ export default jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://${process.env.AUTH0_API_IDENTIFIER}/.well-known/jwks.json`
+    jwksUri
   }),
-  // Validate the audience and the issuer.
-  audience: process.env.AUTH0_AUDIENCE,
-  issuer: `https://${process.env.AUTH0_API_IDENTIFIER}/`,
-  algorithms: ['RS256']
+  algorithms: ['RS256'],
+  ...opts
 })

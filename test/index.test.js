@@ -1,13 +1,23 @@
 import test from 'ava'
 import sinon from 'sinon'
-import { port } from 'src'
-import axios from 'axios'
+import app from 'src'
+import request from 'supertest'
+import { Channel } from 'src/model'
+
+// use mock from jwks-rsa tests.
+import { jwksEndpoint } from 'jwks-rsa/tests/mocks/jwks'
+import { publicKey, privateKey } from 'jwks-rsa/tests/mocks/keys'
+import { createToken } from 'jwks-rsa/tests/mocks/tokens'
 
 const sandbox = sinon.sandbox.create()
 
 const proxyquire = require('proxyquire').noCallThru()
 
 test.beforeEach(async (t) => {
+  await Channel.sync({force: true})
+  t.context = {
+    request: request(app.listen())
+  }
 })
 
 test.afterEach((t) => {
@@ -15,18 +25,23 @@ test.afterEach((t) => {
 })
 
 test('should return 401 with No Authorization header', async (t) => {
-  const request = axios.get(`http://localhost:${port}/api/channels`)
-  const {response} = await t.throws(request)
+  const {request} = t.context
+
+  const response = await request.get('/api/channels')
+
   t.is(response.status, 401)
+  t.deepEqual(response.body, {})
 })
 
-// test('should return 200 with Authorization header', async (t) => {
-//   const request = axios.get(`http://localhost:${port}/api/channels`, {
-//     headers: {
-//       Authorization: `Bearer xxx`
-//     }
-//   })
-//   const {response} = await request
-//   console.log(response)
-//   t.is(response.status, 200)
-// })
+test('should return 200 with Authorization header', async (t) => {
+  const {request} = t.context
+
+  // mock jwks
+  const token = createToken(privateKey, '123', {sub: 'john'})
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request.get('/api/channels').set('Authorization', `Bearer ${token}`)
+
+  t.is(response.status, 200)
+  t.deepEqual(response.body, [])
+})

@@ -11,7 +11,7 @@ import serve from 'koa-static'
 import koaBody from 'koa-body'
 
 const app = new Koa()
-export let port = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000
 
 // log requests
 app.use(logger())
@@ -31,7 +31,8 @@ app.use(api.allowedMethods())
 // otherwise PUBLIC_DIR
 app.use(serve(PUBLIC_DIR))
 
-const server = app.listen(port)
-port = server.address().port
+if (!module.parent) {
+  app.listen(PORT)
+}
 
 export default app
