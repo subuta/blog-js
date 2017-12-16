@@ -1,115 +1,24 @@
-export const DEFAULT_SETTING = {
-  primaryKey: 'id',
-  datastore: 'default',
-  autoPK: false,
-  attributes: {
-    id: {
-      type: 'integer',
-      unique: true,
-      primaryKey: true,
-      autoIncrement: true
-    }
-  }
+import _ from 'lodash'
+
+import { loadCollection, initialize } from 'src/utils/waterline'
+
+import Attachment from './Attachment'
+import Channel from './Channel'
+import Comment from './Comment'
+import User from './User'
+
+const models = {
+  Attachment,
+  Channel,
+  Comment,
+  User
 }
 
-export default {
-  attachments: {
-    attributes: {
-      id: {
-        type: 'string',
-        unique: true,
-        primaryKey: true,
-        required: true
-      },
+_.each(models, (model) => loadCollection(model))
 
-      name: {
-        type: 'string',
-        required: true
-      },
-
-      type: {
-        type: 'string',
-        required: true
-      },
-
-      url: {
-        type: 'string',
-        required: true
-      }
-    }
-  },
-
-  channels: {
-    attributes: {
-      name: {
-        type: 'string',
-        required: true
-      },
-
-      comments: {
-        collection: 'comment',
-        via: 'channel'
-      }
-    }
-  },
-
-  comments: {
-    attributes: {
-      name: {
-        type: 'string',
-        required: true
-      },
-
-      channel: {
-        model: 'channel',
-        required: true
-      },
-
-      commentedBy: {
-        model: 'user',
-        required: true
-      },
-
-      attachment: {
-        model: 'attachment',
-        required: false
-      },
-
-      text: {
-        type: 'string',
-        required: true
-      }
-    }
-  },
-
-  users: {
-    attributes: {
-      auth0Id: {
-        type: 'text',
-        required: true
-      },
-
-      locale: {
-        type: 'string',
-        required: true,
-        defaultsTo: 'ja'
-      },
-
-      nickname: {
-        type: 'string',
-        required: true
-      },
-
-      status: {
-        type: 'string',
-        required: true,
-        defaultsTo: ''
-      },
-
-      avatar: {
-        type: 'string',
-        required: true
-      }
-    }
-  }
+const load = async () => {
+  const ontology = await initialize()
+  return ontology.collections
 }
+
+export default load

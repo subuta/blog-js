@@ -1,10 +1,9 @@
 import Promise from 'promise'
 import Waterline from 'waterline'
 import PostgresAdapter from 'sails-postgresql'
-import InMemoryAdapter from 'sails-memory'
+import DiskAdapter from 'sails-disk'
 import env from 'src/utils/env'
-
-import models, { DEFAULT_SETTING } from 'src/model'
+import uuid from 'uuid/v4'
 
 const host = env.POSTGRES_HOST || 'localhost'
 const database = env.POSTGRES_DB || 'blog-js-development'
@@ -14,61 +13,82 @@ const password = env.POSTGRES_PASSWORD || 'password' // for development
 let databaseUrl = env.DATABASE_URL || `postgres://${username}:${password}@${host}:5432/${database}`
 
 let adapters = {
-  'sails-postgres': PostgresAdapter
+  'sails-postgresql': PostgresAdapter
 }
 
 let datastores = {
-  'default': {
+  default: {
+    adapter: 'sails-postgresql',
     url: databaseUrl,
     pool: false,
     ssl: false
   }
 }
 
+// default setting for model.
+let defaultModelSettings = {
+  primaryKey: 'id',
+  migrate: 'safe',
+  attributes: {
+    id: {
+      type: 'number',
+      required: true
+    },
+
+    createdAt: {
+      type: 'number',
+      autoCreatedAt: true
+    },
+
+    updatedAt: {
+      type: 'number',
+      autoUpdatedAt: true
+    },
+  }
+}
+
+const waterline = new Waterline()
+let instance = null
+
+// override datastore setting for parallel test
 if (process.env.NODE_ENV === 'test') {
+  // generate unique key for each parallel process
+  const dataStoreKey = `in-memory-${uuid()}`
+
+  // update adapter
   adapters = {
-    'sails-memory': InMemoryAdapter
+    'sails-disk': DiskAdapter
   }
 
+  // update datastore
+  defaultModelSettings['datastore'] = dataStoreKey
   datastores = {
-    'default': {
-      adapter: 'sails-memory'
+    [dataStoreKey]: {
+      adapter: 'sails-disk',
+      inMemoryOnly: true
     }
   }
 }
 
-let instance = null
+// set collection
+export const loadCollection = (model) => {
+  waterline.registerModel(Waterline.Collection.extend({
+    ...defaultModelSettings,
+    ...model,
+    attributes: { // merge attributes.
+      ...defaultModelSettings.attributes,
+      ...model.model || {}
+    }
+  }))
+}
 
-// return current instance
-export const getInstance = () => instance
+// initialize waterline and get `ontology`
+export const initialize = () => new Promise((resolve, reject) => {
+  if (instance) return resolve(instance)
 
-// get model using current instance
-export const getModel = (model) => Waterline.getModel(model, getInstance())
-
-// start Waterline
-export const start = () => new Promise((resolve, reject) => {
-  if (getInstance()) return resolve(getInstance())
-
-  const config = {
-    adapters,
-    datastores,
-    models,
-    defaultModelSettings: DEFAULT_SETTING
-  }
-
-  Waterline.start(config, function (err, orm) {
+  waterline.initialize({adapters, datastores}, function (err, ontology) {
     if (err) return reject(err)
-    instance = orm
-    resolve(true)
-  })
-})
-
-// stop Waterline
-export const stop = () => new Promise((resolve, reject) => {
-  if (!getInstance()) return resolve(true)
-  Waterline.stop(getInstance(), function (err) {
-    if (err) return reject(err)
-    instance = null
-    resolve(true)
+    instance = ontology
+    resolve(ontology)
   })
 })

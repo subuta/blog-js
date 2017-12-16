@@ -22,11 +22,6 @@ module.exports = function (wallaby) {
       }
     },
 
-    workers: {
-      initial: 1,
-      regular: 1
-    },
-
     compilers: {
       '**/*.js': wallaby.compilers.babel({
         babel,

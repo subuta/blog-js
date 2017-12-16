@@ -14,10 +14,10 @@ const sandbox = sinon.sandbox.create()
 
 const proxyquire = require('proxyquire').noCallThru()
 
-test.before(async (t) => {
-})
-
 test.beforeEach(async (t) => {
+  t.context = {
+    request: request(app.listen(0))
+  }
 })
 
 test.afterEach((t) => {
@@ -25,5 +25,11 @@ test.afterEach((t) => {
 })
 
 test('should true', async (t) => {
-  t.is(true, true)
+  const {request} = t.context
+
+  const response = await request
+    .get('/api')
+
+  t.is(response.status, 404)
+  t.deepEqual(response.body, {})
 })
