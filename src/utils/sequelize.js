@@ -10,16 +10,12 @@ const password = env.POSTGRES_PASSWORD || 'password' // for development
 
 let databaseUrl = env.DATABASE_URL || `postgres://${username}:${password}@${host}:5432/${database}`
 
-if (process.env.NODE_ENV === 'test') {
-  databaseUrl = `sqlite://test.sqlite`
-}
-
 export const fixSchema = (schema) => {
   // https://github.com/sequelize/sequelize/issues/3810
   // Workaround for sqlite autoIncrement issue.
-  if (process.env.NODE_ENV === 'test') {
-    schema = _.set(schema, 'id.autoIncrement', false)
-  }
+  // if (process.env.NODE_ENV === 'test') {
+  //   schema = _.set(schema, 'id.autoIncrement', false)
+  // }
   return schema
 }
 

@@ -7,7 +7,7 @@
     "node": ">=9.0.0"
   },
   "scripts": {
-    "test": "nyc ava",
+    "test": "POSTGRES_DB=blog-js-test nyc ava --serial",
     "serve": "node dist/main.js",
     "watch": "backpack dev",
     "build": "backpack build",

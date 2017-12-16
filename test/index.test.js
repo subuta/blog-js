@@ -16,6 +16,10 @@ const sandbox = sinon.sandbox.create()
 
 const proxyquire = require('proxyquire').noCallThru()
 
+test.before(async (t) => {
+  await fixtures('test/fixtures/*.yml', true)
+})
+
 test.beforeEach(async (t) => {
   await fixtures('test/fixtures/*.yml')
   t.context = {
@@ -27,7 +31,7 @@ test.afterEach((t) => {
   sandbox.reset()
 })
 
-test('should return 401 with No Authorization header', async (t) => {
+test.serial('should return 401 with No Authorization header', async (t) => {
   const {request} = t.context
 
   const response = await request
@@ -37,7 +41,7 @@ test('should return 401 with No Authorization header', async (t) => {
   t.deepEqual(response.body, {})
 })
 
-test('index should return channels', async (t) => {
+test.serial('index should return channels', async (t) => {
   const {request} = t.context
 
   // mock jwks
