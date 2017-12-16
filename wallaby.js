@@ -16,7 +16,7 @@ module.exports = function (wallaby) {
       type: 'node',
       runner: 'node',
       params: {
-        env: 'NODE_ENV=test;NODE_PATH=' + path.join(wallaby.projectCacheDir, '../')
+        env: 'NODE_ENV=test;PORT=0;NODE_PATH=' + path.join(wallaby.projectCacheDir, '../')
       }
     },
 

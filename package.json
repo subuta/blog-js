@@ -84,6 +84,7 @@
   "dependencies": {
     "@koa/cors": "^2.2.1",
     "aws-sdk": "^2.167.0",
+    "axios": "^0.17.1",
     "bluebird": "^3.5.1",
     "boom": "^7.1.1",
     "dotenv": "^4.0.0",

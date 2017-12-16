@@ -11,6 +11,7 @@ import serve from 'koa-static'
 import koaBody from 'koa-body'
 
 const app = new Koa()
+export let port = process.env.PORT || 3000
 
 // log requests
 app.use(logger())
@@ -30,13 +31,7 @@ app.use(api.allowedMethods())
 // otherwise PUBLIC_DIR
 app.use(serve(PUBLIC_DIR))
 
-// sequelize
-//   .authenticate()
-//   .then(() => {
-//     console.log('Connection has been established successfully.')
-//   })
-//   .catch(err => {
-//     console.error('Unable to connect to the database:', err)
-//   })
+const server = app.listen(port)
+port = server.address().port
 
-app.listen(3000)
+export default app
