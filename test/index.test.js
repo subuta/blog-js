@@ -9,6 +9,8 @@ import { jwksEndpoint } from 'jwks-rsa/tests/mocks/jwks'
 import { publicKey, privateKey } from 'jwks-rsa/tests/mocks/keys'
 import { createToken } from 'jwks-rsa/tests/mocks/tokens'
 
+import { currentUser } from 'test/helper/user'
+
 const sandbox = sinon.sandbox.create()
 
 const proxyquire = require('proxyquire').noCallThru()
@@ -16,7 +18,7 @@ const proxyquire = require('proxyquire').noCallThru()
 test.beforeEach(async (t) => {
   await Channel.sync({force: true})
   t.context = {
-    request: request(app.listen())
+    request: request(app.listen(0))
   }
 })
 
@@ -37,7 +39,7 @@ test('should return 200 with Authorization header', async (t) => {
   const {request} = t.context
 
   // mock jwks
-  const token = createToken(privateKey, '123', {sub: 'john'})
+  const token = createToken(privateKey, '123', currentUser)
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request.get('/api/channels').set('Authorization', `Bearer ${token}`)

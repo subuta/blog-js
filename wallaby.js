@@ -5,7 +5,8 @@ module.exports = function (wallaby) {
   return {
     files: [
       'config.js',
-      'src/**/*.js'
+      'src/**/*.js',
+      'test/helper/**/*.js'
     ],
 
     tests: [
@@ -16,7 +17,7 @@ module.exports = function (wallaby) {
       type: 'node',
       runner: 'node',
       params: {
-        env: 'NODE_ENV=test;PORT=0;NODE_PATH=' + path.join(wallaby.projectCacheDir, '../')
+        env: 'NODE_ENV=test;NODE_PATH=' + path.join(wallaby.projectCacheDir, '../')
       }
     },
 
@@ -30,11 +31,11 @@ module.exports = function (wallaby) {
               root: ['./'],
               alias: {
                 test: './test',
-              },
-            },
-          ],
-        ],
-      }),
+              }
+            }
+          ]
+        ]
+      })
     },
 
     testFramework: 'ava',

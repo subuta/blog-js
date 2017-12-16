@@ -3,6 +3,8 @@
 node_modules
 db/postgres
 db/s3
+test.sqlite
 front/public
 dist
 .docker-sync
+.nyc_output

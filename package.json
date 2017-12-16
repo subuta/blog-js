@@ -34,7 +34,7 @@
     "concurrency": 5,
     "failFast": true,
     "failWithoutAssertions": false,
-    "require": "babel-register",
+    "require": "./test/.setup.js",
     "babel": {
       "extends": ".babelrc",
       "plugins": [
