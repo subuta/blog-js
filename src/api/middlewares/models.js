@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import load from 'src/model'
 
 export default async (ctx, next) => {

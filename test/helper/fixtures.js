@@ -1,20 +1,18 @@
 import _ from 'lodash'
 import Promise from 'bluebird'
-import { loadFiles } from 'sequelize-fixtures'
-import models from 'src/model'
+import load from 'src/model'
+import requireGlob from 'require-glob'
+import path from 'path'
 
-export default async (files, isSync = false) => {
-  if (_.isString(files)) {
-    files = [files]
-  }
+import { ROOT_DIR } from '../../config'
 
-  // truncate all tables
-  await Promise.map(_.values(models), (model) => {
-    if (isSync) {
-      return model.sync({force: true})
-    }
-    return model.destroy({truncate: true, cascade: true})
-  }, { concurrency: isSync ? 1 : 10 })
+export default async function loadFixtures () {
+  const models = await load()
+  const FIXTURES_DIR = path.join(ROOT_DIR, 'test/fixtures')
+  const fixtures = await requireGlob([path.join(FIXTURES_DIR, '**/*.js')])
 
-  return loadFiles(files, models)
+  return Promise.map(_.values(fixtures), async loadFixture => {
+    const fn = _.isFunction(loadFixture.default) ? loadFixture.default : loadFixture
+    return fn(models)
+  })
 }

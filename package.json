@@ -7,7 +7,7 @@
     "node": ">=9.0.0"
   },
   "scripts": {
-    "test": "LOG_QUERIES=true POSTGRES_DB=blog-js-test nyc ava",
+    "test": "DEBUG_QUERY=true POSTGRES_DB=blog-js-test nyc ava",
     "serve": "LOG_QUERIES=true node dist/main.js",
     "watch": "backpack dev",
     "build": "backpack build",
@@ -84,6 +84,7 @@
     "pg": "^6.4.2",
     "power-assert": "^1.4.4",
     "proxyquire": "^1.8.0",
+    "require-glob": "^3.2.0",
     "sails-disk": "^1.0.0-12",
     "sinon": "^4.1.3",
     "standard": "^10.0.2",

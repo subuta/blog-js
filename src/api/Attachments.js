@@ -2,8 +2,6 @@ import Router from 'koa-router'
 import uuid from 'uuid/v4'
 import path from 'path'
 
-import models, { Attachment } from 'src/model'
-
 import _ from 'lodash'
 import {
   getSignedUrl
@@ -14,11 +12,12 @@ const attachments = new Router()
 // construct requestURL for s3 upload.
 // SEE: https://devcenter.heroku.com/articles/s3-upload-node
 attachments.post('/', async (ctx) => {
-  const { attachment } = ctx.request.body
+  const {attachment} = ctx.request.body
+  const {Attachment} = ctx.state.models
 
-  const name = attachment.name;
+  const name = attachment.name
   const ext = path.extname(name)
-  const type = attachment.type;
+  const type = attachment.type
 
   // add uuid for prevent fileName conflict.
   const id = uuid()

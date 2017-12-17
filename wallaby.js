@@ -7,7 +7,7 @@ module.exports = function (wallaby) {
       'config.js',
       'src/**/*.js',
       'test/helper/**/*.js',
-      'test/fixtures/**/*'
+      'test/fixtures/**/*.js'
     ],
 
     tests: [
@@ -18,7 +18,7 @@ module.exports = function (wallaby) {
       type: 'node',
       runner: 'node',
       params: {
-        env: 'LOG_QUERIES=true;POSTGRES_DB=blog-js-test;NODE_ENV=test;NODE_PATH=' + path.join(wallaby.projectCacheDir, '../')
+        env: 'DEBUG_QUERY=true;POSTGRES_DB=blog-js-test;NODE_ENV=test;NODE_PATH=' + path.join(wallaby.projectCacheDir, '../')
       }
     },
 

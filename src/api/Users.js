@@ -1,6 +1,5 @@
 import Router from 'koa-router'
 import _ from 'lodash'
-import models, { User } from 'src/model'
 
 const users = new Router()
 
@@ -9,6 +8,7 @@ users.get('/me', async (ctx) => {
 })
 
 users.put('/me', async (ctx) => {
+  const {User} = ctx.state.models
   const {user} = ctx.request.body
   const {sub} = ctx.state.user
 

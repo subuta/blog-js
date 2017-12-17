@@ -1,32 +1,35 @@
 import Router from 'koa-router'
 import _ from 'lodash'
-import models, { Channel } from 'src/model'
 
 const channels = new Router()
 
 channels.get('/', async (ctx) => {
-  ctx.body = await Channel.findAll()
+  const {Channel} = ctx.state.models
+  ctx.body = await Channel.find()
 })
 
 channels.get('/:id', async (ctx) => {
-  ctx.body = await Channel.findById(ctx.params.id, {
-    include: [
-      {
-        model: models.Comment,
-        include: [
-          models.Attachment,
-          {
-            model: models.User,
-            as: 'commentedBy'
-          }
-        ]
-      }
-    ]
-  })
+  const {Channel} = ctx.state.models
+  ctx.body = await Channel.find({id: ctx.params.id})
+  // ctx.body = await Channel.findById(ctx.params.id, {
+  //   include: [
+  //     {
+  //       model: models.Comment,
+  //       include: [
+  //         models.Attachment,
+  //         {
+  //           model: models.User,
+  //           as: 'commentedBy'
+  //         }
+  //       ]
+  //     }
+  //   ]
+  // })
 })
 
 channels.post('/', async (ctx) => {
   const {channel} = ctx.request.body
+  const {Channel} = ctx.state.models
   ctx.body = await Channel.create(channel)
 })
 

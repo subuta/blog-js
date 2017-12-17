@@ -18,7 +18,10 @@ _.each(models, (model) => loadCollection(model))
 
 const load = async () => {
   const ontology = await initialize()
-  return ontology.collections
+  return _.transform(ontology.collections, (models, model, key) => {
+    // add capitalized keys as model
+    models[_.capitalize(key)] = model
+  }, ontology.collections)
 }
 
 export default load

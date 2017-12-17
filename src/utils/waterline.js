@@ -1,4 +1,4 @@
-import Promise from 'promise'
+import Promise from 'bluebird'
 import Waterline from 'waterline'
 import PostgresAdapter from 'sails-postgresql'
 import DiskAdapter from 'sails-disk'
@@ -92,3 +92,10 @@ export const initialize = () => new Promise((resolve, reject) => {
     resolve(ontology)
   })
 })
+
+// destroy connection.
+export const destroy = async () => {
+  return Promise.map(adapters, (adapter) => new Promise((resolve) => {
+    adapter.teardown(null, resolve)
+  }))
+}
