@@ -1,4 +1,4 @@
-import path from 'path'
+const path = require('path')
 
 export const ROOT_DIR = path.join(__dirname, './')
 export const DB_DIR = path.join(ROOT_DIR, './db')

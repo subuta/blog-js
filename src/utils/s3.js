@@ -5,7 +5,7 @@ const S3_BUCKET = env.S3_BUCKET
 export let urlPrefix = `https://${S3_BUCKET}.s3.amazonaws.com`
 
 let config = {}
-if (env.NODE_ENV === 'development') {
+if (env.NODE_ENV !== 'production') {
   config = {
     accessKeyId: 'DUMMY_ACCESS_KEY',
     secretAccessKey: 'DUMMY_SECRET_KEY',

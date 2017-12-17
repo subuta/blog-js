@@ -26,6 +26,11 @@
       }
     }
   },
+  "nyc": {
+    "exclude": [
+      "src/migrations/**/*.js"
+    ]
+  },
   "ava": {
     "files": [
       "test/**/*.test.js"

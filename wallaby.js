@@ -4,11 +4,16 @@ const babel = require('babel-core')
 module.exports = function (wallaby) {
   return {
     files: [
-      '.env',
       'config.js',
       'src/**/*.js',
       'test/helper/**/*.js',
-      'test/fixtures/**/*.js'
+      { pattern: '.env', instrument: false, load: false },
+      { pattern: 'test/fixtures/**/*.js', instrument: false, load: false }
+    ],
+
+    filesWithNoCoverageCalculated: [
+      'src/migrations/**/*.js',
+      'test/helper/**/*.js'
     ],
 
     tests: [
