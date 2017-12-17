@@ -15,7 +15,6 @@ import { absolutePath } from '../../config'
 
 import { currentUser } from 'test/helper/user'
 import runSeed, { runMigration } from 'test/helper/fixtures'
-import { destroy } from '../helper/fixtures'
 
 const sandbox = sinon.sandbox.create()
 
@@ -25,6 +24,7 @@ test.beforeEach(async (t) => {
   const knex = importFresh(absolutePath('src/utils/knex')).default
 
   await runMigration(knex)
+  await runSeed(knex)
 
   const api = require('test/helper/mocked').api(knex)
   const models = require('test/helper/mocked').model(knex)
@@ -36,18 +36,16 @@ test.beforeEach(async (t) => {
 
   t.context = {
     ...models,
-    knex,
     request: request(app.listen(0))
   }
 })
 
-test.afterEach(async (t) => {
+test.afterEach((t) => {
   sandbox.reset()
 })
 
 test('get me should return user', async (t) => {
-  const {knex, request} = t.context
-  await runSeed(knex)
+  const {request} = t.context
 
   // mock jwks
   const token = createToken(privateKey, '123', currentUser)
@@ -62,8 +60,7 @@ test('get me should return user', async (t) => {
 })
 
 test('put me should not update user if exists', async (t) => {
-  const {knex, request, User} = t.context
-  await runSeed(knex)
+  const {request, User} = t.context
 
   const user = await User.query().first({auth0Id: 'google-oauth2|dummy'})
 
@@ -84,8 +81,7 @@ test('put me should not update user if exists', async (t) => {
 })
 
 test('put me should create user if not exists', async (t) => {
-  const {knex, request, User} = t.context
-  await runSeed(knex)
+  const {request, User} = t.context
 
   let user = await User.query().findFirst({auth0Id: 'google-oauth2|another'})
   t.is(user, undefined)

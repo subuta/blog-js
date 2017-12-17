@@ -24,6 +24,7 @@ test.beforeEach(async (t) => {
   const knex = importFresh(absolutePath('src/utils/knex')).default
 
   await runMigration(knex)
+  await runSeed(knex)
 
   const api = require('test/helper/mocked').api(knex)
 
@@ -33,18 +34,16 @@ test.beforeEach(async (t) => {
   app.use(api.allowedMethods())
 
   t.context = {
-    knex,
     request: request(app.listen(0))
   }
 })
 
-test.afterEach(async (t) => {
+test.afterEach((t) => {
   sandbox.reset()
 })
 
-test('index should return comments', async (t) => {
-  const {knex, request} = t.context
-  await runSeed(knex)
+test.serial('index should return comments', async (t) => {
+  const {request} = t.context
 
   // mock jwks
   const token = createToken(privateKey, '123', currentUser)
@@ -60,8 +59,7 @@ test('index should return comments', async (t) => {
 })
 
 test('post should create comment', async (t) => {
-  const {knex, request} = t.context
-  await runSeed(knex)
+  const {request} = t.context
 
   // mock jwks
   const token = createToken(privateKey, '123', currentUser)

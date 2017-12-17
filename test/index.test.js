@@ -22,6 +22,7 @@ test.beforeEach(async (t) => {
   const knex = importFresh(absolutePath('src/utils/knex')).default
 
   await runMigration(knex)
+  await runSeed(knex)
 
   const api = require('test/helper/mocked').api(knex)
 
@@ -30,7 +31,6 @@ test.beforeEach(async (t) => {
   }).default
 
   t.context = {
-    knex,
     request: request(app.listen(0))
   }
 })
@@ -40,8 +40,7 @@ test.afterEach((t) => {
 })
 
 test('should return 401 with No Authorization header', async (t) => {
-  const {knex, request} = t.context
-  await runSeed(knex)
+  const {request} = t.context
 
   const response = await request
     .get('/api/channels')
@@ -51,8 +50,7 @@ test('should return 401 with No Authorization header', async (t) => {
 })
 
 test('should return response with Authorization header', async (t) => {
-  const {knex, request} = t.context
-  await runSeed(knex)
+  const {request} = t.context
 
   // mock jwks
   const token = createToken(privateKey, '123', currentUser)
