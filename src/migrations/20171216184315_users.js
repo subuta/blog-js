@@ -4,8 +4,8 @@ exports.up = function (knex) {
     table.text('auth0Id').notNullable()
     table.string('locale').notNullable().defaultTo('ja')
     table.string('nickname').notNullable()
-    table.string('status').notNullable()
-    table.string('avatar').notNullable()
+    table.string('status').notNullable().defaultTo('')
+    table.string('avatar').notNullable().defaultTo('')
     table.timestamps(true, true)
   })
 }

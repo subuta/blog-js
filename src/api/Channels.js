@@ -13,7 +13,7 @@ channels.get('/:id', async (ctx) => {
   ctx.body = await Channel
     .query()
     .eager('comments.attachment')
-    .first({id: ctx.params.id})
+    .findFirst({id: ctx.params.id})
 })
 
 channels.post('/', async (ctx) => {

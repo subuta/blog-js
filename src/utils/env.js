@@ -7,7 +7,9 @@ const {
   POSTGRES_DB,
   S3_BUCKET,
   DATABASE_URL,
-  NODE_ENV
+  NODE_ENV,
+  AUTH0_API_IDENTIFIER,
+  AUTH0_AUDIENCE
 } = process.env
 
 export {
@@ -16,7 +18,9 @@ export {
   POSTGRES_DB,
   S3_BUCKET,
   DATABASE_URL,
-  NODE_ENV
+  NODE_ENV,
+  AUTH0_API_IDENTIFIER,
+  AUTH0_AUDIENCE
 }
 
 export default {
@@ -25,5 +29,7 @@ export default {
   POSTGRES_DB,
   S3_BUCKET,
   DATABASE_URL,
-  NODE_ENV
+  NODE_ENV,
+  AUTH0_API_IDENTIFIER,
+  AUTH0_AUDIENCE
 }

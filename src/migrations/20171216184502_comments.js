@@ -3,7 +3,7 @@ exports.up = function (knex) {
     table.increments()
     table.integer('channelId').references('channels.id').onDelete('CASCADE')
     table.integer('commentedById')
-    table.integer('attachmentId')
+    table.string('attachmentId')
     table.text('text').notNullable()
     table.timestamps(true, true)
   })
