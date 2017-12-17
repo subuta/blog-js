@@ -1,27 +1,19 @@
 import _ from 'lodash'
+import { Model } from 'objection'
+import requireGlob from 'require-glob'
 
-import { loadCollection, initialize } from 'src/utils/waterline'
+import knex from 'src/utils/knex'
 
-import Attachment from './Attachment'
-import Channel from './Channel'
-import Comment from './Comment'
-import User from './User'
+// assign connection to knex.
+Model.knex(knex)
 
-const models = {
-  Attachment,
-  Channel,
-  Comment,
-  User
-}
+// then require all without itself.
+const modules = requireGlob.sync(['*.js', '!index.js'])
 
-_.each(models, (model) => loadCollection(model))
+// pick class definition from modules.
+const models = _.transform(modules, (result, module, key) => result[key] = module.default, {})
 
-const load = async () => {
-  const ontology = await initialize()
-  return _.transform(ontology.collections, (models, model, key) => {
-    // add capitalized keys as model
-    models[_.capitalize(key)] = model
-  }, ontology.collections)
-}
+// call register of each model.
+_.each(modules, (fn) => fn.register(models))
 
-export default load
+export default models

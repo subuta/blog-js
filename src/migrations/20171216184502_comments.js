@@ -1,7 +1,7 @@
 exports.up = function (knex) {
   return knex.schema.createTable('comments', function (table) {
     table.increments()
-    table.integer('channel').references('channels.id')
+    table.integer('channel').references('channels.id').onDelete('CASCADE')
     table.integer('commentedBy')
     table.integer('attachment')
     table.text('text').notNullable()

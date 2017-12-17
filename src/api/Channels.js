@@ -5,12 +5,12 @@ const channels = new Router()
 
 channels.get('/', async (ctx) => {
   const {Channel} = ctx.state.models
-  ctx.body = await Channel.find()
+  ctx.body = await Channel.query()
 })
 
 channels.get('/:id', async (ctx) => {
   const {Channel} = ctx.state.models
-  ctx.body = await Channel.find({id: ctx.params.id})
+  ctx.body = await Channel.query().first({id: ctx.params.id})
   // ctx.body = await Channel.findById(ctx.params.id, {
   //   include: [
   //     {
@@ -30,7 +30,7 @@ channels.get('/:id', async (ctx) => {
 channels.post('/', async (ctx) => {
   const {channel} = ctx.request.body
   const {Channel} = ctx.state.models
-  ctx.body = await Channel.create(channel)
+  ctx.body = await Channel.query().insert(channel)
 })
 
 // export default channels

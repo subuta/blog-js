@@ -1,7 +1,0 @@
-fixtures:
-  - model: Comment
-    data:
-      id: 1
-      channelId: 1
-      commentedById: 1
-      text: lorem ipsum

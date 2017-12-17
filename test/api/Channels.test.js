@@ -12,18 +12,18 @@ import Koa from 'koa'
 import api from 'src/api'
 
 import { currentUser } from 'test/helper/user'
-import loadFixtures from 'test/helper/fixtures'
-import { destroy } from 'src/utils/waterline'
+import runSeed, { runMigration } from 'test/helper/fixtures'
 
 const sandbox = sinon.sandbox.create()
 
 const proxyquire = require('proxyquire').noCallThru()
 
-test.before(async (t) => {
+test.before(async () => {
+  await runMigration()
 })
 
 test.beforeEach(async (t) => {
-  await loadFixtures()
+  await runSeed()
 
   const app = new Koa()
   // handle /api requests
@@ -37,10 +37,6 @@ test.beforeEach(async (t) => {
 
 test.afterEach((t) => {
   sandbox.reset()
-})
-
-test.after(async () => {
-  await destroy()
 })
 
 test.serial('should return 401 with No Authorization header', async (t) => {

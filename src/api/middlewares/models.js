@@ -1,8 +1,7 @@
-import _ from 'lodash'
-import load from 'src/model'
+import models from 'src/model'
 
-export default async (ctx, next) => {
-  // expose waterline model to context.
-  ctx.state.models = await load()
+export default (ctx, next) => {
+  // expose Objection.js models to context.
+  ctx.state.models = models
   return next()
 }
