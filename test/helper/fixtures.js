@@ -4,13 +4,11 @@ import requireGlob from 'require-glob'
 import path from 'path'
 import { ROOT_DIR } from '../../config'
 
-import knex from 'src/utils/knex'
-
-export const runMigration = async () => {
+export const runMigration = async (knex) => {
   return knex.migrate.latest()
 }
 
-export default async function runSeed () {
+export default async function runSeed (knex) {
   const FIXTURES_DIR = path.join(ROOT_DIR, 'test/fixtures')
   const fixtures = await requireGlob([path.join(FIXTURES_DIR, '**/*.js')])
 

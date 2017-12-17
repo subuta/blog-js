@@ -9,21 +9,24 @@ import { publicKey, privateKey } from 'jwks-rsa/tests/mocks/keys'
 import { createToken } from 'jwks-rsa/tests/mocks/tokens'
 
 import Koa from 'koa'
-import api from 'src/api'
+
+import importFresh from 'import-fresh'
+import { absolutePath } from '../../config'
 
 import { currentUser } from 'test/helper/user'
 import runSeed, { runMigration } from 'test/helper/fixtures'
 
 const sandbox = sinon.sandbox.create()
 
-const proxyquire = require('proxyquire').noCallThru()
-
-test.before(async () => {
-  await runMigration()
-})
+const proxyquire = require('proxyquire')
 
 test.beforeEach(async (t) => {
-  await runSeed()
+  const knex = importFresh(absolutePath('src/utils/knex')).default
+
+  await runMigration(knex)
+  await runSeed(knex)
+
+  const api = require('test/helper/mockedApi').default(knex)
 
   const app = new Koa()
   // handle /api requests

@@ -1,5 +1,4 @@
 const knex = require('knex')
-
 const env = require('src/utils/env')
 
 const {
@@ -41,6 +40,7 @@ if (process.env.NODE_ENV === 'test') {
     ...config,
     client: 'sqlite3',
     useNullAsDefault: true,
+    debug: false,
     connection: {filename: ':memory:'}
   }
 }
