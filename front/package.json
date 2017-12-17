@@ -12,7 +12,7 @@
     "poi": "poi",
     "svg": "svg-sprite -C ./svg-sprite-config.json -D static/assets 'assets/svg/*.svg'",
     "mat": "mat",
-    "test": "NODE_PATH=./ jest"
+    "test": "NODE_PATH=./ ../node_modules/.bin/jest"
   },
   "repository": {
     "type": "git",

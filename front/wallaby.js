@@ -27,9 +27,6 @@ module.exports = function (wallaby) {
       '**/*.js': wallaby.compilers.babel({
         babel,
         babelrc: true,
-        'presets': [
-          'babel-preset-power-assert',
-        ],
         plugins: [
           [
             'module-resolver',

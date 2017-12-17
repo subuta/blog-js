@@ -3,10 +3,8 @@ import nock from 'nock'
 
 import attachments from 'src/utils/api/attachments'
 
-const assert = require('assert')
-
-describe('attachments API', () => {
-  it('should create', async () => {
+describe('attachments', () => {
+  it('should call create API', async () => {
     nock('http://localhost:3000/api')
       .post('/attachments')
       .reply(200, {
@@ -20,9 +18,9 @@ describe('attachments API', () => {
 
     const res = await attachments.create({})
 
-    assert.deepEqual(res.result, {})
-    assert(res.normalized.result === 'xxxx-xxxx-xxxx-xxxx')
-    assert.deepEqual(res.normalized.entities, {
+    expect(res.result).toEqual({});
+    expect(res.normalized.result).toEqual('xxxx-xxxx-xxxx-xxxx');
+    expect(res.normalized.entities).toEqual({
       attachments: {
         'xxxx-xxxx-xxxx-xxxx': {
           id: 'xxxx-xxxx-xxxx-xxxx',
@@ -30,10 +28,10 @@ describe('attachments API', () => {
           type: 'image/png'
         }
       }
-    })
+    });
   })
 
-  it('should upload', async () => {
+  it('should call upload API', async () => {
     nock('http://localhost:3000')
       .put('/dummy-uploads')
       .reply(200, {
@@ -44,6 +42,6 @@ describe('attachments API', () => {
 
     const res = await attachments.upload(file, 'http://localhost:3000/dummy-uploads', {})
 
-    assert.deepEqual(res.data, {})
+    expect(res.data).toEqual({});
   })
 })
