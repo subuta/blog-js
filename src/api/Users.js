@@ -15,7 +15,7 @@ users.put('/me', async (ctx) => {
   // findOrCreate specified user.
   // update id with current user in params if specified
   const params = {...user, auth0Id: sub}
-  ctx.body = await User.findOrCreate({where: {auth0Id: sub}, defaults: params})
+  ctx.body = await User.query().findOrCreate({where: {auth0Id: sub}, defaults: params})
 })
 
 export default {

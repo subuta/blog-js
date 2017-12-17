@@ -27,6 +27,7 @@ test.beforeEach(async (t) => {
   await runSeed(knex)
 
   const api = require('test/helper/mocked').api(knex)
+  const models = require('test/helper/mocked').model(knex)
 
   const app = new Koa()
   // handle /api requests
@@ -34,6 +35,7 @@ test.beforeEach(async (t) => {
   app.use(api.allowedMethods())
 
   t.context = {
+    ...models,
     request: request(app.listen(0))
   }
 })
@@ -42,7 +44,7 @@ test.afterEach((t) => {
   sandbox.reset()
 })
 
-test.serial('index should return channels', async (t) => {
+test('get me should return user', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -50,44 +52,65 @@ test.serial('index should return channels', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .get('/api/channels')
-    .set('Authorization', `Bearer ${token}`)
-
-  t.is(response.status, 200)
-  t.deepEqual(response.body.length, 3)
-})
-
-test('show should return channel', async (t) => {
-  const {request} = t.context
-
-  // mock jwks
-  const token = createToken(privateKey, '123', currentUser)
-  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
-
-  const response = await request
-    .get('/api/channels/1')
+    .get('/api/users/me')
     .set('Authorization', `Bearer ${token}`)
 
   t.is(response.status, 200)
   t.deepEqual(response.body.id, 1)
-  t.deepEqual(response.body.comments.length, 2)
-  t.deepEqual(response.body.comments[1].attachment.id, 'xxxx-xxxx-xxxx-xxxx')
 })
 
-test('post should create channel', async (t) => {
-  const {request} = t.context
+test('put me should not update user if exists', async (t) => {
+  const {request, User} = t.context
+
+  const user = await User.query().first({auth0Id: 'google-oauth2|dummy'})
 
   // mock jwks
   const token = createToken(privateKey, '123', currentUser)
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .post('/api/channels')
+    .put('/api/users/me')
     .set('Authorization', `Bearer ${token}`)
     .send({
-      channel: {id: 4, name: 'Manny'}
+      user: {status: 'Hoge'}
     })
 
   t.is(response.status, 200)
-  t.deepEqual(response.body.id, 4)
+  t.deepEqual(response.body.id, user.id)
+  t.deepEqual(response.body.status, user.status)
+})
+
+test('put me should create user if not exists', async (t) => {
+  const {request, User} = t.context
+
+  let user = await User.query().findFirst({auth0Id: 'google-oauth2|another'})
+  t.is(user, undefined)
+
+  const anotherUser = {
+    'iss': 'https://xxx.com/',
+    'sub': 'google-oauth2|another',
+    'aud': [
+      'https://xxx.com/api',
+      'https://xxx.auth0.com/userinfo'
+    ],
+    'scope': 'openid profile email'
+  }
+
+  // mock jwks
+  const token = createToken(privateKey, '123', anotherUser)
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .put('/api/users/me')
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      user: {
+        status: 'Hoge',
+        nickname: 'another',
+        avatar: ''
+      }
+    })
+
+  t.is(response.status, 200)
+  t.deepEqual(response.body.status, 'Hoge')
 })

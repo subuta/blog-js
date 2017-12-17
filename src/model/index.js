@@ -8,7 +8,7 @@ import knex from 'src/utils/knex'
 Model.knex(knex)
 
 // then require all without itself.
-const modules = requireGlob.sync(['*.js', '!index.js'])
+const modules = requireGlob.sync(['*.js', '!index.js', '!Model.js'])
 
 // pick class definition from modules.
 const models = _.transform(modules, (result, module, key) => result[key] = module.default, {})

@@ -1,4 +1,4 @@
-import { Model } from 'objection'
+import Model from './Model'
 
 export const register = (models) => {
   Attachment.relationMappings = {}

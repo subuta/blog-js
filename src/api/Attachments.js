@@ -25,7 +25,7 @@ attachments.post('/', async (ctx) => {
 
   const result = await getSignedUrl(tmpFileName, type)
 
-  const record = await Attachment.create({
+  const record = await Attachment.query().insert({
     id,
     name,
     type,

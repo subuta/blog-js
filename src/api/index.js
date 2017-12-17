@@ -28,11 +28,11 @@ api.use(koaBody({
 // set jwt middleware
 api.use(auth)
 
-// inject getCurrentUser to state for ease of use.
-api.use(getCurrentUser)
-
 // inject waterline models middleware.
 api.use(models)
+
+// inject getCurrentUser to state for ease of use.
+api.use(getCurrentUser)
 
 // routers set after auth middleware will be protected
 registerRouters({

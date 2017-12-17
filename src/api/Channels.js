@@ -14,20 +14,6 @@ channels.get('/:id', async (ctx) => {
     .query()
     .eager('comments.attachment')
     .first({id: ctx.params.id})
-  // ctx.body = await Channel.findById(ctx.params.id, {
-  //   include: [
-  //     {
-  //       model: models.Comment,
-  //       include: [
-  //         models.Attachment,
-  //         {
-  //           model: models.User,
-  //           as: 'commentedBy'
-  //         }
-  //       ]
-  //     }
-  //   ]
-  // })
 })
 
 channels.post('/', async (ctx) => {

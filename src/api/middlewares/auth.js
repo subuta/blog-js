@@ -1,10 +1,10 @@
 import jwt from 'koa-jwt'
 import jwksRsa from 'jwks-rsa'
-import { User } from '../../model'
 
 // add getCurrentUser method.
 export const getCurrentUser = (ctx, next) => {
-  ctx.state.getCurrentUser = () => User.find({where: {auth0Id: ctx.state.user.sub}})
+  const {User} = ctx.state.models
+  ctx.state.getCurrentUser = () => User.query().first({auth0Id: ctx.state.user.sub})
   return next()
 }
 

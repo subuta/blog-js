@@ -10,11 +10,8 @@ comments.get('/', async (ctx) => {
   if (_.get(ctx, 'params.channelId')) {
     params['channelId'] = _.get(ctx, 'params.channelId')
   }
-  ctx.body = await Comment.findAll()
-  // ctx.body = await Comment.findAll({
-  //   where: params,
-  //   include: [models.Attachment]
-  // })
+  ctx.body = await Comment.query()
+    .eager('attachment')
 })
 
 comments.post('/', async (ctx) => {
@@ -31,22 +28,10 @@ comments.post('/', async (ctx) => {
     params['commentedById'] = currentUser.id
   }
 
-  // FIXME: https://github.com/sequelize/sequelize/issues/3807
-  // association won't loaded by passing options.include to `create`
-  const record = await Comment.create({
+  ctx.body = await Comment.query().insert({
     ...comment,
     ...params
-  })
-
-  ctx.body = await record.reload({
-    include: [
-      models.Attachment,
-      {
-        model: models.User,
-        as: 'commentedBy'
-      }
-    ]
-  })
+  }).eager('commentedBy')
 })
 
 export default {
