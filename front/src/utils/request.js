@@ -1,4 +1,6 @@
 import axios from 'axios'
+import httpAdapter from 'axios/lib/adapters/http'
+
 import _ from 'lodash'
 import { saveAs } from 'file-saver'
 
@@ -9,6 +11,10 @@ let baseURL = `${window.location.origin}/api`
 
 if (process.env.NODE_ENV === 'development') {
   baseURL = 'http://localhost:3000/api'
+} else if (process.env.NODE_ENV === 'test') {
+  // set httpAdapter while testing.
+  baseURL = 'http://localhost:3000/api'
+  axios.defaults.adapter = httpAdapter
 }
 
 const request = axios.create({

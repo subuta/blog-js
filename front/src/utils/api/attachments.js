@@ -22,13 +22,7 @@ export const create = (params) => {
 }
 
 export const upload = (file, signedRequest, url) => {
-  const config = {
-    onUploadProgress: function (progressEvent) {
-      const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-      console.log('percentCompleted = ', percentCompleted)
-    }
-  }
-  return axios.put(signedRequest, file, config).then((response) => {
+  return axios.put(signedRequest, file).then((response) => {
     return response.data
   })
 }
