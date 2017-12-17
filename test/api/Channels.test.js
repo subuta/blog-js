@@ -39,7 +39,7 @@ test.afterEach((t) => {
   sandbox.reset()
 })
 
-test.serial('should return 401 with No Authorization header', async (t) => {
+test('should return 401 with No Authorization header', async (t) => {
   const {request} = t.context
 
   const response = await request
@@ -49,7 +49,7 @@ test.serial('should return 401 with No Authorization header', async (t) => {
   t.deepEqual(response.body, {})
 })
 
-test.serial('index should return channels', async (t) => {
+test('index should return channels', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -64,7 +64,7 @@ test.serial('index should return channels', async (t) => {
   t.deepEqual(response.body.length, 3)
 })
 
-test.serial('show should return channel', async (t) => {
+test('show should return channel', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -77,9 +77,11 @@ test.serial('show should return channel', async (t) => {
 
   t.is(response.status, 200)
   t.deepEqual(response.body.id, 1)
+  t.deepEqual(response.body.comments.length, 2)
+  t.deepEqual(response.body.comments[1].attachment.id, 'xxxx-xxxx-xxxx-xxxx')
 })
 
-test.serial('post should create channel', async (t) => {
+test('post should create channel', async (t) => {
   const {request} = t.context
 
   // mock jwks

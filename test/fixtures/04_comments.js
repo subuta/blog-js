@@ -4,9 +4,17 @@ exports.seed = async (knex) => {
   await knex('comments').insert([
     {
       id: 1,
-      channel: 1,
-      commentedBy: 1,
+      channelId: 1,
+      commentedById: 1,
       text: 'lorem ipsum'
+    },
+
+    {
+      id: 2,
+      channelId: 1,
+      commentedById: 1,
+      text: '',
+      attachmentId: 'xxxx-xxxx-xxxx-xxxx'
     },
   ])
 }

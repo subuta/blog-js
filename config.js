@@ -11,3 +11,5 @@ export const PUBLIC_DIR = path.join(FRONT_DIR, './public')
 export const MIGRATION_DIR = path.join(SOURCE_DIR, './migrations')
 
 export const FIXTURES_DIR = path.join(TEST_DIR, './fixtures')
+
+export const absolutePath = module => path.resolve(ROOT_DIR, module);

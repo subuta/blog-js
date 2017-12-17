@@ -31,7 +31,7 @@ test.afterEach((t) => {
   sandbox.reset()
 })
 
-test.serial('should return 401 with No Authorization header', async (t) => {
+test('should return 401 with No Authorization header', async (t) => {
   const {request} = t.context
 
   const response = await request
@@ -41,7 +41,7 @@ test.serial('should return 401 with No Authorization header', async (t) => {
   t.deepEqual(response.body, {})
 })
 
-test.serial('index should return channels', async (t) => {
+test('index should return channels', async (t) => {
   const {request} = t.context
 
   // mock jwks

@@ -10,7 +10,10 @@ channels.get('/', async (ctx) => {
 
 channels.get('/:id', async (ctx) => {
   const {Channel} = ctx.state.models
-  ctx.body = await Channel.query().first({id: ctx.params.id})
+  ctx.body = await Channel
+    .query()
+    .eager('comments.attachment')
+    .first({id: ctx.params.id})
   // ctx.body = await Channel.findById(ctx.params.id, {
   //   include: [
   //     {
