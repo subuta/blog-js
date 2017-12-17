@@ -14,7 +14,7 @@ import importFresh from 'import-fresh'
 import { absolutePath } from '../../config'
 
 import { currentUser } from 'test/helper/user'
-import runSeed, { runMigration } from 'test/helper/fixtures'
+import runSeed, { runMigration, destroy } from 'test/helper/fixtures'
 
 const sandbox = sinon.sandbox.create()
 
@@ -24,7 +24,6 @@ test.beforeEach(async (t) => {
   const knex = importFresh(absolutePath('src/utils/knex')).default
 
   await runMigration(knex)
-  await runSeed(knex)
 
   const api = require('test/helper/mocked').api(knex)
 
@@ -34,16 +33,18 @@ test.beforeEach(async (t) => {
   app.use(api.allowedMethods())
 
   t.context = {
+    knex,
     request: request(app.listen(0))
   }
 })
 
-test.afterEach((t) => {
+test.afterEach(async (t) => {
   sandbox.reset()
 })
 
 test('post should create attachment', async (t) => {
-  const {request} = t.context
+  const {knex, request} = t.context
+  await runSeed(knex)
 
   // mock jwks
   const token = createToken(privateKey, '123', currentUser)
