@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import * as normalizr from 'normalizr'
 import { fetchEntities } from 'src/modules'
 

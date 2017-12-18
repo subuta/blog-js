@@ -34,7 +34,7 @@ export default (props) => {
           }}
         />
         <span className={classes.Label}>
-          {label === true ? 'Loading' : label}
+          {label}
         </span>
       </div>
     )
