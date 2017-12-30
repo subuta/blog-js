@@ -34,6 +34,13 @@ comments.post('/', async (ctx) => {
   }).eager('commentedBy')
 })
 
+comments.delete('/:id', async (ctx) => {
+  const {Comment} = ctx.state.models
+
+  await Comment.query().delete().where({id: ctx.params.id})
+  ctx.body = null
+})
+
 export default {
   routes: () => _.cloneDeep(comments.routes()),
   register: (routers) => {}

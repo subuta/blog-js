@@ -27,6 +27,7 @@ test.beforeEach(async (t) => {
   await runSeed(knex)
 
   const api = require('test/helper/mocked').api(knex)
+  const models = require('test/helper/mocked').model(knex)
 
   const app = new Koa()
   // handle /api requests
@@ -34,6 +35,7 @@ test.beforeEach(async (t) => {
   app.use(api.allowedMethods())
 
   t.context = {
+    ...models,
     request: request(app.listen(0))
   }
 })
@@ -75,4 +77,26 @@ test('post should create comment', async (t) => {
   t.is(response.status, 200)
   t.deepEqual(response.body.text, 'Hoge')
   t.deepEqual(response.body.commentedBy.id, 1)
+})
+
+test('delete should delete comment', async (t) => {
+  const {request, Comment} = t.context
+
+  let comments  = await Comment.query()
+  t.deepEqual(comments.length, 2)
+
+  // mock jwks
+  const token = createToken(privateKey, '123', currentUser)
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .delete('/api/comments/1')
+    .set('Authorization', `Bearer ${token}`)
+
+  comments = await Comment.query()
+  t.deepEqual(comments.length, 1)
+  t.deepEqual(comments[0].id, 2)
+
+  t.is(response.status, 204)
+  t.deepEqual(response.body, {})
 })
