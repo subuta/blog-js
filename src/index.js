@@ -1,12 +1,9 @@
 import Koa from 'koa'
-import { PUBLIC_DIR } from '../config'
-
+import {PUBLIC_DIR} from '../config'
 import api from './api'
-
 import cors from '@koa/cors'
 import logger from 'koa-logger'
 import serve from 'koa-static'
-
 const app = new Koa()
 const PORT = process.env.PORT || 3000
 
@@ -18,6 +15,7 @@ app.use(cors())
 
 // handle /api requests
 app.use(api.routes())
+
 app.use(api.allowedMethods())
 
 // otherwise PUBLIC_DIR

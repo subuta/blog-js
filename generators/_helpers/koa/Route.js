@@ -4,7 +4,7 @@ import { toBuilder, print, format, h, simple } from 'js-to-builder'
 import _ from 'lodash'
 import pluralize from 'pluralize'
 
-import Imports from 'generators/_helpers/imports'
+import Imports from 'generators/_helpers/js/imports'
 
 const {
   Const,
@@ -282,10 +282,10 @@ export default (props) => {
   return (
     <fragment>
       {/* import dependencies */}
-      <Imports modules={{
-        'Router': 'koa-router',
-        '_': 'lodash'
-      }} />
+      <Imports modules={[
+        ['koa-router', 'Router'],
+        ['lodash', '_']
+      ]} />
 
       {/* declare router instance */}
       <Const name={models}>
