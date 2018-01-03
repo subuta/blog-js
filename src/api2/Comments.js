@@ -15,12 +15,14 @@ comment.post('/', async (ctx) => {
 
   let params = {}
 
-  ctx.body = await Comment.query()
+  let response = await Comment.query()
     .insert({
       ...comment,
       ...params
     })
     .eager('')
+
+  ctx.body = response
 })
 
 comment.delete('/:id', async (ctx) => {

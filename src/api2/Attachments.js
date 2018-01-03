@@ -9,12 +9,14 @@ attachment.post('/', async (ctx) => {
 
   let params = {}
 
-  ctx.body = await Attachment.query()
+  let response = await Attachment.query()
     .insert({
       ...attachment,
       ...params
     })
     .eager('')
+
+  ctx.body = response
 })
 
 export default {
