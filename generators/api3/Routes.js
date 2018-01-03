@@ -6,7 +6,7 @@ import pluralize from 'pluralize'
 
 import Promise from 'bluebird'
 
-import Route from 'generators/_helpers/koa/Route'
+import routes from '../_helpers/koa/routes'
 
 const models = [
   'channel',
@@ -14,7 +14,7 @@ const models = [
   'attachment'
 ]
 
-const routes = {
+const routeConfig = {
   channel: {
     except: [
       'update',
@@ -39,7 +39,7 @@ export default async (ctx) => {
 
   return Promise.map(models, async (model) => {
     const data = build`
-      ${Route({model, routes: routes[model]})}
+      ${routes({model, routes: routeConfig[model]})}
     `
 
     const models = _.upperFirst(pluralize(model))

@@ -3,10 +3,14 @@ import _ from 'lodash'
 
 const comment = new Router()
 
-comment.post('/', async (ctx) => {
+comment.get('/', async (ctx) => {
   const {Comment} = ctx.state.models
 
-  const {comment} = ctx.request.body
+  ctx.body = await Comment.query().eager('')
+})
+
+comment.post('/', async (ctx) => {
+  const {Comment} = ctx.state.models
 
   let params = {}
 
@@ -18,6 +22,15 @@ comment.post('/', async (ctx) => {
     .eager('')
 
   ctx.body = response
+})
+
+comment.delete('/:id', async (ctx) => {
+  const {Comment} = ctx.state.models
+
+  await Comment.query()
+    .delete()
+    .where({id: ctx.params.id})
+  ctx.body = null
 })
 
 export default {

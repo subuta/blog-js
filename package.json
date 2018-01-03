@@ -15,8 +15,7 @@
     "seed": "knex seed:run",
     "db:migrate": "knex-migrate up",
     "db:migrate:drop": "knex-migrate down --to 0",
-    "db:migrate:reset": "npm run db:migrate:drop && npm run db:migrate",
-    "mat": "mat"
+    "db:migrate:reset": "npm run db:migrate:drop && npm run db:migrate"
   },
   "quokka": {
     "babel": true,
