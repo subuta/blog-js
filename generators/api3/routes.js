@@ -28,6 +28,13 @@ const routeConfig = {
     ]
   },
   attachment: {
+    imports: [
+      ['uuid/v4', 'uuid'],
+      ['lodash', '_'],
+      ['src/utils/s3', null, [
+        'getSignedUrl'
+      ]],
+    ],
     only: [
       'create'
     ]

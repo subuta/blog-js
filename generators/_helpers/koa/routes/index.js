@@ -41,17 +41,22 @@ export default (props) => {
     routes
   } = props
 
+  const {
+    imports = []
+  } = routes
+
   // Ensure naming convention.
   model = pluralize.singular(model)
   const models = pluralize(model)
 
-  const imports = s.import([
+  const Import = s.import([
+    ...imports,
     ['koa-router', 'Router'],
-    ['lodash', '_'],
+    ['_', 'lodash'],
   ])
 
   return build`
-    ${imports}
+    ${Import}
     
     const ${model} = new Router()
     

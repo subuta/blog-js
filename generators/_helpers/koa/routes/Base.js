@@ -8,7 +8,6 @@ export default ({model, path = '/', method = 'get'}, children = []) => {
   return build`
     ${model}.${method}('${path}', async (ctx) => {
       const {${Model}} = ctx.state.models
-    
       ${children}
     })
   ` + s.EOL // append EOL to each line.
