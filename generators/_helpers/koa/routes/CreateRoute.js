@@ -5,7 +5,11 @@ import pluralize from 'pluralize'
 import Base from './Base'
 
 export default (props) => {
-  let {model} = props
+  let {model, config} = props
+  const {
+    eager = ''
+  } = config
+
   model = pluralize.singular(model)
   const Model = _.upperFirst(model)
 
@@ -19,12 +23,13 @@ export default (props) => {
       /* mat Before create [start] */
       /* mat Before create [end] */
       
-      let response = await ${Model}.query()
+      let response = await ${Model}
+        .query()
+        .eager('${eager}')
         .insert({
           ...${model},
           ...params
         })
-        .eager('')
         
       /* mat After create [start] */
       /* mat After create [end] */

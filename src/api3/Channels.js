@@ -1,21 +1,33 @@
 import Router from 'koa-router'
-import lodash from '_'
+import _ from 'lodash'
 
-const channel = new Router()
+const channels = new Router()
 
-channel.get('/', async (ctx) => {
+channels.get('/', async (ctx) => {
   const {Channel} = ctx.state.models
-  ctx.body = await Channel.query().eager('')
-})
+  let params = {}
 
-channel.get('/:id', async (ctx) => {
-  const {Channel} = ctx.state.models
+  /* mat Before index [start] */
+  /* mat Before index [end] */
+
   ctx.body = await Channel.query()
-    .eager('')
-    .findFirst({id: ctx.params.id})
+    .eager('comments.attachment')
+    .where(params)
 })
 
-channel.post('/', async (ctx) => {
+channels.get('/:id', async (ctx) => {
+  const {Channel} = ctx.state.models
+  let params = {}
+
+  /* mat Before show [start] */
+  /* mat Before show [end] */
+
+  ctx.body = await Channel.query()
+    .eager('comments.attachment')
+    .findFirst({...params, id: ctx.params.id})
+})
+
+channels.post('/', async (ctx) => {
   const {Channel} = ctx.state.models
   const {channel} = ctx.request.body
 
@@ -25,11 +37,11 @@ channel.post('/', async (ctx) => {
   /* mat Before create [end] */
 
   let response = await Channel.query()
+    .eager('comments.attachment')
     .insert({
       ...channel,
       ...params
     })
-    .eager('')
 
   /* mat After create [start] */
   /* mat After create [end] */
@@ -38,6 +50,10 @@ channel.post('/', async (ctx) => {
 })
 
 export default {
-  routes: () => _.cloneDeep(channel.routes()),
-  register: (routers) => {}
+  routes: () => _.cloneDeep(channels.routes()),
+  register: (routers) => {
+    /* mat Register [start] */
+    channels.use('/:channelId/comments', routers.Comments.routes())
+    /* mat Register [end] */
+  }
 }

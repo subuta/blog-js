@@ -6,50 +6,58 @@ import pluralize from 'pluralize'
 
 import Promise from 'bluebird'
 
-import routes from '../_helpers/koa/routes'
+import generator from '../_helpers/koa/routes'
+import UserRoute from '../_helpers/koa/UserRoute'
 
-const models = [
-  'channel',
-  'comment',
-  'attachment'
-]
-
-const routeConfig = {
+const routes = {
   channel: {
     except: [
       'update',
       'delete'
-    ]
+    ],
+    eager: 'comments.attachment'
   },
   comment: {
     except: [
       'update',
       'show'
-    ]
+    ],
+    eager: '[attachment, commentedBy]'
   },
   attachment: {
     imports: [
       ['uuid/v4', 'uuid'],
-      ['lodash', '_'],
+      ['path', 'path'],
       ['src/utils/s3', null, [
         'getSignedUrl'
       ]],
     ],
     only: [
       'create'
-    ]
+    ],
+    eager: ''
+  },
+  user: {
+    render: UserRoute,
+    eager: ''
   }
 }
 
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx
 
-  return Promise.map(models, async (model) => {
-    const data = build`
-      ${routes({model, routes: routeConfig[model]})}
-    `
-
+  return Promise.map(_.toPairs(routes), async ([model, config]) => {
     const models = _.upperFirst(pluralize(model))
+
+    // if generator passed then use that.
+    if (config.render) {
+      return fs.writeFile(`${filePath}/${models}.js`, format(config.render({model, config})))
+    }
+
+    // render by `routes` generator otherwise.
+    const data = build`
+      ${generator({model, config})}
+    `
 
     return fs.writeFile(`${filePath}/${models}.js`, format(data))
   })

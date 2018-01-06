@@ -5,14 +5,24 @@ import pluralize from 'pluralize'
 import Base from './Base'
 
 export default (props) => {
-  const {model} = props
+  let {model, config} = props
+  const {
+    eager = ''
+  } = config
   const Model = _.upperFirst(pluralize.singular(model))
 
   return Base(
     {...props, path: '/'},
     build`
-      ctx.body = await ${Model}.query()
-        .eager('')
+      let params = {}
+      
+      /* mat Before index [start] */
+      /* mat Before index [end] */
+    
+      ctx.body = await ${Model}
+        .query()
+        .eager('${eager}')
+        .where(params)
     `
   )
 }

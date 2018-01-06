@@ -1,12 +1,12 @@
 import uuid from 'uuid/v4'
-import _ from 'lodash'
+import path from 'path'
 import {getSignedUrl} from 'src/utils/s3'
 import Router from 'koa-router'
-import lodash from '_'
+import _ from 'lodash'
 
-const attachment = new Router()
+const attachments = new Router()
 
-attachment.post('/', async (ctx) => {
+attachments.post('/', async (ctx) => {
   const {Attachment} = ctx.state.models
   const {attachment} = ctx.request.body
 
@@ -22,11 +22,11 @@ attachment.post('/', async (ctx) => {
   /* mat Before create [end] */
 
   let response = await Attachment.query()
+    .eager('')
     .insert({
       ...attachment,
       ...params
     })
-    .eager('')
 
   /* mat After create [start] */
   response = {
@@ -39,6 +39,9 @@ attachment.post('/', async (ctx) => {
 })
 
 export default {
-  routes: () => _.cloneDeep(attachment.routes()),
-  register: (routers) => {}
+  routes: () => _.cloneDeep(attachments.routes()),
+  register: (routers) => {
+    /* mat Register [start] */
+    /* mat Register [end] */
+  }
 }

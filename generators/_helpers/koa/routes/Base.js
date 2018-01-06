@@ -4,9 +4,10 @@ import pluralize from 'pluralize'
 
 export default ({model, path = '/', method = 'get'}, children = []) => {
   const Model = _.upperFirst(pluralize.singular(model))
+  const models = pluralize(model)
 
   return build`
-    ${model}.${method}('${path}', async (ctx) => {
+    ${models}.${method}('${path}', async (ctx) => {
       const {${Model}} = ctx.state.models
       ${children}
     })

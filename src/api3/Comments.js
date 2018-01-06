@@ -1,14 +1,21 @@
 import Router from 'koa-router'
-import lodash from '_'
+import _ from 'lodash'
 
-const comment = new Router()
+const comments = new Router()
 
-comment.get('/', async (ctx) => {
+comments.get('/', async (ctx) => {
   const {Comment} = ctx.state.models
-  ctx.body = await Comment.query().eager('')
+  let params = {}
+
+  /* mat Before index [start] */
+  /* mat Before index [end] */
+
+  ctx.body = await Comment.query()
+    .eager('[attachment, commentedBy]')
+    .where(params)
 })
 
-comment.post('/', async (ctx) => {
+comments.post('/', async (ctx) => {
   const {Comment} = ctx.state.models
   const {comment} = ctx.request.body
 
@@ -18,11 +25,11 @@ comment.post('/', async (ctx) => {
   /* mat Before create [end] */
 
   let response = await Comment.query()
+    .eager('[attachment, commentedBy]')
     .insert({
       ...comment,
       ...params
     })
-    .eager('')
 
   /* mat After create [start] */
   /* mat After create [end] */
@@ -30,7 +37,7 @@ comment.post('/', async (ctx) => {
   ctx.body = response
 })
 
-comment.delete('/:id', async (ctx) => {
+comments.delete('/:id', async (ctx) => {
   const {Comment} = ctx.state.models
   await Comment.query()
     .delete()
@@ -39,6 +46,9 @@ comment.delete('/:id', async (ctx) => {
 })
 
 export default {
-  routes: () => _.cloneDeep(comment.routes()),
-  register: (routers) => {}
+  routes: () => _.cloneDeep(comments.routes()),
+  register: (routers) => {
+    /* mat Register [start] */
+    /* mat Register [end] */
+  }
 }

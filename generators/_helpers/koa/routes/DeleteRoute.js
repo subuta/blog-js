@@ -5,7 +5,10 @@ import pluralize from 'pluralize'
 import Base from './Base'
 
 export default (props) => {
-  let {model} = props
+  let {model, config} = props
+  const {
+    eager = ''
+  } = config
   model = pluralize.singular(model)
   const Model = _.upperFirst(model)
 

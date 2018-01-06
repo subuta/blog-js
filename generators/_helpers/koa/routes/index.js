@@ -16,14 +16,14 @@ const Routes = (props) => {
   const {
     only, // the routes will generated.
     except  // the routes will ignored.
-  } = props.routes
+  } = props.config
 
   let routes = {
-    'index': IndexRoute({model}),
-    'show': ShowRoute({model}),
-    'create': CreateRoute({model}),
-    'update': UpdateRoute({model}),
-    'delete': DeleteRoute({model})
+    'index': IndexRoute(props),
+    'show': ShowRoute(props),
+    'create': CreateRoute(props),
+    'update': UpdateRoute(props),
+    'delete': DeleteRoute(props)
   }
 
   if (only) {
@@ -38,12 +38,12 @@ const Routes = (props) => {
 export default (props) => {
   let {
     model,
-    routes
+    config
   } = props
 
   const {
     imports = []
-  } = routes
+  } = config
 
   // Ensure naming convention.
   model = pluralize.singular(model)
@@ -52,20 +52,23 @@ export default (props) => {
   const Import = s.import([
     ...imports,
     ['koa-router', 'Router'],
-    ['_', 'lodash'],
+    ['lodash', '_'],
   ])
 
   return build`
     ${Import}
     
-    const ${model} = new Router()
+    const ${models} = new Router()
     
     ${Routes(props)}
     
     ${s.export(build`
       {
-        routes: () => _.cloneDeep(${model}.routes()),
-        register: (routers) => {}
+        routes: () => _.cloneDeep(${models}.routes()),
+        register: (routers) => {
+          /* mat Register [start] */
+          /* mat Register [end] */
+        }
       }
     `)}
   `
