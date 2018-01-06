@@ -43,8 +43,8 @@ export default (props) => {
       const params = {...${model}, auth0Id: sub}
       ctx.body = await ${Model}
         .query()
-        .findOrCreate({where: {auth0Id: sub}, defaults: params})
         .eager('${eager}')
+        .findOrCreate({where: {auth0Id: sub}, defaults: params})
     `
   )
 

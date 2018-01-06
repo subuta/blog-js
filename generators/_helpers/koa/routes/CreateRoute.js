@@ -25,11 +25,11 @@ export default (props) => {
       
       let response = await ${Model}
         .query()
-        .eager('${eager}')
         .insert({
           ...${model},
           ...params
         })
+        .eager('${eager}')
         
       /* mat After create [start] */
       /* mat After create [end] */

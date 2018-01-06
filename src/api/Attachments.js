@@ -1,45 +1,52 @@
-import Router from 'koa-router'
 import uuid from 'uuid/v4'
 import path from 'path'
-
+import {getSignedUrl} from 'src/utils/s3'
+import Router from 'koa-router'
 import _ from 'lodash'
-import {
-  getSignedUrl
-} from 'src/utils/s3'
 
 const attachments = new Router()
 
-// construct requestURL for s3 upload.
-// SEE: https://devcenter.heroku.com/articles/s3-upload-node
 attachments.post('/', async (ctx) => {
-  const {attachment} = ctx.request.body
   const {Attachment} = ctx.state.models
+  const {attachment} = ctx.request.body
 
-  const name = attachment.name
-  const ext = path.extname(name)
-  const type = attachment.type
+  let params = {}
 
-  // add uuid for prevent fileName conflict.
+  /* mat Before create [start] */
+  const ext = path.extname(attachment.name)
+
   const id = uuid()
   const tmpFileName = `${id}${ext}`
 
-  const result = await getSignedUrl(tmpFileName, type)
+  const result = await getSignedUrl(tmpFileName, attachment.type)
 
-  const record = await Attachment.query().insert({
+  params = {
     id,
-    name,
-    type,
-    url: result.url,
-  })
-
-  ctx.body = {
-    result,
-    attachment: record
+    url: result.url
   }
+  /* mat Before create [end] */
+
+  let response = await Attachment.query()
+    .eager('')
+    .insert({
+      ...attachment,
+      ...params
+    })
+
+  /* mat After create [start] */
+  response = {
+    result,
+    attachment: response
+  }
+  /* mat After create [end] */
+
+  ctx.body = response
 })
 
-// export default channels
 export default {
   routes: () => _.cloneDeep(attachments.routes()),
-  register: (routers) => {}
+  register: (routers) => {
+    /* mat Register [start] */
+    /* mat Register [end] */
+  }
 }

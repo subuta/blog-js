@@ -5,7 +5,8 @@ import env from 'src/utils/env'
 // add getCurrentUser method.
 export const getCurrentUser = (ctx, next) => {
   const {User} = ctx.state.models
-  ctx.state.getCurrentUser = () => User.query().findFirst({auth0Id: ctx.state.user.sub})
+  ctx.state.getCurrentUser = () =>
+    User.query().findFirst({auth0Id: ctx.state.user.sub})
   return next()
 }
 

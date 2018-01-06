@@ -1,15 +1,16 @@
 import Router from 'koa-router'
 import _ from 'lodash'
-
-import auth, { getCurrentUser } from './middlewares/auth'
-import models from './middlewares/models'
 import koaBody from 'koa-body'
+import auth, {getCurrentUser} from './middlewares/auth'
+import models from './middlewares/models'
 import Channels from './Channels'
 import Comments from './Comments'
 import Users from './Users'
 import Attachments from './Attachments'
 
-const api = new Router({prefix: '/api'})
+const api = new Router({
+  prefix: '/api'
+})
 
 // register routers to api.
 const registerRouters = (routers) => {
@@ -21,14 +22,16 @@ const registerRouters = (routers) => {
 
 // routers set before auth middleware will not be protected
 // parse body
-api.use(koaBody({
-  multipart: true
-}))
+api.use(
+  koaBody({
+    multipart: true
+  })
+)
 
 // set jwt middleware
 api.use(auth)
 
-// inject waterline models middleware.
+// inject Objection.js models middleware.
 api.use(models)
 
 // inject getCurrentUser to state for ease of use.

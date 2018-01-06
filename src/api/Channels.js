@@ -5,27 +5,54 @@ const channels = new Router()
 
 channels.get('/', async (ctx) => {
   const {Channel} = ctx.state.models
+  let params = {}
+
+  /* mat Before index [start] */
+  /* mat Before index [end] */
+
   ctx.body = await Channel.query()
+    .eager('comments.attachment')
+    .where(params)
 })
 
 channels.get('/:id', async (ctx) => {
   const {Channel} = ctx.state.models
-  ctx.body = await Channel
-    .query()
+  let params = {}
+
+  /* mat Before show [start] */
+  /* mat Before show [end] */
+
+  ctx.body = await Channel.query()
     .eager('comments.attachment')
-    .findFirst({id: ctx.params.id})
+    .findFirst({...params, id: ctx.params.id})
 })
 
 channels.post('/', async (ctx) => {
-  const {channel} = ctx.request.body
   const {Channel} = ctx.state.models
-  ctx.body = await Channel.query().insert(channel)
+  const {channel} = ctx.request.body
+
+  let params = {}
+
+  /* mat Before create [start] */
+  /* mat Before create [end] */
+
+  let response = await Channel.query()
+    .insert({
+      ...channel,
+      ...params
+    })
+    .eager('comments.attachment')
+
+  /* mat After create [start] */
+  /* mat After create [end] */
+
+  ctx.body = response
 })
 
-// export default channels
 export default {
   routes: () => _.cloneDeep(channels.routes()),
   register: (routers) => {
-    channels.use('/:channelId/comments', routers.Comments.routes())
+    /* mat Register [start] */
+    /* mat Register [end] */
   }
 }

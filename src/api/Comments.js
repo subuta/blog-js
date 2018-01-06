@@ -5,13 +5,14 @@ const comments = new Router()
 
 comments.get('/', async (ctx) => {
   const {Comment} = ctx.state.models
-
   let params = {}
-  if (_.get(ctx, 'params.channelId')) {
-    params['channelId'] = _.get(ctx, 'params.channelId')
-  }
+
+  /* mat Before index [start] */
+  /* mat Before index [end] */
+
   ctx.body = await Comment.query()
-    .eager('attachment')
+    .eager('[attachment, commentedBy]')
+    .where(params)
 })
 
 comments.post('/', async (ctx) => {
@@ -19,6 +20,8 @@ comments.post('/', async (ctx) => {
   const {comment} = ctx.request.body
 
   let params = {}
+
+  /* mat Before create [start] */
   if (_.get(ctx, 'params.channelId')) {
     params['channelId'] = _.get(ctx, 'params.channelId')
   }
@@ -27,21 +30,33 @@ comments.post('/', async (ctx) => {
   if (currentUser) {
     params['commentedById'] = currentUser.id
   }
+  /* mat Before create [end] */
 
-  ctx.body = await Comment.query().insert({
-    ...comment,
-    ...params
-  }).eager('commentedBy')
+  let response = await Comment.query()
+    .insert({
+      ...comment,
+      ...params
+    })
+    .eager('[attachment, commentedBy]')
+
+  /* mat After create [start] */
+  /* mat After create [end] */
+
+  ctx.body = response
 })
 
 comments.delete('/:id', async (ctx) => {
   const {Comment} = ctx.state.models
-
-  await Comment.query().delete().where({id: ctx.params.id})
+  await Comment.query()
+    .delete()
+    .where({id: ctx.params.id})
   ctx.body = null
 })
 
 export default {
   routes: () => _.cloneDeep(comments.routes()),
-  register: (routers) => {}
+  register: (routers) => {
+    /* mat Register [start] */
+    /* mat Register [end] */
+  }
 }
