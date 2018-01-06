@@ -15,14 +15,22 @@ export default (props) => {
   return Base(
     {...props, path: '/:id', method: 'put'},
     build`
-      const {${model} = ctx.request.body
+      const {${model}} = ctx.request.body
       const {sub} = ctx.state.user
     
-      // findOrCreate specified ${model}.
-      const params = {...${model}}
+      // update specified ${model}.
+      const params = {}
+      
+      /* mat Before update [start] */
+      /* mat Before update [end] */
+      
       ctx.body = await ${Model}
         .query()
-        .findOrCreate({where: {id: ctx.params.id}, defaults: params})
+        .update({
+          ...${model},
+          ...params
+        })
+        .where({id: ctx.params.id})
         .eager('${eager}')
     `
   )

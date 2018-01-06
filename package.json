@@ -17,6 +17,11 @@
     "db:migrate:drop": "knex-migrate down --to 0",
     "db:migrate:reset": "npm run db:migrate:drop && npm run db:migrate"
   },
+  "nyc": {
+    "exclude": [
+      "src/migrations/**/*.js"
+    ]
+  },
   "quokka": {
     "babel": true,
     "env": {
@@ -24,11 +29,6 @@
         "env": "NODE_PATH=./"
       }
     }
-  },
-  "nyc": {
-    "exclude": [
-      "src/migrations/**/*.js"
-    ]
   },
   "ava": {
     "files": [
@@ -68,14 +68,15 @@
   },
   "homepage": "https://github.com/subuta/blog-js#readme",
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.34",
-    "@babel/preset-env": "^7.0.0-beta.34",
     "ava": "^0.23.0",
     "babel-cli": "^6.24.1",
+    "babel-core": "^6.26.0",
     "babel-plugin-module-resolver": "^2.7.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-power-assert": "^1.0.0",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
     "babel-register": "^6.24.1",
     "backpack-core": "^0.4.3",
     "bld.js": "^0.1.2",
@@ -101,6 +102,7 @@
   },
   "dependencies": {
     "@koa/cors": "^2.2.1",
+    "ajv": "^5.5.2",
     "aws-sdk": "^2.167.0",
     "bluebird": "^3.5.1",
     "boom": "^7.1.1",

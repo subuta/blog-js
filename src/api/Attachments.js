@@ -27,11 +27,13 @@ attachments.post('/', async (ctx) => {
   /* mat Before create [end] */
 
   let response = await Attachment.query()
-    .eager('')
     .insert({
       ...attachment,
       ...params
     })
+    .eager('')
+
+  console.log(await Attachment.query());
 
   /* mat After create [start] */
   response = {
