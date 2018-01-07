@@ -3,6 +3,7 @@ import _ from 'lodash'
 import pluralize from 'pluralize'
 
 export default ({model, config}, children = []) => {
+  // FIXME: schemaから `__$refType` など独自のdataを消しつつstringifyする。あとassociationのvalidationがうまく動くかチェックする。
   const {
     schema = {}
   } = config
@@ -13,6 +14,16 @@ export default ({model, config}, children = []) => {
   const imports = s.import([
     ['./Model', 'Model']
   ])
+
+  let nextSchema = {
+    ...schema,
+    properties: _.transform(schema.properties, (props, value, key) => {
+      console.log(key);
+      props[key] = value
+    }, {})
+  }
+
+  console.log(nextSchema);
 
   return build`
     ${imports}
@@ -25,7 +36,7 @@ export default ({model, config}, children = []) => {
       class ${Model} extends Model {
         static tableName = '${models}'
         
-        static jsonSchema = ${JSON.stringify(schema)}
+        static jsonSchema = ${JSON.stringify(nextSchema)}
       }
     `)}
   `

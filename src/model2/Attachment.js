@@ -19,10 +19,7 @@ export default class Attachment extends Model {
       url: {type: 'string'},
       created_at: {type: 'string', format: 'date-time'},
       updated_at: {type: 'string', format: 'date-time'},
-      comments: {
-        type: ['array', 'null'],
-        items: {__$refType: 'belongsTo', $ref: 'comment.json'}
-      }
+      comments: {type: ['array', 'null'], items: {$ref: 'comment.json'}}
     }
   }
 }

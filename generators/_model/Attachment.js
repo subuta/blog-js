@@ -31,7 +31,6 @@ export default {
     comments: {
       type: ['array', 'null'],
       items: {
-        __$refType: 'belongsTo',
         $ref: 'comment.json'
       }
     }

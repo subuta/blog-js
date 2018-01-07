@@ -33,8 +33,6 @@ attachments.post('/', async (ctx) => {
     })
     .eager('')
 
-  console.log(await Attachment.query());
-
   /* mat After create [start] */
   response = {
     result,
