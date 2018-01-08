@@ -50,7 +50,7 @@ export default async (ctx) => {
     api.use(getCurrentUser)
     
     // routers set after auth middleware will be protected
-    registerRouters(${s.value({
+    registerRouters(${s.raw({
       Channels: 'Channels',
       Comments: 'Comments',
       Attachments: 'Attachments',

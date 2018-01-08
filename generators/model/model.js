@@ -3,24 +3,15 @@ import { build, format, snippets as s } from 'bld.js'
 import _ from 'lodash'
 import pluralize from 'pluralize'
 
-import Model from './_helpers/objection/Model'
-import Child from './_helpers/objection/Child'
+import Model from '../_helpers/objection/Model'
+import Child from '../_helpers/objection/Child'
 
 import Promise from 'bluebird'
 
-import Attachment from './_model/Attachment'
-import Channel from './_model/Channel'
-import Comment from './_model/Comment'
-import User from './_model/User'
-
-const ajv = new Ajv({
-  schemas: [
-    Comment,
-    Channel
-  ],
-  removeAdditional: true,
-  useDefaults: true
-})
+import Attachment from './_defs/Attachment'
+import Channel from './_defs/Channel'
+import Comment from './_defs/Comment'
+import User from './_defs/User'
 
 const models = {
   attachment: {
@@ -51,7 +42,7 @@ export default async (ctx) => {
 
     // if generator passed then use that.
     if (config.render) {
-      return fs.writeFile(`${filePath}/model2/${Model}.js`, format(config.render({model, config})))
+      return fs.writeFile(`${filePath}/${Model}.js`, format(config.render({model, config})))
     }
 
     // render by `routes` generator otherwise.
@@ -59,6 +50,6 @@ export default async (ctx) => {
       ${Child({model, config})}
     `
 
-    return fs.writeFile(`${filePath}/model2/${Model}.js`, format(data))
+    return fs.writeFile(`${filePath}/${Model}.js`, format(data))
   })
 }

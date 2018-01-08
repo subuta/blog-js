@@ -1,12 +1,11 @@
 export default {
-  title: 'Attachment',
-  $id: 'http://sub-labo.com/schemas/attachment.json',
-  type: 'object',
+  tableName: 'attachments',
   required: [
     'name',
     'type',
     'url',
   ],
+
   properties: {
     id: {
       type: 'string'
@@ -27,12 +26,16 @@ export default {
     updated_at: {
       type: 'string',
       format: 'date-time'
-    },
-    comments: {
-      type: ['array', 'null'],
-      items: {
-        $ref: 'comment.json'
-      }
     }
+  },
+
+  relations: {
+    comments: {
+      hasMany: 'comments',
+      join: {
+        from: 'attachments.id',
+        to: 'comments.attachmentId'
+      }
+    },
   }
 }

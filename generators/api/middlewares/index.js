@@ -1,5 +1,3 @@
-/** @jsx h */
-
 import { build, format, snippets as s } from 'bld.js'
 import Promise from 'bluebird'
 import _ from 'lodash'
