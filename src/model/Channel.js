@@ -1,6 +1,10 @@
 import Model from './Model'
+import {setSchema} from 'src/utils/ajvValidator'
 
 export const register = (models) => {
+  // setSchema to ajv.
+  setSchema(Channel.jsonSchema)
+  // then define relationMappings.
   Channel.relationMappings = {
     comments: {
       modelClass: models.Comment,
@@ -15,9 +19,13 @@ export default class Channel extends Model {
 
   static jsonSchema = {
     title: 'Channel',
-    id: 'http://sub-labo.com/schemas/channel.json',
+    $id: 'http://sub-labo.com/schemas/channel.json',
     type: 'object',
     required: ['name'],
-    properties: {id: {type: 'integer'}, name: {type: 'string'}}
+    properties: {
+      id: {type: 'integer'},
+      name: {type: 'string'},
+      comments: {type: ['array', 'null'], items: [{$ref: 'comment.json'}]}
+    }
   }
 }

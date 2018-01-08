@@ -4,7 +4,6 @@ import pluralize from 'pluralize'
 import Model from '../../../src/model/Model'
 
 export default ({model, config}, children = []) => {
-  // FIXME: schemaから `__$refType` など独自のdataを消しつつstringifyする。あとassociationのvalidationがうまく動くかチェックする。
   const {
     schema = {}
   } = config
@@ -12,16 +11,18 @@ export default ({model, config}, children = []) => {
   const Model = _.upperFirst(pluralize.singular(_.toLower(model)))
 
   const imports = s.import([
-    ['./Model', 'Model']
+    ['./Model', 'Model'],
+    ['src/utils/ajvValidator', null, [
+      'setSchema'
+    ]],
   ])
 
-  // Expects model has following keys.
-  // tableName = transformed to Model's tableName
-  // required = transformed to Model's jsonSchema
-  // properties = transformed to Model's jsonSchema
-  // relations = transformed to Model's relationMappings
-
   const parseSchema = (schema) => {
+    // Expects schema has following keys.
+    // tableName = will transform to Model's tableName
+    // required = will transform to Model's jsonSchema
+    // properties = will transform to Model's jsonSchema
+    // relations = will transform to Model's relationMappings
     let {
       tableName,
       required,
@@ -64,48 +65,47 @@ export default ({model, config}, children = []) => {
       results[key] = parseRelation(value)
     }, {})
 
-    // FIXME: validation of properties that using refs.
-    // properties = _.transform(relations, (results, value, key) => {
-    //   results[key] = (() => {
-    //     if (value.belongsTo) {
-    //       const relatedModel = pluralize.singular(_.toLower(value.belongsTo))
-    //       return {
-    //         oneOf: [
-    //           {'type': 'null'},
-    //           {'$ref': `schemas/${relatedModel}.json`}
-    //         ]
-    //       }
-    //     } else if (value.hasOne) {
-    //       const relatedModel = pluralize.singular(_.toLower(value.hasOne))
-    //       return {
-    //         oneOf: [
-    //           {'type': 'null'},
-    //           {'$ref': `schemas/${relatedModel}.json`}
-    //         ]
-    //       }
-    //     } else if (value.hasMany) {
-    //       const relatedModel = pluralize.singular(_.toLower(value.hasMany))
-    //       return {
-    //         type: ['array', 'null'],
-    //         items: [
-    //           {'$ref': `schemas/${relatedModel}.json`},
-    //         ]
-    //       }
-    //     } else if (value.hasAndBelongsToMany) {
-    //       const relatedModel = pluralize.singular(_.toLower(value.hasAndBelongsToMany))
-    //       return {
-    //         type: ['array', 'null'],
-    //         items: [
-    //           {'$ref': `schemas/${relatedModel}.json`},
-    //         ]
-    //       }
-    //     }
-    //   })()
-    // }, properties)
+    properties = _.transform(relations, (results, value, key) => {
+      results[key] = (() => {
+        if (value.belongsTo) {
+          const relatedModel = pluralize.singular(_.toLower(value.belongsTo))
+          return {
+            oneOf: [
+              {'type': 'null'},
+              {'$ref': `${relatedModel}.json`}
+            ]
+          }
+        } else if (value.hasOne) {
+          const relatedModel = pluralize.singular(_.toLower(value.hasOne))
+          return {
+            oneOf: [
+              {'type': 'null'},
+              {'$ref': `${relatedModel}.json`}
+            ]
+          }
+        } else if (value.hasMany) {
+          const relatedModel = pluralize.singular(_.toLower(value.hasMany))
+          return {
+            type: ['array', 'null'],
+            items: [
+              {'$ref': `${relatedModel}.json`},
+            ]
+          }
+        } else if (value.hasAndBelongsToMany) {
+          const relatedModel = pluralize.singular(_.toLower(value.hasAndBelongsToMany))
+          return {
+            type: ['array', 'null'],
+            items: [
+              {'$ref': `${relatedModel}.json`},
+            ]
+          }
+        }
+      })()
+    }, properties)
 
     const jsonSchema = {
       title: s.stringify(Model),
-      id: s.stringify(`http://sub-labo.com/schemas/${model}.json`),
+      $id: s.stringify(`http://sub-labo.com/schemas/${model}.json`),
       type: s.stringify('object'),
       required: s.stringify(required),
       properties: s.stringify(properties)
@@ -127,7 +127,11 @@ export default ({model, config}, children = []) => {
   return build`
     ${imports}
     
+   
     export const register = (models) => {
+      // setSchema to ajv.
+      setSchema(${Model}.jsonSchema)
+      // then define relationMappings.
       ${Model}.relationMappings = ${s.raw(relationMappings)}
     }
     

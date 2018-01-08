@@ -4,9 +4,9 @@ export default () => {
   const imports = s.import([
     ['lodash', '_'],
     ['objection', null, [
-      'Model',
-      'AjvValidator'
-    ]]
+      'Model'
+    ]],
+    ['src/utils/ajvValidator', 'ajvValidator']
   ])
 
   return build`
@@ -28,18 +28,6 @@ export default () => {
       }
     }
     
-    const validator = new AjvValidator({
-      onCreateAjv: (ajv) => {},
-      options: {
-        allErrors: true,
-        validateSchema: false,
-        ownProperties: true,
-        v5: true,
-        removeAdditional: true,
-        useDefaults: true,
-      }
-    })
-    
     ${s.export(build`
       class extends Model {
         static QueryBuilder = CustomQueryBuilder
@@ -48,7 +36,7 @@ export default () => {
           // https://github.com/Vincit/objection.js/issues/549
           // NOTE: createValidator() is inherited in all models extending \`BaseModel\`
           // and returns the same instance of \`validator\`
-          return validator
+          return ajvValidator
         }
         
         $beforeInsert() {

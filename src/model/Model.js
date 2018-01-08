@@ -1,5 +1,6 @@
 import _ from 'lodash'
-import {Model, AjvValidator} from 'objection'
+import {Model} from 'objection'
+import ajvValidator from 'src/utils/ajvValidator'
 
 // Based on https://github.com/Vincit/objection.js/blob/master/examples/plugin/index.js
 // Base Model class
@@ -17,18 +18,6 @@ class CustomQueryBuilder extends Model.QueryBuilder {
   }
 }
 
-const validator = new AjvValidator({
-  onCreateAjv: (ajv) => {},
-  options: {
-    allErrors: true,
-    validateSchema: false,
-    ownProperties: true,
-    v5: true,
-    removeAdditional: true,
-    useDefaults: true
-  }
-})
-
 export default class extends Model {
   static QueryBuilder = CustomQueryBuilder
 
@@ -36,7 +25,7 @@ export default class extends Model {
     // https://github.com/Vincit/objection.js/issues/549
     // NOTE: createValidator() is inherited in all models extending `BaseModel`
     // and returns the same instance of `validator`
-    return validator
+    return ajvValidator
   }
 
   $beforeInsert() {
