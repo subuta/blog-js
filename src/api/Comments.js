@@ -23,7 +23,7 @@ comments.post('/', async (ctx) => {
 
   /* mat Before create [start] */
   if (_.get(ctx, 'params.channelId')) {
-    params['channelId'] = _.get(ctx, 'params.channelId')
+    params['channelId'] = Number(_.get(ctx, 'params.channelId'))
   }
 
   const currentUser = await ctx.state.getCurrentUser()

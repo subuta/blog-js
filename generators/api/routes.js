@@ -15,7 +15,7 @@ const routes = {
       'update',
       'delete'
     ],
-    eager: 'comments.attachment'
+    eager: '[comments.[attachment, commentedBy]]'
   },
   comment: {
     except: [

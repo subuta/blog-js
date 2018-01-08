@@ -11,7 +11,7 @@ channels.get('/', async (ctx) => {
   /* mat Before index [end] */
 
   ctx.body = await Channel.query()
-    .eager('comments.attachment')
+    .eager('[comments.[attachment, commentedBy]]')
     .where(params)
 })
 
@@ -23,7 +23,7 @@ channels.get('/:id', async (ctx) => {
   /* mat Before show [end] */
 
   ctx.body = await Channel.query()
-    .eager('comments.attachment')
+    .eager('[comments.[attachment, commentedBy]]')
     .findFirst({...params, id: ctx.params.id})
 })
 
@@ -41,7 +41,7 @@ channels.post('/', async (ctx) => {
       ...channel,
       ...params
     })
-    .eager('comments.attachment')
+    .eager('[comments.[attachment, commentedBy]]')
 
   /* mat After create [start] */
   /* mat After create [end] */
@@ -53,6 +53,7 @@ export default {
   routes: () => _.cloneDeep(channels.routes()),
   register: (routers) => {
     /* mat Register [start] */
+    channels.use('/:channelId/comments', routers.Comments.routes())
     /* mat Register [end] */
   }
 }
