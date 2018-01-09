@@ -1,6 +1,6 @@
 import { build, format, snippets as s } from 'bld.js'
 
-import EntryPoint from './_helpers/koa/Entrypoint'
+import EntryPoint from '@subuta/snippets/koa/Entrypoint'
 
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx
