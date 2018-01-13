@@ -2,14 +2,14 @@ import { build, format, snippets as s } from 'bld.js'
 import Promise from 'bluebird'
 import _ from 'lodash'
 
-import Action from '../../generators/_helpers/redux'
+import Action from '@subuta/snippets/redux/Action'
 
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx
 
   const data = build`
-    console.log('hoge');
+    ${Action()}
   `
 
-  return fs.writeFile(`${filePath}/tmp/${fileName}`, format(data))
+  return fs.writeFile(`${filePath}/${fileName}`, format(data))
 }
