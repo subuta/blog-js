@@ -6,8 +6,8 @@ import pluralize from 'pluralize'
 
 import Promise from 'bluebird'
 
-import generator from '@subuta/snippets/koa/routes'
-import UserRoute from '@subuta/snippets/koa/UserRoute'
+import generator from '@subuta/snippets/lib/koa/routes'
+import UserRoute from '@subuta/snippets/lib/koa/UserRoute'
 
 const routes = {
   channel: {

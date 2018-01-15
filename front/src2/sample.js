@@ -1,1 +1,3 @@
-console.log('hoges')
+// action
+console.log('action')
+DO_HOGE

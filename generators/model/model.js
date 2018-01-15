@@ -3,8 +3,8 @@ import { build, format, snippets as s } from 'bld.js'
 import _ from 'lodash'
 import pluralize from 'pluralize'
 
-import Model from '@subuta/snippets/objection/Model'
-import Child from '@subuta/snippets/objection/Child'
+import Model from '@subuta/snippets/lib/objection/Model'
+import Child from '@subuta/snippets/lib/objection/Child'
 
 import Promise from 'bluebird'
 
