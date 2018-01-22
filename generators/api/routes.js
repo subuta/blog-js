@@ -8,50 +8,17 @@ import Promise from 'bluebird'
 
 import Route from '@subuta/snippets/lib/koa/routes/Route'
 import UserRoute from '@subuta/snippets/lib/koa/UserRoute'
-
-const routes = {
-  channel: {
-    except: [
-      'update',
-      'delete'
-    ],
-    eager: '[comments.[attachment, commentedBy]]'
-  },
-  comment: {
-    except: [
-      'update',
-      'show'
-    ],
-    eager: '[attachment, commentedBy]'
-  },
-  attachment: {
-    imports: [
-      ['uuid/v4', 'uuid'],
-      ['path', 'path'],
-      ['src/utils/s3', null, [
-        'getSignedUrl'
-      ]],
-    ],
-    only: [
-      'create'
-    ],
-    eager: ''
-  },
-  user: {
-    render: UserRoute,
-    eager: ''
-  }
-}
+import { Routes } from '../_config'
 
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx
 
-  return Promise.map(_.toPairs(routes), async ([model, config]) => {
+  return Promise.map(_.toPairs(Routes), async ([model, config]) => {
     const models = _.upperFirst(pluralize(model))
 
-    // if generator passed then use that.
-    if (config.render) {
-      return fs.writeFile(`${filePath}/${models}.js`, format(config.render({model, config})))
+    // if user.
+    if (model === 'user') {
+      return fs.writeFile(`${filePath}/${models}.js`, format(UserRoute({model, config})))
     }
 
     // render by `routes` generator otherwise.

@@ -8,41 +8,20 @@ import Child from '@subuta/snippets/lib/objection/Child'
 
 import Promise from 'bluebird'
 
-import Attachment from './_defs/Attachment'
-import Channel from './_defs/Channel'
-import Comment from './_defs/Comment'
-import User from './_defs/User'
-
-const models = {
-  attachment: {
-    schema: Attachment
-  },
-  channel: {
-    schema: Channel
-  },
-  comment: {
-    schema: Comment
-  },
-  user: {
-    schema: User
-  },
-  Model: {
-    render: Model
-  }
-}
+import { Models } from '../_config'
 
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx
 
-  return Promise.map(_.toPairs(models), async ([model, config]) => {
+  return Promise.map(_.toPairs(Models), async ([model, config]) => {
     // ensure name
     const models = pluralize(model)
     model = pluralize.singular(model)
-    const Model = _.upperFirst(model)
+    const ModelName = _.upperFirst(model)
 
     // if generator passed then use that.
-    if (config.render) {
-      return fs.writeFile(`${filePath}/${Model}.js`, format(config.render({model, config})))
+    if (model === 'Model') {
+      return fs.writeFile(`${filePath}/${ModelName}.js`, format(Model({model, config})))
     }
 
     // render by `routes` generator otherwise.
@@ -50,6 +29,6 @@ export default async (ctx) => {
       ${Child({model, config})}
     `
 
-    return fs.writeFile(`${filePath}/${Model}.js`, format(data))
+    return fs.writeFile(`${filePath}/${ModelName}.js`, format(data))
   })
 }
