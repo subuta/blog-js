@@ -2,12 +2,12 @@
 
 import { build, format, snippets as s } from 'bld.js'
 
-import RouteIndex from '@subuta/snippets/lib/koa/routes'
+import Api from '@subuta/snippets/lib/koa/api'
 
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx
 
-  const data = RouteIndex()
+  const data = Api()
 
   return fs.writeFile(`${filePath}/${fileName}`, format(data))
 }

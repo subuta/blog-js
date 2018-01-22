@@ -6,8 +6,8 @@ import pluralize from 'pluralize'
 
 import Promise from 'bluebird'
 
-import Route from '@subuta/snippets/lib/koa/routes/Route'
-import UserRoute from '@subuta/snippets/lib/koa/UserRoute'
+import Route from '@subuta/snippets/lib/koa/api/Route'
+import UserRoute from '@subuta/snippets/lib/koa/api/UserRoute'
 import { Routes } from '../_config'
 
 export default async (ctx) => {

@@ -2,8 +2,8 @@ import { build, format, snippets as s } from 'bld.js'
 import Promise from 'bluebird'
 import _ from 'lodash'
 
-import Models from '@subuta/snippets/lib/koa/middlewares/Models'
-import Auth from '@subuta/snippets/lib/koa/middlewares/Auth'
+import Models from '@subuta/snippets/lib/koa/api/middlewares/Models'
+import Auth from '@subuta/snippets/lib/koa/api/middlewares/Auth'
 
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx
