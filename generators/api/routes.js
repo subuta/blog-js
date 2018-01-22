@@ -6,7 +6,7 @@ import pluralize from 'pluralize'
 
 import Promise from 'bluebird'
 
-import generator from '@subuta/snippets/lib/koa/routes'
+import Route from '@subuta/snippets/lib/koa/routes/Route'
 import UserRoute from '@subuta/snippets/lib/koa/UserRoute'
 
 const routes = {
@@ -56,7 +56,7 @@ export default async (ctx) => {
 
     // render by `routes` generator otherwise.
     const data = build`
-      ${generator({model, config})}
+      ${Route({model, config})}
     `
 
     return fs.writeFile(`${filePath}/${models}.js`, format(data))
