@@ -39,9 +39,9 @@ api.use(getCurrentUser)
 
 // routers set after auth middleware will be protected
 registerRouters({
+  Attachments,
   Channels,
   Comments,
-  Attachments,
   Users
 })
 

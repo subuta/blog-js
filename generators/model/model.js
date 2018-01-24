@@ -13,16 +13,11 @@ import { Models } from '../_config'
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx
 
-  return Promise.map(_.toPairs(Models), async ([model, config]) => {
+  const promise =  Promise.map(_.toPairs(Models), async ([model, config]) => {
     // ensure name
     const models = pluralize(model)
     model = pluralize.singular(model)
     const ModelName = _.upperFirst(model)
-
-    // if generator passed then use that.
-    if (model === 'Model') {
-      return fs.writeFile(`${filePath}/${ModelName}.js`, format(Model({model, config})))
-    }
 
     // render by `routes` generator otherwise.
     const data = build`
@@ -31,4 +26,8 @@ export default async (ctx) => {
 
     return fs.writeFile(`${filePath}/${ModelName}.js`, format(data))
   })
+
+  const modelTask = fs.writeFile(`${filePath}/Model.js`, format(Model()))
+
+  return Promise.all([promise, modelTask])
 }

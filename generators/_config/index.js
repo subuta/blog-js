@@ -49,6 +49,5 @@ export const Models = {
   },
   user: {
     schema: User
-  },
-  Model: {}
+  }
 }
