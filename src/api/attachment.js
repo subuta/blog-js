@@ -4,9 +4,9 @@ import {getSignedUrl} from 'src/utils/s3'
 import Router from 'koa-router'
 import _ from 'lodash'
 
-const attachments = new Router()
+const attachment = new Router()
 
-attachments.post('/', async (ctx) => {
+attachment.post('/', async (ctx) => {
   const {Attachment} = ctx.state.models
   const {attachment} = ctx.request.body
 
@@ -44,7 +44,7 @@ attachments.post('/', async (ctx) => {
 })
 
 export default {
-  routes: () => _.cloneDeep(attachments.routes()),
+  routes: () => _.cloneDeep(attachment.routes()),
   register: (routers) => {
     /* mat Register [start] */
     /* mat Register [end] */

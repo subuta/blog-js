@@ -1,9 +1,9 @@
 import Router from 'koa-router'
 import _ from 'lodash'
 
-const comments = new Router()
+const comment = new Router()
 
-comments.get('/', async (ctx) => {
+comment.get('/', async (ctx) => {
   const {Comment} = ctx.state.models
   let params = {}
 
@@ -15,7 +15,7 @@ comments.get('/', async (ctx) => {
     .where(params)
 })
 
-comments.post('/', async (ctx) => {
+comment.post('/', async (ctx) => {
   const {Comment} = ctx.state.models
   const {comment} = ctx.request.body
 
@@ -45,7 +45,7 @@ comments.post('/', async (ctx) => {
   ctx.body = response
 })
 
-comments.delete('/:id', async (ctx) => {
+comment.delete('/:id', async (ctx) => {
   const {Comment} = ctx.state.models
   await Comment.query()
     .delete()
@@ -54,7 +54,7 @@ comments.delete('/:id', async (ctx) => {
 })
 
 export default {
-  routes: () => _.cloneDeep(comments.routes()),
+  routes: () => _.cloneDeep(comment.routes()),
   register: (routers) => {
     /* mat Register [start] */
     /* mat Register [end] */

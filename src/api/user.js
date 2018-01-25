@@ -1,14 +1,14 @@
 import Router from 'koa-router'
 import _ from 'lodash'
 
-const users = new Router()
+const user = new Router()
 
-users.get('/me', async (ctx) => {
+user.get('/me', async (ctx) => {
   const {User} = ctx.state.models
   ctx.body = await ctx.state.getCurrentUser()
 })
 
-users.put('/me', async (ctx) => {
+user.put('/me', async (ctx) => {
   const {User} = ctx.state.models
   const {user} = ctx.request.body
   const {sub} = ctx.state.user
@@ -22,7 +22,7 @@ users.put('/me', async (ctx) => {
 })
 
 export default {
-  routes: () => _.cloneDeep(users.routes()),
+  routes: () => _.cloneDeep(user.routes()),
   register: (routers) => {
     /* mat Register [start] */
     /* mat Register [end] */

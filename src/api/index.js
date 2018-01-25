@@ -1,12 +1,13 @@
 import Router from 'koa-router'
 import _ from 'lodash'
+import pluralize from 'pluralize'
 import koaBody from 'koa-body'
-import auth, {getCurrentUser} from './middlewares/auth'
+import auth, { getCurrentUser } from './middlewares/auth'
 import models from './middlewares/models'
-import Channels from './Channels'
-import Comments from './Comments'
-import Users from './Users'
-import Attachments from './Attachments'
+import attachment from './attachment'
+import channel from './channel'
+import comment from './comment'
+import user from './user'
 
 const api = new Router({
   prefix: '/api'
@@ -16,7 +17,7 @@ const api = new Router({
 const registerRouters = (routers) => {
   _.each(routers, (router, name) => {
     router.register && router.register(routers)
-    api.use(`/${_.snakeCase(name)}`, router.routes())
+    api.use(`/${_.snakeCase(pluralize(name))}`, router.routes())
   })
 }
 
@@ -39,10 +40,10 @@ api.use(getCurrentUser)
 
 // routers set after auth middleware will be protected
 registerRouters({
-  Attachments,
-  Channels,
-  Comments,
-  Users
+  attachment,
+  channel,
+  comment,
+  user
 })
 
 export default api

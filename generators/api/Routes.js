@@ -18,7 +18,7 @@ export default async (ctx) => {
 
     // if user.
     if (model === 'user') {
-      return fs.writeFile(`${filePath}/${models}.js`, format(UserRoute({model, config})))
+      return fs.writeFile(`${filePath}/${model}.js`, format(UserRoute({model, config})))
     }
 
     // render by `routes` generator otherwise.
@@ -26,6 +26,6 @@ export default async (ctx) => {
       ${Route({model, config})}
     `
 
-    return fs.writeFile(`${filePath}/${models}.js`, format(data))
+    return fs.writeFile(`${filePath}/${model}.js`, format(data))
   })
 }

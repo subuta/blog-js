@@ -1,9 +1,9 @@
 import Router from 'koa-router'
 import _ from 'lodash'
 
-const channels = new Router()
+const channel = new Router()
 
-channels.get('/', async (ctx) => {
+channel.get('/', async (ctx) => {
   const {Channel} = ctx.state.models
   let params = {}
 
@@ -15,7 +15,7 @@ channels.get('/', async (ctx) => {
     .where(params)
 })
 
-channels.get('/:id', async (ctx) => {
+channel.get('/:id', async (ctx) => {
   const {Channel} = ctx.state.models
   let params = {}
 
@@ -27,7 +27,7 @@ channels.get('/:id', async (ctx) => {
     .findFirst({...params, id: ctx.params.id})
 })
 
-channels.post('/', async (ctx) => {
+channel.post('/', async (ctx) => {
   const {Channel} = ctx.state.models
   const {channel} = ctx.request.body
 
@@ -50,10 +50,10 @@ channels.post('/', async (ctx) => {
 })
 
 export default {
-  routes: () => _.cloneDeep(channels.routes()),
+  routes: () => _.cloneDeep(channel.routes()),
   register: (routers) => {
     /* mat Register [start] */
-    channels.use('/:channelId/comments', routers.Comments.routes())
+    channel.use('/:channelId/comments', routers.comment.routes())
     /* mat Register [end] */
   }
 }
