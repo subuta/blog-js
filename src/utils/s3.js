@@ -19,20 +19,21 @@ if (env.NODE_ENV !== 'production') {
 
 const s3 = new AWS.S3(config)
 
-export const getSignedUrl = (fileName, fileType) => new Promise((resolve, reject) => {
-  const s3Params = {
-    Bucket: S3_BUCKET,
-    Key: fileName,
-    Expires: 600,
-    ContentType: fileType,
-    // ACL: 'public-read'
-  }
+export const getSignedUrl = (fileName, fileType) =>
+  new Promise((resolve, reject) => {
+    const s3Params = {
+      Bucket: S3_BUCKET,
+      Key: fileName,
+      Expires: 600,
+      ContentType: fileType
+      // ACL: 'public-read'
+    }
 
-  s3.getSignedUrl('putObject', s3Params, (err, data) => {
-    if (err) return reject(err)
-    return resolve({
-      signedRequest: data,
-      url: `${urlPrefix}/${fileName}`
+    s3.getSignedUrl('putObject', s3Params, (err, data) => {
+      if (err) return reject(err)
+      return resolve({
+        signedRequest: data,
+        url: `${urlPrefix}/${fileName}`
+      })
     })
   })
-})
