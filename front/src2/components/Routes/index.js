@@ -1,5 +1,5 @@
 import React from 'react'
-import lodash from '_'
+import _ from 'lodash'
 import {ConnectedRouter} from 'react-router-redux'
 import history from 'src/utils/history'
 
@@ -22,7 +22,6 @@ const ensureAuthorized = branch(
 )
 
 const AuthorizedRoutes = ensureAuthorized(Layout)
-
 /* mat Custom imports [end] */
 
 let routes = null
