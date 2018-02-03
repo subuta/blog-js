@@ -55,14 +55,37 @@ test('post should create attachment', async (t) => {
     .send({
       attachment: {
         name: 'hoge.png',
+        type: 'image/png',
+        url: 'http://localhost:9000/sub-labo.com/65502043-8fa4-4ef4-bd56-e001d719d21f.png'
+      }
+    })
+
+  t.is(response.status, 200)
+  t.truthy(response.body.id)
+  t.is(response.body.name, 'hoge.png')
+  t.is(response.body.type, 'image/png')
+  t.is(response.body.url, 'http://localhost:9000/sub-labo.com/65502043-8fa4-4ef4-bd56-e001d719d21f.png')
+})
+
+test('sign should return signedUrl', async (t) => {
+  const {request} = t.context
+
+  // mock jwks
+  const token = createToken(privateKey, '123', currentUser)
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .post('/api/attachments/sign')
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      attachment: {
+        name: 'hoge.png',
         type: 'image/png'
       }
     })
 
   t.is(response.status, 200)
-  t.truthy(response.body.result.signedRequest, 4)
-  t.truthy(response.body.result.url, 4)
-  t.truthy(response.body.attachment.id)
-  t.is(response.body.attachment.name, 'hoge.png')
-  t.is(response.body.attachment.type, 'image/png')
+  t.truthy(response.body.signedRequest)
+  t.truthy(response.body.url)
+  t.truthy(response.body.id)
 })

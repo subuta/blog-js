@@ -1,10 +1,11 @@
 import _ from 'lodash'
-import {combineReducers} from 'redux'
-import {createSelector} from 'reselect'
-import {denormalize} from 'src/utils/schema'
+import { combineReducers } from 'redux'
+import { createSelector } from 'reselect'
+import { normalize } from 'normalizr'
+import { attachment, attachmentList, denormalize } from 'src/utils/schema'
 import api from 'src/utils/api'
 
-import {SET_COMMENTS} from './comment'
+import { SET_COMMENTS } from './comment'
 
 // -------------
 // Constants
@@ -12,8 +13,6 @@ import {SET_COMMENTS} from './comment'
 export const REQUEST_ATTACHMENTS = 'REQUEST_ATTACHMENTS'
 export const REQUEST_ATTACHMENTS_FAILURE = 'REQUEST_ATTACHMENTS_FAILURE'
 export const SET_ATTACHMENTS = 'SET_ATTACHMENTS'
-
-
 
 // -------------
 // ActionCreators
@@ -29,20 +28,31 @@ export const createAttachment = (params) => {
   return (dispatch) => {
     dispatch({type: REQUEST_ATTACHMENTS})
     return api.attachment.create(params).then((data) => {
-      dispatch(setAttachments(data))
+      dispatch(setAttachments(normalize(data, attachment)))
       return data
     })
   }
 }
 
 /* mat Custom actionCreators [start] */
+export const uploadAttachment = (file, signedRequest, url) => {
+  return () => {
+    return api.attachment.upload(file, signedRequest, url)
+  }
+}
+
+export const signAttachment = (params) => {
+  return () => {
+    return api.attachment.sign(params)
+  }
+}
 /* mat Custom actionCreators [end] */
 
 // -------------
 // Reducers
 // -------------
 export const entities = (state = {}, action) => {
-  if (action.type === SET_ATTACHMENTS || action.type === SET_COMMENTS) {
+  if (_.get(action, ['payload', 'entities', 'attachment'])) {
     return {...state, ...action.payload.entities.attachment}
   }
   return state
@@ -75,8 +85,6 @@ let reducers = {
   ids,
   isRequestProgress
 }
-
-
 
 export default combineReducers(reducers)
 

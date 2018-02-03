@@ -23,6 +23,7 @@ import {
 
 import {
   getIsRequestProgress as getIsAttachmentProgress,
+  signAttachment,
   createAttachment,
   uploadAttachment
 } from 'src/modules/attachment'
@@ -39,7 +40,8 @@ const mapDispatchToProps = {
   fetchChannelComments,
   createChannelComment,
   createAttachment,
-  uploadAttachment
+  uploadAttachment,
+  signAttachment
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)

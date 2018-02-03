@@ -13,11 +13,14 @@ export const Routes = {
     eager: '[comments.[attachment, commentedBy]]'
   },
   comment: {
+    // pass custom route prefix.
+    prefix: '/channels/:channelId/comments',
+
     except: [
       'update',
       'show'
     ],
-    eager: '[attachment, commentedBy]'
+    eager: '[channel, attachment, commentedBy]'
   },
   attachment: {
     imports: [

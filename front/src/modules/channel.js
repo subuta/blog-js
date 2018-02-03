@@ -1,7 +1,8 @@
 import _ from 'lodash'
 import {combineReducers} from 'redux'
 import {createSelector} from 'reselect'
-import {denormalize} from 'src/utils/schema'
+import {normalize} from 'normalizr'
+import {channel, channelList, denormalize} from 'src/utils/schema'
 import api from 'src/utils/api'
 
 import {SET_COMMENTS} from './comment'
@@ -29,7 +30,8 @@ export const requestChannels = () => {
   return (dispatch) => {
     dispatch({type: REQUEST_CHANNELS})
     return api.channel.index().then((data) => {
-      dispatch(setChannels(data))
+
+      dispatch(setChannels(normalize(data, channelList)))
       return data
     })
   }
@@ -39,7 +41,8 @@ export const requestChannel = (id) => {
   return (dispatch) => {
     dispatch({type: REQUEST_CHANNELS})
     return api.channel.show(id).then((data) => {
-      dispatch(setChannels(data))
+
+      dispatch(setChannels(normalize(data, channel)))
       return data
     })
   }
@@ -49,7 +52,7 @@ export const createChannel = (params) => {
   return (dispatch) => {
     dispatch({type: REQUEST_CHANNELS})
     return api.channel.create(params).then((data) => {
-      dispatch(setChannels(data))
+      dispatch(setChannels(normalize(data, channel)))
       return data
     })
   }
@@ -62,7 +65,7 @@ export const createChannel = (params) => {
 // Reducers
 // -------------
 export const entities = (state = {}, action) => {
-  if (action.type === SET_CHANNELS || action.type === SET_COMMENTS) {
+  if (_.get(action, ['payload', 'entities', 'channel'])) {
     return {...state, ...action.payload.entities.channel}
   }
   return state

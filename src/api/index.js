@@ -1,6 +1,5 @@
 import Router from 'koa-router'
 import _ from 'lodash'
-import pluralize from 'pluralize'
 import koaBody from 'koa-body'
 import auth, {getCurrentUser} from './middlewares/auth'
 import models from './middlewares/models'
@@ -17,7 +16,7 @@ const api = new Router({
 const registerRouters = (routers) => {
   _.each(routers, (router, name) => {
     router.register && router.register(routers)
-    api.use(`/${_.snakeCase(pluralize(name))}`, router.routes())
+    api.use(router.routes())
   })
 }
 

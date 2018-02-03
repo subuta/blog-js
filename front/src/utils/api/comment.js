@@ -3,20 +3,19 @@ import request from 'src/utils/request'
 import {normalize} from 'normalizr'
 import {comment, commentList} from 'src/utils/schema'
 
-export const index = () => {
-  return request.get(`/comments`).then((data) => normalize(data, commentList))
+export const index = (params) => {
+  const {channelId} = params
+  return request.get(`/channels/${channelId}/comments`)
 }
 
 export const create = (params) => {
-  return request
-    .post(`/comments`, {
-      comment: params
-    })
-    .then((data) => normalize(data, comment))
+  return request.post(`/channels/${params.channelId}/comments`, {
+    comment: params
+  })
 }
 
-export const destroy = (id) => {
-  return request.delete(`/comments/${id}`)
+export const destroy = (id, params) => {
+  return request.delete(`/channels/${params.channelId}/comments/${id}`)
 }
 
 /* mat Custom action [start] */

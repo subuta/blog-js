@@ -30,8 +30,8 @@ export default {
   },
 
   relations: {
-    comments: {
-      hasMany: 'comments',
+    comment: {
+      belongsTo: 'comment',
       join: {
         from: 'attachments.id',
         to: 'comments.attachmentId'

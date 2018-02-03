@@ -1,7 +1,8 @@
 import _ from 'lodash'
 import {combineReducers} from 'redux'
 import {createSelector} from 'reselect'
-import {denormalize} from 'src/utils/schema'
+import {normalize} from 'normalizr'
+import {comment, commentList, denormalize} from 'src/utils/schema'
 import api from 'src/utils/api'
 
 import {SET_CHANNELS} from './channel'
@@ -31,7 +32,8 @@ export const requestComments = () => {
   return (dispatch) => {
     dispatch({type: REQUEST_COMMENTS})
     return api.comment.index().then((data) => {
-      dispatch(setComments(data))
+
+      dispatch(setComments(normalize(data, commentList)))
       return data
     })
   }
@@ -41,7 +43,8 @@ export const createComment = (params) => {
   return (dispatch) => {
     dispatch({type: REQUEST_COMMENTS})
     return api.comment.create(params).then((data) => {
-      dispatch(setComments(data))
+
+      dispatch(setComments(normalize(data, comment)))
       return data
     })
   }
@@ -63,12 +66,7 @@ export const deleteComment = (id) => {
 // Reducers
 // -------------
 export const entities = (state = {}, action) => {
-  if (
-    action.type === SET_COMMENTS ||
-    action.type === SET_CHANNELS ||
-    action.type === SET_USERS ||
-    action.type === SET_ATTACHMENTS
-  ) {
+  if (_.get(action, ['payload', 'entities', 'comment'])) {
     return {...state, ...action.payload.entities.comment}
   }
   return state

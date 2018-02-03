@@ -1,7 +1,9 @@
 import Router from 'koa-router'
 import _ from 'lodash'
 
-const user = new Router()
+const user = new Router({
+  prefix: '/users'
+})
 
 user.get('/me', async (ctx) => {
   const {User} = ctx.state.models

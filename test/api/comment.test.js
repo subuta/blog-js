@@ -52,7 +52,7 @@ test.serial('index should return comments', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .get('/api/comments')
+    .get('/api/channels/1/comments')
     .set('Authorization', `Bearer ${token}`)
 
   t.is(response.status, 200)
@@ -68,7 +68,7 @@ test('post should create comment', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .post('/api/comments')
+    .post('/api/channels/1/comments')
     .set('Authorization', `Bearer ${token}`)
     .send({
       comment: {text: 'Hoge'}
@@ -90,7 +90,7 @@ test('delete should delete comment', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .delete('/api/comments/1')
+    .delete('/api/channels/1/comments/1')
     .set('Authorization', `Bearer ${token}`)
 
   comments = await Comment.query()

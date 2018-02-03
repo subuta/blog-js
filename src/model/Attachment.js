@@ -6,9 +6,9 @@ export const register = (models) => {
   setSchema(Attachment.jsonSchema)
   // then define relationMappings.
   Attachment.relationMappings = {
-    comments: {
+    comment: {
       modelClass: models.Comment,
-      relation: Model.HasManyRelation,
+      relation: Model.BelongsToOneRelation,
       join: {from: 'attachments.id', to: 'comments.attachmentId'}
     }
   }
@@ -29,7 +29,7 @@ export default class Attachment extends Model {
       url: {type: 'string'},
       created_at: {type: 'string', format: 'date-time'},
       updated_at: {type: 'string', format: 'date-time'},
-      comments: {type: ['array', 'null'], items: [{$ref: 'comment.json'}]}
+      comment: {oneOf: [{type: 'null'}, {$ref: 'comment.json'}]}
     }
   }
 }

@@ -26,7 +26,7 @@ export const fetchEntities = (state) => {
   return _.transform(
     state,
     (result, s, key) => {
-      if (_.isEmpty(_.get(s, 'entities', {}))) return
+      if (!s.entities) return
       result[key] = _.get(s, 'entities', {})
     },
     {}

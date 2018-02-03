@@ -1,10 +1,12 @@
 import uuid from 'uuid/v4'
 import path from 'path'
-import {getSignedUrl} from 'src/utils/s3'
+import { getSignedUrl } from 'src/utils/s3'
 import Router from 'koa-router'
 import _ from 'lodash'
 
-const attachment = new Router()
+const attachment = new Router({
+  prefix: '/attachments'
+})
 
 attachment.post('/', async (ctx) => {
   const {Attachment} = ctx.state.models
@@ -13,17 +15,6 @@ attachment.post('/', async (ctx) => {
   let params = {}
 
   /* mat Before create [start] */
-  const ext = path.extname(attachment.name)
-
-  const id = uuid()
-  const tmpFileName = `${id}${ext}`
-
-  const result = await getSignedUrl(tmpFileName, attachment.type)
-
-  params = {
-    id,
-    url: result.url
-  }
   /* mat Before create [end] */
 
   let response = await Attachment.query()
@@ -34,14 +25,29 @@ attachment.post('/', async (ctx) => {
     .eager('')
 
   /* mat After create [start] */
-  response = {
-    result,
-    attachment: response
-  }
   /* mat After create [end] */
 
   ctx.body = response
 })
+
+/* mat Custom actions [start] */
+// call getSignedUrl before upload file.
+attachment.post('/sign', async (ctx) => {
+  const {attachment} = ctx.request.body
+
+  /* mat Before create [start] */
+  const ext = path.extname(attachment.name)
+
+  const id = uuid()
+  const tmpFileName = `${id}${ext}`
+
+  let result = await getSignedUrl(tmpFileName, attachment.type)
+  ctx.body = {
+    ...result,
+    id
+  }
+})
+/* mat Custom actions [end] */
 
 export default {
   routes: () => _.cloneDeep(attachment.routes()),

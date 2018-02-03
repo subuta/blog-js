@@ -18,7 +18,7 @@ export const user = new schema.Entity('user')
 export const userList = new schema.Array(user)
 
 attachment.define({
-  comments: [comment]
+  comment
 })
 
 channel.define({
@@ -27,8 +27,8 @@ channel.define({
 
 comment.define({
   channel,
-  // commentedBy: user,
-  // attachment
+  commentedBy: user,
+  attachment
 })
 
 user.define({

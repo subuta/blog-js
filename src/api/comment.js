@@ -1,17 +1,22 @@
 import Router from 'koa-router'
 import _ from 'lodash'
 
-const comment = new Router()
+const comment = new Router({
+  prefix: '/channels/:channelId/comments'
+})
 
 comment.get('/', async (ctx) => {
   const {Comment} = ctx.state.models
   let params = {}
 
   /* mat Before index [start] */
+  if (_.get(ctx, 'params.channelId')) {
+    params['channelId'] = Number(_.get(ctx, 'params.channelId'))
+  }
   /* mat Before index [end] */
 
   ctx.body = await Comment.query()
-    .eager('[attachment, commentedBy]')
+    .eager('[channel, attachment, commentedBy]')
     .where(params)
 })
 
@@ -37,7 +42,7 @@ comment.post('/', async (ctx) => {
       ...comment,
       ...params
     })
-    .eager('[attachment, commentedBy]')
+    .eager('[channel, attachment, commentedBy]')
 
   /* mat After create [start] */
   /* mat After create [end] */
@@ -52,6 +57,8 @@ comment.delete('/:id', async (ctx) => {
     .where({id: ctx.params.id})
   ctx.body = null
 })
+
+
 
 export default {
   routes: () => _.cloneDeep(comment.routes()),

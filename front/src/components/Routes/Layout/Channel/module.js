@@ -41,11 +41,11 @@ export const fetchChannelComments = (channelId) => {
   }
 }
 
-export const createChannelComment = (channelId, params) => {
+export const createChannelComment = (params) => {
   return (dispatch, getState) => {
-    return dispatch(createComment(channelId, params)).then((data) => {
+    return dispatch(createComment(params)).then((data) => {
       const ids = getIds(getState())
-      dispatch(setChannelCommentIds([...ids, data.result]))
+      dispatch(setChannelCommentIds([...ids, data.id]))
     })
   }
 }

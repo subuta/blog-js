@@ -136,27 +136,35 @@ const enhance = compose(
       if (key === 'enter' && !e.shiftKey) {
         e.preventDefault()
         setDraftText('')
-        createChannelComment(channel.id, {text: draftText}).then(() => {
+        createChannelComment({channelId: channel.id, text: draftText}).then(() => {
           scrollComments()
         })
       }
     },
 
-    handleFileDrop: ({createAttachment, channel, uploadAttachment, createChannelComment}) => async (item, monitor) => {
+    handleFileDrop: (props) => async (item, monitor) => {
+      const {
+        channel,
+        signAttachment,
+        createAttachment,
+        uploadAttachment,
+        createChannelComment
+      } = props
+
       if (!monitor) return
       const droppedFiles = monitor.getItem().files
       const file = _.first(droppedFiles)
       const {name, type} = file
 
       // create attachment from file
-      const {result, attachment} = await createAttachment({name, type})
+      const {id, signedRequest, url} = await signAttachment({name, type})
+      const attachment = await createAttachment({id, name, type, url})
 
       // then upload it to s3
-      const {signedRequest, url} = result
       await uploadAttachment(file, signedRequest, url)
 
       // finally relate attachment to blank comment.
-      createChannelComment(channel.id, {text: '', attachmentId: attachment.id})
+      createChannelComment({channelId: channel.id, text: '', attachmentId: attachment.id})
     }
   }),
   withFileDropHandler

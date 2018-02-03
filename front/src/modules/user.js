@@ -1,7 +1,8 @@
 import _ from 'lodash'
 import {combineReducers} from 'redux'
 import {createSelector} from 'reselect'
-import {denormalize} from 'src/utils/schema'
+import {normalize} from 'normalizr'
+import {user, userList, denormalize} from 'src/utils/schema'
 import api from 'src/utils/api'
 
 import {SET_COMMENTS} from './comment'
@@ -59,7 +60,7 @@ export const requestMe = () => {
 // Reducers
 // -------------
 export const entities = (state = {}, action) => {
-  if (action.type === SET_USERS || action.type === SET_COMMENTS) {
+  if (_.get(action, ['payload', 'entities', 'user'])) {
     return {...state, ...action.payload.entities.user}
   }
   return state
@@ -132,5 +133,4 @@ export const getCurrentUser = createSelector(
   getCurrentUserId,
   (entities, currentUserId) => entities[currentUserId]
 )
-
 /* mat Custom selectors [end] */
