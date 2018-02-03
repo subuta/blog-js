@@ -13,6 +13,8 @@ export const REQUEST_ATTACHMENTS = 'REQUEST_ATTACHMENTS'
 export const REQUEST_ATTACHMENTS_FAILURE = 'REQUEST_ATTACHMENTS_FAILURE'
 export const SET_ATTACHMENTS = 'SET_ATTACHMENTS'
 
+
+
 // -------------
 // ActionCreators
 // -------------
@@ -32,6 +34,9 @@ export const createAttachment = (params) => {
     })
   }
 }
+
+/* mat Custom actionCreators [start] */
+/* mat Custom actionCreators [end] */
 
 // -------------
 // Reducers
@@ -65,11 +70,15 @@ export const isRequestProgress = (state = false, action) => {
   return state
 }
 
-export default combineReducers({
+let reducers = {
   entities,
   ids,
   isRequestProgress
-})
+}
+
+
+
+export default combineReducers(reducers)
 
 // -------------
 // Selectors
@@ -87,3 +96,5 @@ export const getAll = createSelector(
       return denormalize(entities[id], 'attachment', state)
     })
 )
+
+

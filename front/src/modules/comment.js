@@ -15,6 +15,8 @@ export const REQUEST_COMMENTS = 'REQUEST_COMMENTS'
 export const REQUEST_COMMENTS_FAILURE = 'REQUEST_COMMENTS_FAILURE'
 export const SET_COMMENTS = 'SET_COMMENTS'
 
+
+
 // -------------
 // ActionCreators
 // -------------
@@ -54,6 +56,9 @@ export const deleteComment = (id) => {
   }
 }
 
+/* mat Custom actionCreators [start] */
+/* mat Custom actionCreators [end] */
+
 // -------------
 // Reducers
 // -------------
@@ -91,11 +96,15 @@ export const isRequestProgress = (state = false, action) => {
   return state
 }
 
-export default combineReducers({
+let reducers = {
   entities,
   ids,
   isRequestProgress
-})
+}
+
+
+
+export default combineReducers(reducers)
 
 // -------------
 // Selectors
@@ -112,3 +121,5 @@ export const getAll = createSelector(
       return denormalize(entities[id], 'comment', state)
     })
 )
+
+

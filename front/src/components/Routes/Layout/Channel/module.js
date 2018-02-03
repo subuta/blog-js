@@ -73,6 +73,6 @@ export const getAll = createSelector(
   getIds,
   _.identity,
   (entities, ids, state) => ids.map(id => {
-    return denormalize(entities[id], 'comments', state)
+    return denormalize(entities[id], 'comment', state)
   })
 )

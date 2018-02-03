@@ -13,6 +13,10 @@ export const REQUEST_USERS = 'REQUEST_USERS'
 export const REQUEST_USERS_FAILURE = 'REQUEST_USERS_FAILURE'
 export const SET_USERS = 'SET_USERS'
 
+/* mat Custom constants [start] */
+export const SET_CURRENT_USER = 'SET_CURRENT_USER'
+/* mat Custom constants [end] */
+
 // -------------
 // ActionCreators
 // -------------
@@ -22,6 +26,34 @@ export const setUsers = (users) => {
     payload: users
   }
 }
+
+/* mat Custom actionCreators [start] */
+export const setCurrentUser = (user) => {
+  return {
+    type: SET_CURRENT_USER,
+    payload: user
+  }
+}
+
+export const requestUpdateUser = (user) => {
+  return (dispatch) => {
+    dispatch({type: REQUEST_USERS})
+    return api.user.update(user).then((data) => {
+      dispatch(setUsers(data))
+    })
+  }
+}
+
+export const requestMe = () => {
+  return (dispatch) => {
+    dispatch({type: REQUEST_USERS})
+    return api.user.me().then((data) => {
+      if (!data) return
+      dispatch(setCurrentUser(data))
+    })
+  }
+}
+/* mat Custom actionCreators [end] */
 
 // -------------
 // Reducers
@@ -55,11 +87,27 @@ export const isRequestProgress = (state = false, action) => {
   return state
 }
 
-export default combineReducers({
+let reducers = {
   entities,
   ids,
   isRequestProgress
-})
+}
+
+/* mat Custom reducers [start] */
+const currentUserId = (state = null, action) => {
+  if (action.type === SET_CURRENT_USER) {
+    return action.payload.result
+  }
+  return state
+}
+
+reducers = {
+  ...reducers,
+  currentUserId
+}
+/* mat Custom reducers [end] */
+
+export default combineReducers(reducers)
 
 // -------------
 // Selectors
@@ -76,3 +124,13 @@ export const getAll = createSelector(
       return denormalize(entities[id], 'user', state)
     })
 )
+
+/* mat Custom selectors [start] */
+export const getCurrentUserId = state => state.user.currentUserId
+export const getCurrentUser = createSelector(
+  getEntities,
+  getCurrentUserId,
+  (entities, currentUserId) => entities[currentUserId]
+)
+
+/* mat Custom selectors [end] */

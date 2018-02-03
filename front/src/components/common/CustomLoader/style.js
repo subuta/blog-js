@@ -1,5 +1,6 @@
 import createWithStyles from 'src/utils/style'
 
+// FIXME: loaderAnimationのクラス名の解決
 const loaderAnimation = {
   from: {
     transform: 'rotate(0deg)',

@@ -6,7 +6,9 @@ import withStyles from './style'
 
 import Avatar from 'src/components/common/Avatar'
 
-export default withStyles(({comment}) => {
+export default withStyles((props) => {
+  const {comment, styles} = props
+
   const {
     id,
     text,
@@ -19,14 +21,14 @@ export default withStyles(({comment}) => {
   const nickname = _.get(commentedBy, 'nickname')
 
   return (
-    <div className={classes.CommentWrapper}>
+    <div className={styles.CommentWrapper}>
       <Avatar avatar={avatar} nickname={nickname} />
 
-      <div className={classes.Comment}>
-        <div className={classes.Nickname}>
+      <div className={styles.Comment}>
+        <div className={styles.Nickname}>
           <span>{nickname || 'Anonymous'}</span>
 
-          <small className={classes.CommentedAt}>{createdAt}</small>
+          <small className={styles.CommentedAt}>{createdAt}</small>
         </div>
 
         {attachment && (

@@ -6,7 +6,7 @@ import _ from 'lodash'
 
 import {
   getAll as getChannels,
-  getIsProgress as getIsChannelProgress,
+  getIsRequestProgress as getIsChannelProgress,
   requestChannels,
   createChannel
 } from 'src/modules/channel'

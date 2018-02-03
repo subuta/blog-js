@@ -17,12 +17,12 @@ injectReducer(store, MODULE_NAME, reducer);
 
 import {
   getAll as getChannels,
-  getIsProgress as getIsChannelProgress,
+  getIsRequestProgress as getIsChannelProgress,
   requestChannel
 } from 'src/modules/channel'
 
 import {
-  getIsProgress as getIsAttachmentProgress,
+  getIsRequestProgress as getIsAttachmentProgress,
   createAttachment,
   uploadAttachment
 } from 'src/modules/attachment'

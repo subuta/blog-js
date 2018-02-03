@@ -12,6 +12,11 @@ export const create = (params) => {
 }
 
 /* mat Custom action [start] */
+export const upload = (file, signedRequest, url) => {
+  return request.put(signedRequest, file).then((response) => {
+    return response.data
+  })
+}
 /* mat Custom action [end] */
 
 let actions = {
@@ -19,6 +24,10 @@ let actions = {
 }
 
 /* mat Custom exports [start] */
+actions = {
+  ...actions,
+  upload
+}
 /* mat Custom exports [end] */
 
 export default actions

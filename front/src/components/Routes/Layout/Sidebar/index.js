@@ -19,7 +19,7 @@ import {
 // initial state.
 const withLoading = branch(
   ({channels, isChannelProgress}) => _.isEmpty(channels) && isChannelProgress,
-  renderComponent(() => {
+  renderComponent(({styles}) => {
     return (
       <div className={styles.Sidebar}>
         <div className={styles.Menus}>

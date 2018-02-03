@@ -6,7 +6,7 @@ export const register = (models) => {
   setSchema(User.jsonSchema)
   // then define relationMappings.
   User.relationMappings = {
-    commentedBy: {
+    comments: {
       modelClass: models.Comment,
       relation: Model.HasManyRelation,
       join: {from: 'users.id', to: 'comments.commentedById'}
@@ -31,7 +31,7 @@ export default class User extends Model {
       avatar: {type: 'string'},
       created_at: {type: 'string', format: 'date-time'},
       updated_at: {type: 'string', format: 'date-time'},
-      commentedBy: {type: ['array', 'null'], items: [{$ref: 'comment.json'}]}
+      comments: {type: ['array', 'null'], items: [{$ref: 'comment.json'}]}
     }
   }
 }

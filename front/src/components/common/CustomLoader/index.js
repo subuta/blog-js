@@ -11,8 +11,6 @@ export default withStyles((props) => {
     styles
   } = props;
 
-  console.log(styles);
-
   let loaderClass = styles.Loader;
   if (className) {
     loaderClass += ` ${className}`;

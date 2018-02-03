@@ -34,7 +34,7 @@ import {
 
 const withLoading = branch(
   ({channel, isChannelProgress}) => !channel && isChannelProgress,
-  renderComponent(() => {
+  renderComponent(({styles}) => {
     return (
       <div className={styles.Channels}>
         <div className={styles.Header}>

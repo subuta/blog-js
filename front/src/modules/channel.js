@@ -13,6 +13,8 @@ export const REQUEST_CHANNELS = 'REQUEST_CHANNELS'
 export const REQUEST_CHANNELS_FAILURE = 'REQUEST_CHANNELS_FAILURE'
 export const SET_CHANNELS = 'SET_CHANNELS'
 
+
+
 // -------------
 // ActionCreators
 // -------------
@@ -53,6 +55,9 @@ export const createChannel = (params) => {
   }
 }
 
+/* mat Custom actionCreators [start] */
+/* mat Custom actionCreators [end] */
+
 // -------------
 // Reducers
 // -------------
@@ -85,11 +90,15 @@ export const isRequestProgress = (state = false, action) => {
   return state
 }
 
-export default combineReducers({
+let reducers = {
   entities,
   ids,
   isRequestProgress
-})
+}
+
+
+
+export default combineReducers(reducers)
 
 // -------------
 // Selectors
@@ -106,3 +115,5 @@ export const getAll = createSelector(
       return denormalize(entities[id], 'channel', state)
     })
 )
+
+

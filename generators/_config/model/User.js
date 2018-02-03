@@ -35,7 +35,7 @@ export default {
   },
 
   relations: {
-    commentedBy: {
+    comments: {
       hasMany: 'comments',
       join: {
         from: 'users.id',

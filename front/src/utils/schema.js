@@ -1,19 +1,20 @@
 import _ from 'lodash'
+import pluralize from 'pluralize'
 import {fetchEntities} from 'src/modules'
 import * as normalizr from 'normalizr'
 
 const {schema} = normalizr
 
-export const attachment = new schema.Entity('attachments')
+export const attachment = new schema.Entity('attachment')
 export const attachmentList = new schema.Array(attachment)
 
-export const channel = new schema.Entity('channels')
+export const channel = new schema.Entity('channel')
 export const channelList = new schema.Array(channel)
 
-export const comment = new schema.Entity('comments')
+export const comment = new schema.Entity('comment')
 export const commentList = new schema.Array(comment)
 
-export const user = new schema.Entity('users')
+export const user = new schema.Entity('user')
 export const userList = new schema.Array(user)
 
 attachment.define({
@@ -26,15 +27,15 @@ channel.define({
 
 comment.define({
   channel,
-  commentedBy: user,
-  attachment
+  // commentedBy: user,
+  // attachment
 })
 
 user.define({
-  commentedBy: [comment]
+  comments: [comment]
 })
 
-const models = [
+const models = {
   attachment,
   attachmentList,
   channel,
@@ -43,11 +44,11 @@ const models = [
   commentList,
   user,
   userList
-]
+}
 
 // denormalize data using schema.
 export const denormalize = (data, modelName, state) => {
-  const schema = models[_.trimEnd(modelName, 's')]
+  const schema = models[pluralize.singular(modelName)]
   return normalizr.denormalize(data, schema, fetchEntities(state))
 }
 
