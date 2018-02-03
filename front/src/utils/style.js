@@ -2,6 +2,12 @@ import _ from 'lodash'
 import prefixAll from 'inline-style-prefixer/static'
 import {styled, FreeStyle} from 'react-free-style'
 
+// Create a stylesheet instance.
+const Style = FreeStyle.create()
+
+// re-export FreeStyle.
+export {Style}
+
 export default function createWithStyles(styles = {}, options = {}) {
   styles = _.transform(
     styles,

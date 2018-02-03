@@ -2,7 +2,17 @@ import React from 'react'
 
 import withStyles from './style'
 
-export default withStyles((props) => {
+import {
+  compose,
+  setDisplayName
+} from 'recompose'
+
+const enhance = compose(
+  withStyles,
+  setDisplayName('CustomLoader')
+)
+
+export default enhance((props) => {
   const {
     isShow = false,
     label = false,

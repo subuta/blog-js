@@ -1,4 +1,4 @@
-import createWithStyles from 'src/utils/style'
+import createWithStyles, { Style } from 'src/utils/style'
 
 // FIXME: loaderAnimationのクラス名の解決
 const loaderAnimation = {
@@ -9,6 +9,11 @@ const loaderAnimation = {
     transform: 'rotate(360deg)'
   }
 }
+
+// Workaround for https://github.com/blakeembrey/react-free-style/issues/43
+const debug = typeof process !== 'undefined' && process.env.NODE_ENV !== 'production'
+let loaderAnimationHash = Style.registerHashRule('@keyframes', loaderAnimation)
+loaderAnimationHash = debug ? `CustomLoader_loaderAnimation_${loaderAnimationHash}` : loaderAnimationHash
 
 // from https://github.com/Semantic-Org/Semantic-UI/blob/master/src/definitions/elements/loader.less
 const Loader = {
@@ -34,7 +39,7 @@ const Loader = {
     left: 0,
     width: '100%',
     height: '100%',
-    animation: `${loaderAnimation} 0.6s linear`,
+    animation: `${loaderAnimationHash} 0.6s linear`,
     animationIterationCount: 'infinite',
     borderRadius: '500rem',
     borderColor: '#767676 transparent transparent',
