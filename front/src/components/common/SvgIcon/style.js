@@ -1,6 +1,4 @@
-import {
-  registerStyles
-} from 'src/utils/style'
+import createWithStyles from 'src/utils/style'
 
 import {
   BLACK_COLOR,
@@ -15,6 +13,6 @@ const Icon = {
   verticalAlign: 'top'
 }
 
-export default registerStyles({
+export default createWithStyles({
   Icon
 })

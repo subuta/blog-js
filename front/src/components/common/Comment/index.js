@@ -2,11 +2,11 @@ import React from 'react'
 import moment from 'src/utils/moment'
 import _ from 'lodash'
 
-import classes from './style'
+import withStyles from './style'
 
 import Avatar from 'src/components/common/Avatar'
 
-export default ({comment}) => {
+export default withStyles(({comment}) => {
   const {
     id,
     text,
@@ -36,4 +36,4 @@ export default ({comment}) => {
       </div>
     </div>
   )
-}
+})

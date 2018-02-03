@@ -8,7 +8,7 @@ import { Route, Switch, Redirect } from 'react-router'
 import Sidebar from './Sidebar'
 import Channel from './Channel'
 
-import classes from './style'
+import withStyles from './style'
 
 import {
   compose,
@@ -20,16 +20,18 @@ import {
 } from 'recompose'
 
 const enhance = compose(
+  withStyles,
   withDragDropContext,
   toClass
 )
 
 export default enhance((props) => {
+  const { styles } = props
   return (
-    <div className={classes.Container}>
+    <div className={styles.Container}>
       <Sidebar {...props} />
 
-      <div className={classes.Content}>
+      <div className={styles.Content}>
         <Switch>
           <Route exact path='/:channelName?' component={Channel} />
         </Switch>

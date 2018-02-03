@@ -1,6 +1,4 @@
-import {
-  registerStyles
-} from 'src/utils/style'
+import createWithStyles from 'src/utils/style'
 
 const Placeholder = {
   display: 'inline-block',
@@ -12,6 +10,6 @@ const Placeholder = {
   lineHeight: 1
 }
 
-export default registerStyles({
+export default createWithStyles({
   Placeholder
 })

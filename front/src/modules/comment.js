@@ -5,7 +5,7 @@ import {denormalize} from 'src/utils/schema'
 import api from 'src/utils/api'
 
 import {SET_CHANNELS} from './channel'
-import {SET_COMMENTED_BIES} from './commentedBy'
+import {SET_USERS} from './user'
 import {SET_ATTACHMENTS} from './attachment'
 
 // -------------
@@ -61,7 +61,7 @@ export const entities = (state = {}, action) => {
   if (
     action.type === SET_COMMENTS ||
     action.type === SET_CHANNELS ||
-    action.type === SET_COMMENTED_BIES ||
+    action.type === SET_USERS ||
     action.type === SET_ATTACHMENTS
   ) {
     return {...state, ...action.payload.entities.comment}

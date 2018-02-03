@@ -13,7 +13,7 @@ import { Redirect } from 'react-router'
 import Textarea from 'react-textarea-autosize'
 import MdAddIcon from 'react-icons/lib/md/add'
 
-import classes from './style'
+import withStyles from './style'
 import connect from './connect'
 
 import CustomLoader from 'src/components/common/CustomLoader'
@@ -36,21 +36,21 @@ const withLoading = branch(
   ({channel, isChannelProgress}) => !channel && isChannelProgress,
   renderComponent(() => {
     return (
-      <div className={classes.Channels}>
-        <div className={classes.Header}>
-          <h4 className={classes.Title}>
+      <div className={styles.Channels}>
+        <div className={styles.Header}>
+          <h4 className={styles.Title}>
             <span className="list-icon">
               <Placeholder style={{width: 16}} />
             </span>
             <span><Placeholder style={{opacity: 0.5, width: 100}} /></span>
           </h4>
 
-          <div className={classes.Description}>
+          <div className={styles.Description}>
             <Placeholder style={{opacity: 0.5, width: 200}} />
           </div>
         </div>
 
-        <div className={classes.CenteredContent}>
+        <div className={styles.CenteredContent}>
           <CustomLoader
             label='Channel is loading...'
             size={48}
@@ -82,6 +82,7 @@ const withFileDropHandler = DropTarget(
 )
 
 const enhance = compose(
+  withStyles,
   connect,
   withState('draftText', 'setDraftText', ''),
   withHandlers(() => {
@@ -173,10 +174,11 @@ export default enhance((props) => {
     handleFileDrop,
     isOver,
     canDrop,
-    connectDropTarget
+    connectDropTarget,
+    styles
   } = props
 
-  let channelsClass = classes.Channels
+  let channelsClass = styles.Channels
   if (isOver && canDrop) {
     channelsClass += ' can-drop'
   }
@@ -188,23 +190,23 @@ export default enhance((props) => {
 
   return connectDropTarget(
     <div className={channelsClass}>
-      <div className={classes.DropTarget}>
+      <div className={styles.DropTarget}>
         <h1>Drop file for upload.</h1>
       </div>
 
-      <div className={classes.Header}>
-        <h4 className={classes.Title}>
+      <div className={styles.Header}>
+        <h4 className={styles.Title}>
           <span className="list-icon">#</span>
           <span>{channel.name}</span>
         </h4>
-        <div className={classes.Description}>
+        <div className={styles.Description}>
           <p>
             Descriptionがここにきます
           </p>
         </div>
       </div>
-      <div className={classes.Content}>
-        <div className={classes.Comments} ref={setCommentsRef}>
+      <div className={styles.Content}>
+        <div className={styles.Comments} ref={setCommentsRef}>
           {_.map(channelComments, (comment) => {
             return (
               <Comment key={comment.id} comment={comment} />
@@ -212,12 +214,12 @@ export default enhance((props) => {
           })}
         </div>
 
-        <div className={classes.Footer}>
-          <div className={classes.TextAreaWrapper}>
-            <button><MdAddIcon className={classes.AddIcon} /></button>
+        <div className={styles.Footer}>
+          <div className={styles.TextAreaWrapper}>
+            <button><MdAddIcon className={styles.AddIcon} /></button>
             <div className="textarea">
               <Textarea
-                className={classes.TextArea}
+                className={styles.TextArea}
                 onKeyPress={onKeyPress}
                 onChange={(e) => setDraftText(e.target.value)}
                 value={draftText}

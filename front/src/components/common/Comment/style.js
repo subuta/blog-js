@@ -1,6 +1,4 @@
-import {
-  registerStyles
-} from 'src/utils/style'
+import createWithStyles from 'src/utils/style'
 
 import {
   DIMMED_BLACK_COLOR,
@@ -58,7 +56,7 @@ const CommentedAt = {
   color: DIMMED_BLACK_COLOR
 }
 
-export default registerStyles({
+export default createWithStyles({
   CommentWrapper,
   Comment,
   Nickname,

@@ -1,6 +1,4 @@
-import {
-  registerStyles
-} from 'src/utils/style'
+import createWithStyles from 'src/utils/style'
 
 import {
   GRAY_COLOR
@@ -29,7 +27,7 @@ const IconWrapper = {
   }
 }
 
-export default registerStyles({
+export default createWithStyles({
   Avatar,
   IconWrapper
 })

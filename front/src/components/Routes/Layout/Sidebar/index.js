@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { Route, Switch } from 'react-router'
 import { NavLink } from 'react-router-dom'
 
-import classes from './style'
+import withStyles from './style'
 import connect from './connect'
 
 import SvgIcon from 'src/components/common/SvgIcon'
@@ -21,15 +21,15 @@ const withLoading = branch(
   ({channels, isChannelProgress}) => _.isEmpty(channels) && isChannelProgress,
   renderComponent(() => {
     return (
-      <div className={classes.Sidebar}>
-        <div className={classes.Menus}>
-          <div className={classes.Logo}>
+      <div className={styles.Sidebar}>
+        <div className={styles.Menus}>
+          <div className={styles.Logo}>
             <SvgIcon name="logo-white" />
           </div>
 
           <h4><Placeholder style={{width: 100}} /></h4>
 
-          <ul className={classes.Channels}>
+          <ul className={styles.Channels}>
             <li>
               <a href="">
                 <span className="list-icon"><Placeholder style={{opacity: 0.5, width: 12}} /></span>
@@ -54,7 +54,7 @@ const withLoading = branch(
 
           <h4><Placeholder style={{width: 60}} /></h4>
 
-          <ul className={classes.Notes}>
+          <ul className={styles.Notes}>
             <li>
               <span className="list-icon"><Placeholder style={{opacity: 0.5, width: 16}} /></span>
               <div style={{lineHeight: 0}}><Placeholder style={{opacity: 0.5, width: 120}} /></div>
@@ -68,6 +68,7 @@ const withLoading = branch(
 )
 
 const enhance = compose(
+  withStyles,
   connect,
   lifecycle({
     componentWillMount () {
@@ -81,19 +82,20 @@ const enhance = compose(
 export default enhance((props) => {
   const {
     channels,
-    currentUser
+    currentUser,
+    styles
   } = props
 
   return (
-    <div className={classes.Sidebar}>
-      <div className={classes.Menus}>
-        <div className={classes.Logo}>
+    <div className={styles.Sidebar}>
+      <div className={styles.Menus}>
+        <div className={styles.Logo}>
           <SvgIcon name="logo-white" />
         </div>
 
         <h4>Channels</h4>
 
-        <ul className={classes.Channels}>
+        <ul className={styles.Channels}>
           {_.map(channels, ({id, name}) => {
             return (
               <li key={id}>
@@ -108,7 +110,7 @@ export default enhance((props) => {
 
         <h4>Note</h4>
 
-        <ul className={classes.Notes}>
+        <ul className={styles.Notes}>
           <li>
             <span className="list-icon"><SvgIcon name="note" /></span>
             <div>ReactでHOCを作るのに必要なものほげほげほげほげ</div>
@@ -116,7 +118,7 @@ export default enhance((props) => {
         </ul>
       </div>
 
-      <div className={classes.Login}>
+      <div className={styles.Login}>
         {currentUser ? currentUser.nickname : ''}
       </div>
     </div>

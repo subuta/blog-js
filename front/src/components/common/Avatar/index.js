@@ -2,13 +2,13 @@ import React from 'react'
 
 import MdFaceIcon from 'react-icons/lib/md/face'
 
-import classes from './style'
+import withStyles from './style'
 
-export default ({avatar, nickname}) => {
+export default withStyles(({avatar, nickname, styles}) => {
   if (!avatar) {
     return (
-      <div className={classes.Avatar}>
-        <div className={classes.IconWrapper}>
+      <div className={styles.Avatar}>
+        <div className={styles.IconWrapper}>
           <MdFaceIcon />
         </div>
       </div>
@@ -16,8 +16,8 @@ export default ({avatar, nickname}) => {
   }
 
   return (
-    <div className={classes.Avatar}>
+    <div className={styles.Avatar}>
       <img src={avatar} alt={nickname} />
     </div>
   )
-}
+})

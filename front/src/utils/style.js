@@ -1,26 +1,29 @@
 import _ from 'lodash'
-import { wrap as _wrap, FreeStyle } from 'react-free-style'
 import prefixAll from 'inline-style-prefixer/static'
+import {styled, FreeStyle} from 'react-free-style'
 
-const Style = FreeStyle.create()
+export default function createWithStyles(styles = {}, options = {}) {
+  styles = _.transform(
+    styles,
+    (result, style, key) => (result[key] = prefixAll(style)),
+    {}
+  )
 
-export const registerStyles = (styles) => {
-  return _.reduce(styles, (result, style, key) => {
-    result[key] = Style.registerStyle(prefixAll(style))
-    return result
-  }, {})
+  if (!_.isEmpty(options.rules)) {
+    options.rules = _.transform(
+      options.rules,
+      (result, rule) => result.push([rule[0], prefixAll(rule[1])]),
+      []
+    )
+  }
+
+  if (!_.isEmpty(options.css)) {
+    options.css = _.transform(
+      options.css,
+      (result, style, key) => (result[key] = prefixAll(style)),
+      {}
+    )
+  }
+
+  return styled(styles, options)
 }
-
-export const registerKeyFrames = (style) => {
-  return Style.registerKeyframes(style);
-}
-
-export const registerRules = (styles) => {
-  return _.each(styles, (style, key) => {
-    Style.registerRule(key, prefixAll(style))
-  })
-}
-
-export const wrap = (Component) => _wrap(Component, Style, true)
-
-export default Style

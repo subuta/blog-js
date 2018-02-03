@@ -1,11 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import classes from './style'
+import withStyles from './style'
 
 import { compose, setDisplayName, setPropTypes } from 'recompose'
 
 const enhance = compose(
+  withStyles,
   setDisplayName('SvgIcon'),
   setPropTypes({
     name: PropTypes.string
@@ -16,10 +17,11 @@ export default enhance((props) => {
   const {
     name,
     className,
+    styles,
     ...rest
   } = props
 
-  let iconClass = `svg-icon ${classes.Icon}`
+  let iconClass = `svg-icon ${styles.Icon}`
   if (className) {
     iconClass += ` ${className}`
   }

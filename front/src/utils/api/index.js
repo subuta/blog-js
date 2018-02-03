@@ -1,11 +1,11 @@
-import attachments from './attachments'
-import channels from './channels'
-import comments from './comments'
-import users from './users'
+import channel from './channel'
+import comment from './comment'
+import attachment from './attachment'
+import user from './user'
 
 export default {
-  attachments,
-  channels,
-  comments,
-  users
+  channel,
+  comment,
+  attachment,
+  user
 }

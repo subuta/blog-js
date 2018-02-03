@@ -1,20 +1,24 @@
 import _ from 'lodash'
+import {fetchEntities} from 'src/modules'
 import * as normalizr from 'normalizr'
-import { fetchEntities } from 'src/modules'
 
-const { schema } = normalizr
-
-export const comment = new schema.Entity('comments')
-export const commentList = new schema.Array(comment)
-
-export const channel = new schema.Entity('channels')
-export const channelList = new schema.Array(channel)
+const {schema} = normalizr
 
 export const attachment = new schema.Entity('attachments')
 export const attachmentList = new schema.Array(attachment)
 
+export const channel = new schema.Entity('channels')
+export const channelList = new schema.Array(channel)
+
+export const comment = new schema.Entity('comments')
+export const commentList = new schema.Array(comment)
+
 export const user = new schema.Entity('users')
 export const userList = new schema.Array(user)
+
+attachment.define({
+  comments: [comment]
+})
 
 channel.define({
   comments: [comment]
@@ -22,20 +26,24 @@ channel.define({
 
 comment.define({
   channel,
-  attachment,
-  commentedBy: user
+  commentedBy: user,
+  attachment
 })
 
-const models = {
-  comment,
-  commentList,
-  channel,
-  channelList,
+user.define({
+  commentedBy: [comment]
+})
+
+const models = [
   attachment,
   attachmentList,
+  channel,
+  channelList,
+  comment,
+  commentList,
   user,
   userList
-}
+]
 
 // denormalize data using schema.
 export const denormalize = (data, modelName, state) => {

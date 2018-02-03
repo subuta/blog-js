@@ -7,7 +7,7 @@ import _ from 'lodash'
 import {
   getAll as getUsers,
   requestUpdateUser
-} from 'src/modules/users'
+} from 'src/modules/user'
 
 const mapStateToProps = (state) => {
   return {

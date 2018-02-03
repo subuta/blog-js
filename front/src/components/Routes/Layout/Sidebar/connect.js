@@ -9,12 +9,12 @@ import {
   getIsProgress as getIsChannelProgress,
   requestChannels,
   createChannel
-} from 'src/modules/channels'
+} from 'src/modules/channel'
 
 import {
   requestMe,
   getCurrentUser,
-} from 'src/modules/users'
+} from 'src/modules/user'
 
 const mapStateToProps = (state) => {
   return {

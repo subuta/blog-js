@@ -1,6 +1,4 @@
-import {
-  registerStyles
-} from 'src/utils/style'
+import createWithStyles from 'src/utils/style'
 
 import {
   BORDER_COLOR,
@@ -193,7 +191,7 @@ const AddIcon = {
   width: 24
 }
 
-export default registerStyles({
+export default createWithStyles({
   Channels,
   DropTarget,
   Header,

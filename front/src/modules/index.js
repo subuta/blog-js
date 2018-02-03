@@ -1,18 +1,17 @@
-import { combineReducers } from 'redux'
-import { routerReducer } from 'react-router-redux'
+import {combineReducers} from 'redux'
+import {routerReducer} from 'react-router-redux'
 import _ from 'lodash'
-
-import attachments from './attachments'
-import channels from './channels'
-import comments from './comments'
-import users from './users'
+import channel from './channel'
+import comment from './comment'
+import attachment from './attachment'
+import user from './user'
 
 const reducers = {
   routing: routerReducer,
-  attachments,
-  channels,
-  comments,
-  users
+  channel,
+  comment,
+  attachment,
+  user
 }
 
 const makeRootReducer = (injectedReducers) => {
@@ -24,10 +23,14 @@ const makeRootReducer = (injectedReducers) => {
 
 // extract entities from reducers.
 export const fetchEntities = (state) => {
-  return _.transform(state, (result, s, key) => {
-    if (_.isEmpty(_.get(s, 'entities', {}))) return
-    result[key] = _.get(s, 'entities', {})
-  }, {})
+  return _.transform(
+    state,
+    (result, s, key) => {
+      if (_.isEmpty(_.get(s, 'entities', {}))) return
+      result[key] = _.get(s, 'entities', {})
+    },
+    {}
+  )
 }
 
 // borrowed from https://github.com/davezuko/react-redux-starter-kit/blob/master/src/store/reducers.js

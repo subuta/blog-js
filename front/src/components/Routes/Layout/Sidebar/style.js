@@ -1,6 +1,4 @@
-import {
-  registerStyles
-} from 'src/utils/style'
+import createWithStyles from 'src/utils/style'
 
 import {
   ACCENT3_COLOR,
@@ -119,7 +117,7 @@ const Login = {
   width: '100%'
 }
 
-export default registerStyles({
+export default createWithStyles({
   Sidebar,
   Logo,
   Channels,

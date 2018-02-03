@@ -8,12 +8,12 @@ import api from 'src/utils/api'
 import {
   getEntities as getCommentEntities,
   createComment
-} from 'src/modules/comments'
+} from 'src/modules/comment'
 
 import {
   getEntities as getChannelEntities,
   requestChannel
-} from 'src/modules/channels'
+} from 'src/modules/channel'
 
 // -------------
 // Constants

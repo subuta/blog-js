@@ -1,16 +1,19 @@
 import React from 'react'
 
-import classes from './style'
+import withStyles from './style'
 
-export default (props) => {
+export default withStyles((props) => {
   const {
     isShow = false,
     label = false,
     size = 24,
-    className
+    className,
+    styles
   } = props;
 
-  let loaderClass = classes.Loader;
+  console.log(styles);
+
+  let loaderClass = styles.Loader;
   if (className) {
     loaderClass += ` ${className}`;
   }
@@ -25,7 +28,7 @@ export default (props) => {
   // labelが有るならlabel付きで表示
   if (label) {
     return (
-      <div className={classes.Container}>
+      <div className={styles.Container}>
         <div
           className={loaderClass}
           style={{
@@ -33,7 +36,7 @@ export default (props) => {
             width: size
           }}
         />
-        <span className={classes.Label}>
+        <span className={styles.Label}>
           {label}
         </span>
       </div>
@@ -50,4 +53,4 @@ export default (props) => {
       }}
     />
   )
-}
+})

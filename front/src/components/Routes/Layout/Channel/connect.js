@@ -19,13 +19,13 @@ import {
   getAll as getChannels,
   getIsProgress as getIsChannelProgress,
   requestChannel
-} from 'src/modules/channels'
+} from 'src/modules/channel'
 
 import {
   getIsProgress as getIsAttachmentProgress,
   createAttachment,
   uploadAttachment
-} from 'src/modules/attachments'
+} from 'src/modules/attachment'
 
 const mapStateToProps = (state) => {
   return {

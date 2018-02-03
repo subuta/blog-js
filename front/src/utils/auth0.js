@@ -1,11 +1,7 @@
-import * as Auth0 from 'auth0-js'
 import Promise from 'bluebird'
 import store from 'store'
-
-import {
-  ACCESS_TOKEN,
-  AUTH0_EXPIRATION
-} from 'src/constants/config'
+import {ACCESS_TOKEN, AUTH0_EXPIRATION} from 'src/constants/config'
+import * as Auth0 from 'auth0-js'
 
 export const redirectUri = `${window.location.origin}/login/cb`
 
@@ -28,16 +24,17 @@ const auth0 = (() => {
 
 const authorize = () => auth0.authorize()
 
-const parseHash = () => new Promise((resolve, reject) => {
-  auth0.parseHash({hash: window.location.hash}, (err, authResult) => {
-    if (err) return reject(new Error(err.errorDescription))
-    return resolve(authResult)
+const parseHash = () =>
+  new Promise((resolve, reject) => {
+    auth0.parseHash({hash: window.location.hash}, (err, authResult) => {
+      if (err) return reject(new Error(err.errorDescription))
+      return resolve(authResult)
+    })
   })
-})
 
 const setSession = ({accessToken, expiresIn}) => {
   // Set the time that the access token will expire at
-  const expiresAt = JSON.stringify((expiresIn * 1000) + new Date().getTime())
+  const expiresAt = JSON.stringify(expiresIn * 1000 + new Date().getTime())
   store.set(ACCESS_TOKEN, accessToken)
   store.set(AUTH0_EXPIRATION, expiresAt)
 }
@@ -50,7 +47,7 @@ const getSession = () => {
 
 const isAuthenticated = () => {
   const {expiresAt} = getSession()
-  return expiresAt && (new Date().getTime() < expiresAt)
+  return expiresAt && new Date().getTime() < expiresAt
 }
 
 export default {

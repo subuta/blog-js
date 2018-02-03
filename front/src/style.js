@@ -1,6 +1,5 @@
-import Style, {
-  registerRules
-} from 'src/utils/style'
+import createWithStyles, { Style } from 'src/utils/style'
+import { source } from 'common-tags'
 
 import {
   ACCENT3_COLOR,
@@ -67,41 +66,51 @@ const button = {
   '-webkit-appearance': 'none !important'
 }
 
-Style.registerRule('@font-face', {
+const FontFaceNotoSerifJapanese = {
   fontFamily: '"Noto Serif Japanese"',
-  src: `url("assets/fonts/WebNotoSerifCJKjp-Regular.otf?") format('otf'),
-        url("assets/fonts/WebNotoSerifCJKjp-Regular.woff2") format('woff2'),
-        url("assets/fonts/WebNotoSerifCJKjp-Regular.woff") format('woff')
+  src: source`
+    url("assets/fonts/WebNotoSerifCJKjp-Regular.otf?") format('otf'),
+    url("assets/fonts/WebNotoSerifCJKjp-Regular.woff2") format('woff2'),
+    url("assets/fonts/WebNotoSerifCJKjp-Regular.woff") format('woff')
   `
-})
+}
 
-Style.registerRule('@font-face', {
+const FontFaceNotoSansJapanese = {
   fontFamily: '"Noto Sans Japanese"',
   fontWeight: 'normal',
-  src: `url("assets/fonts/WebNotoSansCJKjp-Regular.otf?") format('otf'),
-        url("assets/fonts/WebNotoSansCJKjp-Regular.woff2") format('woff2'),
-        url("assets/fonts/WebNotoSansCJKjp-Regular.woff") format('woff')
+  src: source`
+    url("assets/fonts/WebNotoSansCJKjp-Regular.otf?") format('otf'),
+    url("assets/fonts/WebNotoSansCJKjp-Regular.woff2") format('woff2'),
+    url("assets/fonts/WebNotoSansCJKjp-Regular.woff") format('woff')
   `
-})
+}
 
-Style.registerRule('@font-face', {
+const FontFaceNotoSansJapaneseBold = {
   fontFamily: '"Noto Sans Japanese"',
   fontWeight: 'bold',
-  src: `url("assets/fonts/WebNotoSansCJKjp-Bold.otf?") format('otf'),
-        url("assets/fonts/WebNotoSansCJKjp-Bold.woff2") format('woff2'),
-        url("assets/fonts/WebNotoSansCJKjp-Bold.woff") format('woff')
+  src: source`
+    url("assets/fonts/WebNotoSansCJKjp-Bold.otf?") format('otf'),
+    url("assets/fonts/WebNotoSansCJKjp-Bold.woff2") format('woff2'),
+    url("assets/fonts/WebNotoSansCJKjp-Bold.woff") format('woff')
   `
-})
+}
 
-registerRules({
-  html,
-  body,
-  p,
-  h1,
-  h2,
-  h3,
-  h4,
-  small,
-  'h1, h2, h3, h4': headings,
-  [`button, html [type="button"], [type="reset"], [type="submit"]`]: button
+export default createWithStyles({}, {
+  css: {
+    html,
+    body,
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    small,
+    'h1, h2, h3, h4': headings,
+    [`button, html [type="button"], [type="reset"], [type="submit"]`]: button
+  },
+  rules: [
+    ['@font-face', FontFaceNotoSerifJapanese],
+    ['@font-face', FontFaceNotoSansJapanese],
+    ['@font-face', FontFaceNotoSansJapaneseBold]
+  ]
 })

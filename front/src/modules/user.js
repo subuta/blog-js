@@ -4,7 +4,7 @@ import {createSelector} from 'reselect'
 import {denormalize} from 'src/utils/schema'
 import api from 'src/utils/api'
 
-import {SET_COMMENTED_BIES} from './commentedBy'
+import {SET_COMMENTS} from './comment'
 
 // -------------
 // Constants
@@ -27,7 +27,7 @@ export const setUsers = (users) => {
 // Reducers
 // -------------
 export const entities = (state = {}, action) => {
-  if (action.type === SET_USERS || action.type === SET_COMMENTED_BIES) {
+  if (action.type === SET_USERS || action.type === SET_COMMENTS) {
     return {...state, ...action.payload.entities.user}
   }
   return state

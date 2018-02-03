@@ -1,28 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
-
+import {Provider} from 'react-redux'
 import store from './store'
 import Routes from './components/Routes'
+import withStyles from './style'
+import {compose} from 'recompose'
 
-import { wrap } from 'src/utils/style'
-
-import './style'
-
-import {
-  compose
-} from 'recompose'
-
-const enhance = compose(
-  wrap // inject style
-)
+const enhance = compose(withStyles)
 
 let App = enhance(() => {
   return (
     <div>
-      <Provider store={store}>
-        {Routes}
-      </Provider>
+      <Provider store={store}>{Routes}</Provider>
     </div>
   )
 })

@@ -1,16 +1,13 @@
-import {
-  registerStyles,
-  registerKeyFrames
-} from 'src/utils/style'
+import createWithStyles from 'src/utils/style'
 
-const loaderAnimation = registerKeyFrames({
+const loaderAnimation = {
   from: {
     transform: 'rotate(0deg)',
   },
   to: {
     transform: 'rotate(360deg)'
   }
-})
+}
 
 // from https://github.com/Semantic-Org/Semantic-UI/blob/master/src/definitions/elements/loader.less
 const Loader = {
@@ -57,8 +54,12 @@ const Label = {
   marginTop: 8
 }
 
-export default registerStyles({
+export default createWithStyles({
   Loader,
   Container,
   Label
+}, {
+  keyframes: {
+    loaderAnimation
+  }
 })

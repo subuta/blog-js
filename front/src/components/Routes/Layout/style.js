@@ -1,6 +1,4 @@
-import {
-  registerStyles
-} from 'src/utils/style'
+import createWithStyles from 'src/utils/style'
 
 import {
   NOISE_PATTERN,
@@ -20,7 +18,7 @@ const Content = {
   width: `calc(100% - ${SIDEBAR_WIDTH}px)`
 }
 
-export default registerStyles({
+export default createWithStyles({
   Container,
   Content
 })
