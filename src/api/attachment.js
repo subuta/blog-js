@@ -1,6 +1,6 @@
 import uuid from 'uuid/v4'
 import path from 'path'
-import { getSignedUrl } from 'src/utils/s3'
+import {getSignedUrl} from 'src/utils/s3'
 import Router from 'koa-router'
 import _ from 'lodash'
 

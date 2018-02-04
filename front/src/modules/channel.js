@@ -52,6 +52,7 @@ export const createChannel = (params) => {
   return (dispatch) => {
     dispatch({type: REQUEST_CHANNELS})
     return api.channel.create(params).then((data) => {
+
       dispatch(setChannels(normalize(data, channel)))
       return data
     })

@@ -1,11 +1,11 @@
 import _ from 'lodash'
-import { combineReducers } from 'redux'
-import { createSelector } from 'reselect'
-import { normalize } from 'normalizr'
-import { attachment, attachmentList, denormalize } from 'src/utils/schema'
+import {combineReducers} from 'redux'
+import {createSelector} from 'reselect'
+import {normalize} from 'normalizr'
+import {attachment, attachmentList, denormalize} from 'src/utils/schema'
 import api from 'src/utils/api'
 
-import { SET_COMMENTS } from './comment'
+import {SET_COMMENTS} from './comment'
 
 // -------------
 // Constants
@@ -13,6 +13,8 @@ import { SET_COMMENTS } from './comment'
 export const REQUEST_ATTACHMENTS = 'REQUEST_ATTACHMENTS'
 export const REQUEST_ATTACHMENTS_FAILURE = 'REQUEST_ATTACHMENTS_FAILURE'
 export const SET_ATTACHMENTS = 'SET_ATTACHMENTS'
+
+
 
 // -------------
 // ActionCreators
@@ -28,6 +30,7 @@ export const createAttachment = (params) => {
   return (dispatch) => {
     dispatch({type: REQUEST_ATTACHMENTS})
     return api.attachment.create(params).then((data) => {
+
       dispatch(setAttachments(normalize(data, attachment)))
       return data
     })
@@ -85,6 +88,8 @@ let reducers = {
   ids,
   isRequestProgress
 }
+
+
 
 export default combineReducers(reducers)
 

@@ -42,7 +42,6 @@ const DropTarget = {
 const Header = {
   height: HEADER_HEIGHT,
   padding: '8px 16px',
-  background: LIGHT_ACCENT3_COLOR,
   borderBottom: `1px solid ${BORDER_COLOR}`,
   fontFamily: SANS_FONT
 }

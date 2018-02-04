@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import request from 'src/utils/request'
-import { normalize } from 'normalizr'
-import { attachment, attachmentList } from 'src/utils/schema'
+import {normalize} from 'normalizr'
+import {attachment, attachmentList} from 'src/utils/schema'
 
 export const create = (params) => {
   return request.post(`/attachments`, {
