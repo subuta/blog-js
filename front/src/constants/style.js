@@ -3,7 +3,6 @@ import color from 'color'
 export const BLACK_COLOR = '#4A4A4A'
 export const ACCENT_COLOR = '#7CC09E'
 export const ACCENT2_COLOR = '#E74F4B'
-export const ACCENT3_COLOR = '#6B6998'
 export const ACCENT4_COLOR = '#4881C3'
 export const LIGHT_ACCENT3_COLOR = '#EEECF5'
 export const PRIMARY_COLOR = '#FFFFFF'
@@ -12,6 +11,9 @@ export const GRAY_COLOR = '#EEEEEE'
 export const DIMMED_BLACK_COLOR = color(BLACK_COLOR).fade(0.4).string()
 export const BORDER_COLOR = '#D4D4D5'
 export const SHADOW_COLOR = 'rgba(34, 36, 38, 0.15)'
+
+// Primary color for Chat app.
+export const CHAT_APP_COLOR = '#6B6998'
 
 // header(description area)
 export const HEADER_HEIGHT = 56

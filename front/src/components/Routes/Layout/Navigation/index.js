@@ -41,15 +41,17 @@ export default enhance((props) => {
   return (
     <div className={styles.Navigation}>
       <div className={styles.Top}>
+        {/*
         <a className={styles.Item} href="#">
           <MdSearchIcon />
         </a>
+        */}
 
-        <span className={styles.Item}>
-        <MdChatIcon />
-      </span>
+        <span className={`${styles.ChatApp} is-active`}>
+          <MdChatIcon />
+        </span>
 
-        <a className={styles.Item} href="#">
+        <a className={`${styles.WikiApp}`} href="#">
           <MdInsertDriveFile />
         </a>
       </div>
@@ -57,7 +59,7 @@ export default enhance((props) => {
       <div className={styles.Bottom}>
         <div className={styles.User}>
           <Avatar
-            size={36}
+            size={40}
             borderRadius="50%"
             avatar={avatar}
             nickname={nickname}

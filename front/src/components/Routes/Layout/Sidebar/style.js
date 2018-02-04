@@ -1,7 +1,7 @@
 import createWithStyles from 'src/utils/style'
 
 import {
-  ACCENT3_COLOR,
+  CHAT_APP_COLOR,
   ACCENT4_COLOR,
   PRIMARY_COLOR,
   PRIMARY2_COLOR,
@@ -20,7 +20,7 @@ const Sidebar = {
   height: '100vh',
   width: SIDEBAR_WIDTH,
   flex: '0 0 auto',
-  background: ACCENT3_COLOR,
+  background: CHAT_APP_COLOR,
   color: PRIMARY_COLOR,
   fontFamily: LATO_WITH_SANS_FONT,
 
@@ -96,7 +96,7 @@ const Notes = {
       '& > .svg-icon': {
         height: 16,
         width: 16,
-        color: ACCENT3_COLOR
+        color: CHAT_APP_COLOR
       }
     },
     '&:last-of-type': {
