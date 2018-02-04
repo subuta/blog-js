@@ -5,13 +5,8 @@ import withDragDropContext from 'src/utils/withDragDropContext'
 
 import { Route, Switch, Redirect } from 'react-router'
 
-import MdChatIcon from 'react-icons/lib/md/chat'
-import MdSearchIcon from 'react-icons/lib/md/search'
-import SvgIcon from 'src/components/common/SvgIcon'
-
-import Sidebar from './Sidebar'
 import Navigation from './Navigation'
-import Channel from './Channel'
+import Content from './Content'
 
 import withStyles from './style'
 
@@ -35,14 +30,7 @@ export default enhance((props) => {
   return (
     <div className={styles.Container}>
       <Navigation />
-
-      <Sidebar {...props} />
-
-      <div className={styles.Content}>
-        <Switch>
-          <Route exact path='/:channelName?' component={Channel} />
-        </Switch>
-      </div>
+      <Content />
     </div>
   )
 })

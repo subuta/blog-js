@@ -4,7 +4,6 @@ import { Route, Switch } from 'react-router'
 import { NavLink } from 'react-router-dom'
 
 import withStyles from './style'
-import connect from './connect'
 
 import SvgIcon from 'src/components/common/SvgIcon'
 import Placeholder from 'src/components/common/Placeholder'
@@ -12,16 +11,21 @@ import Placeholder from 'src/components/common/Placeholder'
 import {
   compose,
   branch,
-  lifecycle,
+  withProps,
   renderComponent
 } from 'recompose'
 
 // initial state.
 const withLoading = branch(
-  ({channels, isChannelProgress}) => _.isEmpty(channels) && isChannelProgress,
-  renderComponent(({styles}) => {
+  ({channels}) => _.isEmpty(channels),
+  renderComponent(({styles, serviceName}) => {
+    let sidebarClass = styles.Sidebar
+    if (serviceName) {
+      sidebarClass += ` is-${serviceName}`
+    }
+
     return (
-      <div className={styles.Sidebar}>
+      <div className={sidebarClass}>
         <div className={styles.Menus}>
           <div className={styles.Logo}>
             <SvgIcon name="logo-white" />
@@ -60,11 +64,16 @@ const withLoading = branch(
 
 const enhance = compose(
   withStyles,
-  connect,
-  lifecycle({
-    componentWillMount () {
-      this.props.requestChannels()
-      this.props.requestMe()
+  // detect serviceName from matched Route.
+  withProps(({match}) => {
+    let serviceName = ''
+    if (_.includes(match.url, 'chat')) {
+      serviceName = 'chat'
+    } else if (_.includes(match.url, 'wiki')) {
+      serviceName = 'wiki'
+    }
+    return {
+      serviceName
     }
   }),
   withLoading
@@ -73,12 +82,17 @@ const enhance = compose(
 export default enhance((props) => {
   const {
     channels,
-    currentUser,
+    serviceName,
     styles
   } = props
 
+  let sidebarClass = styles.Sidebar
+  if (serviceName) {
+    sidebarClass += ` is-${serviceName}`
+  }
+
   return (
-    <div className={styles.Sidebar}>
+    <div className={sidebarClass}>
       <div className={styles.Menus}>
         <div className={styles.Logo}>
           <SvgIcon name="logo-white" />
@@ -90,7 +104,7 @@ export default enhance((props) => {
           {_.map(channels, ({id, name}) => {
             return (
               <li key={id}>
-                <NavLink to={`/${name}`} activeClassName="is-active">
+                <NavLink to={`/chat/${name}`} activeClassName="is-active">
                   <span className="list-icon">#</span>
                   <span>{name}</span>
                 </NavLink>

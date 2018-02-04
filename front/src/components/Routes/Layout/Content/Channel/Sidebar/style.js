@@ -1,14 +1,16 @@
 import createWithStyles from 'src/utils/style'
 
 import {
-  CHAT_APP_COLOR,
   ACCENT4_COLOR,
   PRIMARY_COLOR,
   PRIMARY2_COLOR,
   LATO_WITH_SANS_FONT,
   EASE_STANDARD,
   SIDEBAR_WIDTH,
-  SANS_FONT
+  SANS_FONT,
+
+  CHAT_APP_COLOR,
+  WIKI_APP_COLOR
 } from 'src/constants/style'
 
 const Sidebar = {
@@ -20,13 +22,21 @@ const Sidebar = {
   height: '100vh',
   width: SIDEBAR_WIDTH,
   flex: '0 0 auto',
-  background: CHAT_APP_COLOR,
   color: PRIMARY_COLOR,
   fontFamily: LATO_WITH_SANS_FONT,
+  transition: `all 0.3s ${EASE_STANDARD}`,
 
   '& h4': {
     fontFamily: 'inherit',
     fontWeight: '900'
+  },
+
+  '&.is-chat': {
+    background: CHAT_APP_COLOR
+  },
+
+  '&.is-wiki': {
+    background: WIKI_APP_COLOR
   }
 }
 
@@ -65,46 +75,6 @@ const Channels = {
   }
 }
 
-const Notes = {
-  margin: 0,
-  padding: 0,
-  listStyle: 'none',
-
-  '& > li': {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    margin: '0 0 8px 0',
-    padding: 0,
-    fontWeight: 'bold',
-    fontFamily: SANS_FONT,
-    lineHeight: 1,
-
-    '& > div': {
-      marginTop: -2,
-      lineHeight: 1.3
-    },
-
-    '& .list-icon': {
-      margin: '0 4px 0 0',
-      padding: 4,
-      display: 'inline-block',
-      backgroundColor: PRIMARY2_COLOR,
-      borderRadius: 4,
-      lineHeight: 1,
-      // boxShadow: '0 2px 2px 0 rgba(0,0,0,0.24)',
-      '& > .svg-icon': {
-        height: 16,
-        width: 16,
-        color: CHAT_APP_COLOR
-      }
-    },
-    '&:last-of-type': {
-      margin: 0
-    }
-  }
-}
-
 const Logo = {
   height: 72
 }
@@ -117,6 +87,5 @@ export default createWithStyles({
   Sidebar,
   Logo,
   Channels,
-  Notes,
   Menus
 })

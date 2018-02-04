@@ -12,13 +12,20 @@ import {
   SANS_FONT,
 
   EASE_STANDARD,
-  HEADER_HEIGHT
+  HEADER_HEIGHT,
+  SIDEBAR_WIDTH
 } from 'src/constants/style'
 
 const MIN_TEXT_AREA_HEIGHT = 40
 
+const Container = {
+  display: 'flex'
+}
+
 const Channels = {
-  position: 'relative'
+  position: 'relative',
+  flex: '1 0 auto',
+  width: `calc(100% - ${SIDEBAR_WIDTH})`
 }
 
 const DropTarget = {
@@ -191,6 +198,7 @@ const AddIcon = {
 }
 
 export default createWithStyles({
+  Container,
   Channels,
   DropTarget,
   Header,

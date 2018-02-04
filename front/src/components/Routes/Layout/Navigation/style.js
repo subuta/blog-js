@@ -4,7 +4,9 @@ import {
   BLACK_COLOR,
   DIMMED_BLACK_COLOR,
 
-  CHAT_APP_COLOR
+  EASE_STANDARD,
+  CHAT_APP_COLOR,
+  WIKI_APP_COLOR
 } from 'src/constants/style'
 
 const Navigation = {
@@ -28,6 +30,7 @@ const Item = {
   opacity: 0.5,
   color: DIMMED_BLACK_COLOR,
   border: '4px solid #DDDDDD',
+  transition: `all 0.3s ${EASE_STANDARD}`,
 
   '&:first-child': {
     margin: 0
@@ -71,7 +74,7 @@ const WikiApp = {
   ...Item,
   '&.is-active': {
     ...Item['&.is-active'],
-    color: 'red'
+    color: WIKI_APP_COLOR
   }
 }
 

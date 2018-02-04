@@ -69,9 +69,9 @@ const button = {
 const FontFaceNotoSerifJapanese = {
   fontFamily: '"Noto Serif Japanese"',
   src: source`
-    url("assets/fonts/WebNotoSerifCJKjp-Regular.otf?") format('otf'),
-    url("assets/fonts/WebNotoSerifCJKjp-Regular.woff2") format('woff2'),
-    url("assets/fonts/WebNotoSerifCJKjp-Regular.woff") format('woff')
+    url("/assets/fonts/WebNotoSerifCJKjp-Regular.otf?") format('otf'),
+    url("/assets/fonts/WebNotoSerifCJKjp-Regular.woff2") format('woff2'),
+    url("/assets/fonts/WebNotoSerifCJKjp-Regular.woff") format('woff')
   `
 }
 
@@ -79,9 +79,9 @@ const FontFaceNotoSansJapanese = {
   fontFamily: '"Noto Sans Japanese"',
   fontWeight: 'normal',
   src: source`
-    url("assets/fonts/WebNotoSansCJKjp-Regular.otf?") format('otf'),
-    url("assets/fonts/WebNotoSansCJKjp-Regular.woff2") format('woff2'),
-    url("assets/fonts/WebNotoSansCJKjp-Regular.woff") format('woff')
+    url("/assets/fonts/WebNotoSansCJKjp-Regular.otf?") format('otf'),
+    url("/assets/fonts/WebNotoSansCJKjp-Regular.woff2") format('woff2'),
+    url("/assets/fonts/WebNotoSansCJKjp-Regular.woff") format('woff')
   `
 }
 
@@ -89,9 +89,9 @@ const FontFaceNotoSansJapaneseBold = {
   fontFamily: '"Noto Sans Japanese"',
   fontWeight: 'bold',
   src: source`
-    url("assets/fonts/WebNotoSansCJKjp-Bold.otf?") format('otf'),
-    url("assets/fonts/WebNotoSansCJKjp-Bold.woff2") format('woff2'),
-    url("assets/fonts/WebNotoSansCJKjp-Bold.woff") format('woff')
+    url("/assets/fonts/WebNotoSansCJKjp-Bold.otf?") format('otf'),
+    url("/assets/fonts/WebNotoSansCJKjp-Bold.woff2") format('woff2'),
+    url("/assets/fonts/WebNotoSansCJKjp-Bold.woff") format('woff')
   `
 }
 

@@ -11,14 +11,6 @@ const Container = {
   justifyContent: 'flex-start'
 }
 
-const Content = {
-  ...NOISE_PATTERN,
-  minHeight: '100vh',
-  flex: '1 0 auto',
-  width: `calc(100% - ${SIDEBAR_WIDTH}px)`
-}
-
 export default createWithStyles({
-  Container,
-  Content
+  Container
 })

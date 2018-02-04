@@ -1,7 +1,6 @@
 import color from 'color'
 
 export const BLACK_COLOR = '#4A4A4A'
-export const ACCENT_COLOR = '#7CC09E'
 export const ACCENT2_COLOR = '#E74F4B'
 export const ACCENT4_COLOR = '#4881C3'
 export const LIGHT_ACCENT3_COLOR = '#EEECF5'
@@ -14,11 +13,13 @@ export const SHADOW_COLOR = 'rgba(34, 36, 38, 0.15)'
 
 // Primary color for Chat app.
 export const CHAT_APP_COLOR = '#6B6998'
+export const WIKI_APP_COLOR = '#7CC09E'
 
 // header(description area)
 export const HEADER_HEIGHT = 56
 
 // sidebar
+export const NAVIGATION_WIDTH = 64
 export const SIDEBAR_WIDTH = 204
 
 // FONTS

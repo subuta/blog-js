@@ -18,11 +18,10 @@ injectReducer(store, MODULE_NAME, reducer);
 import {
   getAll as getChannels,
   getIsRequestProgress as getIsChannelProgress,
-  requestChannel
+  requestChannels
 } from 'src/modules/channel'
 
 import {
-  getIsRequestProgress as getIsAttachmentProgress,
   signAttachment,
   createAttachment,
   uploadAttachment
@@ -41,7 +40,8 @@ const mapDispatchToProps = {
   createChannelComment,
   createAttachment,
   uploadAttachment,
-  signAttachment
+  signAttachment,
+  requestChannels
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)

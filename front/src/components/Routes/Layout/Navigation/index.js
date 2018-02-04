@@ -1,7 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import { Route, Switch } from 'react-router'
-import { NavLink } from 'react-router-dom'
+import { NavLink, withRouter } from 'react-router-dom'
 
 import withStyles from './style'
 import connect from './connect'
@@ -16,11 +15,13 @@ import {
   compose,
   branch,
   lifecycle,
-  renderComponent
+  renderComponent,
+  withHandlers
 } from 'recompose'
 
 const enhance = compose(
   withStyles,
+  withRouter,
   connect,
   lifecycle({
     componentWillMount () {
@@ -47,13 +48,21 @@ export default enhance((props) => {
         </a>
         */}
 
-        <span className={`${styles.ChatApp} is-active`}>
+        <NavLink
+          to={`/chat`}
+          className={`${styles.ChatApp}`}
+          activeClassName="is-active"
+        >
           <MdChatIcon />
-        </span>
+        </NavLink>
 
-        <a className={`${styles.WikiApp}`} href="#">
+        <NavLink
+          to={`/wiki`}
+          className={`${styles.WikiApp}`}
+          activeClassName="is-active"
+        >
           <MdInsertDriveFile />
-        </a>
+        </NavLink>
       </div>
 
       <div className={styles.Bottom}>

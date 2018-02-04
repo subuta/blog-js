@@ -1,7 +1,7 @@
 import React from 'react'
 
-import classes from './style'
+import withStyles from './style'
 
-export default ({style = {}}) => (
-  <div className={classes.Placeholder} style={style}/>
-)
+export default withStyles(({styles, style = {}}) => (
+  <div className={styles.Placeholder} style={style} />
+))
