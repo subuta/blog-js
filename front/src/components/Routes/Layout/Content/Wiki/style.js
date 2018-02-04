@@ -19,6 +19,11 @@ const Wiki = {
 
 }
 
+const Container = {
+  display: 'flex'
+}
+
 export default createWithStyles({
   Wiki,
+  Container,
 })

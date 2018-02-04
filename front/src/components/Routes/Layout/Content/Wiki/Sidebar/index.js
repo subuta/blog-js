@@ -17,11 +17,11 @@ import {
 
 // initial state.
 const withLoading = branch(
-  ({channels}) => _.isEmpty(channels),
+  // ({channels}) => _.isEmpty(channels),
+  ({channels}) => false,
   renderComponent(({styles}) => {
-    const sidebarClass = `${styles.Sidebar} is-chat`
     return (
-      <div className={sidebarClass}>
+      <div className={styles.Sidebar}>
         <div className={styles.Menus}>
           <div className={styles.Logo}>
             <SvgIcon name="logo-white" />
@@ -68,16 +68,14 @@ export default enhance((props) => {
     channels,
     styles
   } = props
-
-  const sidebarClass = `${styles.Sidebar} is-chat`
   return (
-    <div className={sidebarClass}>
+    <div className={styles.Sidebar}>
       <div className={styles.Menus}>
         <div className={styles.Logo}>
           <SvgIcon name="logo-white" />
         </div>
 
-        <h4>Channels</h4>
+        <h4>Tags</h4>
 
         <ul className={styles.Channels}>
           {_.map(channels, ({id, name}) => {

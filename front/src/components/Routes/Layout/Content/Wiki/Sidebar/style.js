@@ -9,7 +9,7 @@ import {
   SIDEBAR_WIDTH,
   SANS_FONT,
 
-  CHAT_APP_COLOR,
+  WIKI_APP_COLOR
 } from 'src/constants/style'
 
 const Sidebar = {
@@ -24,7 +24,7 @@ const Sidebar = {
   color: PRIMARY_COLOR,
   fontFamily: LATO_WITH_SANS_FONT,
   transition: `all 0.3s ${EASE_STANDARD}`,
-  background: CHAT_APP_COLOR,
+  background: WIKI_APP_COLOR,
 
   '& h4': {
     fontFamily: 'inherit',

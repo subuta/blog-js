@@ -5,6 +5,8 @@ import _ from 'lodash'
 import keycode from 'keycode'
 import { Redirect } from 'react-router'
 
+import Sidebar from './Sidebar'
+
 import withStyles from './style'
 // import connect from './connect'
 
@@ -61,10 +63,21 @@ const enhance = compose(
 
 export default enhance((props) => {
   const {
-    styles
+    styles,
+    channels,
+    match,
+    location
   } = props
 
   return (
-    <h1>hoge</h1>
+    <div className={styles.Container}>
+      <Sidebar
+        channels={channels}
+        match={match}
+        location={location}
+      />
+
+      <h1>hoge</h1>
+    </div>
   )
 })
