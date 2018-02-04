@@ -6,9 +6,10 @@ import {
 
 const Navigation = {
   height: '100vh',
-  padding: '0 8px',
+  padding: '16px 8px',
   display: 'flex',
   flexDirection: 'column',
+  justifyContent: 'space-between',
   background: DIMMED_BLACK_COLOR
 }
 
@@ -22,16 +23,34 @@ const Item = {
   background: '#DDDDDD',
   borderRadius: '50%',
 
-  '& > *': {
-    color: DIMMED_BLACK_COLOR
+  '&:first-child': {
+    margin: 0
   },
 
-  '&:first-child': {
-    margin: '16px 0 0'
+  '& > *': {
+    color: DIMMED_BLACK_COLOR
   }
+}
+
+const Top = {
+
+}
+
+const Bottom = {
+
+}
+
+const User = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  margin: '16px 0 0',
 }
 
 export default createWithStyles({
   Navigation,
-  Item
+  Item,
+  User,
+  Top,
+  Bottom
 })

@@ -51,15 +51,6 @@ const withLoading = branch(
               </a>
             </li>
           </ul>
-
-          <h4><Placeholder style={{width: 60}} /></h4>
-
-          <ul className={styles.Notes}>
-            <li>
-              <span className="list-icon"><Placeholder style={{opacity: 0.5, width: 16}} /></span>
-              <div style={{lineHeight: 0}}><Placeholder style={{opacity: 0.5, width: 120}} /></div>
-            </li>
-          </ul>
         </div>
       </div>
     )
@@ -107,19 +98,6 @@ export default enhance((props) => {
             )
           })}
         </ul>
-
-        <h4>Note</h4>
-
-        <ul className={styles.Notes}>
-          <li>
-            <span className="list-icon"><SvgIcon name="note" /></span>
-            <div>ReactでHOCを作るのに必要なものほげほげほげほげ</div>
-          </li>
-        </ul>
-      </div>
-
-      <div className={styles.Login}>
-        {currentUser ? currentUser.nickname : ''}
       </div>
     </div>
   )

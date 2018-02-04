@@ -113,15 +113,10 @@ const Menus = {
   width: '100%'
 }
 
-const Login = {
-  width: '100%'
-}
-
 export default createWithStyles({
   Sidebar,
   Logo,
   Channels,
   Notes,
-  Menus,
-  Login
+  Menus
 })

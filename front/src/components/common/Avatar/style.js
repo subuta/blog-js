@@ -4,27 +4,13 @@ import {
   GRAY_COLOR
 } from 'src/constants/style'
 
-const Avatar = {
-  '& > img': {
-    height: 40,
-    width: 40,
-    borderRadius: 4
-  }
-}
+const Avatar = {}
 
 const IconWrapper = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  height: 40,
-  width: 40,
-  backgroundColor: GRAY_COLOR,
-  borderRadius: 4,
-
-  '& > svg': {
-    height: 24,
-    width: 24
-  }
+  backgroundColor: GRAY_COLOR
 }
 
 export default createWithStyles({
