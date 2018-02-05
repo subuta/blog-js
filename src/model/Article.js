@@ -1,9 +1,6 @@
 import Model from './Model'
-import {setSchema} from 'src/utils/ajvValidator'
 
 export const register = (models) => {
-  // setSchema to ajv.
-  setSchema(Article.jsonSchema)
   // then define relationMappings.
   Article.relationMappings = {
     tags: {
@@ -11,7 +8,7 @@ export const register = (models) => {
       relation: Model.ManyToManyRelation,
       join: {
         from: 'articles.id',
-        through: {from: 'articles_tags.articleId', to: 'articles_tags.tagId'},
+        through: {from: 'article_tags.articleId', to: 'article_tags.tagId'},
         to: 'tags.id'
       }
     }
@@ -29,8 +26,7 @@ export default class Article extends Model {
     properties: {
       id: {type: 'integer'},
       title: {type: 'string'},
-      content: {type: 'string'},
-      tags: {type: ['array', 'null'], items: [{$ref: 'tag.json'}]}
+      content: {type: 'string'}
     }
   }
 }

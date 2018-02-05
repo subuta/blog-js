@@ -19,8 +19,8 @@ export default {
       join: {
         from: 'tags.id',
         through: {
-          from: 'articles_tags.tagId',
-          to: 'articles_tags.articleId'
+          from: 'article_tags.tagId',
+          to: 'article_tags.articleId'
         },
         to: 'articles.id',
       }

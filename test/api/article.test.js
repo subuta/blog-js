@@ -112,12 +112,14 @@ test('update should update article', async (t) => {
     .set('Authorization', `Bearer ${token}`)
     .send({
       article: {
-        title: 'Awesome Redux'
+        title: 'Awesome Redux 2'
       }
     })
 
   t.is(response.status, 200)
   t.deepEqual(response.body.id, 1)
+  t.deepEqual(response.body.title, 'Awesome Redux 2')
+  t.deepEqual(response.body.tags[0].label, 'react')
 })
 
 test('delete should delete article', async (t) => {

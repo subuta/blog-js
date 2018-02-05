@@ -1,5 +1,5 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable('articles_tags', function (table) {
+  return knex.schema.createTable('article_tags', function (table) {
     table.increments()
     table.integer('articleId').references('articles.id').onDelete('CASCADE')
     table.integer('tagId').references('tags.id').onDelete('CASCADE')
@@ -8,5 +8,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTableIfExists('articles_tags')
+  return knex.schema.dropTableIfExists('article_tags')
 };

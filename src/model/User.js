@@ -1,9 +1,6 @@
 import Model from './Model'
-import {setSchema} from 'src/utils/ajvValidator'
 
 export const register = (models) => {
-  // setSchema to ajv.
-  setSchema(User.jsonSchema)
   // then define relationMappings.
   User.relationMappings = {
     comments: {
@@ -30,8 +27,7 @@ export default class User extends Model {
       status: {type: 'string'},
       avatar: {type: 'string'},
       created_at: {type: 'string', format: 'date-time'},
-      updated_at: {type: 'string', format: 'date-time'},
-      comments: {type: ['array', 'null'], items: [{$ref: 'comment.json'}]}
+      updated_at: {type: 'string', format: 'date-time'}
     }
   }
 }

@@ -1,9 +1,6 @@
 import Model from './Model'
-import {setSchema} from 'src/utils/ajvValidator'
 
 export const register = (models) => {
-  // setSchema to ajv.
-  setSchema(Attachment.jsonSchema)
   // then define relationMappings.
   Attachment.relationMappings = {
     comment: {
@@ -28,8 +25,7 @@ export default class Attachment extends Model {
       type: {type: 'string'},
       url: {type: 'string'},
       created_at: {type: 'string', format: 'date-time'},
-      updated_at: {type: 'string', format: 'date-time'},
-      comment: {oneOf: [{type: 'null'}, {$ref: 'comment.json'}]}
+      updated_at: {type: 'string', format: 'date-time'}
     }
   }
 }
