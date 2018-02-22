@@ -1,5 +1,5 @@
 export default {
-  tableName: 'article_tags',
+  tableName: 'articles_tags',
   required: [
     'articleId',
     'tagId',
@@ -21,7 +21,7 @@ export default {
     tag: {
       belongsTo: 'tag',
       join: {
-        from: 'article_tags.tagId',
+        from: 'articles_tags.tagId',
         to: 'tags.id',
       }
     },
@@ -29,7 +29,7 @@ export default {
     article: {
       belongsTo: 'article',
       join: {
-        from: 'article_tags.articleId',
+        from: 'articles_tags.articleId',
         to: 'articles.id',
       }
     },

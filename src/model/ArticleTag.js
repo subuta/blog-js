@@ -6,22 +6,22 @@ export const register = (models) => {
     tag: {
       modelClass: models.Tag,
       relation: Model.BelongsToOneRelation,
-      join: {from: 'article_tags.tagId', to: 'tags.id'}
+      join: {from: 'articles_tags.tagId', to: 'tags.id'}
     },
     article: {
       modelClass: models.Article,
       relation: Model.BelongsToOneRelation,
-      join: {from: 'article_tags.articleId', to: 'articles.id'}
+      join: {from: 'articles_tags.articleId', to: 'articles.id'}
     }
   }
 }
 
 export default class Articletag extends Model {
-  static tableName = 'article_tags'
+  static tableName = 'articles_tags'
 
   static jsonSchema = {
-    title: 'ArticleTag',
-    $id: 'http://sub-labo.com/schemas/article_tag.json',
+    title: 'ArticlesTag',
+    $id: 'http://sub-labo.com/schemas/articles_tag.json',
     type: 'object',
     required: ['articleId', 'tagId'],
     properties: {

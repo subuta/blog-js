@@ -1,6 +1,6 @@
 import { build, format, snippets as s } from 'bld.js'
 
-import env from '@subuta/snippets/lib/config/env'
+import env from '@subuta/snippets/lib/_utils/env'
 
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx

@@ -11,9 +11,6 @@ export const attachmentList = new schema.Array(attachment)
 export const article = new schema.Entity('article')
 export const articleList = new schema.Array(article)
 
-export const articleTag = new schema.Entity('articleTag')
-export const articleTagList = new schema.Array(articleTag)
-
 export const channel = new schema.Entity('channel')
 export const channelList = new schema.Array(channel)
 
@@ -32,11 +29,6 @@ attachment.define({
 
 article.define({
   tags: [tag]
-})
-
-articleTag.define({
-  tag,
-  article
 })
 
 channel.define({
@@ -62,8 +54,6 @@ const models = {
   attachmentList,
   article,
   articleList,
-  articleTag,
-  articleTagList,
   channel,
   channelList,
   comment,

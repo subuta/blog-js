@@ -13,17 +13,17 @@ import { Routes } from '../../_config'
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx
 
-  return Promise.map(_.toPairs(Routes), async ([model, config]) => {
+  return Promise.map(_.toPairs(Routes), async ([model, routeConfig]) => {
     const models = _.upperFirst(pluralize(model))
 
     // if user.
     if (model === 'user') {
-      return fs.writeFile(`${filePath}/${model}.js`, format(UserRoute({model, config})))
+      return fs.writeFile(`${filePath}/${model}.js`, format(UserRoute({model, routeConfig})))
     }
 
     // render by `routes` generator otherwise.
     const data = build`
-      ${Route({model, config})}
+      ${Route({model, routeConfig})}
     `
 
     return fs.writeFile(`${filePath}/${model}.js`, format(data))

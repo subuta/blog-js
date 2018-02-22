@@ -8,7 +8,7 @@ export const register = (models) => {
       relation: Model.ManyToManyRelation,
       join: {
         from: 'tags.id',
-        through: {from: 'article_tags.tagId', to: 'article_tags.articleId'},
+        through: {from: 'articles_tags.tagId', to: 'articles_tags.articleId'},
         to: 'articles.id'
       }
     }

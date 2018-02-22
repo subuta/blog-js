@@ -18,10 +18,6 @@ export const Routes = {
   article: {
     eager: '[tags]'
   },
-  articleTag: {
-    only: [],
-    eager: '[]'
-  },
   comment: {
     // pass custom route prefix.
     prefix: '/channels/:channelId/comments',
@@ -65,7 +61,8 @@ export const Models = {
     schema: Article
   },
   articleTag: {
-    schema: ArticleTag
+    schema: ArticleTag,
+    isJunction: true
   },
   channel: {
     schema: Channel

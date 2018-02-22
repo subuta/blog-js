@@ -9,7 +9,9 @@ import Module from '@subuta/snippets/lib/redux/Module'
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx
 
-  return Promise.map(_.toPairs(Routes), async ([model, config]) => {
-    return fs.writeFile(`${filePath}/${model}.js`, format(Module(config, Models[model])))
+  return Promise.map(_.toPairs(Models), async ([model, modelConfig]) => {
+    // skip creating module for junction table.
+    if (Models[model].isJunction) return
+    return fs.writeFile(`${filePath}/${model}.js`, format(Module(Routes[model], modelConfig)))
   })
 }
