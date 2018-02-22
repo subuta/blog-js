@@ -1,18 +1,15 @@
 import test from 'ava'
+import _ from 'lodash'
 import sinon from 'sinon'
 import request from 'supertest'
-import { Channel } from 'src/model'
-
-// use mock from jwks-rsa tests.
-import { jwksEndpoint } from 'jwks-rsa/tests/mocks/jwks'
-import { publicKey, privateKey } from 'jwks-rsa/tests/mocks/keys'
-import { createToken } from 'jwks-rsa/tests/mocks/tokens'
-
+import {jwksEndpoint} from 'jwks-rsa/tests/mocks/jwks'
+import {publicKey, privateKey} from 'jwks-rsa/tests/mocks/keys'
+import {createToken} from 'jwks-rsa/tests/mocks/tokens'
+import Koa from 'koa'
 import importFresh from 'import-fresh'
-import { absolutePath } from '../config'
-
-import { currentUser } from 'test/helper/user'
-import runSeed, { runMigration } from 'test/helper/fixtures'
+import {absolutePath} from '../config'
+import {currentUser} from 'test/helper/user'
+import runSeed, {runMigration} from 'test/helper/fixtures'
 
 const sandbox = sinon.sandbox.create()
 
@@ -25,12 +22,15 @@ test.beforeEach(async (t) => {
   await runSeed(knex)
 
   const api = require('test/helper/mocked').api(knex)
+  const models = require('test/helper/mocked').model(knex)
 
-  const app = proxyquire(absolutePath('src'), {
-    './api': api
-  }).default
+  const app = new Koa()
+  // handle /api requests
+  app.use(api.routes())
+  app.use(api.allowedMethods())
 
   t.context = {
+    ...models,
     request: request(app.listen(0))
   }
 })
@@ -42,8 +42,7 @@ test.afterEach((t) => {
 test('should return 401 with No Authorization header', async (t) => {
   const {request} = t.context
 
-  const response = await request
-    .get('/api/channels')
+  const response = await request.get('/api/channels')
 
   t.is(response.status, 401)
   t.deepEqual(response.body, {})
