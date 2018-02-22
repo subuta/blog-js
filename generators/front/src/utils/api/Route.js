@@ -3,7 +3,7 @@ import Promise from 'bluebird'
 import _ from 'lodash'
 
 import Route from '@subuta/snippets/lib/axios/api/Route'
-import { Models, Routes } from '../../../../generators/_config'
+import { Models, Routes } from '../../../../_config'
 
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx

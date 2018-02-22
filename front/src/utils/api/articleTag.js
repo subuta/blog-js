@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import request from 'src/utils/request'
 import {normalize} from 'normalizr'
-import {articles_tag, articles_tagList} from 'src/utils/schema'
+import {article_tag, article_tagList} from 'src/utils/schema'
 
 /* mat Custom action [start] */
 /* mat Custom action [end] */

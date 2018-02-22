@@ -2,7 +2,7 @@ import { build, format, snippets as s } from 'bld.js'
 import Promise from 'bluebird'
 import _ from 'lodash'
 
-import { Routes } from '../../../generators/_config'
+import { Routes } from '../../../_config'
 
 import ModuleIndex from '@subuta/snippets/lib/redux/ModuleIndex'
 

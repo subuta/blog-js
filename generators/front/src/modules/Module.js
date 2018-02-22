@@ -2,7 +2,7 @@ import { build, format, snippets as s } from 'bld.js'
 import Promise from 'bluebird'
 import _ from 'lodash'
 
-import { Routes, Models } from '../../../generators/_config'
+import { Routes, Models } from '../../../_config'
 
 import Module from '@subuta/snippets/lib/redux/Module'
 

@@ -1,6 +1,6 @@
 module.exports = {
   // destination directory name `default: src`'
-  dest: 'src',
+  dest: './',
 
   // generator directory name `default: generators`
   generator: 'generators',

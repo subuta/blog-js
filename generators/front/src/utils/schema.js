@@ -3,7 +3,7 @@ import Promise from 'bluebird'
 import _ from 'lodash'
 
 import Schema from '@subuta/snippets/lib/normalizr/schema'
-import { Models } from '../../../generators/_config'
+import { Models } from '../../../_config'
 
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx
