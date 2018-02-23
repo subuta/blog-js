@@ -4,8 +4,8 @@ exports.seed = async (knex) => {
 
   // https://github.com/tgriesser/knex/issues/54
   await knex('tags').insert([
-    {id: 6898, label: 'Alabama'},
-    {id: 14780, label: 'Administrator Regional orchid'},
-    {id: 36084, label: 'Networked'}
+    {id: 91264, label: 'Garden Regional Public-key'},
+    {id: 10295, label: 'directional'},
+    {id: 89794, label: 'Architect Pants Home'}
   ])
 }

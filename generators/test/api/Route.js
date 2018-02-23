@@ -11,16 +11,13 @@ export default async (ctx) => {
   const {filePath, fileName, fs} = ctx
 
   return Promise.map(_.toPairs(routesConfig), async ([model]) => {
-    const routeConfig = routesConfig[model]
-    const modelConfig = modelsConfig[model]
-
     // if user.
     if (model === 'user') {
-      return fs.writeFile(`${filePath}/${model}.test.js`, format(UserRouteTest({model, routeConfig, modelConfig})))
+      return fs.writeFile(`${filePath}/${model}.test.js`, format(UserRouteTest({model, routesConfig, modelsConfig})))
     }
 
     const data = build`
-      ${RouteTest({model, routeConfig, modelConfig})}
+      ${RouteTest({model, routesConfig, modelsConfig})}
     `
 
     return fs.writeFile(`${filePath}/${model}.test.js`, format(data))

@@ -5,4 +5,4 @@ export const createPayload = (sub) => ({
   scope: 'openid profile email'
 })
 
-export const currentUser = createPayload('turquoise revolutionize override')
+export const currentUser = createPayload('e376dc36-3072-45e7-84b0-8109641881ca')

@@ -38,7 +38,7 @@ test.afterEach((t) => {
   sandbox.reset()
 })
 
-test('index should list channel', async (t) => {
+test('index should list tag', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -46,50 +46,12 @@ test('index should list channel', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .get('/api/channels')
+    .get('/api/tags')
     .set('Authorization', `Bearer ${token}`)
 
   t.is(response.status, 200)
   t.deepEqual(response.body.length, 3)
-  t.deepEqual(_.map(response.body, 'id'), [31156, 54787, 99821])
-})
-test('show should return channel', async (t) => {
-  const {request} = t.context
-
-  // mock jwks
-  const token = createToken(privateKey, '123', currentUser)
-  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
-
-  const response = await request
-    .get('/api/channels/31156')
-    .set('Authorization', `Bearer ${token}`)
-
-  t.is(response.status, 200)
-
-  t.deepEqual(response.body.id, 31156)
-  t.deepEqual(response.body.name, 'Latvian Lats Iraqi Dinar Grocery')
-})
-test('post should create channel', async (t) => {
-  const {request, Channel} = t.context
-
-  // mock jwks
-  const token = createToken(privateKey, '123', currentUser)
-  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
-
-  const response = await request
-    .post('/api/channels')
-    .set('Authorization', `Bearer ${token}`)
-    .send({
-      channel: {id: 30789, name: 'Antarctica (the territory South of 60 deg S)'}
-    })
-
-  t.is(response.status, 200)
-
-  t.deepEqual(response.body.id, 30789)
-  t.deepEqual(
-    response.body.name,
-    'Antarctica (the territory South of 60 deg S)'
-  )
+  t.deepEqual(_.map(response.body, 'id').sort(), [10295, 89794, 91264])
 })
 
 /* mat Custom tests [start] */

@@ -38,7 +38,7 @@ test.afterEach((t) => {
   sandbox.reset()
 })
 
-test('index should list comment', async (t) => {
+test('index should list channel', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -46,58 +46,49 @@ test('index should list comment', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .get('/api/channels/:channelId/comments')
+    .get('/api/channels')
     .set('Authorization', `Bearer ${token}`)
 
   t.is(response.status, 200)
   t.deepEqual(response.body.length, 3)
-  t.deepEqual(_.map(response.body, 'id'), [17123, 34300, 54783])
+  t.deepEqual(_.map(response.body, 'id').sort(), [31156, 54787, 99821])
 })
-test('post should create comment', async (t) => {
-  const {request, Comment} = t.context
+
+test('show should return channel', async (t) => {
+  const {request} = t.context
 
   // mock jwks
   const token = createToken(privateKey, '123', currentUser)
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .post('/api/channels/:channelId/comments')
+    .get('/api/channels/31156')
+    .set('Authorization', `Bearer ${token}`)
+
+  t.is(response.status, 200)
+
+  t.deepEqual(response.body.id, 31156)
+  t.deepEqual(response.body.name, 'International')
+})
+
+test('post should create channel', async (t) => {
+  const {request, Channel} = t.context
+
+  // mock jwks
+  const token = createToken(privateKey, '123', currentUser)
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .post('/api/channels')
     .set('Authorization', `Bearer ${token}`)
     .send({
-      comment: {
-        id: 45801,
-        text:
-          'Alias et tenetur assumenda aut. Autem atque soluta. Reiciendis assumenda necessitatibus eligendi consequatur quam exercitationem sint et.'
-      }
+      channel: {id: 30789, name: 'leading edge'}
     })
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 45801)
-  t.deepEqual(
-    response.body.text,
-    'Alias et tenetur assumenda aut. Autem atque soluta. Reiciendis assumenda necessitatibus eligendi consequatur quam exercitationem sint et.'
-  )
-})
-test('delete should delete comment', async (t) => {
-  const {request, Article} = t.context
-
-  let articles = await Article.query()
-  t.deepEqual(articles.length, 3)
-
-  // mock jwks
-  const token = createToken(privateKey, '123', currentUser)
-  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
-
-  const response = await request
-    .delete('/api/channels/:channelId/comments/17123')
-    .set('Authorization', `Bearer ${token}`)
-
-  articles = await Article.query()
-  t.deepEqual(articles.length, 2)
-
-  t.is(response.status, 204)
-  t.deepEqual(response.body, {})
+  t.deepEqual(response.body.id, 30789)
+  t.deepEqual(response.body.name, 'leading edge')
 })
 
 /* mat Custom tests [start] */

@@ -1,6 +1,3 @@
-import uuid from 'uuid/v4'
-import path from 'path'
-import {getSignedUrl} from 'src/utils/s3'
 import test from 'ava'
 import _ from 'lodash'
 import sinon from 'sinon'
@@ -41,35 +38,7 @@ test.afterEach((t) => {
   sandbox.reset()
 })
 
-test('post should create attachment', async (t) => {
-  const {request, Attachment} = t.context
-
-  // mock jwks
-  const token = createToken(privateKey, '123', currentUser)
-  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
-
-  const response = await request
-    .post('/api/attachments')
-    .set('Authorization', `Bearer ${token}`)
-    .send({
-      attachment: {
-        id: 'Connecticut Unbranded parse',
-        name: 'teal infrastructures Missouri',
-        type: 'grid-enabled hack Estonia',
-        imageUrl: 'http://lorempixel.com/640/480/nature'
-      }
-    })
-
-  t.is(response.status, 200)
-
-  t.deepEqual(response.body.id, 'Connecticut Unbranded parse')
-  t.deepEqual(response.body.name, 'teal infrastructures Missouri')
-  t.deepEqual(response.body.type, 'grid-enabled hack Estonia')
-  t.deepEqual(response.body.imageUrl, 'http://lorempixel.com/640/480/nature')
-})
-
-/* mat Custom tests [start] */
-test('sign should return signedUrl', async (t) => {
+test('index should list comment', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -77,19 +46,61 @@ test('sign should return signedUrl', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .post('/api/attachments/sign')
+    .get('/api/channels/31156/comments')
+    .set('Authorization', `Bearer ${token}`)
+
+  t.is(response.status, 200)
+  t.deepEqual(response.body.length, 1)
+  t.deepEqual(_.map(response.body, 'id').sort(), [54783])
+})
+
+test('post should create comment', async (t) => {
+  const {request, Comment} = t.context
+
+  // mock jwks
+  const token = createToken(privateKey, '123', currentUser)
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .post('/api/channels/undefined/comments')
     .set('Authorization', `Bearer ${token}`)
     .send({
-      attachment: {
-        name: 'hoge.png',
-        type: 'image/png'
+      comment: {
+        id: 45801,
+        text:
+          'Quis alias et. Assumenda aut aut autem atque soluta accusamus reiciendis assumenda necessitatibus. Consequatur quam exercitationem sint et iste aut tempore. Possimus fugit sequi voluptatibus natus illum exercitationem voluptates.'
       }
     })
 
   t.is(response.status, 200)
-  t.truthy(response.body.signedRequest)
-  t.truthy(response.body.url)
-  t.truthy(response.body.id)
+
+  t.deepEqual(response.body.id, 45801)
+  t.deepEqual(
+    response.body.text,
+    'Quis alias et. Assumenda aut aut autem atque soluta accusamus reiciendis assumenda necessitatibus. Consequatur quam exercitationem sint et iste aut tempore. Possimus fugit sequi voluptatibus natus illum exercitationem voluptates.'
+  )
 })
 
+test('delete should delete comment', async (t) => {
+  const {request, Comment} = t.context
+
+  let comments = await Comment.query()
+  t.deepEqual(comments.length, 3)
+
+  // mock jwks
+  const token = createToken(privateKey, '123', currentUser)
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .delete('/api/channels/31156/comments/54783')
+    .set('Authorization', `Bearer ${token}`)
+
+  comments = await Comment.query()
+  t.deepEqual(comments.length, 2)
+
+  t.is(response.status, 204)
+  t.deepEqual(response.body, {})
+})
+
+/* mat Custom tests [start] */
 /* mat Custom tests [end] */

@@ -1,6 +1,5 @@
-import { absolutePath } from '../../config'
-
-const proxyquire = require('proxyquire')
+import proxyquire from 'proxyquire'
+import {absolutePath} from '../../config'
 
 // knex injected modules.
 

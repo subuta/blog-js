@@ -18,24 +18,6 @@ import Login from './Login'
 
 let routes = null
 
-/* mat Custom routes [start] */
-const ensureAuthorized = branch(
-  () => !auth0.isAuthenticated(),
-  renderComponent(() => <Redirect to='/login' />),
-  _.identity
-)
 
-const AuthorizedRoutes = ensureAuthorized(Layout)
-
-routes = (
-  <ConnectedRouter history={history}>
-    <Switch>
-      <Route path='/login' component={Login} />
-      <Route path='/:channelName?' component={AuthorizedRoutes} />
-      <Route component={() => <Redirect to='/' />} /> {/* 404 */}
-    </Switch>
-  </ConnectedRouter>
-)
-/* mat Custom routes [end] */
 
 export default routes

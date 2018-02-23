@@ -5,22 +5,22 @@ exports.seed = async (knex) => {
   // https://github.com/tgriesser/knex/issues/54
   await knex('attachments').insert([
     {
-      id: 17123,
-      name: 'Jordanian Dinar',
-      type: 'olive Pakistan',
-      imageUrl: 'http://lorempixel.com/640/480/transport'
+      id: 'e06fda25-bf75-4b3b-8897-de04a0f02280',
+      name: 'Practical Frozen Bacon deposit open architecture',
+      type: 'Practical Frozen Bacon deposit open architecture',
+      imageUrl: 'http://lorempixel.com/640/480/technics'
     },
     {
-      id: 34300,
-      name: 'IB killer',
-      type: 'task-force',
-      imageUrl: 'http://lorempixel.com/640/480/nightlife'
+      id: 'bdbf9a3f-f9f7-4981-afac-a1931a57af40',
+      name: 'calculating Orchestrator deposit',
+      type: 'calculating Orchestrator deposit',
+      imageUrl: 'http://lorempixel.com/640/480/nature'
     },
     {
-      id: 54783,
-      name: 'Ball',
-      type: 'AGP Assistant attitude',
-      imageUrl: 'http://lorempixel.com/640/480/transport'
+      id: '51cb0acf-acb0-44e0-8aed-601243b1bae3',
+      name: 'Handmade driver',
+      type: 'Handmade driver',
+      imageUrl: 'http://lorempixel.com/640/480/city'
     }
   ])
 }
