@@ -5,4 +5,4 @@ export const createPayload = (sub) => ({
   scope: 'openid profile email'
 })
 
-export const currentUser = createPayload('systemic Belarussian Ruble')
+export const currentUser = createPayload('turquoise revolutionize override')

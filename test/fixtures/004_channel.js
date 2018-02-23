@@ -4,8 +4,8 @@ exports.seed = async (knex) => {
 
   // https://github.com/tgriesser/knex/issues/54
   await knex('channels').insert([
-    {id: 31156, name: 'Latvian Lats Iraqi Dinar Grocery'},
-    {id: 54787, name: 'Legacy Assurance Island'},
-    {id: 99821, name: 'back up disintermediate'}
+    {id: 17123, name: 'Shoes'},
+    {id: 34300, name: 'explicit'},
+    {id: 54783, name: 'communities'}
   ])
 }

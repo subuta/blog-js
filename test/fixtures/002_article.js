@@ -5,22 +5,22 @@ exports.seed = async (knex) => {
   // https://github.com/tgriesser/knex/issues/54
   await knex('articles').insert([
     {
-      id: 6898,
-      title: 'Designer',
+      id: 10295,
+      title: 'quantify Frozen payment',
       content:
-        'Nesciunt veritatis molestiae. Aut itaque nostrum. Voluptatem ex neque eligendi. Ad est dolores occaecati quis rerum ullam magni.'
+        'Repudiandae similique veritatis qui autem doloribus voluptatem sapiente illo nulla. Nostrum facilis quia unde non est. Error sint voluptatem quia assumenda. Magnam velit et officia id quia et maiores voluptatem reiciendis.'
     },
     {
-      id: 14780,
-      title: 'scale e-tailers optical',
+      id: 89794,
+      title: 'Concrete Libyan Dinar',
       content:
-        'Qui dolorem dicta dicta. Dignissimos eum consequatur. Perferendis alias velit praesentium.'
+        'A voluptatem sed vel recusandae voluptates ad nihil. Sint culpa dolorem sint nihil modi aut animi dignissimos enim. Et mollitia modi aspernatur qui dolorem. Dolor sapiente nihil molestiae reiciendis nisi sit quos explicabo.'
     },
     {
-      id: 36084,
-      title: 'dedicated Accountability monitor',
+      id: 91264,
+      title: 'Liberian Dollar',
       content:
-        'Aut fugiat placeat unde deserunt. Assumenda alias voluptatem qui. Eius esse et ad non asperiores cum molestias repellendus consequatur. Blanditiis voluptas repellat temporibus. Ab voluptatem dolorum doloribus aperiam et officia aut necessitatibus. Ut repellendus aut eum beatae et numquam.'
+        'Consequatur velit autem quia autem eos totam excepturi harum. Ad nihil sit ipsa. Voluptas nihil alias quidem explicabo.'
     }
   ])
 }

@@ -5,19 +5,28 @@ exports.seed = async (knex) => {
   // https://github.com/tgriesser/knex/issues/54
   await knex('comments').insert([
     {
-      id: 17123,
+      id: 28160,
       text:
-        'Quisquam ut amet ad laboriosam. Animi quia autem est quam iure aut molestiae laborum. Eos reiciendis ratione explicabo atque asperiores reiciendis aut laudantium sit.'
+        'Maiores quae neque. Cupiditate aperiam rerum aspernatur. Atque ut molestias ut repellat illo molestiae voluptas sed. Facere rerum dolores provident earum fuga modi. Consectetur voluptatem aut voluptas quo omnis nostrum.',
+      channelId: 31156,
+      commentedById: 92666,
+      attachmentId: 'Practical Frozen Bacon deposit open architecture'
     },
     {
-      id: 34300,
+      id: 79089,
       text:
-        'Ea quisquam sed et. Vel cumque facere earum repudiandae nam cum ut assumenda occaecati. Eligendi rerum eum. Odit eum necessitatibus nulla ut est tenetur sint non.'
+        'Dolorum labore aspernatur. Commodi totam expedita sapiente quaerat alias ipsa cumque. Eaque adipisci dolorem cupiditate adipisci accusamus eum voluptates optio. Et ut accusantium doloribus amet modi omnis in. Deleniti in ut.',
+      channelId: 99821,
+      commentedById: 58010,
+      attachmentId: 'calculating Orchestrator deposit'
     },
     {
-      id: 54783,
+      id: 87194,
       text:
-        'Consequuntur quos saepe voluptate quibusdam est et blanditiis aut officiis. Officiis necessitatibus vel reiciendis aut maxime. Facilis voluptas ex aspernatur est. Rerum tenetur eius inventore in eius. Dolor et praesentium molestiae quis sit sed modi recusandae quidem.'
+        'Fugit nesciunt exercitationem. Quisquam quia quod harum. Amet est omnis magnam labore eos sequi et sit nulla. Dolor quam rerum quod molestias.',
+      channelId: 54787,
+      commentedById: 37436,
+      attachmentId: 'Handmade driver'
     }
   ])
 }
