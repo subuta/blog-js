@@ -18,14 +18,12 @@ export default class Attachment extends Model {
     title: 'Attachment',
     $id: 'http://sub-labo.com/schemas/attachment.json',
     type: 'object',
-    required: ['name', 'type', 'url'],
+    required: ['name', 'type', 'imageUrl'],
     properties: {
       id: {type: 'string'},
       name: {type: 'string'},
       type: {type: 'string'},
-      url: {type: 'string'},
-      created_at: {type: 'string', format: 'date-time'},
-      updated_at: {type: 'string', format: 'date-time'}
+      imageUrl: {type: 'string'}
     }
   }
 }

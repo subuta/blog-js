@@ -1,5 +1,3 @@
-/** @jsx h */
-
 import { build, format, snippets as s } from 'bld.js'
 import _ from 'lodash'
 import pluralize from 'pluralize'
@@ -14,8 +12,6 @@ export default async (ctx) => {
   const {filePath, fileName, fs} = ctx
 
   return Promise.map(_.toPairs(Routes), async ([model, routeConfig]) => {
-    const models = _.upperFirst(pluralize(model))
-
     // if user.
     if (model === 'user') {
       return fs.writeFile(`${filePath}/${model}.js`, format(UserRoute({model, routeConfig})))

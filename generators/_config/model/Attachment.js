@@ -3,7 +3,7 @@ export default {
   required: [
     'name',
     'type',
-    'url',
+    'imageUrl',
   ],
 
   properties: {
@@ -16,16 +16,8 @@ export default {
     type: {
       'type': 'string'
     },
-    url: {
+    imageUrl: {
       'type': 'string'
-    },
-    created_at: {
-      type: 'string',
-      format: 'date-time'
-    },
-    updated_at: {
-      type: 'string',
-      format: 'date-time'
     }
   },
 
@@ -36,6 +28,6 @@ export default {
         from: 'attachments.id',
         to: 'comments.attachmentId'
       }
-    },
+    }
   }
 }

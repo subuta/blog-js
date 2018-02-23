@@ -2,23 +2,17 @@ import test from 'ava'
 import _ from 'lodash'
 import sinon from 'sinon'
 import request from 'supertest'
-
-// use mock from jwks-rsa tests.
-import { jwksEndpoint } from 'jwks-rsa/tests/mocks/jwks'
-import { publicKey, privateKey } from 'jwks-rsa/tests/mocks/keys'
-import { createToken } from 'jwks-rsa/tests/mocks/tokens'
-
+import {jwksEndpoint} from 'jwks-rsa/tests/mocks/jwks'
+import {publicKey, privateKey} from 'jwks-rsa/tests/mocks/keys'
+import {createToken} from 'jwks-rsa/tests/mocks/tokens'
 import Koa from 'koa'
-
 import importFresh from 'import-fresh'
-import { absolutePath } from '../../config'
-
-import { currentUser } from 'test/helper/user'
-import runSeed, { runMigration } from 'test/helper/fixtures'
+import {absolutePath} from '../../config'
+import {currentUser} from 'test/helper/user'
+import runSeed, {runMigration} from 'test/helper/fixtures'
+import proxyquire from 'proxyquire'
 
 const sandbox = sinon.sandbox.create()
-
-const proxyquire = require('proxyquire')
 
 test.beforeEach(async (t) => {
   const knex = importFresh(absolutePath('src/utils/knex')).default
@@ -27,6 +21,7 @@ test.beforeEach(async (t) => {
   await runSeed(knex)
 
   const api = require('test/helper/mocked').api(knex)
+  const models = require('test/helper/mocked').model(knex)
 
   const app = new Koa()
   // handle /api requests
@@ -34,6 +29,7 @@ test.beforeEach(async (t) => {
   app.use(api.allowedMethods())
 
   t.context = {
+    ...models,
     request: request(app.listen(0))
   }
 })
@@ -42,7 +38,7 @@ test.afterEach((t) => {
   sandbox.reset()
 })
 
-test.serial('index should return channels', async (t) => {
+test('index should list channel', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -55,8 +51,8 @@ test.serial('index should return channels', async (t) => {
 
   t.is(response.status, 200)
   t.deepEqual(response.body.length, 3)
+  t.deepEqual(_.map(response.body, 'id'), [31156, 54787, 99821])
 })
-
 test('show should return channel', async (t) => {
   const {request} = t.context
 
@@ -65,17 +61,16 @@ test('show should return channel', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .get('/api/channels/1')
+    .get('/api/channels/31156')
     .set('Authorization', `Bearer ${token}`)
 
   t.is(response.status, 200)
-  t.deepEqual(response.body.id, 1)
-  t.deepEqual(response.body.comments.length, 2)
-  t.deepEqual(response.body.comments[1].attachment.id, 'xxxx-xxxx-xxxx-xxxx')
-})
 
+  t.deepEqual(response.body.id, 31156)
+  t.deepEqual(response.body.name, 'Latvian Lats Iraqi Dinar Grocery')
+})
 test('post should create channel', async (t) => {
-  const {request} = t.context
+  const {request, Channel} = t.context
 
   // mock jwks
   const token = createToken(privateKey, '123', currentUser)
@@ -85,9 +80,17 @@ test('post should create channel', async (t) => {
     .post('/api/channels')
     .set('Authorization', `Bearer ${token}`)
     .send({
-      channel: {id: 4, name: 'Manny'}
+      channel: {id: 30789, name: 'Antarctica (the territory South of 60 deg S)'}
     })
 
   t.is(response.status, 200)
-  t.deepEqual(response.body.id, 4)
+
+  t.deepEqual(response.body.id, 30789)
+  t.deepEqual(
+    response.body.name,
+    'Antarctica (the territory South of 60 deg S)'
+  )
 })
+
+/* mat Custom tests [start] */
+/* mat Custom tests [end] */

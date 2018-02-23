@@ -7,7 +7,7 @@ export default {
 
   properties: {
     id: {
-      type: 'string'
+      type: 'integer'
     },
     auth0Id: {
       type: 'string'
@@ -23,14 +23,6 @@ export default {
     },
     avatar: {
       'type': 'string'
-    },
-    created_at: {
-      type: 'string',
-      format: 'date-time'
-    },
-    updated_at: {
-      type: 'string',
-      format: 'date-time'
     }
   },
 
@@ -41,6 +33,6 @@ export default {
         from: 'users.id',
         to: 'comments.commentedById'
       }
-    },
+    }
   }
 }

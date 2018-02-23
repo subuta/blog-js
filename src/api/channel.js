@@ -51,7 +51,8 @@ channel.post('/', async (ctx) => {
   ctx.body = response
 })
 
-
+/* mat Custom actions [start] */
+/* mat Custom actions [end] */
 
 export default {
   routes: () => _.cloneDeep(channel.routes()),

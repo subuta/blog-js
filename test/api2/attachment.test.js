@@ -1,24 +1,21 @@
+import uuid from 'uuid/v4'
+import path from 'path'
+import {getSignedUrl} from 'src/utils/s3'
 import test from 'ava'
 import _ from 'lodash'
 import sinon from 'sinon'
 import request from 'supertest'
-
-// use mock from jwks-rsa tests.
-import { jwksEndpoint } from 'jwks-rsa/tests/mocks/jwks'
-import { publicKey, privateKey } from 'jwks-rsa/tests/mocks/keys'
-import { createToken } from 'jwks-rsa/tests/mocks/tokens'
-
+import {jwksEndpoint} from 'jwks-rsa/tests/mocks/jwks'
+import {publicKey, privateKey} from 'jwks-rsa/tests/mocks/keys'
+import {createToken} from 'jwks-rsa/tests/mocks/tokens'
 import Koa from 'koa'
-
 import importFresh from 'import-fresh'
-import { absolutePath } from '../../config'
-
-import { currentUser } from 'test/helper/user'
-import runSeed, { runMigration } from 'test/helper/fixtures'
+import {absolutePath} from '../../config'
+import {currentUser} from 'test/helper/user'
+import runSeed, {runMigration} from 'test/helper/fixtures'
+import proxyquire from 'proxyquire'
 
 const sandbox = sinon.sandbox.create()
-
-const proxyquire = require('proxyquire')
 
 test.beforeEach(async (t) => {
   const knex = importFresh(absolutePath('src/utils/knex')).default
@@ -27,6 +24,7 @@ test.beforeEach(async (t) => {
   await runSeed(knex)
 
   const api = require('test/helper/mocked').api(knex)
+  const models = require('test/helper/mocked').model(knex)
 
   const app = new Koa()
   // handle /api requests
@@ -34,6 +32,7 @@ test.beforeEach(async (t) => {
   app.use(api.allowedMethods())
 
   t.context = {
+    ...models,
     request: request(app.listen(0))
   }
 })
@@ -43,7 +42,7 @@ test.afterEach((t) => {
 })
 
 test('post should create attachment', async (t) => {
-  const {request} = t.context
+  const {request, Attachment} = t.context
 
   // mock jwks
   const token = createToken(privateKey, '123', currentUser)
@@ -54,19 +53,22 @@ test('post should create attachment', async (t) => {
     .set('Authorization', `Bearer ${token}`)
     .send({
       attachment: {
-        name: 'hoge.png',
-        type: 'image/png',
-        url: 'http://localhost:9000/sub-labo.com/65502043-8fa4-4ef4-bd56-e001d719d21f.png'
+        id: 'Connecticut Unbranded parse',
+        name: 'teal infrastructures Missouri',
+        type: 'grid-enabled hack Estonia',
+        imageUrl: 'http://lorempixel.com/640/480/nature'
       }
     })
 
   t.is(response.status, 200)
-  t.truthy(response.body.id)
-  t.is(response.body.name, 'hoge.png')
-  t.is(response.body.type, 'image/png')
-  t.is(response.body.url, 'http://localhost:9000/sub-labo.com/65502043-8fa4-4ef4-bd56-e001d719d21f.png')
+
+  t.deepEqual(response.body.id, 'Connecticut Unbranded parse')
+  t.deepEqual(response.body.name, 'teal infrastructures Missouri')
+  t.deepEqual(response.body.type, 'grid-enabled hack Estonia')
+  t.deepEqual(response.body.imageUrl, 'http://lorempixel.com/640/480/nature')
 })
 
+/* mat Custom tests [start] */
 test('sign should return signedUrl', async (t) => {
   const {request} = t.context
 
@@ -89,3 +91,5 @@ test('sign should return signedUrl', async (t) => {
   t.truthy(response.body.url)
   t.truthy(response.body.id)
 })
+
+/* mat Custom tests [end] */

@@ -1,6 +1,6 @@
 import { build, format, snippets as s } from 'bld.js'
 
-import IndexTest from '@subuta/snippets/lib/koa/api-test'
+import IndexTest from '@subuta/snippets/lib/koa/test'
 
 import { Routes as RoutesConfig, Models as ModelsConfig } from '../_config'
 

@@ -3,7 +3,7 @@ exports.up = function (knex) {
     table.string('id').primary()
     table.string('name').notNullable()
     table.string('type').notNullable()
-    table.string('url').notNullable()
+    table.string('imageUrl').notNullable()
     table.timestamps(true, true)
   })
 }

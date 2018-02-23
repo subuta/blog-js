@@ -20,14 +20,12 @@ export default class User extends Model {
     type: 'object',
     required: ['auth0Id', 'nickname'],
     properties: {
-      id: {type: 'string'},
+      id: {type: 'integer'},
       auth0Id: {type: 'string'},
       locale: {type: 'string'},
       nickname: {type: 'string'},
       status: {type: 'string'},
-      avatar: {type: 'string'},
-      created_at: {type: 'string', format: 'date-time'},
-      updated_at: {type: 'string', format: 'date-time'}
+      avatar: {type: 'string'}
     }
   }
 }

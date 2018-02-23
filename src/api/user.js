@@ -15,12 +15,29 @@ user.put('/me', async (ctx) => {
   const {user} = ctx.request.body
   const {sub} = ctx.state.user
 
+  const currentUser = await ctx.state.getCurrentUser()
+
+  // check for malicious request.
+  user.id = _.get(currentUser, 'id', null)
+
   // findOrCreate specified user.
   // update id with current user in params if specified
-  const params = {...user, auth0Id: sub}
+  const params = _.pickBy(
+    {
+      ...user,
+      auth0Id: sub
+    },
+    _.identity
+  )
+
+  const opts = {
+    relate: true,
+    unrelate: true
+  }
+
   ctx.body = await User.query()
     .eager('')
-    .findOrCreate({where: {auth0Id: sub}, defaults: params})
+    .upsertGraphAndFetch(params, opts)
 })
 
 export default {
