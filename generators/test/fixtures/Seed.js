@@ -8,7 +8,10 @@ import { Routes as routesConfig, Models as modelsConfig } from '../../_config'
 export default async (ctx) => {
   const {filePath, fs} = ctx
 
-  return Promise.map(_.toPairs(modelsConfig), async ([model], i) => {
+  // make junction table created lately.
+  const models = _.sortBy(_.toPairs(modelsConfig), ([_, config]) => config.isJunction || false)
+
+  return Promise.map(models, async ([model], i) => {
 
     const data = build`
       ${Seed({model, routesConfig, modelsConfig})}
