@@ -32,7 +32,7 @@ export default withStyles((props) => {
         </div>
 
         {attachment && (
-          <img src={attachment.url} alt={attachment.name} />
+          <img src={attachment.imageUrl} alt={attachment.name} />
         )}
         <p>{text}</p>
       </div>

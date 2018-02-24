@@ -183,7 +183,7 @@ const enhance = compose(
 
       // create attachment from file
       const {id, signedRequest, url} = await signAttachment({name, type})
-      const attachment = await createAttachment({id, name, type, url})
+      const attachment = await createAttachment({id, name, type, imageUrl: url})
 
       // then upload it to s3
       await uploadAttachment(file, signedRequest, url)
