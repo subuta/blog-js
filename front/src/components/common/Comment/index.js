@@ -22,7 +22,7 @@ export default withStyles((props) => {
 
   return (
     <div className={styles.CommentWrapper}>
-      <Avatar avatar={avatar} nickname={nickname} />
+      <Avatar avatar={avatar} nickname={nickname} size={40} />
 
       <div className={styles.Comment}>
         <div className={styles.Nickname}>
