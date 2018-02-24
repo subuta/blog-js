@@ -4,11 +4,17 @@ import {
   GRAY_COLOR
 } from 'src/constants/style'
 
+const avatarSize = 40
+
 const Avatar = {
   '& > img': {
-    height: 40,
-    width: 40,
+    height: avatarSize,
+    width: avatarSize,
     borderRadius: 4
+  },
+
+  '&.is-rounded > img': {
+    borderRadius: '50%'
   }
 }
 
@@ -17,13 +23,13 @@ const IconWrapper = {
   justifyContent: 'center',
   alignItems: 'center',
   backgroundColor: GRAY_COLOR,
-  height: 40,
-  width: 40,
+  height: avatarSize,
+  width: avatarSize,
   borderRadius: 4,
 
   '& > svg': {
-    height: 24,
-    width: 24
+    height: avatarSize - 16,
+    width: avatarSize - 16
   }
 }
 

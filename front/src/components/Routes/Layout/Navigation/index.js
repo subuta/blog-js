@@ -68,10 +68,9 @@ export default enhance((props) => {
       <div className={styles.Bottom}>
         <div className={styles.User}>
           <Avatar
-            size={40}
-            borderRadius="50%"
             avatar={avatar}
             nickname={nickname}
+            rounded
           />
         </div>
       </div>

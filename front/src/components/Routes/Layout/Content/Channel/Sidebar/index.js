@@ -11,7 +11,6 @@ import Placeholder from 'src/components/common/Placeholder'
 import {
   compose,
   branch,
-  withProps,
   renderComponent
 } from 'recompose'
 
@@ -24,30 +23,30 @@ const withLoading = branch(
       <div className={sidebarClass}>
         <div className={styles.Menus}>
           <div className={styles.Logo}>
-            <SvgIcon name="logo-white" />
+            <SvgIcon name="logo-white"/>
           </div>
 
-          <h4><Placeholder style={{width: 100}} /></h4>
+          <h4><Placeholder style={{width: 100}}/></h4>
 
           <ul className={styles.Channels}>
             <li>
               <a href="">
-                <span className="list-icon"><Placeholder style={{opacity: 0.5, width: 12}} /></span>
-                <span><Placeholder style={{opacity: 0.5, width: 80}} /></span>
+                <span className="list-icon"><Placeholder style={{opacity: 0.5, width: 12}}/></span>
+                <span><Placeholder style={{opacity: 0.5, width: 80}}/></span>
               </a>
             </li>
 
             <li>
               <a href="">
-                <span className="list-icon"><Placeholder style={{opacity: 0.5, width: 12}} /></span>
-                <span><Placeholder style={{opacity: 0.5, width: 40}} /></span>
+                <span className="list-icon"><Placeholder style={{opacity: 0.5, width: 12}}/></span>
+                <span><Placeholder style={{opacity: 0.5, width: 40}}/></span>
               </a>
             </li>
 
             <li>
               <a href="">
-                <span className="list-icon"><Placeholder style={{opacity: 0.5, width: 12}} /></span>
-                <span><Placeholder style={{opacity: 0.5, width: 60}} /></span>
+                <span className="list-icon"><Placeholder style={{opacity: 0.5, width: 12}}/></span>
+                <span><Placeholder style={{opacity: 0.5, width: 60}}/></span>
               </a>
             </li>
           </ul>
@@ -74,7 +73,7 @@ export default enhance((props) => {
     <div className={sidebarClass}>
       <div className={styles.Menus}>
         <div className={styles.Logo}>
-          <SvgIcon name="logo-white" />
+          <SvgIcon name="logo-white"/>
         </div>
 
         <h4>Channels</h4>

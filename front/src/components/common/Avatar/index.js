@@ -4,23 +4,15 @@ import MdFaceIcon from 'react-icons/lib/md/face'
 
 import withStyles from './style'
 
-import { forceApplyNewStyle } from 'src/utils/style'
+export default withStyles(({avatar, nickname, styles, rounded}) => {
+  let avatarClass = styles.Avatar
+  if (rounded) {
+    avatarClass += ' is-rounded'
+  }
 
-export default forceApplyNewStyle(withStyles(({size = 40, borderRadius = 4, avatar, nickname, styles, freeStyle}) => {
   if (!avatar) {
-    const Size = freeStyle.registerStyle({
-      height: `${size}px !important`,
-      width: `${size}px !important`,
-      borderRadius,
-
-      '& > svg': {
-        height: size - 16,
-        width: size - 16
-      }
-    })
-
     return (
-      <div className={Size}>
+      <div className={avatarClass}>
         <div className={`${styles.IconWrapper}`}>
           <MdFaceIcon />
         </div>
@@ -28,17 +20,9 @@ export default forceApplyNewStyle(withStyles(({size = 40, borderRadius = 4, avat
     )
   }
 
-  const Size = freeStyle.registerStyle({
-    '& > img': {
-      height: size,
-      width: size,
-      borderRadius
-    }
-  })
-
   return (
-    <div className={`${Size}`}>
+    <div className={avatarClass}>
       <img src={avatar} alt={nickname} />
     </div>
   )
-}, true))
+})

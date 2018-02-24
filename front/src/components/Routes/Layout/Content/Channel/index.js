@@ -25,8 +25,6 @@ import Comment from 'src/components/common/Comment'
 import {
   compose,
   branch,
-  onlyUpdateForKeys,
-  shouldUpdate,
   renderComponent,
   lifecycle,
   withState,
@@ -41,7 +39,8 @@ const withLoading = branch(
       styles,
       match,
       location,
-      channels
+      channels,
+      channel
     } = props
 
     return (
@@ -51,6 +50,7 @@ const withLoading = branch(
           match={match}
           location={location}
         />
+
         <div className={styles.Channels}>
           <div className={styles.Header}>
             <h4 className={styles.Title}>
@@ -126,7 +126,13 @@ const enhance = compose(
   }),
   lifecycle({
     componentWillMount () {
-      const {channel, channels, requestChannels, fetchChannelComments, scrollComments} = this.props
+      const {
+        channel,
+        channels,
+        requestChannels,
+        fetchChannelComments,
+        scrollComments
+      } = this.props
 
       // requestChannels only if empty.
       if (_.isEmpty(channels)) {

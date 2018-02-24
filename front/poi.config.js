@@ -14,6 +14,14 @@ module.exports = (options, req) => ({
 
   transformModules: [],
 
+  babel: {
+    babelrc: true,
+    cacheDirectory: true,
+    presets: [
+      [require.resolve('babel-preset-poi'), {jsx: 'react'}]
+    ]
+  },
+
   devServer: {
     headers: {
       'Access-Control-Allow-Origin': '*'

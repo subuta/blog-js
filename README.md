@@ -10,7 +10,7 @@ docker-compose up
 or
 
 npm i
-env $(cat .env | xargs) npm run watch
+npm run watch
 
 #### Migrate Database
 ##### Generate migration
@@ -32,3 +32,16 @@ npm run watch
 #### Open 
 open http://localhost:3000 -> API
 open http://localhost:4001 -> front-end
+
+### For production
+
+```
+# API(koa)
+npm run build
+npm run serve
+
+# Front-end(Caddy)
+# SEE: https://caddyserver.com/download
+curl https://getcaddy.com | bash -s personal
+npm run serve
+```

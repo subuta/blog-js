@@ -9,6 +9,7 @@
   "scripts": {
     "build": "poi build",
     "watch": "poi --port 4001",
+    "serve": "npm run build && caddy",
     "poi": "poi",
     "svg": "svg-sprite -C ./svg-sprite-config.json -D static/assets 'assets/svg/*.svg'",
     "mat": "../node_modules/.bin/mat",
