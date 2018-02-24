@@ -45,7 +45,7 @@ const Channels = {
     '& > a': {
       display: 'flex',
       justifyContent: 'flex-start',
-      alignItems: 'center',
+      alignItems: 'baseline',
       lineHeight: 1,
       textDecoration: 'none',
       color: 'inherit',

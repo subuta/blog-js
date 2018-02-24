@@ -33,14 +33,13 @@ import {
 } from 'recompose'
 
 const withLoading = branch(
-  ({channels, isChannelProgress}) => _.isEmpty(channels) || isChannelProgress,
+  ({channels, channel}) => _.isEmpty(channels) || !channel,
   renderComponent((props) => {
     const {
       styles,
       match,
       location,
-      channels,
-      channel
+      channels
     } = props
 
     return (
@@ -110,6 +109,7 @@ const enhance = compose(
 
       scrollComments: () => () => {
         requestAnimationFrame(() => {
+          if (!$comments) return
           $comments.scrollTop = $comments.scrollHeight
         })
       }
@@ -125,33 +125,31 @@ const enhance = compose(
     }
   }),
   lifecycle({
-    componentWillMount () {
+    componentDidMount () {
       const {
-        channel,
         channels,
         requestChannels,
-        fetchChannelComments,
-        scrollComments
       } = this.props
 
       // requestChannels only if empty.
       if (_.isEmpty(channels)) {
         requestChannels()
       }
-
-      if (!channel) return
-
-      fetchChannelComments(channel.id).then(() => {
-        scrollComments()
-      })
     },
 
     componentDidUpdate (prevProps) {
-      const {channel, channelName, fetchChannelComments, scrollComments} = this.props
+      const {
+        channel,
+        channelName,
+        channelComments,
+        fetchChannelComments,
+        scrollComments
+      } = this.props
+
       if (!channel) return
 
       // fetch channel only if channelName updated.
-      if (channelName !== prevProps.channelName) {
+      if (_.isEmpty(channelComments) || channelName !== prevProps.channelName) {
         fetchChannelComments(channel.id).then(() => {
           scrollComments()
         })
