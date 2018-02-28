@@ -4,7 +4,6 @@ import withStyles from './style'
 
 const Layout = (props) => (
   <div>
-    <Header />
     {props.children}
   </div>
 )

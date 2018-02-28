@@ -17,6 +17,7 @@ module.exports = {
 
     config = _.set(config, 'externals', [
       config.externals, // default one
+      'objection',
       'sequelize'
     ])
 

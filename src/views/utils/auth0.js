@@ -1,6 +1,6 @@
 import Promise from 'bluebird'
 import store from 'store'
-import {ACCESS_TOKEN, AUTH0_EXPIRATION} from 'src/viewsconstants/config'
+import {ACCESS_TOKEN, AUTH0_EXPIRATION} from 'src/views/constants/config'
 import * as Auth0 from 'auth0-js'
 
 export const redirectUri = `${window.location.origin}/login/cb`
@@ -9,9 +9,12 @@ export const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID
 export const AUTH0_API_IDENTIFIER = process.env.AUTH0_API_IDENTIFIER
 export const AUTH0_AUDIENCE = process.env.AUTH0_AUDIENCE
 
+const isBrowser = typeof window !== 'undefined'
+
 const auth0 = (() => {
   // skip while testing.
   if (process.env.NODE_ENV === 'test') return
+  if (!isBrowser) return
   return new Auth0.WebAuth({
     redirectUri,
     domain: AUTH0_API_IDENTIFIER,

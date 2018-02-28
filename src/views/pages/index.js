@@ -5,6 +5,10 @@ import { styled } from 'react-free-style'
 import connext from 'src/views/hoc/connext'
 import Head from 'next/head'
 
+import {
+  requestChannels
+} from 'src/views/modules/channel'
+
 const withStyles = styled({
   Link: {
     color: 'red'
@@ -18,6 +22,7 @@ const Index = withStyles((props) => {
         <title>aa</title>
       </Head>
       <h1 onClick={props.increment}>Batman TV Shows({props.counter})</h1>
+      {/*
       <ul>
         {props.shows.map(({show}) => (
           <li key={show.id} className={props.styles.Link}>
@@ -27,28 +32,23 @@ const Index = withStyles((props) => {
           </li>
         ))}
       </ul>
+      */}
     </Layout>
   )
 })
 
 Index.getInitialProps = async function(ctx) {
-  const res = await axios.get('https://api.tvmaze.com/search/shows?q=batman')
-  const data = await res.data
-
-  return {
-    shows: data
-  }
+  // console.log(ctx.req.headers);
+  await ctx.dispatch(requestChannels())
+  return {}
 }
 
 const mapStateToProps = (state) => {
-  return {
-    counter: state.counter
-  }
+  console.log(state);
+  return {}
 }
 
 const mapDispatchToProps = {
-  increment: () => ({ type: 'increment' }),
-  decrement: () => ({ type: 'decrement' })
 }
 
 export default connext(mapStateToProps, mapDispatchToProps)(Index)

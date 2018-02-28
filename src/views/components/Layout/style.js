@@ -31,6 +31,7 @@ const html = {
 }
 
 const body = {
+  margin: 0,
   backgroundColor: '#FFFFFF',
   fontFamily: SANS_FONT,
   fontWeight: 400,
