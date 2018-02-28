@@ -1,6 +1,6 @@
 import jwt from 'koa-jwt'
 import jwksRsa from 'jwks-rsa'
-import env from 'src/utils/env'
+import env from 'src/api/utils/env'
 
 // add getCurrentUser method.
 export const getCurrentUser = (ctx, next) => {

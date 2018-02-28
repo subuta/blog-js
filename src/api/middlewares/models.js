@@ -1,4 +1,4 @@
-import models from 'src/model'
+import models from 'src/api/model'
 
 export default (ctx, next) => {
   // expose Objection.js models to context.
