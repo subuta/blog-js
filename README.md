@@ -33,6 +33,10 @@ npm run watch
 open http://localhost:3000 -> API
 open http://localhost:4001 -> front-end
 
+#### Reference
+- [next.js with customized babel-preset](https://github.com/zeit/next.js/blob/canary/examples/with-configured-preset-env/.babelrc)
+- [next.js with dotenv](https://gist.github.com/remy/6bb7beccc6355cafa7eac64f46467c66)
+
 ### For production
 
 ```
