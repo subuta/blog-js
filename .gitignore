@@ -8,3 +8,4 @@ front/public
 dist
 .docker-sync
 .nyc_output
+.next

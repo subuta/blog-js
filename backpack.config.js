@@ -21,7 +21,7 @@ module.exports = {
     ])
 
     // configuration
-    config = _.set(config, 'entry.main', [path.resolve(__dirname, 'src/index.js')])
+    config = _.set(config, 'entry.main', [path.resolve(__dirname, 'server.js')])
     config = _.set(config, 'output.path', path.resolve(__dirname, 'dist'))
     return config
   }
