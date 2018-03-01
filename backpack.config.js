@@ -9,8 +9,7 @@ module.exports = {
   webpack: (config, options, webpack) => {
     const node_modules = [
       path.join(rootPath, 'node_modules'),
-      path.resolve(__dirname, '../node_modules'),
-      '/node_modules', // added for docker
+      path.resolve(__dirname, '../node_modules')
     ]
     config = _.set(config, 'resolve.modules', node_modules)
     config = _.set(config, 'resolveLoader.modules', node_modules)

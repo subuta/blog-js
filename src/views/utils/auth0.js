@@ -1,20 +1,22 @@
 import Promise from 'bluebird'
 import store from 'store'
-import {ACCESS_TOKEN, AUTH0_EXPIRATION} from 'src/views/constants/config'
-import * as Auth0 from 'auth0-js'
+import { ACCESS_TOKEN, AUTH0_EXPIRATION } from 'src/views/constants/config'
 
-export const redirectUri = `${window.location.origin}/login/cb`
+const isBrowser = typeof window !== 'undefined'
+const origin = isBrowser ? window.location.origin : 'http://127.0.0.1'
+
+export const redirectUri = `${origin}/login/cb`
 
 export const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID
 export const AUTH0_API_IDENTIFIER = process.env.AUTH0_API_IDENTIFIER
 export const AUTH0_AUDIENCE = process.env.AUTH0_AUDIENCE
 
-const isBrowser = typeof window !== 'undefined'
-
-const auth0 = (() => {
+const getAuth0Promise = (async function () {
   // skip while testing.
   if (process.env.NODE_ENV === 'test') return
   if (!isBrowser) return
+
+  const Auth0 = await import('auth0-js')
   return new Auth0.WebAuth({
     redirectUri,
     domain: AUTH0_API_IDENTIFIER,
@@ -25,11 +27,15 @@ const auth0 = (() => {
   })
 })()
 
-const authorize = () => auth0.authorize()
+const authorize = async () => {
+  const auth0 = await getAuth0Promise
+  return auth0 && auth0.authorize()
+}
 
 const parseHash = () =>
-  new Promise((resolve, reject) => {
-    auth0.parseHash({hash: window.location.hash}, (err, authResult) => {
+  new Promise(async (resolve, reject) => {
+    const auth0 = await getAuth0Promise
+    auth0 && auth0.parseHash({hash: window.location.hash}, (err, authResult) => {
       if (err) return reject(new Error(err.errorDescription))
       return resolve(authResult)
     })
