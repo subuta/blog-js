@@ -12,6 +12,7 @@
     "svg": "svg-sprite -C ./svg-sprite-config.json -D static/assets 'assets/svg/*.svg'",
     "watch": "backpack dev",
     "build": "backpack build",
+    "analyze": "cd src/views && ANALYZE=1 next build && cat ../../webpack-stats.txt",
     "knex": "knex",
     "seed": "knex seed:run",
     "db:migrate": "knex-migrate up",
@@ -71,7 +72,6 @@
   "devDependencies": {
     "ava": "^0.23.0",
     "babel-cli": "^6.24.1",
-    "svg-sprite": "^1.3.7",
     "babel-core": "^6.26.0",
     "babel-plugin-module-resolver": "^2.7.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -100,7 +100,9 @@
     "sinon": "^4.1.3",
     "sqlite3": "^3.1.13",
     "standard": "^10.0.2",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "svg-sprite": "^1.3.7",
+    "webpack-bundle-size-analyzer": "^2.7.0"
   },
   "dependencies": {
     "@koa/cors": "^2.2.1",

@@ -9,3 +9,4 @@ dist
 .docker-sync
 .nyc_output
 .next
+webpack-stats.txt
