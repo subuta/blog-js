@@ -1,8 +1,11 @@
 import Layout from 'src/views/components/Layout'
 import Link from 'next/link'
 import { styled } from 'react-free-style'
-import connext from 'src/views/hoc/connext'
 import Head from 'next/head'
+import { compose } from 'recompose'
+
+import connext from 'src/views/hoc/connext'
+import authorized from 'src/views/hoc/authorized'
 
 import {
   requestChannels,
@@ -14,6 +17,19 @@ const withStyles = styled({
     color: 'red'
   }
 })
+
+const mapStateToProps = (state) => {
+  return {
+    channels: getChannels(state)
+  }
+}
+
+const mapDispatchToProps = {}
+
+const enhance = compose(
+  connext(mapStateToProps, mapDispatchToProps),
+  authorized
+)
 
 const Index = withStyles((props) => {
   return (
@@ -36,18 +52,11 @@ const Index = withStyles((props) => {
 })
 
 Index.getInitialProps = async function (ctx) {
+  console.log(ctx.session)
   await ctx.dispatch(requestChannels()).catch((err) => {
-    console.log('err = ', err)
+    // console.log('err = ', err)
   })
   return {}
 }
 
-const mapStateToProps = (state) => {
-  return {
-    channels: getChannels(state)
-  }
-}
-
-const mapDispatchToProps = {}
-
-export default connext(mapStateToProps, mapDispatchToProps)(Index)
+export default enhance(Index)

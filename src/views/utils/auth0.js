@@ -1,5 +1,8 @@
 import Promise from 'bluebird'
-import store from 'store'
+import cookie from 'cookie'
+import Cookie from 'js-cookie'
+import _ from 'lodash'
+
 import { ACCESS_TOKEN, AUTH0_EXPIRATION } from 'src/views/constants/config'
 
 const isBrowser = typeof window !== 'undefined'
@@ -32,6 +35,12 @@ const authorize = async () => {
   return auth0 && auth0.authorize()
 }
 
+// from https://github.com/zeit/next.js/blob/canary/examples/with-apollo-auth/lib/withData.js
+const parseCookies = (ctx, options = {}) => {
+  const cookieHeader = _.get(ctx, 'req.headers.cookie', '')
+  return cookie.parse(isBrowser ? document.cookie : cookieHeader, options)
+}
+
 const parseHash = () =>
   new Promise(async (resolve, reject) => {
     const auth0 = await getAuth0Promise
@@ -44,19 +53,21 @@ const parseHash = () =>
 const setSession = ({accessToken, expiresIn}) => {
   // Set the time that the access token will expire at
   const expiresAt = JSON.stringify(expiresIn * 1000 + new Date().getTime())
-  store.set(ACCESS_TOKEN, accessToken)
-  store.set(AUTH0_EXPIRATION, expiresAt)
+  Cookie.set(ACCESS_TOKEN, accessToken)
+  Cookie.set(AUTH0_EXPIRATION, expiresAt)
 }
 
-const getSession = () => {
-  const accessToken = store.get(ACCESS_TOKEN) || null
-  const expiresAt = JSON.parse(store.get(AUTH0_EXPIRATION) || null)
+// called from both environment(server & browser)
+const getSession = (ctx = null) => {
+  const cookie = parseCookies(ctx)
+  const accessToken = cookie[ACCESS_TOKEN] || null
+  const expiresAt = JSON.parse(cookie[AUTH0_EXPIRATION] || null)
   return {accessToken, expiresAt}
 }
 
-const isAuthenticated = () => {
-  const {expiresAt} = getSession()
-  return expiresAt && new Date().getTime() < expiresAt
+const isAuthenticated = (ctx = null) => {
+  const {expiresAt} = getSession(ctx)
+  return expiresAt && new Date().getTime() < expiresAt || false
 }
 
 export default {

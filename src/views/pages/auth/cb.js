@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import Cookie from 'js-cookie'
+import { withRouter } from 'next/router'
 
 import connext from 'src/views/hoc/connext'
 import auth0 from 'src/views/utils/auth0'
@@ -17,12 +17,12 @@ import {
 const enhance = compose(
   lifecycle({
     componentWillMount () {
-      const {requestUpdateUser} = this.props
+      const {requestUpdateUser, router} = this.props
       auth0.parseHash().then((result) => {
         const {locale, nickname, picture, sub} = result.idTokenPayload
         auth0.setSession(result)
         requestUpdateUser({locale, nickname, auth0Id: sub, avatar: picture})
-          .then(() => console.log('updated!!!'))
+          .then(() => router.push('/'))
       })
     }
   })
@@ -43,4 +43,4 @@ const mapDispatchToProps = {
   requestUpdateUser
 }
 
-export default connext(mapStateToProps, mapDispatchToProps)(Login)
+export default withRouter(connext(mapStateToProps, mapDispatchToProps)(Login))
