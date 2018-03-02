@@ -5,7 +5,7 @@ import cors from '@koa/cors'
 import logger from 'koa-logger'
 import serve from 'koa-static'
 import 'zone.js'
-import _ from 'lodash'
+import uuid from 'uuid/v4'
 
 import routes from 'src/api/routes'
 
@@ -34,7 +34,9 @@ app.prepare()
     router.get('*', async ctx => {
       const requestZone = Zone.current.fork({name: 'request'})
       await requestZone.run(async () => {
+        // init zone at each request.
         Zone.current.req = ctx.req
+        Zone.current.uuid = uuid()
         await handle(ctx.req, ctx.res)
         ctx.respond = false
       })
