@@ -15,6 +15,7 @@ import {
 } from 'recompose'
 
 const enhance = compose(
+  withRouter,
   lifecycle({
     componentWillMount () {
       const {requestUpdateUser, router} = this.props
@@ -43,4 +44,4 @@ const mapDispatchToProps = {
   requestUpdateUser
 }
 
-export default withRouter(connext(mapStateToProps, mapDispatchToProps)(Login))
+export default connext(mapStateToProps, mapDispatchToProps)(Login)

@@ -4,10 +4,12 @@ import Router from 'koa-router'
 import cors from '@koa/cors'
 import logger from 'koa-logger'
 import serve from 'koa-static'
+import 'zone.js'
+import _ from 'lodash'
 
 import routes from 'src/api/routes'
 
-import {PUBLIC_DIR} from './config'
+import { PUBLIC_DIR } from './config'
 
 const port = parseInt(process.env.PORT, 10) || 3000
 const dev = process.env.NODE_ENV !== 'production'
@@ -30,8 +32,12 @@ app.prepare()
     })
 
     router.get('*', async ctx => {
-      await handle(ctx.req, ctx.res)
-      ctx.respond = false
+      const requestZone = Zone.current.fork({name: 'request'})
+      await requestZone.run(async () => {
+        Zone.current.req = ctx.req
+        await handle(ctx.req, ctx.res)
+        ctx.respond = false
+      })
     })
 
     // log requests

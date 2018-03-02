@@ -8,6 +8,11 @@ import { ACCESS_TOKEN, AUTH0_EXPIRATION } from 'src/views/constants/config'
 const isBrowser = typeof window !== 'undefined'
 const origin = isBrowser ? window.location.origin : 'http://127.0.0.1'
 
+// load zone.js
+if (!isBrowser) {
+  import('zone.js')
+}
+
 export const redirectUri = `${origin}/auth/cb`
 
 export const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID
@@ -36,8 +41,8 @@ const authorize = async () => {
 }
 
 // from https://github.com/zeit/next.js/blob/canary/examples/with-apollo-auth/lib/withData.js
-const parseCookies = (ctx, options = {}) => {
-  const cookieHeader = _.get(ctx, 'req.headers.cookie', '')
+const parseCookies = (req, options = {}) => {
+  const cookieHeader = _.get(req, 'headers.cookie', '')
   return cookie.parse(isBrowser ? document.cookie : cookieHeader, options)
 }
 
@@ -58,15 +63,19 @@ const setSession = ({accessToken, expiresIn}) => {
 }
 
 // called from both environment(server & browser)
-const getSession = (ctx = null) => {
-  const cookie = parseCookies(ctx)
+const getSession = (req = null) => {
+  // retrieve req from current zone for SSR
+  if (!isBrowser && !req) {
+    req = _.get(Zone, 'current.req', null)
+  }
+  const cookie = parseCookies(req)
   const accessToken = cookie[ACCESS_TOKEN] || null
   const expiresAt = JSON.parse(cookie[AUTH0_EXPIRATION] || null)
   return {accessToken, expiresAt}
 }
 
-const isAuthenticated = (ctx = null) => {
-  const {expiresAt} = getSession(ctx)
+const isAuthenticated = (req = null) => {
+  const {expiresAt} = getSession(req)
   return expiresAt && new Date().getTime() < expiresAt || false
 }
 

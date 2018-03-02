@@ -9,6 +9,11 @@ const isBrowser = typeof window !== 'undefined'
 
 const middlewares = [thunk]
 
+let devtools = (f) => f
+if (isBrowser && window.devToolsExtension) {
+  devtools = window.devToolsExtension()
+}
+
 // store.injectedReducers = {}
 
 // return createStore
@@ -18,7 +23,7 @@ export default (initialState = {}) => {
     compose(
       applyMiddleware(...middlewares),
       // enable redux dev-tools
-      isBrowser ? window.devToolsExtension() : (f) => f
+      isBrowser ? devtools : (f) => f
     )
   )
 

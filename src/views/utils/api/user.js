@@ -5,7 +5,7 @@ import {user, userList} from 'src/views/utils/schema'
 
 /* mat Custom action [start] */
 export const update = (params) => {
-  return request.put(`/users/me`, {user: params}).then(data => normalize(data, user))
+  return request.put(`/users/me`, {user: params}).then(data => normalize(data, user)).catch(e => console.log('err!!!', e))
 }
 
 export const me = () => {

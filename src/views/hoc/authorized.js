@@ -1,7 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
 import auth0 from 'src/views/utils/auth0'
-import Cookie from 'js-cookie'
 
 export default function (Component) {
   let render = (props) => {
@@ -13,16 +12,23 @@ export default function (Component) {
   render.getInitialProps = async (ctx) => {
     const fn = Component.getInitialProps || _.noop
 
-    // decorate session to ctx.
-    ctx.session = auth0.getSession(ctx)
-    ctx.isAuthenticated = auth0.isAuthenticated(ctx)
+    const isAuthenticated = auth0.isAuthenticated(ctx)
+
+    // decorate ctx.
+    if (!!ctx.res) {
+      const locals = _.get(ctx, 'res.locals', {})
+      _.set(ctx, 'res.locals', {
+        ...locals,
+        isAuthenticated
+      })
+    }
 
     const props = await fn(ctx)
 
     // return final props.
     return {
       ...props,
-      isAuthenticated: ctx.isAuthenticated
+      isAuthenticated
     }
   }
 
