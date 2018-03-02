@@ -31,7 +31,7 @@ api.use(
 )
 
 // set jwt middleware
-// api.use(auth)
+api.use(auth)
 
 // inject Objection.js models middleware.
 api.use(models)

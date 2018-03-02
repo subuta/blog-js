@@ -1,7 +1,7 @@
 import _ from 'lodash'
-import request from 'src/utils/request'
+import request from 'src/views/utils/request'
 import {normalize} from 'normalizr'
-import {user, userList} from 'src/utils/schema'
+import {user, userList} from 'src/views/utils/schema'
 
 /* mat Custom action [start] */
 export const update = (params) => {

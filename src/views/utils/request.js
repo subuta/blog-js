@@ -2,7 +2,7 @@ import axios from 'axios'
 import httpAdapter from 'axios/lib/adapters/http'
 import _ from 'lodash'
 import {saveAs} from 'file-saver'
-// import auth0 from 'src/views/utils/auth0'
+import auth0 from 'src/views/utils/auth0'
 
 const isBrowser = typeof window !== 'undefined'
 
@@ -26,12 +26,12 @@ const request = axios.create({
 // Add a request interceptor
 request.interceptors.request.use(
   function(config) {
-    // const {accessToken} = auth0.getSession()
-    // // add jwt to header
-    // config.headers = {
-    //   ...config.headers,
-    //   Authorization: `Bearer ${accessToken}`
-    // }
+    const {accessToken} = auth0.getSession()
+    // add jwt to header
+    config.headers = {
+      ...config.headers,
+      Authorization: `Bearer ${accessToken}`
+    }
     return config
   },
   function(error) {

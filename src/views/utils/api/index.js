@@ -3,7 +3,7 @@ import channel from './channel'
 // import comment from './comment'
 // import attachment from './attachment'
 // import tag from './tag'
-// import user from './user'
+import user from './user'
 
 export default {
   channel,
@@ -11,5 +11,5 @@ export default {
   // comment,
   // attachment,
   // tag,
-  // user
+  user
 }

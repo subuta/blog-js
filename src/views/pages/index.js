@@ -36,7 +36,9 @@ const Index = withStyles((props) => {
 })
 
 Index.getInitialProps = async function (ctx) {
-  await ctx.dispatch(requestChannels())
+  await ctx.dispatch(requestChannels()).catch((err) => {
+    console.log('err = ', err)
+  })
   return {}
 }
 

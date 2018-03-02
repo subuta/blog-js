@@ -1,7 +1,7 @@
 import _ from 'lodash'
-import request from 'src/utils/request'
+import request from 'src/views/utils/request'
 import {normalize} from 'normalizr'
-import {tag, tagList} from 'src/utils/schema'
+import {tag, tagList} from 'src/views/utils/schema'
 
 export const index = () => {
   return request.get(`/tags`)
