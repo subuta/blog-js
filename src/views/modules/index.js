@@ -8,11 +8,6 @@ import attachment from './attachment'
 import tag from './tag'
 import user from './user'
 
-export const reset = (initialState) => ({
-  type: '@@RESET',
-  payload: initialState
-})
-
 const reducers = {
   routing: routerReducer,
   channel,
@@ -24,18 +19,10 @@ const reducers = {
 }
 
 const makeRootReducer = (injectedReducers) => {
-  const appReducer = combineReducers({
+  return combineReducers({
     ...reducers,
     ...injectedReducers
   })
-
-  return function rootReducer (state, action) {
-    if (action.type === '@@RESET') {
-      state = action.payload || undefined
-    }
-
-    return appReducer(state, action)
-  }
 }
 
 // extract entities from reducers.

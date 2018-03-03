@@ -1,9 +1,7 @@
 import {createStore, applyMiddleware, compose} from 'redux'
 import thunk from 'redux-thunk'
 
-// pass-through reset from modules for ease-of-use
-import makeRootReducer, { reset } from './modules'
-export { reset }
+import makeRootReducer from './modules'
 
 const isBrowser = typeof window !== 'undefined'
 
@@ -20,11 +18,12 @@ if (isBrowser && window.devToolsExtension) {
 export default (initialState = {}) => {
   const store = createStore(
     makeRootReducer(),
+    initialState,
     compose(
       applyMiddleware(...middlewares),
       // enable redux dev-tools
       isBrowser ? devtools : (f) => f
-    )
+    ),
   )
 
   if (module.hot) {

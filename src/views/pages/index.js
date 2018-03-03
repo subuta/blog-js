@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { styled } from 'react-free-style'
 import Head from 'next/head'
 import { compose } from 'recompose'
+import _ from 'lodash'
 
 import connext from 'src/views/hoc/connext'
 import authorized from 'src/views/hoc/authorized'
@@ -52,9 +53,7 @@ const Index = withStyles((props) => {
 })
 
 Index.getInitialProps = async function (ctx) {
-  await ctx.dispatch(requestChannels()).catch((err) => {
-    // console.log('err = ', err)
-  })
+  await ctx.dispatch(requestChannels()).catch((err) => null)
   return {}
 }
 

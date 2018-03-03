@@ -19,10 +19,24 @@ const app = next({
 })
 const handle = app.getRequestHandler()
 
+// Middleware for injecting req and uuid to current zone.
+const withZone = async (ctx, next) => {
+  const requestZone = Zone.current.fork({name: 'request'})
+  await requestZone.run(async () => {
+    // init zone at each request.
+    Zone.current.req = ctx.req
+    Zone.current.uuid = uuid()
+    await next()
+  })
+}
+
 app.prepare()
   .then(() => {
     const server = new Koa()
     const router = new Router()
+
+    // apply withZone to next.js routes.
+    router.use(withZone)
 
     router.get('/p/:id', async ctx => {
       const actualPage = '/post'
@@ -32,14 +46,8 @@ app.prepare()
     })
 
     router.get('*', async ctx => {
-      const requestZone = Zone.current.fork({name: 'request'})
-      await requestZone.run(async () => {
-        // init zone at each request.
-        Zone.current.req = ctx.req
-        Zone.current.uuid = uuid()
-        await handle(ctx.req, ctx.res)
-        ctx.respond = false
-      })
+      await handle(ctx.req, ctx.res)
+      ctx.respond = false
     })
 
     // log requests

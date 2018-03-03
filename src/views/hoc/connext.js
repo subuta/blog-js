@@ -1,12 +1,28 @@
 import React from 'react'
 import { Provider, connect } from 'react-redux'
 import _ from 'lodash'
-import createStore, { reset } from 'src/views/store'
+import createStore from 'src/views/store'
+import { inject, extract } from 'src/views/utils/next'
 
 const isBrowser = typeof window !== 'undefined'
+const STORE_KEY = '__CONNEXT_STORE__'
 
-const store = createStore()
-let isHydrated = false
+const fetchStore = (initialState = undefined, ctx = {}) => {
+  // If server
+  if (!isBrowser) {
+    if (!extract(ctx, 'store')) {
+      inject(ctx, 'store', createStore(initialState))
+    }
+    return extract(ctx, 'store')
+  }
+
+  // Otherwise(browser)
+  if (!window[STORE_KEY]) {
+    window[STORE_KEY] = createStore(initialState)
+  }
+
+  return window[STORE_KEY]
+}
 
 // FIXME: `<Provider> does not support changing `store` on the fly` warning from react-redux(at HMR).
 // `connext` stands for `connect (to) next.js`
@@ -15,24 +31,15 @@ export default function (...args) {
     const Connected = connect.apply(this, args)(Component)
 
     let render = (props) => {
-      if (!isHydrated) {
-        // Grab the state from a props injected by next.js
-        store.dispatch(reset(props.initialState))
-        isHydrated = true
-      }
-
       return (
-        <Provider store={store}>
+        <Provider store={fetchStore(props.initialState, {})}>
           <Connected {...props} />
         </Provider>
       )
     }
 
     render.getInitialProps = async (ctx) => {
-      // reset store state at getInitialProps for SSR
-      if (!isBrowser) {
-        store.dispatch(reset())
-      }
+      const store = fetchStore(undefined, ctx)
 
       const fn = Component.getInitialProps || _.noop
 
@@ -41,6 +48,7 @@ export default function (...args) {
       ctx.dispatch = store.dispatch
 
       const props = await fn(ctx)
+
       const initialState = store.getState()
 
       // return final props.
