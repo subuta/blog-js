@@ -1,5 +1,6 @@
 import Router from 'koa-router'
 import _ from 'lodash'
+import {authenticate as auth} from 'src/api/middlewares/auth'
 
 const comment = new Router({
   prefix: '/channels/:channelId/comments'
@@ -20,7 +21,7 @@ comment.get('/', async (ctx) => {
     .where(params)
 })
 
-comment.post('/', async (ctx) => {
+comment.post('/', auth, async (ctx) => {
   const {Comment} = ctx.state.models
   const {comment} = ctx.request.body
 
@@ -50,7 +51,7 @@ comment.post('/', async (ctx) => {
   ctx.body = response
 })
 
-comment.delete('/:id', async (ctx) => {
+comment.delete('/:id', auth, async (ctx) => {
   const {Comment} = ctx.state.models
   await Comment.query()
     .delete()

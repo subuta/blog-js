@@ -10,11 +10,19 @@ export const getCurrentUser = (ctx, next) => {
   return next()
 }
 
+export const authenticate = (ctx, next) => {
+  ctx.assert(ctx.state.user, 401, 'User not found. Please login!')
+  return next()
+}
+
 let jwksUri = `https://${env.AUTH0_API_IDENTIFIER}/.well-known/jwks.json`
 let opts = {
   // Validate the audience and the issuer.
   audience: env.AUTH0_AUDIENCE,
-  issuer: `https://${env.AUTH0_API_IDENTIFIER}/`
+  issuer: `https://${env.AUTH0_API_IDENTIFIER}/`,
+  // passthrough if Authorization header not passed.
+  // and throw 401 at routes Action(for better conditional skipping.)
+  passthrough: true
 }
 
 if (env.NODE_ENV === 'test') {

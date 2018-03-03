@@ -13,14 +13,23 @@ export const Routes = {
       'update',
       'destroy'
     ],
+    skipAuth: true,
     eager: '[comments.[attachment, commentedBy]]'
   },
   article: {
+    skipAuth: [
+      'index',
+      'show'
+    ],
     eager: '[tags]'
   },
   comment: {
     // pass custom route prefix.
     prefix: '/channels/:channelId/comments',
+
+    skipAuth: [
+      'index'
+    ],
 
     except: [
       'update',
@@ -45,6 +54,7 @@ export const Routes = {
     only: [
       'index'
     ],
+    skipAuth: true,
     eager: '[articles]'
   },
   user: {

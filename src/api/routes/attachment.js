@@ -3,12 +3,13 @@ import path from 'path'
 import {getSignedUrl} from 'src/api/utils/s3'
 import Router from 'koa-router'
 import _ from 'lodash'
+import {authenticate as auth} from 'src/api/middlewares/auth'
 
 const attachment = new Router({
   prefix: '/attachments'
 })
 
-attachment.post('/', async (ctx) => {
+attachment.post('/', auth, async (ctx) => {
   const {Attachment} = ctx.state.models
   const {attachment} = ctx.request.body
 
@@ -32,7 +33,7 @@ attachment.post('/', async (ctx) => {
 
 /* mat Custom actions [start] */
 // call getSignedUrl before upload file.
-attachment.post('/sign', async (ctx) => {
+attachment.post('/sign', auth, async (ctx) => {
   const {attachment} = ctx.request.body
 
   /* mat Before create [start] */

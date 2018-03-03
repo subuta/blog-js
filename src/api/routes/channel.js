@@ -1,5 +1,6 @@
 import Router from 'koa-router'
 import _ from 'lodash'
+import {authenticate as auth} from 'src/api/middlewares/auth'
 
 const channel = new Router({
   prefix: '/channels'

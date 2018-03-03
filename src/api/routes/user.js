@@ -1,16 +1,17 @@
 import Router from 'koa-router'
 import _ from 'lodash'
+import {authenticate as auth} from 'src/api/middlewares/auth'
 
 const user = new Router({
   prefix: '/users'
 })
 
-user.get('/me', async (ctx) => {
+user.get('/me', auth, async (ctx) => {
   const {User} = ctx.state.models
   ctx.body = await ctx.state.getCurrentUser()
 })
 
-user.put('/me', async (ctx) => {
+user.put('/me', auth, async (ctx) => {
   const {User} = ctx.state.models
   const {user} = ctx.request.body
   const {sub} = ctx.state.user

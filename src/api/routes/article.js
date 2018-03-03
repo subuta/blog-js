@@ -1,5 +1,6 @@
 import Router from 'koa-router'
 import _ from 'lodash'
+import {authenticate as auth} from 'src/api/middlewares/auth'
 
 const article = new Router({
   prefix: '/articles'
@@ -29,7 +30,7 @@ article.get('/:id', async (ctx) => {
     .findFirst({...params, id: ctx.params.id})
 })
 
-article.post('/', async (ctx) => {
+article.post('/', auth, async (ctx) => {
   const {Article} = ctx.state.models
   const {article} = ctx.request.body
 
@@ -51,7 +52,7 @@ article.post('/', async (ctx) => {
   ctx.body = response
 })
 
-article.put('/:id', async (ctx) => {
+article.put('/:id', auth, async (ctx) => {
   const {Article} = ctx.state.models
   const {article} = ctx.request.body
   const {sub} = ctx.state.user
@@ -70,7 +71,7 @@ article.put('/:id', async (ctx) => {
     .eager('[tags]')
 })
 
-article.delete('/:id', async (ctx) => {
+article.delete('/:id', auth, async (ctx) => {
   const {Article} = ctx.state.models
   await Article.query()
     .delete()
