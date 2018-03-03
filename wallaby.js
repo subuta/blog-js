@@ -6,9 +6,9 @@ module.exports = function (wallaby) {
     files: [
       'config.js',
       'src/**/*.js',
-      'test/helper/**/*.js',
+      'test/api/helper/**/*.js',
       { pattern: '.env', instrument: false, load: false },
-      { pattern: 'test/fixtures/**/*.js', instrument: false, load: false }
+      { pattern: 'test/api/fixtures/**/*.js', instrument: false, load: false }
     ],
 
     filesWithNoCoverageCalculated: [
@@ -17,7 +17,7 @@ module.exports = function (wallaby) {
     ],
 
     tests: [
-      'test/**/*.test.js'
+      'test/api/**/*.test.js'
     ],
 
     env: {

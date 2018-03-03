@@ -2,13 +2,13 @@ import { build, format, snippets as s } from 'bld.js'
 import Promise from 'bluebird'
 import _ from 'lodash'
 
-import Routes from '@subuta/snippets/lib/react/components/Routes'
+import Entrypoint from '@subuta/snippets/lib/objection/Entrypoint'
 
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx
 
   const data = build`
-    ${Routes()}
+    ${Entrypoint({modelDir: 'src/api/model'})}
   `
 
   return fs.writeFile(`${filePath}/${fileName}`, format(data))

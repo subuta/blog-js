@@ -8,7 +8,7 @@ import Child from '@subuta/snippets/lib/objection/Child'
 
 import Promise from 'bluebird'
 
-import { Models } from '../../_config'
+import { Models } from '../../../_config'
 
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx

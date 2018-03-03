@@ -4,13 +4,15 @@ import _ from 'lodash'
 
 import Models from '@subuta/snippets/lib/koa/api/middlewares/Models'
 import Auth from '@subuta/snippets/lib/koa/api/middlewares/Auth'
+import withZone from '@subuta/snippets/lib/koa/middlewares/zone'
 
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx
 
   const Middlewares = {
     'models': Models,
-    'auth': Auth
+    'auth': Auth,
+    'withZone': withZone
   }
 
   return Promise.map(_.toPairs(Middlewares), async ([fileName, Middleware]) => {

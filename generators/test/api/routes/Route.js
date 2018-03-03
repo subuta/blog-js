@@ -5,7 +5,7 @@ import Promise from 'bluebird'
 import RouteTest from '@subuta/snippets/lib/koa/test/Route'
 import UserRouteTest from '@subuta/snippets/lib/koa/test/UserRoute'
 
-import { Routes as routesConfig, Models as modelsConfig } from '../../_config'
+import { Routes as routesConfig, Models as modelsConfig } from '../../../_config'
 
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx

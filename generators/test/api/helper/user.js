@@ -3,7 +3,7 @@ import _ from 'lodash'
 
 import CurrentUser from '@subuta/snippets/lib/_test-helpers/CurrentUser'
 
-import { Routes as RoutesConfig, Models as ModelsConfig } from '../../_config'
+import { Routes as RoutesConfig, Models as ModelsConfig } from '../../../_config'
 import { generateSeeds } from '@subuta/snippets/lib/_utils/generateSeed'
 
 export default async (ctx) => {

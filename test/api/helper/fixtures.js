@@ -2,7 +2,7 @@ import _ from 'lodash'
 import Promise from 'bluebird'
 import requireGlob from 'require-glob'
 import path from 'path'
-import {ROOT_DIR} from '../../config'
+import {ROOT_DIR} from '../../../config'
 
 export const runMigration = async (knex) => {
   return knex.migrate.latest()
