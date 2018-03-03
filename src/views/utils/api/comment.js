@@ -1,7 +1,7 @@
 import _ from 'lodash'
-import request from 'src/utils/request'
+import request from 'src/views/utils/request'
 import {normalize} from 'normalizr'
-import {comment, commentList} from 'src/utils/schema'
+import {comment, commentList} from 'src/views/utils/schema'
 
 export const index = (params) => {
   const {channelId} = params

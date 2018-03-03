@@ -2,8 +2,7 @@ import Promise from 'bluebird'
 import cookie from 'cookie'
 import Cookie from 'js-cookie'
 import _ from 'lodash'
-
-import { ACCESS_TOKEN, AUTH0_EXPIRATION } from 'src/views/constants/config'
+import {ACCESS_TOKEN, AUTH0_EXPIRATION} from 'src/views/constants/config'
 
 const isBrowser = typeof window !== 'undefined'
 const origin = isBrowser ? window.location.origin : 'http://127.0.0.1'
@@ -19,7 +18,7 @@ export const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID
 export const AUTH0_API_IDENTIFIER = process.env.AUTH0_API_IDENTIFIER
 export const AUTH0_AUDIENCE = process.env.AUTH0_AUDIENCE
 
-const getAuth0Promise = (async function () {
+const getAuth0Promise = (async function() {
   // skip while testing.
   if (process.env.NODE_ENV === 'test') return
   if (!isBrowser) return
@@ -49,10 +48,11 @@ const parseCookies = (req, options = {}) => {
 const parseHash = () =>
   new Promise(async (resolve, reject) => {
     const auth0 = await getAuth0Promise
-    auth0 && auth0.parseHash({hash: window.location.hash}, (err, authResult) => {
-      if (err) return reject(new Error(err.errorDescription))
-      return resolve(authResult)
-    })
+    auth0 &&
+      auth0.parseHash({hash: window.location.hash}, (err, authResult) => {
+        if (err) return reject(new Error(err.errorDescription))
+        return resolve(authResult)
+      })
   })
 
 const setSession = ({accessToken, expiresIn}) => {
@@ -76,7 +76,7 @@ const getSession = (req = null) => {
 
 const isAuthenticated = (req = null) => {
   const {expiresAt} = getSession(req)
-  return expiresAt && new Date().getTime() < expiresAt || false
+  return (expiresAt && new Date().getTime() < expiresAt) || false
 }
 
 export default {

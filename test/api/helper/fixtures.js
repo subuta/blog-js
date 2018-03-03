@@ -9,7 +9,7 @@ export const runMigration = async (knex) => {
 }
 
 export default (async function runSeed(knex) {
-  const FIXTURES_DIR = path.join(ROOT_DIR, 'test/fixtures')
+  const FIXTURES_DIR = path.join(ROOT_DIR, 'test/api/fixtures')
   const fixtures = await requireGlob([path.join(FIXTURES_DIR, '**/*.js')])
 
   return Promise.map(_.values(fixtures), async (fn) => {

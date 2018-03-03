@@ -32,7 +32,7 @@ export const Routes = {
     imports: [
       ['uuid/v4', 'uuid'],
       ['path', 'path'],
-      ['src/utils/s3', null, [
+      ['src/api/utils/s3', null, [
         'getSignedUrl'
       ]],
     ],

@@ -2,7 +2,7 @@ import { build, format, snippets as s } from 'bld.js'
 import Promise from 'bluebird'
 import _ from 'lodash'
 
-import Store from '@subuta/snippets/lib/redux/Store'
+import Store from '@subuta/snippets/lib/redux/nextjs/Store'
 
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx

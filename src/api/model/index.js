@@ -1,23 +1,14 @@
-require('babel-register')
-
 import _ from 'lodash'
-import requireGlob from 'require-glob'
-import { Model } from 'objection'
-import { absolutePath } from '../../../config'
+import {Model} from 'objection'
 import knex from 'src/api/utils/knex'
+import ModelDir from './ModelDir'
 
 // assign connection to knex.
 Model.knex(knex)
 
 // then require all without itself.
 const modules = {
-  Article: require('./Article'),
-  ArticleTag: require('./ArticleTag'),
-  Attachment: require('./Attachment'),
-  Channel: require('./Channel'),
-  Comment: require('./Comment'),
-  Tag: require('./Tag'),
-  User: require('./User')
+  ModelDir
 }
 
 // pick class definition from modules.

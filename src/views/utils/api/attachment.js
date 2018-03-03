@@ -1,7 +1,7 @@
 import _ from 'lodash'
-import request from 'src/viewsutils/request'
+import request from 'src/views/utils/request'
 import {normalize} from 'normalizr'
-import {attachment, attachmentList} from 'src/viewsutils/schema'
+import {attachment, attachmentList} from 'src/views/utils/schema'
 
 export const create = (params) => {
   return request.post(`/attachments`, {

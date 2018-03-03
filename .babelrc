@@ -23,5 +23,15 @@
         "root": ["./"]
       }
     ]
-  ]
+  ],
+  "env": {
+    "mat": {
+      "presets": [
+        "env"
+      ],
+      "plugins": [
+        "transform-runtime"
+      ]
+    }
+  }
 }

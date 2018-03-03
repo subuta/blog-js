@@ -3,6 +3,12 @@ example my blogging project built-on top of `js-to-builder` and `matryoshka.js`
 
 ### How to develop
 
+#### Run matryoshka.js(source code generator)
+
+```
+NODE_ENV=mat npx mat
+```
+
 #### Start API server
 docker-sync start
 docker-compose up
