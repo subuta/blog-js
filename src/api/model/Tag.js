@@ -1,21 +1,21 @@
 import Model from './Model'
 
-export const register = (models) => {
-  // then define relationMappings.
-  Tag.relationMappings = {
-    articles: {
-      modelClass: models.Article,
-      relation: Model.ManyToManyRelation,
-      join: {
-        from: 'tags.id',
-        through: {from: 'articles_tags.tagId', to: 'articles_tags.articleId'},
-        to: 'articles.id'
+export default class Tag extends Model {
+  static register = (models) => {
+    // then define relationMappings.
+    Tag.relationMappings = {
+      articles: {
+        modelClass: models.Article,
+        relation: Model.ManyToManyRelation,
+        join: {
+          from: 'tags.id',
+          through: {from: 'articles_tags.tagId', to: 'articles_tags.articleId'},
+          to: 'articles.id'
+        }
       }
     }
   }
-}
 
-export default class Tag extends Model {
   static tableName = 'tags'
 
   static jsonSchema = {

@@ -1,17 +1,17 @@
 import Model from './Model'
 
-export const register = (models) => {
-  // then define relationMappings.
-  Attachment.relationMappings = {
-    comment: {
-      modelClass: models.Comment,
-      relation: Model.BelongsToOneRelation,
-      join: {from: 'attachments.id', to: 'comments.attachmentId'}
+export default class Attachment extends Model {
+  static register = (models) => {
+    // then define relationMappings.
+    Attachment.relationMappings = {
+      comment: {
+        modelClass: models.Comment,
+        relation: Model.BelongsToOneRelation,
+        join: {from: 'attachments.id', to: 'comments.attachmentId'}
+      }
     }
   }
-}
 
-export default class Attachment extends Model {
   static tableName = 'attachments'
 
   static jsonSchema = {

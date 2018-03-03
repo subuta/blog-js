@@ -8,8 +8,8 @@ import {createToken} from 'jwks-rsa/tests/mocks/tokens'
 import Koa from 'koa'
 import importFresh from 'import-fresh'
 import {absolutePath} from '../../../config'
-import {currentUser} from 'test/helper/user'
-import runSeed, {runMigration} from 'test/helper/fixtures'
+import {currentUser} from 'test/api/helper/user'
+import runSeed, {runMigration} from 'test/api/helper/fixtures'
 import proxyquire from 'proxyquire'
 
 const sandbox = sinon.sandbox.create()

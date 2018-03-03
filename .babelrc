@@ -1,30 +1,51 @@
 {
   "presets": [
-    ["next/babel", {
-      "preset-env": {
-        "targets": {
-          "node": "current"
+    [
+      "next/babel",
+      {
+        "preset-env": {
+          "targets": {
+            "node": "current"
+          }
+        },
+        "transform-runtime": {
+          "helpers": false,
+          "polyfill": false,
+          "regenerator": true,
+          "moduleName": "babel-runtime"
         }
-      },
-      "transform-runtime": {
-        "helpers": false,
-        "polyfill": false,
-        "regenerator": true,
-        "moduleName": "babel-runtime"
       }
-    }],
+    ],
     "stage-0"
   ],
   "plugins": [
     "transform-object-rest-spread",
     "transform-class-properties",
-    ["module-resolver",
+    [
+      "module-resolver",
       {
-        "root": ["./"]
+        "root": [
+          "./"
+        ]
       }
     ]
   ],
   "env": {
+    "test": {
+      "presets": [
+        [
+          "next/babel",
+          {
+            "preset-env": {
+              "targets": {
+                "node": "current"
+              },
+              "modules": "commonjs"
+            }
+          }
+        ]
+      ]
+    },
     "mat": {
       "presets": [
         "env"

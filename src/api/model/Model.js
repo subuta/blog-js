@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import {Model} from 'objection'
-import ajvValidator from 'src/utils/ajvValidator'
+import ajvValidator from 'src/api/utils/ajvValidator'
 
 // Based on https://github.com/Vincit/objection.js/blob/master/examples/plugin/index.js
 // Base Model class

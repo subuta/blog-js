@@ -1,17 +1,17 @@
 import Model from './Model'
 
-export const register = (models) => {
-  // then define relationMappings.
-  User.relationMappings = {
-    comments: {
-      modelClass: models.Comment,
-      relation: Model.HasManyRelation,
-      join: {from: 'users.id', to: 'comments.commentedById'}
+export default class User extends Model {
+  static register = (models) => {
+    // then define relationMappings.
+    User.relationMappings = {
+      comments: {
+        modelClass: models.Comment,
+        relation: Model.HasManyRelation,
+        join: {from: 'users.id', to: 'comments.commentedById'}
+      }
     }
   }
-}
 
-export default class User extends Model {
   static tableName = 'users'
 
   static jsonSchema = {

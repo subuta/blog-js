@@ -4,7 +4,7 @@ import {absolutePath} from '../../../config'
 // knex injected modules.
 
 export const model = (knex) => {
-  return proxyquire(absolutePath('src/model'), {
+  return proxyquire(absolutePath('src/api/model'), {
     'src/api/utils/knex': knex
   }).default
 }
