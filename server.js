@@ -52,13 +52,13 @@ app.prepare()
     })
 
     router.get('/w', async ctx => {
-      const actualPage = '/wiki-index'
+      const actualPage = '/articles'
       await app.render(ctx.req, ctx.res, actualPage, {})
       ctx.respond = false
     })
 
     router.get('/w/:id', async ctx => {
-      const actualPage = '/wiki'
+      const actualPage = '/article'
       const queryParams = {id: ctx.params.id}
       await app.render(ctx.req, ctx.res, actualPage, queryParams)
       ctx.respond = false

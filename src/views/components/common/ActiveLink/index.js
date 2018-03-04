@@ -10,15 +10,18 @@ const enhance = compose(
 )
 
 export default enhance((props) => {
-  const {
+  let {
     router,
     children,
     className,
+    isActive,
     ...rest
   } = props
 
+  isActive = isActive || ((router) => router.pathname === rest.href)
+
   let linkClass = className || ''
-  if (router.pathname === rest.href) {
+  if (isActive(router)) {
     linkClass += ' is-active'
   }
 

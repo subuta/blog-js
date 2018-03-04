@@ -10,6 +10,7 @@ import {
   SANS_FONT,
 
   CHAT_APP_COLOR,
+  WIKI_APP_COLOR
 } from 'src/views/constants/style'
 
 const Sidebar = {
@@ -25,6 +26,14 @@ const Sidebar = {
   fontFamily: LATO_WITH_SANS_FONT,
   transition: `all 0.3s ${EASE_STANDARD}`,
   background: CHAT_APP_COLOR,
+
+  '&.is-chat': {
+    background: CHAT_APP_COLOR,
+  },
+
+  '&.is-wiki': {
+    background: WIKI_APP_COLOR,
+  },
 
   '& h4': {
     fontFamily: 'inherit',

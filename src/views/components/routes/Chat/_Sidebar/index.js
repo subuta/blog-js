@@ -1,10 +1,11 @@
-import Layout from 'src/views/components/Layout'
+import Sidebar from 'src/views/components/layout/Sidebar'
+
 import connect from './connect'
 import Link from 'next/link'
 
 export default connect((props) => {
   return (
-    <Layout>
+    <Sidebar sidebarClass="is-chat">
       <h1>list of channels</h1>
       <ul>
         {props.channels.map(({id, name}) => (
@@ -15,6 +16,6 @@ export default connect((props) => {
           </li>
         ))}
       </ul>
-    </Layout>
+    </Sidebar>
   )
 })

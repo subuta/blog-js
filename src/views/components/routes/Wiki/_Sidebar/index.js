@@ -1,20 +1,21 @@
-import Layout from 'src/views/components/Layout'
+import Sidebar from 'src/views/components/layout/Sidebar'
+
 import connect from './connect'
 import Link from 'next/link'
 
 export default connect((props) => {
   return (
-    <Layout>
+    <Sidebar sidebarClass="is-wiki">
       <h1>list of articles</h1>
       <ul>
         {props.articles.map(({id, title}) => (
           <li key={id}>
-            <Link as={`/w/${id}`} href={`/wiki?id=${id}`}>
+            <Link as={`/w/${id}`} href={`/article?id=${id}`}>
               <a>{title}</a>
             </Link>
           </li>
         ))}
       </ul>
-    </Layout>
+    </Sidebar>
   )
 })

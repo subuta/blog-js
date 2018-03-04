@@ -1,11 +1,11 @@
 import connext from 'src/views/hoc/connext'
-import { requestChannel } from 'src/views/modules/channel'
+import { requestChannels } from 'src/views/modules/channel'
 import { compose } from 'recompose'
 import authorized from 'src/views/hoc/authorized'
-import ChannelRoute from 'src/views/components/routes/Channel'
+import ShowChannelRoute from 'src/views/components/routes/Chat/Show'
 
 const mapDispatchToProps = {
-  requestChannel
+  requestChannels
 }
 
 const enhance = compose(
@@ -13,12 +13,11 @@ const enhance = compose(
   authorized
 )
 
-const Channel = (props) => <ChannelRoute {...props}/>
+const ShowChannel = (props) => <ShowChannelRoute {...props}/>
 
-Channel.getInitialProps = async function (ctx) {
-  const {id} = ctx.query
-  await ctx.dispatch(requestChannel(id))
+ShowChannel.getInitialProps = async function (ctx) {
+  await ctx.dispatch(requestChannels())
   return {}
 }
 
-export default enhance(Channel)
+export default enhance(ShowChannel)

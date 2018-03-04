@@ -26,7 +26,7 @@ const enhance = compose(
   connect,
   lifecycle({
     componentWillMount () {
-      this.props.requestMe()
+      this.props.requestMe().catch(err => console.log('[caught at navigation]', err))
     }
   })
 )
@@ -37,8 +37,6 @@ export default enhance((props) => {
     styles,
     router
   } = props
-
-  const getActiveClass = (pathname) => router.pathname === pathname ? 'is-active' : ''
 
   const avatar = _.get(currentUser, 'avatar')
   const nickname = _.get(currentUser, 'nickname')
@@ -53,6 +51,7 @@ export default enhance((props) => {
         */}
 
         <ActiveLink
+          isActive={(router) => _.startsWith(router.pathname, '/channel')}
           className={styles.ChatApp}
           href='/channels'
           as='/c'
@@ -61,8 +60,9 @@ export default enhance((props) => {
         </ActiveLink>
 
         <ActiveLink
-          className={styles.ChatApp}
-          href='/wiki-index'
+          isActive={(router) => _.startsWith(router.pathname, '/article')}
+          className={styles.WikiApp}
+          href='/articles'
           as='/w'
         >
           <MdInsertDriveFile />

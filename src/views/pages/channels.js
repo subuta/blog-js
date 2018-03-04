@@ -2,7 +2,7 @@ import connext from 'src/views/hoc/connext'
 import { requestChannels } from 'src/views/modules/channel'
 import authorized from 'src/views/hoc/authorized'
 import { compose } from 'recompose'
-import ChannelsRoute from 'src/views/components/routes/Channels'
+import AllChannelRoute from 'src/views/components/routes/Chat/All'
 
 const mapDispatchToProps = {
   requestChannels
@@ -13,11 +13,11 @@ const enhance = compose(
   authorized
 )
 
-const Channels = (props) => <ChannelsRoute {...props}/>
+const AllChannel = (props) => <AllChannelRoute {...props}/>
 
-Channels.getInitialProps = async function (ctx) {
+AllChannel.getInitialProps = async function (ctx) {
   await ctx.dispatch(requestChannels())
   return {}
 }
 
-export default enhance(Channels)
+export default enhance(AllChannel)
