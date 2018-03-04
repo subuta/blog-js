@@ -12,6 +12,8 @@ import {
   PRIMARY_COLOR,
   BLACK_COLOR,
   SANS_FONT,
+  NOISE_PATTERN,
+  NAVIGATION_WIDTH,
   SIDEBAR_WIDTH
 } from 'src/views/constants/style'
 
@@ -113,8 +115,16 @@ const Container = {
   justifyContent: 'flex-start'
 }
 
+const Content = {
+  ...NOISE_PATTERN,
+  minHeight: '100vh',
+  flex: '1 0 auto',
+  width: `calc(100% - ${NAVIGATION_WIDTH}px)`
+}
+
 export default createWithStyles({
-  Container
+  Container,
+  Content,
 }, {
   css: {
     html,

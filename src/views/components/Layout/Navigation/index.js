@@ -62,7 +62,7 @@ export default enhance((props) => {
 
         <ActiveLink
           className={styles.ChatApp}
-          href='/wiki'
+          href='/wiki-index'
           as='/w'
         >
           <MdInsertDriveFile />

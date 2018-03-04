@@ -1,0 +1,31 @@
+{
+  "shape": {
+    "transform": [
+      {
+        "svgo": {
+          "plugins": [
+            {
+              "removeTitle": true
+            },
+            {
+              "convertColors": {
+                "currentColor": "true"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "mode": {
+    "inline": true,
+    "symbol": {
+      "sprite": "svg/sprite.symbol.svg",
+      "inline": true,
+      "example": true,
+      "render": {
+        "css": true
+      }
+    }
+  }
+}

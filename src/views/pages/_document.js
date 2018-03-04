@@ -1,6 +1,13 @@
 import Document, { Head, Main, NextScript } from 'next/document'
 import * as ReactFreeStyle from 'react-free-style'
 
+import getConfig from 'next/config'
+
+const config = getConfig()
+const {
+  staticFolder
+} = config.publicRuntimeConfig
+
 // https://github.com/blakeembrey/react-free-style
 const customScript = () => `
   function ready(fn) {
@@ -31,6 +38,10 @@ export default class MyDocument extends Document {
       <html>
       <Head>
         <style dangerouslySetInnerHTML={{__html: this.props.css}}/>
+
+        <link rel="stylesheet" href={`${staticFolder}/assets/sanitize.css`} />
+        <link rel="stylesheet" href={`${staticFolder}/assets/symbol/sprite.css`} />
+
         <script dangerouslySetInnerHTML={{__html: customScript()}}/>
       </Head>
       <body>

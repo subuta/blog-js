@@ -1,10 +1,15 @@
 import Navigation from './Navigation'
+import Sidebar from './Sidebar'
+
 import withStyles from './style'
 
 const Layout = (props) => (
   <div className={props.styles.Container}>
     <Navigation/>
-    {props.children}
+    <Sidebar sidebarClass="is-wiki"/>
+    <div className={props.styles.Content}>
+      {props.children}
+    </div>
   </div>
 )
 

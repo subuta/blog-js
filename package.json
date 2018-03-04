@@ -9,7 +9,7 @@
   "scripts": {
     "test": "POSTGRES_DB=blog-js-test nyc ava",
     "serve": "DEBUG_QUERIES=true node dist/main.js",
-    "svg": "svg-sprite -C ./svg-sprite-config.json -D static/assets 'assets/svg/*.svg'",
+    "svg": "svg-sprite -C ./svg-sprite-config.json -D src/views/static/assets 'src/views/assets/svg/*.svg'",
     "watch": "backpack dev",
     "build": "backpack build",
     "analyze": "cd src/views && ANALYZE=1 next build && cat ../../webpack-stats.txt",

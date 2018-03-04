@@ -7,10 +7,8 @@ import {
 
 const Icon = {
   display: 'inline-block',
-  height: '100%',
-  width: '100%',
   color: 'inherit',
-  verticalAlign: 'top'
+  maxWidth: '100%'
 }
 
 export default createWithStyles({
