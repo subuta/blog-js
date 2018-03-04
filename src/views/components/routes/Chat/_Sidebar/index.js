@@ -10,7 +10,7 @@ export default connect((props) => {
       <ul>
         {props.channels.map(({id, name}) => (
           <li key={id}>
-            <Link as={`/c/${id}`} href={`/channel?id=${id}`}>
+            <Link href={`/channel?id=${id}`} as={`/c/${id}`}>
               <a>{name}</a>
             </Link>
           </li>

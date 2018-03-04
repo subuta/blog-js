@@ -10,7 +10,7 @@ export default connect((props) => {
       <ul>
         {props.articles.map(({id, title}) => (
           <li key={id}>
-            <Link as={`/w/${id}`} href={`/article?id=${id}`}>
+            <Link href={`/article?id=${id}`} as={`/w/${id}`}>
               <a>{title}</a>
             </Link>
           </li>
