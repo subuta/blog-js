@@ -1,38 +1,22 @@
-import Layout from 'src/views/components/Layout'
 import connext from 'src/views/hoc/connext'
-import { getAll as getChannels, requestChannel } from '../modules/channel'
+import { requestChannel } from 'src/views/modules/channel'
 import { compose } from 'recompose'
-import authorized from '../hoc/authorized'
+import authorized from 'src/views/hoc/authorized'
+import ChannelRoute from 'src/views/components/routes/Channel'
 
-const mapStateToProps = (state) => {
-  return {
-    channels: getChannels(state)
-  }
+const mapDispatchToProps = {
+  requestChannel
 }
 
-const mapDispatchToProps = {}
-
 const enhance = compose(
-  connext(mapStateToProps, mapDispatchToProps),
+  connext(() => ({}), mapDispatchToProps),
   authorized
 )
 
-const Channel =  (props) => {
-  console.log('props = ', props);
-  return (
-    <Layout>
-      <h1>hoge</h1>
-      {/*
-    <h1>{props.show.name}</h1>
-    <p>{props.show.summary.replace(/<[/]?p>/g, '')}</p>
-    <img src={props.show.image.medium}/>
-    */}
-    </Layout>
-  )
-}
+const Channel = (props) => <ChannelRoute {...props}/>
 
 Channel.getInitialProps = async function (ctx) {
-  const { id } = ctx.query
+  const {id} = ctx.query
   await ctx.dispatch(requestChannel(id))
   return {}
 }

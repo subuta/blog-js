@@ -2,7 +2,6 @@ import connect from './connect'
 import Link from 'next/link'
 
 export default connect((props) => {
-  console.log(props.channels);
   return (
     <div>
       <h1>list of channels</h1>

@@ -1,12 +1,12 @@
-import { styled } from 'react-free-style'
-import { compose } from 'recompose'
 import { withRouter } from 'next/router'
+import { compose } from 'recompose'
 
 const enhance = compose(
   withRouter
 )
 
 const Index = ({router}) => {
+  // redirect to /channels
   router.replace('/channels', '/c')
   return null
 }
