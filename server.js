@@ -38,8 +38,14 @@ app.prepare()
     // apply withZone to next.js routes.
     router.use(withZone)
 
-    router.get('/p/:id', async ctx => {
-      const actualPage = '/post'
+    router.get('/c', async ctx => {
+      const actualPage = '/channels'
+      await app.render(ctx.req, ctx.res, actualPage, {})
+      ctx.respond = false
+    })
+
+    router.get('/c/:id', async ctx => {
+      const actualPage = '/channel'
       const queryParams = {id: ctx.params.id}
       await app.render(ctx.req, ctx.res, actualPage, queryParams)
       ctx.respond = false

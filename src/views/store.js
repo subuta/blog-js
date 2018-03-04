@@ -1,6 +1,6 @@
 import {createStore, applyMiddleware, compose} from 'redux'
 import thunk from 'redux-thunk'
-import makeRootReducer from './modules'
+import reducers from './modules'
 
 const isBrowser = typeof window !== 'undefined'
 
@@ -11,12 +11,10 @@ if (isBrowser && window.devToolsExtension) {
   devtools = window.devToolsExtension()
 }
 
-// store.injectedReducers = {}
-
 // return createStore
 export default (initialState = {}) => {
   const store = createStore(
-    makeRootReducer(),
+    reducers,
     initialState,
     compose(
       applyMiddleware(...middlewares),
@@ -30,9 +28,7 @@ export default (initialState = {}) => {
     // https://github.com/reactjs/react-redux/releases/tag/v2.0.0
     if (module.hot) {
       module.hot.accept('./modules', () => {
-        const makeRootReducer = require('./modules').default
-        store.replaceReducer(makeRootReducer({}))
-        // store.replaceReducer(makeRootReducer(store.injectedReducers))
+        store.replaceReducer(require('./modules').default)
       })
     }
   }
