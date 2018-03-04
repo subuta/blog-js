@@ -1,4 +1,4 @@
-import createWithStyles, { Style } from 'src/utils/style'
+import createWithStyles, { Style } from 'src/views/utils/style'
 
 // FIXME: loaderAnimationのクラス名の解決
 const loaderAnimation = {

@@ -1,10 +1,10 @@
-import createWithStyles from 'src/utils/style'
+import createWithStyles from 'src/views/utils/style'
 
 import {
   DIMMED_BLACK_COLOR,
   SANS_FONT,
   LATO_WITH_SANS_FONT
-} from 'src/constants/style'
+} from 'src/views/constants/style'
 
 const CommentWrapper = {
   margin: '0 0 16px 0',

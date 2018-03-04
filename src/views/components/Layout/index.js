@@ -1,9 +1,9 @@
-import Header from '../Header'
-
+import Navigation from './Navigation'
 import withStyles from './style'
 
 const Layout = (props) => (
-  <div>
+  <div className={props.styles.Container}>
+    <Navigation/>
     {props.children}
   </div>
 )

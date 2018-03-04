@@ -1,9 +1,9 @@
-import createWithStyles from 'src/utils/style'
+import createWithStyles from 'src/views/utils/style'
 
 import {
   BLACK_COLOR,
   PRIMARY_COLOR
-} from 'src/constants/style'
+} from 'src/views/constants/style'
 
 const Icon = {
   display: 'inline-block',

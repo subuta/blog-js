@@ -1,4 +1,4 @@
-import createWithStyles from 'src/utils/style'
+import createWithStyles from 'src/views/utils/style'
 
 const Placeholder = {
   display: 'inline-block',

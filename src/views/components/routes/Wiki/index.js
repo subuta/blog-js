@@ -5,7 +5,8 @@ import Link from 'next/link'
 export default connect((props) => {
   return (
     <Layout>
-      <h1>{props.channel.name}</h1>
+      <h1>{props.article.title}</h1>
+      art!
     </Layout>
   )
 })

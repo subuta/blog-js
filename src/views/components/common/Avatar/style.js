@@ -1,8 +1,8 @@
-import createWithStyles from 'src/utils/style'
+import createWithStyles from 'src/views/utils/style'
 
 import {
   GRAY_COLOR
-} from 'src/constants/style'
+} from 'src/views/constants/style'
 
 const avatarSize = 40
 

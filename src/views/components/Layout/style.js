@@ -11,7 +11,8 @@ import {
   ACCENT3_COLOR,
   PRIMARY_COLOR,
   BLACK_COLOR,
-  SANS_FONT
+  SANS_FONT,
+  SIDEBAR_WIDTH
 } from 'src/views/constants/style'
 
 const isBrowser = typeof window !== 'undefined'
@@ -106,7 +107,15 @@ const FontFaceNotoSansJapaneseBold = {
   `
 }
 
-export default createWithStyles({}, {
+const Container = {
+  display: 'flex',
+  alignItems: 'flex-start',
+  justifyContent: 'flex-start'
+}
+
+export default createWithStyles({
+  Container
+}, {
   css: {
     html,
     body,
