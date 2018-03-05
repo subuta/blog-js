@@ -68,35 +68,15 @@ const enhance = compose(
       }
     }
   }),
-  lifecycle({
-    // componentDidUpdate (prevProps) {
-    //   const {
-    //     channel,
-    //     channelName,
-    //     channelComments,
-    //     fetchChannelComments,
-    //     scrollComments
-    //   } = this.props
-    //
-    //   if (!channel) return
-    //
-    //   // fetch channel only if channelName updated.
-    //   if (_.isEmpty(channelComments) || channelName !== prevProps.channelName) {
-    //     fetchChannelComments(channel.id).then(() => {
-    //       scrollComments()
-    //     })
-    //   }
-    // }
-  }),
   withHandlers({
-    onKeyPress: ({createChannelComment, channel, draftText, setDraftText, scrollComments}) => (e) => {
+    onKeyPress: ({createComment, channel, draftText, setDraftText, scrollComments}) => (e) => {
       const key = keycode(e)
 
       // if enter pressed(without shift-key)
       if (key === 'enter' && !e.shiftKey) {
         e.preventDefault()
         setDraftText('')
-        createChannelComment({channelId: channel.id, text: draftText}).then(() => {
+        createComment({channelId: channel.id, text: draftText}).then(() => {
           scrollComments()
         })
       }
@@ -108,7 +88,8 @@ const enhance = compose(
         signAttachment,
         createAttachment,
         uploadAttachment,
-        createChannelComment
+        createComment,
+        scrollComments
       } = props
 
       if (!monitor) return
@@ -124,7 +105,9 @@ const enhance = compose(
       await uploadAttachment(file, signedRequest, url)
 
       // finally relate attachment to blank comment.
-      createChannelComment({channelId: channel.id, text: '', attachmentId: attachment.id})
+      createComment({channelId: channel.id, text: '', attachmentId: attachment.id}).then(() => {
+        scrollComments()
+      })
     }
   })
 )
@@ -140,15 +123,11 @@ const ChatContent = enhanceChatContent((props) => {
     setCommentsRef,
     setDraftText,
     draftText,
-    channels,
     channel,
-    handleFileDrop,
     isOver,
     canDrop,
     connectDropTarget,
     styles,
-    location,
-    match
   } = props
 
   let channelsClass = styles.Channels

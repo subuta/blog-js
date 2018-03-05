@@ -17,7 +17,9 @@ comment.get('/', async (ctx) => {
   /* mat Before index [end] */
 
   ctx.body = await Comment.query()
-    .eager('[channel, attachment, commentedBy]')
+    .eager(
+      '[channel.[comments.[attachment, commentedBy]], attachment, commentedBy]'
+    )
     .where(params)
 })
 
@@ -43,7 +45,9 @@ comment.post('/', auth, async (ctx) => {
       ...comment,
       ...params
     })
-    .eager('[channel, attachment, commentedBy]')
+    .eager(
+      '[channel.[comments.[attachment, commentedBy]], attachment, commentedBy]'
+    )
 
   /* mat After create [start] */
   /* mat After create [end] */

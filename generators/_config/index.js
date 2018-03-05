@@ -35,7 +35,7 @@ export const Routes = {
       'update',
       'show'
     ],
-    eager: '[channel, attachment, commentedBy]'
+    eager: '[channel.[comments.[attachment, commentedBy]], attachment, commentedBy]'
   },
   attachment: {
     imports: [
