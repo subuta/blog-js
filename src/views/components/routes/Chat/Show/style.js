@@ -10,12 +10,13 @@ import {
   GRAY_COLOR,
   LATO_WITH_SANS_FONT,
   SANS_FONT,
+  NOISE_PATTERN,
 
   EASE_STANDARD,
   HEADER_HEIGHT,
+  NAVIGATION_WIDTH,
   SIDEBAR_WIDTH
 } from 'src/views/constants/style'
-import { NAVIGATION_WIDTH, NOISE_PATTERN } from '../../../../constants/style'
 
 const MIN_TEXT_AREA_HEIGHT = 40
 
@@ -27,7 +28,7 @@ const ChatContent = {
   ...NOISE_PATTERN,
   minHeight: '100vh',
   flex: '1 0 auto',
-  width: `calc(100% - ${NAVIGATION_WIDTH}px)`
+  width: `calc(100% - ${SIDEBAR_WIDTH}px - ${NAVIGATION_WIDTH}px)`
 }
 
 const Channels = {
