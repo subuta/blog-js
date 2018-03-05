@@ -1,12 +1,18 @@
-import Link from 'next/link'
 import { withRouter } from 'next/router'
 
 import {
   compose,
+  withHandlers
 } from 'recompose'
 
 const enhance = compose(
-  withRouter
+  withRouter,
+  withHandlers({
+    onClick: ({router, href, as}) => (e) => {
+      e.preventDefault()
+      router.push(href, as)
+    }
+  })
 )
 
 export default enhance((props) => {
@@ -15,21 +21,32 @@ export default enhance((props) => {
     children,
     className,
     isActive,
-    ...rest
+    onClick,
+    href,
+    as
   } = props
 
-  isActive = isActive || ((router) => router.pathname === rest.href)
+  isActive = isActive || ((router) => {
+    return router.pathname === href ||
+      router.asPath === as
+  })
 
-  let linkClass = className || ''
+  let linkClass = 'link'
+  if (className) {
+    linkClass += ` ${className}`
+  }
+
   if (isActive(router)) {
     linkClass += ' is-active'
   }
 
   return (
-    <Link {...rest}>
-      <span className={linkClass}>
-        {children}
-      </span>
-    </Link>
+    <a
+      href={as}
+      onClick={onClick}
+      className={linkClass}
+    >
+      {children}
+    </a>
   )
 })

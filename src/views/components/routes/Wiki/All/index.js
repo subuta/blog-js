@@ -1,35 +1,37 @@
 import Layout from 'src/views/components/layout/Layout'
 import WikiSidebar from 'src/views/components/routes/Wiki/_Sidebar'
-import Content from 'src/views/components/layout/Content'
-import Router from 'next/router'
+import { withRouter } from 'next/router'
 import _ from 'lodash'
 
 import {
   compose,
-  lifecycle
+  lifecycle,
 } from 'recompose'
 
+import withStyles from './style'
 import connect from './connect'
 
 const enhance = compose(
+  withStyles,
   connect,
+  withRouter,
   lifecycle({
     componentWillMount () {
-      const {articles} = this.props
+      const {articles, router} = this.props
       const article = _.first(articles)
-      Router.replace(`/article?id=${article.id}`, `/w/${article.id}`)
+      router.replace(`/article?id=${article.id}`, `/w/${article.id}`)
     }
   })
 )
 
-export default enhance((props) => {
+export default enhance(({styles}) => {
   return (
     <Layout>
       <WikiSidebar />
 
-      <Content>
+      <div className={styles.WikiContent}>
         wiki!
-      </Content>
+      </div>
     </Layout>
   )
 })

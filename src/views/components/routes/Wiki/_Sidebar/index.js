@@ -1,21 +1,49 @@
+import React from 'react'
+import _ from 'lodash'
+import { withRouter } from 'next/router'
+import {
+  compose
+} from 'recompose'
+
 import Sidebar from 'src/views/components/layout/Sidebar'
+import ActiveLink from 'src/views/components/common/ActiveLink'
 
 import connect from './connect'
-import Link from 'next/link'
+import withStyles from './style'
 
-export default connect((props) => {
+const enhance = compose(
+  withRouter,
+  withStyles,
+  connect
+)
+
+export default enhance((props) => {
+  const {
+    styles,
+    articles
+  } = props
+
   return (
     <Sidebar sidebarClass="is-wiki">
-      <h1>list of articles</h1>
-      <ul>
-        {props.articles.map(({id, title}) => (
-          <li key={id}>
-            <Link href={`/article?id=${id}`} as={`/w/${id}`}>
-              <a>{title}</a>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <div className={styles.Menus}>
+        <h4>Articles</h4>
+
+        <ul className={styles.Articles}>
+          {_.map(articles, ({id, title}) => {
+            return (
+              <li key={id}>
+                <ActiveLink
+                  href={`/article?id=${id}`}
+                  as={`/w/${id}`}
+                >
+                  <span className="list-icon">#</span>
+                  <span>{title}</span>
+                </ActiveLink>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
     </Sidebar>
   )
 })

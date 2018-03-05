@@ -1,17 +1,27 @@
 import Layout from 'src/views/components/layout/Layout'
 import WikiSidebar from 'src/views/components/routes/Wiki/_Sidebar'
-import Content from 'src/views/components/layout/Content'
 
+import {
+  compose,
+  lifecycle,
+} from 'recompose'
+
+import withStyles from './style'
 import connect from './connect'
 
-export default connect((props) => {
+const enhance = compose(
+  withStyles,
+  connect
+)
+
+export default enhance(({article, styles}) => {
   return (
     <Layout>
       <WikiSidebar />
 
-      <Content>
-        <h1>{props.article.title}</h1>
-      </Content>
+      <div className={styles.WikiContent}>
+        <h1>{article.title}</h1>
+      </div>
     </Layout>
   )
 })

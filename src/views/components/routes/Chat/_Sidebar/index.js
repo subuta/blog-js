@@ -1,21 +1,50 @@
+import React from 'react'
+import _ from 'lodash'
+import { withRouter } from 'next/router'
+import {
+  compose
+} from 'recompose'
+
+
 import Sidebar from 'src/views/components/layout/Sidebar'
+import ActiveLink from 'src/views/components/common/ActiveLink'
 
 import connect from './connect'
-import Link from 'next/link'
+import withStyles from './style'
 
-export default connect((props) => {
+const enhance = compose(
+  withRouter,
+  withStyles,
+  connect
+)
+
+export default enhance((props) => {
+  const {
+    styles,
+    channels
+  } = props
+
   return (
     <Sidebar sidebarClass="is-chat">
-      <h1>list of channels</h1>
-      <ul>
-        {props.channels.map(({id, name}) => (
-          <li key={id}>
-            <Link href={`/channel?id=${id}`} as={`/c/${id}`}>
-              <a>{name}</a>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <div className={styles.Menus}>
+        <h4>Channels</h4>
+
+        <ul className={styles.Channels}>
+          {_.map(channels, ({id, name}) => {
+            return (
+              <li key={id}>
+                <ActiveLink
+                  href={`/channel?id=${id}`}
+                  as={`/c/${id}`}
+                >
+                  <span className="list-icon">#</span>
+                  <span>{name}</span>
+                </ActiveLink>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
     </Sidebar>
   )
 })

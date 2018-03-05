@@ -1,6 +1,5 @@
 import React from 'react'
 import _ from 'lodash'
-import { withRouter } from 'next/router'
 
 import {
   compose,
@@ -22,7 +21,6 @@ import connect from './connect'
 
 const enhance = compose(
   withStyles,
-  withRouter,
   connect,
   lifecycle({
     componentWillMount () {
@@ -34,8 +32,7 @@ const enhance = compose(
 export default enhance((props) => {
   const {
     currentUser,
-    styles,
-    router
+    styles
   } = props
 
   const avatar = _.get(currentUser, 'avatar')

@@ -1,10 +1,10 @@
 import React from 'react'
-import moment from 'src/utils/moment'
+import moment from 'src/views/utils/moment'
 import _ from 'lodash'
 
 import withStyles from './style'
 
-import Avatar from 'src/components/common/Avatar'
+import Avatar from 'src/views/components/common/Avatar'
 
 export default withStyles((props) => {
   const {comment, styles} = props
