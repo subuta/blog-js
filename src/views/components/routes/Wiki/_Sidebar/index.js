@@ -20,16 +20,16 @@ const enhance = compose(
 export default enhance((props) => {
   const {
     styles,
-    articles
+    tags
   } = props
 
   return (
     <Sidebar sidebarClass="is-wiki">
       <div className={styles.Menus}>
-        <h4>Articles</h4>
+        <h4>Tags</h4>
 
         <ul className={styles.Articles}>
-          {_.map(articles, ({id, title}) => {
+          {_.map(tags, ({id, label}) => {
             return (
               <li key={id}>
                 <ActiveLink
@@ -37,7 +37,7 @@ export default enhance((props) => {
                   as={`/w/${id}`}
                 >
                   <span className="list-icon">#</span>
-                  <span>{title}</span>
+                  <span>{label}</span>
                 </ActiveLink>
               </li>
             )

@@ -14,14 +14,16 @@ export const Routes = {
       'destroy'
     ],
     skipAuth: true,
-    eager: '[comments.[attachment, commentedBy]]'
+    eager: '[comments.[attachment, commentedBy]]',
+    joinRelation: ''
   },
   article: {
     skipAuth: [
       'index',
       'show'
     ],
-    eager: '[tags]'
+    eager: '[tags]',
+    joinRelation: '[tags]'
   },
   comment: {
     // pass custom route prefix.
@@ -35,7 +37,8 @@ export const Routes = {
       'update',
       'show'
     ],
-    eager: '[channel.[comments.[attachment, commentedBy]], attachment, commentedBy]'
+    eager: '[channel.[comments.[attachment, commentedBy]], attachment, commentedBy]',
+    joinRelation: ''
   },
   attachment: {
     imports: [
@@ -48,18 +51,21 @@ export const Routes = {
     only: [
       'create'
     ],
-    eager: ''
+    eager: '',
+    joinRelation: ''
   },
   tag: {
     only: [
       'index'
     ],
     skipAuth: true,
-    eager: '[articles]'
+    eager: '[articles]',
+    joinRelation: ''
   },
   user: {
     eager: '',
-    only: []
+    only: [],
+    joinRelation: ''
   }
 }
 

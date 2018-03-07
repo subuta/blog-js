@@ -1,11 +1,17 @@
 import connext from 'src/views/hoc/connext'
-import { requestArticles } from 'src/views/modules/article'
 import authorized from 'src/views/hoc/authorized'
 import { compose } from 'recompose'
 import AllWikiRoute from 'src/views/components/routes/Wiki/All'
 
+import {
+  requestArticles,
+  requestArticlesByTagId
+} from 'src/views/modules/article'
+import { requestTags } from 'src/views/modules/tag'
+
 const mapDispatchToProps = {
-  requestArticles
+  requestArticlesByTagId,
+  requestTags
 }
 
 const enhance = compose(
@@ -16,7 +22,10 @@ const enhance = compose(
 const AllWiki = (props) => <AllWikiRoute {...props}/>
 
 AllWiki.getInitialProps = async function (ctx) {
-  await ctx.dispatch(requestArticles())
+  await Promise.all([
+    // TODO: tagIdに渡された値でArticlesをフィルタしつつ、キレイに一覧表示する。
+    ctx.dispatch(requestArticlesByTagId(10295)),
+    ctx.dispatch(requestTags())])
   return {}
 }
 

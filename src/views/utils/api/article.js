@@ -28,6 +28,9 @@ export const destroy = (id) => {
 }
 
 /* mat Custom action [start] */
+export const filterByTagId = (tagId) => {
+  return request.get(`/articles?tagId=${tagId}`)
+}
 /* mat Custom action [end] */
 
 let actions = {
@@ -39,6 +42,10 @@ let actions = {
 }
 
 /* mat Custom exports [start] */
+actions = {
+  ...actions,
+  filterByTagId
+}
 /* mat Custom exports [end] */
 
 export default actions

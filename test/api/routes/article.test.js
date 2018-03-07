@@ -155,4 +155,20 @@ test('delete should delete article', async (t) => {
 })
 
 /* mat Custom tests [start] */
+test('index should list article and filter by tag', async (t) => {
+  const {request} = t.context
+
+  // mock jwks
+  const token = createToken(privateKey, '123', currentUser)
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .get('/api/articles')
+    .query({tagId: 91264})
+    .set('Authorization', `Bearer ${token}`)
+
+  t.is(response.status, 200)
+  t.deepEqual(response.body.length, 1)
+  t.deepEqual(_.map(response.body, 'id').sort(), [36084])
+})
 /* mat Custom tests [end] */

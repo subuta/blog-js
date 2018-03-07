@@ -11,10 +11,14 @@ article.get('/', async (ctx) => {
   let params = {}
 
   /* mat Before index [start] */
+  if (_.get(ctx, 'query.tagId')) {
+    params['tags.id'] = Number(_.get(ctx, 'query.tagId'))
+  }
   /* mat Before index [end] */
 
   ctx.body = await Article.query()
     .eager('[tags]')
+    .joinRelation('[tags]')
     .where(params)
 })
 

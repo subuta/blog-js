@@ -85,6 +85,17 @@ export const deleteArticle = (id) => {
 }
 
 /* mat Custom actionCreators [start] */
+export const requestArticlesByTagId = (params) => {
+  return (dispatch) => {
+    dispatch({type: REQUEST_ARTICLES})
+    return api.article.filterByTagId(params).then((data) => {
+      /* mat Index data transform [start] */
+      /* mat Index data transform [end] */
+      dispatch(setArticles(normalize(data, articleList)))
+      return data
+    })
+  }
+}
 /* mat Custom actionCreators [end] */
 
 // -------------
