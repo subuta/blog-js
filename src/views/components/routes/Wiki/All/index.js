@@ -1,5 +1,4 @@
 import Layout from 'src/views/components/layout/Layout'
-import WikiSidebar from 'src/views/components/routes/Wiki/_Sidebar'
 import { withRouter } from 'next/router'
 import _ from 'lodash'
 import ActiveLink from 'src/views/components/common/ActiveLink'
@@ -12,6 +11,9 @@ import {
 import withStyles from './style'
 import connect from './connect'
 
+import Sidebar from '../_Sidebar'
+import Content from '../_Content'
+
 const enhance = compose(
   withStyles,
   connect,
@@ -21,12 +23,12 @@ const enhance = compose(
 export default enhance(({styles, articles}) => {
   return (
     <Layout>
-      <WikiSidebar />
+      <Sidebar />
 
-      <div className={styles.WikiContent}>
+      <Content>
         <h4>Articles</h4>
 
-        <ul className={styles.Articles}>
+        <ul>
           {_.map(articles, ({id, title}) => {
             return (
               <li key={id}>
@@ -40,7 +42,7 @@ export default enhance(({styles, articles}) => {
             )
           })}
         </ul>
-      </div>
+      </Content>
     </Layout>
   )
 })

@@ -1,5 +1,4 @@
 import Layout from 'src/views/components/layout/Layout'
-import ChannelSidebar from 'src/views/components/routes/Chat/_Sidebar'
 import { withRouter } from 'next/router'
 import _ from 'lodash'
 
@@ -7,6 +6,9 @@ import {
   compose,
   lifecycle
 } from 'recompose'
+
+import Sidebar from 'src/views/components/routes/Chat/_Sidebar'
+import Content from 'src/views/components/routes/Chat/_Content'
 
 import withStyles from './style'
 import connect from './connect'
@@ -28,9 +30,9 @@ const enhance = compose(
 export default enhance(({channels, styles}) => {
   return (
     <Layout>
-      <ChannelSidebar/>
+      <Sidebar/>
 
-      <div className={styles.ChatContent}/>
+      <Content/>
     </Layout>
   )
 })

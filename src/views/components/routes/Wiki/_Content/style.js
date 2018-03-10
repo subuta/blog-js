@@ -7,7 +7,7 @@ import {
   SHADOW_COLOR
 } from 'src/views/constants/style'
 
-const WikiContent = {
+const Content = {
   ...NOISE_PATTERN,
   minHeight: '100vh',
   flex: '1 0 auto',
@@ -16,5 +16,5 @@ const WikiContent = {
 }
 
 export default createWithStyles({
-  WikiContent
+  Content
 })

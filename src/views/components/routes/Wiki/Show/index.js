@@ -1,5 +1,7 @@
 import Layout from 'src/views/components/layout/Layout'
-import WikiSidebar from 'src/views/components/routes/Wiki/_Sidebar'
+
+import Sidebar from '../_Sidebar'
+import Content from '../_Content'
 
 import {
   compose,
@@ -17,11 +19,11 @@ const enhance = compose(
 export default enhance(({article, styles}) => {
   return (
     <Layout>
-      <WikiSidebar />
+      <Sidebar />
 
-      <div className={styles.WikiContent}>
+      <Content>
         <h1>{article.title}</h1>
-      </div>
+      </Content>
     </Layout>
   )
 })

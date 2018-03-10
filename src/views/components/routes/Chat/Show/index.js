@@ -16,19 +16,17 @@ import withStyles from './style'
 import connect from './connect'
 
 import Layout from 'src/views/components/layout/Layout'
-import ChannelSidebar from 'src/views/components/routes/Chat/_Sidebar'
+
+import Sidebar from '../_Sidebar'
+import Content from '../_Content'
 
 import Comment from 'src/views/components/common/Comment'
 
 import {
   compose,
-  branch,
-  renderComponent,
-  lifecycle,
   withState,
   withProps,
-  withHandlers,
-  toClass
+  withHandlers
 } from 'recompose'
 
 const dropTarget = {
@@ -113,10 +111,15 @@ const enhance = compose(
 )
 
 const enhanceChatContent = compose(
-  withFileDropHandler
+  withFileDropHandler,
+  withHandlers({
+    connectDropTargetToRef: ({connectDropTarget}) => (ref) => {
+      return connectDropTarget(findDOMNode(ref))
+    }
+  })
 )
 
-const ChatContent = enhanceChatContent((props) => {
+const Show = enhanceChatContent((props) => {
   const {
     channelComments,
     onKeyPress,
@@ -126,7 +129,7 @@ const ChatContent = enhanceChatContent((props) => {
     channel,
     isOver,
     canDrop,
-    connectDropTarget,
+    connectDropTargetToRef,
     styles,
   } = props
 
@@ -135,8 +138,8 @@ const ChatContent = enhanceChatContent((props) => {
     channelsClass += ' can-drop'
   }
 
-  return connectDropTarget(
-    <div className={styles.ChatContent}>
+  return (
+    <Content ref={connectDropTargetToRef}>
       <div className={channelsClass}>
         <div className={styles.DropTarget}>
           <h1>Drop file for upload.</h1>
@@ -177,15 +180,15 @@ const ChatContent = enhanceChatContent((props) => {
           </div>
         </div>
       </div>
-    </div>
+    </Content>
   )
 })
 
 export default enhance((props) => {
   return (
     <Layout>
-      <ChannelSidebar/>
-      <ChatContent {...props}/>
+      <Sidebar/>
+      <Show {...props}/>
     </Layout>
   )
 })

@@ -24,17 +24,9 @@ const Container = {
   display: 'flex'
 }
 
-const ChatContent = {
-  ...NOISE_PATTERN,
-  minHeight: '100vh',
-  flex: '1 0 auto',
-  width: `calc(100% - ${SIDEBAR_WIDTH}px - ${NAVIGATION_WIDTH}px)`
-}
-
 const Channels = {
   position: 'relative',
-  flex: '1 0 auto',
-  width: `calc(100% - ${SIDEBAR_WIDTH})`
+  flex: '1 0 auto'
 }
 
 const DropTarget = {
@@ -208,7 +200,6 @@ const AddIcon = {
 
 export default createWithStyles({
   Container,
-  ChatContent,
   Channels,
   DropTarget,
   Header,

@@ -11,7 +11,7 @@ import {
 
 import MdChatIcon from 'react-icons/lib/md/chat'
 import MdSearchIcon from 'react-icons/lib/md/search'
-import MdInsertDriveFile from 'react-icons/lib/md/insert-drive-file'
+import GoBookIcon from 'react-icons/lib/go/book'
 
 import Avatar from 'src/views/components/common/Avatar'
 import ActiveLink from 'src/views/components/common/ActiveLink'
@@ -62,7 +62,7 @@ export default enhance((props) => {
           href='/articles'
           as='/w'
         >
-          <MdInsertDriveFile />
+          <GoBookIcon />
         </ActiveLink>
       </div>
 
