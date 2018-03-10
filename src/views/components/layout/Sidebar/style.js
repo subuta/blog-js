@@ -10,6 +10,7 @@ import {
   SANS_FONT,
   BLACK_COLOR,
   GRAY_COLOR,
+  DIMMED_BLACK_COLOR,
 
   WIKI_HEADER_HEIGHT,
 
@@ -77,10 +78,14 @@ export const List = {
         margin: 0
       },
 
-      '&.is-active': {
+      '.is-chat &.is-active': {
         margin: '-4px -16px !important',
         padding: '4px 16px',
         backgroundColor: ACCENT4_COLOR
+      },
+
+      '.is-wiki &.is-active': {
+        color: ACCENT4_COLOR
       }
     }
   }

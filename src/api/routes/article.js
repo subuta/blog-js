@@ -17,7 +17,7 @@ article.get('/', async (ctx) => {
   /* mat Before index [end] */
 
   ctx.body = await Article.query()
-    .eager('[tags]')
+    .eager('[tags.articles]')
     .joinRelation('[tags]')
     .where(params)
 })
@@ -30,7 +30,7 @@ article.get('/:id', async (ctx) => {
   /* mat Before show [end] */
 
   ctx.body = await Article.query()
-    .eager('[tags]')
+    .eager('[tags.articles]')
     .findFirst({...params, id: ctx.params.id})
 })
 
@@ -48,7 +48,7 @@ article.post('/', auth, async (ctx) => {
       ...article,
       ...params
     })
-    .eager('[tags]')
+    .eager('[tags.articles]')
 
   /* mat After create [start] */
   /* mat After create [end] */
@@ -72,7 +72,7 @@ article.put('/:id', auth, async (ctx) => {
       ...article,
       ...params
     })
-    .eager('[tags]')
+    .eager('[tags.articles]')
 })
 
 article.delete('/:id', auth, async (ctx) => {

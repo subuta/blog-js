@@ -2,6 +2,7 @@ import connext from 'src/views/hoc/connext'
 import authorized from 'src/views/hoc/authorized'
 import { compose } from 'recompose'
 import AllWikiRoute from 'src/views/components/routes/Wiki/All'
+import _ from 'lodash'
 
 import {
   requestArticles,
@@ -22,10 +23,13 @@ const enhance = compose(
 const AllWiki = (props) => <AllWikiRoute {...props}/>
 
 AllWiki.getInitialProps = async function (ctx) {
-  await Promise.all([
-    // TODO: tagIdに渡された値でArticlesをフィルタしつつ、キレイに一覧表示する。
-    ctx.dispatch(requestArticlesByTagId(10295)),
-    ctx.dispatch(requestTags())])
+  let promises = []
+
+  promises.push(ctx.dispatch(requestTags()))
+  promises.push(ctx.dispatch(requestArticles()))
+
+  await Promise.all(promises)
+
   return {}
 }
 

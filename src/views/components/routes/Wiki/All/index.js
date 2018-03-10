@@ -31,7 +31,7 @@ export default enhance(({styles, articles}) => {
         <Header/>
 
         <Paper>
-            <h4>Articles</h4>
+          <h4>Articles</h4>
 
           <ul>
             {_.map(articles, ({id, title}) => {

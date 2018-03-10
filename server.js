@@ -47,7 +47,7 @@ app.prepare()
 
     router.get('/c', async ctx => {
       const actualPage = '/channels'
-      await app.render(ctx.req, ctx.res, actualPage, {})
+      await app.render(ctx.req, ctx.res, actualPage, ctx.query)
       ctx.respond = false
     })
 
@@ -60,7 +60,7 @@ app.prepare()
 
     router.get('/w', async ctx => {
       const actualPage = '/articles'
-      await app.render(ctx.req, ctx.res, actualPage, {})
+      await app.render(ctx.req, ctx.res, actualPage, ctx.query)
       ctx.respond = false
     })
 
