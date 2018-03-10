@@ -6,7 +6,7 @@ example my blogging project built-on top of `js-to-builder` and `matryoshka.js`
 #### Run matryoshka.js(source code generator)
 
 ```
-NODE_ENV=mat npx mat
+NODE_ENV=common npx mat
 ```
 
 #### Start API server

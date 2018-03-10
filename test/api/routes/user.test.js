@@ -51,14 +51,14 @@ test('get me should return user', async (t) => {
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 92666)
-  t.deepEqual(response.body.auth0Id, 'e376dc36-3072-45e7-84b0-8109641881ca')
-  t.deepEqual(response.body.locale, 'vi')
-  t.deepEqual(response.body.nickname, 'Tiffany.Erdman')
-  t.deepEqual(response.body.status, 'turquoise revolutionize override')
+  t.deepEqual(response.body.id, 54551)
+  t.deepEqual(response.body.auth0Id, '4be76d72-37c6-4af4-9b6d-5cf3cb62d63a')
+  t.deepEqual(response.body.locale, 'en_au_ocker')
+  t.deepEqual(response.body.nickname, 'Juana5')
+  t.deepEqual(response.body.status, 'New Israeli Sheqel')
   t.deepEqual(
     response.body.avatar,
-    'https://s3.amazonaws.com/uifaces/faces/twitter/reetajayendra/128.jpg'
+    'https://s3.amazonaws.com/uifaces/faces/twitter/devankoshal/128.jpg'
   )
 })
 
@@ -66,7 +66,7 @@ test('put me should update user if exists', async (t) => {
   const {request, User} = t.context
 
   const user = await User.query().findOne({
-    auth0Id: 'e376dc36-3072-45e7-84b0-8109641881ca'
+    auth0Id: '4be76d72-37c6-4af4-9b6d-5cf3cb62d63a'
   })
   t.not(user, undefined)
 
@@ -79,26 +79,26 @@ test('put me should update user if exists', async (t) => {
     .set('Authorization', `Bearer ${token}`)
     .send({
       user: {
-        id: 92666,
-        auth0Id: 'e376dc36-3072-45e7-84b0-8109641881ca',
-        locale: 'es',
-        nickname: 'Georgette84',
-        status: 'card copying',
+        id: 54551,
+        auth0Id: '4be76d72-37c6-4af4-9b6d-5cf3cb62d63a',
+        locale: 'en_CA',
+        nickname: 'Matteo.Hills50',
+        status: 'Chair Soap',
         avatar:
-          'https://s3.amazonaws.com/uifaces/faces/twitter/reabo101/128.jpg'
+          'https://s3.amazonaws.com/uifaces/faces/twitter/billyroshan/128.jpg'
       }
     })
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 92666)
-  t.deepEqual(response.body.auth0Id, 'e376dc36-3072-45e7-84b0-8109641881ca')
-  t.deepEqual(response.body.locale, 'es')
-  t.deepEqual(response.body.nickname, 'Georgette84')
-  t.deepEqual(response.body.status, 'card copying')
+  t.deepEqual(response.body.id, 54551)
+  t.deepEqual(response.body.auth0Id, '4be76d72-37c6-4af4-9b6d-5cf3cb62d63a')
+  t.deepEqual(response.body.locale, 'en_CA')
+  t.deepEqual(response.body.nickname, 'Matteo.Hills50')
+  t.deepEqual(response.body.status, 'Chair Soap')
   t.deepEqual(
     response.body.avatar,
-    'https://s3.amazonaws.com/uifaces/faces/twitter/reabo101/128.jpg'
+    'https://s3.amazonaws.com/uifaces/faces/twitter/billyroshan/128.jpg'
   )
 })
 
@@ -106,7 +106,7 @@ test('put me should create user if not exists', async (t) => {
   const {request, User} = t.context
 
   const user = await User.query().findOne({
-    auth0Id: '6b4d5350-a44a-467c-ae9d-5738e1efbaf2'
+    auth0Id: '8a7a4d7c-d980-462d-9986-fb2f25daee50'
   })
   t.is(user, undefined)
 
@@ -114,7 +114,7 @@ test('put me should create user if not exists', async (t) => {
   const token = createToken(
     privateKey,
     '123',
-    createPayload('6b4d5350-a44a-467c-ae9d-5738e1efbaf2')
+    createPayload('8a7a4d7c-d980-462d-9986-fb2f25daee50')
   )
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
@@ -123,28 +123,28 @@ test('put me should create user if not exists', async (t) => {
     .set('Authorization', `Bearer ${token}`)
     .send({
       user: {
-        id: 38169,
-        auth0Id: '6b4d5350-a44a-467c-ae9d-5738e1efbaf2',
-        locale: 'es',
-        nickname: 'Georgette84',
-        status: 'card copying',
+        id: 20643,
+        auth0Id: '8a7a4d7c-d980-462d-9986-fb2f25daee50',
+        locale: 'en_CA',
+        nickname: 'Matteo.Hills50',
+        status: 'Chair Soap',
         avatar:
-          'https://s3.amazonaws.com/uifaces/faces/twitter/reabo101/128.jpg'
+          'https://s3.amazonaws.com/uifaces/faces/twitter/billyroshan/128.jpg'
       }
     })
 
   t.is(response.status, 200)
 
   // should ignore invalid id param
-  t.not(response.body.id, 38169)
+  t.not(response.body.id, 20643)
 
   // other props should persisted.
-  t.deepEqual(response.body.auth0Id, '6b4d5350-a44a-467c-ae9d-5738e1efbaf2')
-  t.deepEqual(response.body.locale, 'es')
-  t.deepEqual(response.body.nickname, 'Georgette84')
-  t.deepEqual(response.body.status, 'card copying')
+  t.deepEqual(response.body.auth0Id, '8a7a4d7c-d980-462d-9986-fb2f25daee50')
+  t.deepEqual(response.body.locale, 'en_CA')
+  t.deepEqual(response.body.nickname, 'Matteo.Hills50')
+  t.deepEqual(response.body.status, 'Chair Soap')
   t.deepEqual(
     response.body.avatar,
-    'https://s3.amazonaws.com/uifaces/faces/twitter/reabo101/128.jpg'
+    'https://s3.amazonaws.com/uifaces/faces/twitter/billyroshan/128.jpg'
   )
 })

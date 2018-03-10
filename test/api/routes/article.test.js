@@ -51,7 +51,7 @@ test('index should list article', async (t) => {
 
   t.is(response.status, 200)
   t.deepEqual(response.body.length, 3)
-  t.deepEqual(_.map(response.body, 'id').sort(), [14780, 36084, 6898])
+  t.deepEqual(_.map(response.body, 'id').sort(), [68018, 68554, 96438])
 })
 
 test('show should return article', async (t) => {
@@ -62,16 +62,17 @@ test('show should return article', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .get('/api/articles/36084')
+    .get('/api/articles/68554')
     .set('Authorization', `Bearer ${token}`)
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 36084)
-  t.deepEqual(response.body.title, 'Pound Sterling User-centric')
+  t.deepEqual(response.body.id, 68554)
+  t.deepEqual(response.body.title, 'China Salad eyeballs')
+  t.deepEqual(response.body.summary, 'Avon Wooden Designer')
   t.deepEqual(
     response.body.content,
-    'Enim aliquam hic aut porro quisquam repudiandae nemo. Fugiat placeat unde. Et assumenda alias voluptatem qui delectus eius. Et ad non asperiores cum molestias.'
+    'Inventore nostrum deserunt quae deleniti nulla aut est accusamus aspernatur. Inventore praesentium officiis occaecati necessitatibus occaecati nulla voluptatem minima ea. Consequuntur cum neque est.'
   )
 })
 
@@ -87,20 +88,22 @@ test('post should create article', async (t) => {
     .set('Authorization', `Bearer ${token}`)
     .send({
       article: {
-        id: 56304,
-        title: 'Brunei Dollar coherent',
+        id: 68360,
+        title: 'payment',
+        summary: 'New Hampshire neural',
         content:
-          'Odit veniam adipisci reprehenderit unde facilis sint eos. Facilis numquam ut nihil. Fugit velit tempora suscipit. Ea fuga enim aut eaque nostrum. Esse et nemo quidem sed adipisci molestias.'
+          'Asperiores et occaecati similique alias voluptatibus molestiae corrupti nostrum odit. Ipsam ipsam magni eius et perferendis sed placeat iste dolores. Ea assumenda quod. Repudiandae numquam omnis quia voluptas sapiente iusto molestiae. Qui doloribus vero repellendus.'
       }
     })
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 56304)
-  t.deepEqual(response.body.title, 'Brunei Dollar coherent')
+  t.deepEqual(response.body.id, 68360)
+  t.deepEqual(response.body.title, 'payment')
+  t.deepEqual(response.body.summary, 'New Hampshire neural')
   t.deepEqual(
     response.body.content,
-    'Odit veniam adipisci reprehenderit unde facilis sint eos. Facilis numquam ut nihil. Fugit velit tempora suscipit. Ea fuga enim aut eaque nostrum. Esse et nemo quidem sed adipisci molestias.'
+    'Asperiores et occaecati similique alias voluptatibus molestiae corrupti nostrum odit. Ipsam ipsam magni eius et perferendis sed placeat iste dolores. Ea assumenda quod. Repudiandae numquam omnis quia voluptas sapiente iusto molestiae. Qui doloribus vero repellendus.'
   )
 })
 
@@ -112,24 +115,26 @@ test('update should update article', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .put('/api/articles/36084')
+    .put('/api/articles/68554')
     .set('Authorization', `Bearer ${token}`)
     .send({
       article: {
-        id: 36084,
-        title: 'Brunei Dollar coherent',
+        id: 68554,
+        title: 'payment',
+        summary: 'New Hampshire neural',
         content:
-          'Odit veniam adipisci reprehenderit unde facilis sint eos. Facilis numquam ut nihil. Fugit velit tempora suscipit. Ea fuga enim aut eaque nostrum. Esse et nemo quidem sed adipisci molestias.'
+          'Asperiores et occaecati similique alias voluptatibus molestiae corrupti nostrum odit. Ipsam ipsam magni eius et perferendis sed placeat iste dolores. Ea assumenda quod. Repudiandae numquam omnis quia voluptas sapiente iusto molestiae. Qui doloribus vero repellendus.'
       }
     })
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 36084)
-  t.deepEqual(response.body.title, 'Brunei Dollar coherent')
+  t.deepEqual(response.body.id, 68554)
+  t.deepEqual(response.body.title, 'payment')
+  t.deepEqual(response.body.summary, 'New Hampshire neural')
   t.deepEqual(
     response.body.content,
-    'Odit veniam adipisci reprehenderit unde facilis sint eos. Facilis numquam ut nihil. Fugit velit tempora suscipit. Ea fuga enim aut eaque nostrum. Esse et nemo quidem sed adipisci molestias.'
+    'Asperiores et occaecati similique alias voluptatibus molestiae corrupti nostrum odit. Ipsam ipsam magni eius et perferendis sed placeat iste dolores. Ea assumenda quod. Repudiandae numquam omnis quia voluptas sapiente iusto molestiae. Qui doloribus vero repellendus.'
   )
 })
 
@@ -144,7 +149,7 @@ test('delete should delete article', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .delete('/api/articles/36084')
+    .delete('/api/articles/68554')
     .set('Authorization', `Bearer ${token}`)
 
   articles = await Article.query()
@@ -169,6 +174,6 @@ test('index should list article and filter by tag', async (t) => {
 
   t.is(response.status, 200)
   t.deepEqual(response.body.length, 1)
-  t.deepEqual(_.map(response.body, 'id').sort(), [36084])
+  t.deepEqual(_.map(response.body, 'id').sort(), [49471])
 })
 /* mat Custom tests [end] */

@@ -5,22 +5,22 @@ exports.seed = async (knex) => {
   // https://github.com/tgriesser/knex/issues/54
   await knex('attachments').insert([
     {
-      id: 'e06fda25-bf75-4b3b-8897-de04a0f02280',
-      name: 'Practical Frozen Bacon deposit open architecture',
-      type: 'Practical Frozen Bacon deposit open architecture',
-      imageUrl: 'http://lorempixel.com/640/480/technics'
-    },
-    {
-      id: 'bdbf9a3f-f9f7-4981-afac-a1931a57af40',
-      name: 'calculating Orchestrator deposit',
-      type: 'calculating Orchestrator deposit',
+      id: '28d15c5a-a70c-48e4-9772-bc910f421907',
+      name: 'one-to-one',
+      type: 'embrace',
       imageUrl: 'http://lorempixel.com/640/480/nature'
     },
     {
-      id: '51cb0acf-acb0-44e0-8aed-601243b1bae3',
-      name: 'Handmade driver',
-      type: 'Handmade driver',
-      imageUrl: 'http://lorempixel.com/640/480/city'
+      id: 'abfbc020-04b2-4d70-a1ed-aa85e702e181',
+      name: 'payment feed Delaware',
+      type: 'HDD Florida',
+      imageUrl: 'http://lorempixel.com/640/480/fashion'
+    },
+    {
+      id: '62fc4caf-224d-4658-949e-b68307f974d2',
+      name: 'Enterprise-wide feed circuit',
+      type: 'Tasty Frozen Gloves plug-and-play Berkshire',
+      imageUrl: 'http://lorempixel.com/640/480/abstract'
     }
   ])
 }

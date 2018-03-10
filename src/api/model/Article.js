@@ -26,6 +26,7 @@ export default class Article extends Model {
     properties: {
       id: {type: 'integer'},
       title: {type: 'string'},
+      summary: {type: 'string'},
       content: {type: 'string'}
     }
   }

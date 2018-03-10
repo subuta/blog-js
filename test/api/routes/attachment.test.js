@@ -50,19 +50,19 @@ test('post should create attachment', async (t) => {
     .set('Authorization', `Bearer ${token}`)
     .send({
       attachment: {
-        id: 'd921ecff-3361-487d-87c2-84b679b4e47f',
-        name: 'Connecticut Unbranded parse',
-        type: 'Connecticut Unbranded parse',
-        imageUrl: 'http://lorempixel.com/640/480/sports'
+        id: '52de2f81-2dc8-4f0a-9bfc-93aec9461bd7',
+        name: 'bottom-line Metal',
+        type: 'input Way',
+        imageUrl: 'http://lorempixel.com/640/480/transport'
       }
     })
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 'd921ecff-3361-487d-87c2-84b679b4e47f')
-  t.deepEqual(response.body.name, 'Connecticut Unbranded parse')
-  t.deepEqual(response.body.type, 'Connecticut Unbranded parse')
-  t.deepEqual(response.body.imageUrl, 'http://lorempixel.com/640/480/sports')
+  t.deepEqual(response.body.id, '52de2f81-2dc8-4f0a-9bfc-93aec9461bd7')
+  t.deepEqual(response.body.name, 'bottom-line Metal')
+  t.deepEqual(response.body.type, 'input Way')
+  t.deepEqual(response.body.imageUrl, 'http://lorempixel.com/640/480/transport')
 })
 
 /* mat Custom tests [start] */

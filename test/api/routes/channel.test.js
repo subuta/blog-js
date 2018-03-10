@@ -51,7 +51,7 @@ test('index should list channel', async (t) => {
 
   t.is(response.status, 200)
   t.deepEqual(response.body.length, 3)
-  t.deepEqual(_.map(response.body, 'id').sort(), [31156, 54787, 99821])
+  t.deepEqual(_.map(response.body, 'id').sort(), [36069, 63669, 68264])
 })
 
 test('show should return channel', async (t) => {
@@ -62,13 +62,13 @@ test('show should return channel', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .get('/api/channels/31156')
+    .get('/api/channels/68264')
     .set('Authorization', `Bearer ${token}`)
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 31156)
-  t.deepEqual(response.body.name, 'International')
+  t.deepEqual(response.body.id, 68264)
+  t.deepEqual(response.body.name, 'convergence Administrator Clothing')
 })
 
 test('post should create channel', async (t) => {
@@ -82,13 +82,13 @@ test('post should create channel', async (t) => {
     .post('/api/channels')
     .set('Authorization', `Bearer ${token}`)
     .send({
-      channel: {id: 30789, name: 'leading edge'}
+      channel: {id: 64844, name: 'multi-byte Dynamic'}
     })
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 30789)
-  t.deepEqual(response.body.name, 'leading edge')
+  t.deepEqual(response.body.id, 64844)
+  t.deepEqual(response.body.name, 'multi-byte Dynamic')
 })
 
 /* mat Custom tests [start] */

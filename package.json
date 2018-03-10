@@ -7,16 +7,16 @@
     "node": ">=9.0.0"
   },
   "scripts": {
-    "test": "POSTGRES_DB=blog-js-test nyc ava",
+    "test": "NODE_ENV=test POSTGRES_DB=blog-js-test nyc ava",
     "serve": "DEBUG_QUERIES=true node dist/main.js",
     "svg": "svg-sprite -C ./svg-sprite-config.json -D src/views/static/assets 'src/views/assets/svg/*.svg'",
     "watch": "backpack dev",
     "build": "backpack build",
     "analyze": "cd src/views && ANALYZE=1 next build && cat ../../webpack-stats.txt",
-    "knex": "knex",
-    "seed": "knex seed:run",
-    "db:migrate": "knex-migrate up",
-    "db:migrate:drop": "knex-migrate down --to 0",
+    "knex": "NODE_ENV=common knex",
+    "seed": "NODE_ENV=common knex seed:run",
+    "db:migrate": "NODE_ENV=common knex-migrate up",
+    "db:migrate:drop": "NODE_ENV=common knex-migrate down --to 0",
     "db:migrate:reset": "npm run db:migrate:drop && npm run db:migrate"
   },
   "nyc": {

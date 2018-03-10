@@ -5,22 +5,25 @@ exports.seed = async (knex) => {
   // https://github.com/tgriesser/knex/issues/54
   await knex('articles').insert([
     {
-      id: 36084,
-      title: 'Pound Sterling User-centric',
+      id: 68554,
+      title: 'China Salad eyeballs',
+      summary: 'Avon Wooden Designer',
       content:
-        'Enim aliquam hic aut porro quisquam repudiandae nemo. Fugiat placeat unde. Et assumenda alias voluptatem qui delectus eius. Et ad non asperiores cum molestias.'
+        'Inventore nostrum deserunt quae deleniti nulla aut est accusamus aspernatur. Inventore praesentium officiis occaecati necessitatibus occaecati nulla voluptatem minima ea. Consequuntur cum neque est.'
     },
     {
-      id: 6898,
-      title: 'Visionary',
+      id: 68018,
+      title: 'Bulgarian Lev SQL calculate',
+      summary: 'withdrawal',
       content:
-        'Maiores provident aliquam sit. Veritatis molestiae aspernatur aut. Nostrum sit voluptatem ex neque eligendi est ad est dolores.'
+        'Cumque quis soluta sint impedit aut. Velit totam consectetur quae cum aperiam. Aut reiciendis ut iure reprehenderit aut quod nam nisi.'
     },
     {
-      id: 14780,
-      title: 'navigating',
+      id: 96438,
+      title: 'interface invoice Investment Account',
+      summary: 'Cotton',
       content:
-        'In quod dignissimos enim et et quasi dolor qui. Dicta dicta ipsa dignissimos. Consequatur tempora perferendis alias velit praesentium minus tenetur ut.'
+        'Qui aut provident nihil ut eligendi consequatur autem. Voluptatum est non non eum sunt accusamus. Fuga voluptatem est perspiciatis quod in possimus vitae. Ipsa architecto repudiandae fugiat aut corrupti maxime.'
     }
   ])
 }

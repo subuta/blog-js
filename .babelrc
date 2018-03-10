@@ -46,7 +46,7 @@
         ]
       ]
     },
-    "mat": {
+    "common": {
       "presets": [
         "env"
       ],

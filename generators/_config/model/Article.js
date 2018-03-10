@@ -12,6 +12,9 @@ export default {
     title: {
       'type': 'string'
     },
+    summary: {
+      'type': 'string'
+    },
     content: {
       'type': 'string'
     }
