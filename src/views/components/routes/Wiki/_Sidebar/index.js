@@ -8,6 +8,8 @@ import {
 import Sidebar from 'src/views/components/layout/Sidebar'
 import ActiveLink from 'src/views/components/common/ActiveLink'
 
+import FaTagIcon from 'react-icons/lib/fa/tag'
+
 import connect from './connect'
 import withStyles from './style'
 
@@ -28,7 +30,7 @@ export default enhance((props) => {
       <div className={styles.Menus}>
         <h4>Tags</h4>
 
-        <ul className={styles.Articles}>
+        <ul className={styles.List}>
           {_.map(tags, ({id, label}) => {
             return (
               <li key={id}>
@@ -36,8 +38,8 @@ export default enhance((props) => {
                   href={`/article?id=${id}`}
                   as={`/w/${id}`}
                 >
-                  <span className="list-icon">#</span>
-                  <span>{label}</span>
+                  <span className="list-icon"><FaTagIcon /></span>
+                  <span className="name">{label}</span>
                 </ActiveLink>
               </li>
             )

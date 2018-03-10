@@ -41,7 +41,7 @@ const Sidebar = {
   }
 }
 
-const Channels = {
+export const List = {
   margin: 0,
   padding: 0,
   listStyle: 'none',
@@ -54,15 +54,20 @@ const Channels = {
     '& > a': {
       display: 'flex',
       justifyContent: 'flex-start',
-      alignItems: 'baseline',
+      alignItems: 'flex-start',
       lineHeight: 1,
       textDecoration: 'none',
       color: 'inherit',
       transition: `background-color 0.2s ${EASE_STANDARD}`,
 
       '& .list-icon': {
-        margin: '1px 4px 0 0'
+        margin: '0px 4px 0 0'
       },
+
+      '& .name': {
+        margin: '1px 0 0 0'
+      },
+
       '&:last-of-type': {
         margin: 0
       },
@@ -79,13 +84,13 @@ const Channels = {
 const Logo = {
 }
 
-const Menus = {
+export const Menus = {
   width: '100%'
 }
 
 export default createWithStyles({
   Sidebar,
   Logo,
-  Channels,
+  List,
   Menus
 })

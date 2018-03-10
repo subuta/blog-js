@@ -5,9 +5,10 @@ import {
   compose
 } from 'recompose'
 
-
 import Sidebar from 'src/views/components/layout/Sidebar'
 import ActiveLink from 'src/views/components/common/ActiveLink'
+
+import FaHashTagIcon from 'react-icons/lib/fa/hashtag'
 
 import connect from './connect'
 import withStyles from './style'
@@ -29,7 +30,7 @@ export default enhance((props) => {
       <div className={styles.Menus}>
         <h4>Channels</h4>
 
-        <ul className={styles.Channels}>
+        <ul className={styles.List}>
           {_.map(channels, ({id, name}) => {
             return (
               <li key={id}>
@@ -37,8 +38,8 @@ export default enhance((props) => {
                   href={`/channel?id=${id}`}
                   as={`/c/${id}`}
                 >
-                  <span className="list-icon">#</span>
-                  <span>{name}</span>
+                  <span className="list-icon"><FaHashTagIcon /></span>
+                  <span className="name">{name}</span>
                 </ActiveLink>
               </li>
             )
