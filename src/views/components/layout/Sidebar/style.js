@@ -100,6 +100,11 @@ export const List = {
 }
 
 const Logo = {
+  'a': {
+    textDecoration: 'none',
+    color: 'inherit'
+  },
+
   '.is-wiki &': {
     margin: '-16px -16px 0',
     padding: 16,

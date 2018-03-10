@@ -26,7 +26,7 @@ export default enhance((props) => {
   } = props
 
   return (
-    <Sidebar sidebarClass="is-chat">
+    <Sidebar app="chat">
       <div className={styles.Menus}>
         <h4>Channels</h4>
 
