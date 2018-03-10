@@ -13,7 +13,7 @@ import {
   NOISE_PATTERN,
 
   EASE_STANDARD,
-  HEADER_HEIGHT,
+  CHAT_HEADER_HEIGHT,
   NAVIGATION_WIDTH,
   SIDEBAR_WIDTH
 } from 'src/views/constants/style'
@@ -48,7 +48,7 @@ const DropTarget = {
 }
 
 const Header = {
-  height: HEADER_HEIGHT,
+  height: CHAT_HEADER_HEIGHT,
   padding: '8px 16px',
   borderBottom: `1px solid ${BORDER_COLOR}`,
   fontFamily: SANS_FONT
@@ -86,7 +86,7 @@ const Content = {
 
 const CenteredContent = {
   position: 'relative',
-  height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+  height: `calc(100vh - ${CHAT_HEADER_HEIGHT}px)`,
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -96,7 +96,7 @@ const CenteredContent = {
 
 const Comments = {
   padding: `16px 16px ${MIN_TEXT_AREA_HEIGHT + 24 + 16}px`, // plus padding
-  height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+  height: `calc(100vh - ${CHAT_HEADER_HEIGHT}px)`,
   overflowY: 'scroll',
 }
 

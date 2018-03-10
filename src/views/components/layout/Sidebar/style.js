@@ -9,6 +9,9 @@ import {
   SIDEBAR_WIDTH,
   SANS_FONT,
   BLACK_COLOR,
+  GRAY_COLOR,
+
+  WIKI_HEADER_HEIGHT,
 
   CHAT_APP_COLOR,
   WIKI_APP_COLOR
@@ -33,7 +36,7 @@ const Sidebar = {
   },
 
   '&.is-wiki': {
-    background: PRIMARY_COLOR,
+    background: GRAY_COLOR,
     color: BLACK_COLOR
   },
 
@@ -84,6 +87,13 @@ export const List = {
 }
 
 const Logo = {
+  '.is-wiki &': {
+    margin: '-16px -16px 0',
+    padding: 16,
+    height: WIKI_HEADER_HEIGHT,
+    background: WIKI_APP_COLOR,
+    color: PRIMARY_COLOR,
+  },
 }
 
 export const Menus = {

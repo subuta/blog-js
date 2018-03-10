@@ -4,14 +4,14 @@ import {
   NAVIGATION_WIDTH,
   SIDEBAR_WIDTH,
   NOISE_PATTERN,
-  SHADOW_COLOR
+  GRAY_COLOR,
 } from 'src/views/constants/style'
 
 const Content = {
-  ...NOISE_PATTERN,
   minHeight: '100vh',
   flex: '1 0 auto',
-  width: `calc(100% - ${SIDEBAR_WIDTH}px - ${NAVIGATION_WIDTH}px)`
+  width: `calc(100% - ${SIDEBAR_WIDTH}px - ${NAVIGATION_WIDTH}px)`,
+  backgroundColor: GRAY_COLOR
 }
 
 export default createWithStyles({

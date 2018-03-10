@@ -16,7 +16,8 @@ export const CHAT_APP_COLOR = '#6B6998'
 export const WIKI_APP_COLOR = '#7CC09E'
 
 // header(description area)
-export const HEADER_HEIGHT = 56
+export const CHAT_HEADER_HEIGHT = 56
+export const WIKI_HEADER_HEIGHT = 128
 
 // sidebar
 export const NAVIGATION_WIDTH = 64
@@ -31,6 +32,19 @@ export const SERIF_FONT = '\'Noto Serif Japanese\', \'游ゴシック\', \'Yu Go
 export const MOBILE_MEDIA_QUERY = '@media (min-width: 320px)'
 export const TABLET_MEDIA_QUERY = '@media (min-width: 768px)'
 export const PC_MEDIA_QUERY = '@media (min-width: 1280px)'
+
+// Z Index
+export const Z_INDEX_1 = {
+  boxShadow: 'rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px'
+}
+
+export const Z_INDEX_2 = {
+  boxShadow: 'rgba(0, 0, 0, 0.16) 0px 3px 10px, rgba(0, 0, 0, 0.23) 0px 3px 10px'
+}
+
+export const Z_INDEX_3 = {
+  boxShadow: 'rgba(0, 0, 0, 0.19) 0px 10px 30px, rgba(0, 0, 0, 0.23) 0px 6px 10px'
+}
 
 // 背景のノイズのスタイル
 export const NOISE_PATTERN = {

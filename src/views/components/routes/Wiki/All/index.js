@@ -12,7 +12,9 @@ import withStyles from './style'
 import connect from './connect'
 
 import Sidebar from '../_Sidebar'
+import Header from '../_Header'
 import Content from '../_Content'
+import Paper from '../_Paper'
 
 const enhance = compose(
   withStyles,
@@ -23,25 +25,29 @@ const enhance = compose(
 export default enhance(({styles, articles}) => {
   return (
     <Layout>
-      <Sidebar />
+      <Sidebar/>
 
       <Content>
-        <h4>Articles</h4>
+        <Header/>
 
-        <ul>
-          {_.map(articles, ({id, title}) => {
-            return (
-              <li key={id}>
-                <ActiveLink
-                  href={`/article?id=${id}`}
-                  as={`/w/${id}`}
-                >
-                  <span>{title}</span>
-                </ActiveLink>
-              </li>
-            )
-          })}
-        </ul>
+        <Paper>
+            <h4>Articles</h4>
+
+          <ul>
+            {_.map(articles, ({id, title}) => {
+              return (
+                <li key={id}>
+                  <ActiveLink
+                    href={`/article?id=${id}`}
+                    as={`/w/${id}`}
+                  >
+                    <span>{title}</span>
+                  </ActiveLink>
+                </li>
+              )
+            })}
+          </ul>
+        </Paper>
       </Content>
     </Layout>
   )
