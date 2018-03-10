@@ -8,6 +8,7 @@ import {
   EASE_STANDARD,
   SIDEBAR_WIDTH,
   SANS_FONT,
+  BLACK_COLOR,
 
   CHAT_APP_COLOR,
   WIKI_APP_COLOR
@@ -32,7 +33,8 @@ const Sidebar = {
   },
 
   '&.is-wiki': {
-    background: WIKI_APP_COLOR,
+    background: PRIMARY_COLOR,
+    color: BLACK_COLOR
   },
 
   '& h4': {

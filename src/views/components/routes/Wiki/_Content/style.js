@@ -11,8 +11,7 @@ const Content = {
   ...NOISE_PATTERN,
   minHeight: '100vh',
   flex: '1 0 auto',
-  width: `calc(100% - ${SIDEBAR_WIDTH}px - ${NAVIGATION_WIDTH}px)`,
-  boxShadow: `-4px 0px 12px 2px ${SHADOW_COLOR}`
+  width: `calc(100% - ${SIDEBAR_WIDTH}px - ${NAVIGATION_WIDTH}px)`
 }
 
 export default createWithStyles({

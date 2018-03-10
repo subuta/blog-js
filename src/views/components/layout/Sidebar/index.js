@@ -29,7 +29,7 @@ export default enhance((props) => {
     <div className={className}>
       <div className={styles.Menus}>
         <div className={styles.Logo}>
-          <SvgIcon name="logo-white"/>
+          <SvgIcon name="logo"/>
         </div>
 
         {children}
