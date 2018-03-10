@@ -13,11 +13,17 @@ export default enhance((props) => {
   const {
     styles,
     children,
+    className,
     ...rest
   } = props
 
+  let paperClass = styles.Paper
+  if (className) {
+    paperClass += ` ${className}`
+  }
+
   return (
-    <div {...rest} className={styles.Paper}>
+    <div {...rest} className={paperClass}>
       {children}
     </div>
   )

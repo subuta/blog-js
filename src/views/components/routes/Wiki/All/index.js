@@ -1,6 +1,7 @@
-import Layout from 'src/views/components/layout/Layout'
+import moment from 'src/views/utils/moment'
 import { withRouter } from 'next/router'
 import _ from 'lodash'
+import Layout from 'src/views/components/layout/Layout'
 import ActiveLink from 'src/views/components/common/ActiveLink'
 
 import {
@@ -33,16 +34,22 @@ export default enhance(({styles, articles}) => {
         <Paper>
           <h4>Articles</h4>
 
-          <ul>
-            {_.map(articles, ({id, title}) => {
+          <ul className={styles.Articles}>
+            {_.map(articles, (props) => {
+              const {id, title, summary} = props
+              const createdAt = moment(props.createdAt).format('MMMM Do YYYY')
               return (
                 <li key={id}>
                   <ActiveLink
                     href={`/article?id=${id}`}
                     as={`/w/${id}`}
                   >
-                    <span>{title}</span>
+                    <h4>{title}</h4>
                   </ActiveLink>
+
+                  <p>{summary}</p>
+
+                  <small className="created-at">{createdAt}</small>
                 </li>
               )
             })}
