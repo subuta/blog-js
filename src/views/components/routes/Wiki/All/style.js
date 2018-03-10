@@ -2,6 +2,8 @@ import createWithStyles from 'src/views/utils/style'
 
 import {
   BLACK_COLOR,
+  ACCENT4_COLOR,
+  EASE_STANDARD,
   DIMMED_BLACK_COLOR
 } from 'src/views/constants/style'
 
@@ -17,7 +19,13 @@ const Articles = {
     color: BLACK_COLOR,
 
     'a': {
-      textDecoration: 'none'
+      textDecoration: 'none',
+      transition: `background-color 0.2s ${EASE_STANDARD}`,
+      color: BLACK_COLOR,
+
+      '&:hover': {
+        color: ACCENT4_COLOR
+      }
     },
 
     'h4': {

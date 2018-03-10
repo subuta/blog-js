@@ -66,6 +66,14 @@ export const List = {
       color: 'inherit',
       transition: `background-color 0.2s ${EASE_STANDARD}`,
 
+      '.is-chat &:hover': {
+        textDecoration: 'underline'
+      },
+
+      '.is-wiki &:hover': {
+        color: ACCENT4_COLOR
+      },
+
       '& .list-icon': {
         margin: '0px 4px 0 0'
       },
