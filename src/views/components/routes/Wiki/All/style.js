@@ -2,10 +2,25 @@ import createWithStyles from 'src/views/utils/style'
 
 import {
   BLACK_COLOR,
+  PRIMARY_COLOR,
   ACCENT4_COLOR,
   EASE_STANDARD,
-  DIMMED_BLACK_COLOR
+  DIMMED_BLACK_COLOR,
+
+  WIKI_APP_COLOR,
+
+  Z_INDEX_1
 } from 'src/views/constants/style'
+
+const Paper = {
+  '& .button-fab': {
+    backgroundColor: WIKI_APP_COLOR,
+    color: PRIMARY_COLOR,
+    '&:hover': {
+      backgroundColor: WIKI_APP_COLOR
+    }
+  }
+}
 
 const Articles = {
   margin: '24px 0 0',
@@ -46,5 +61,6 @@ const Articles = {
 }
 
 export default createWithStyles({
+  Paper,
   Articles
 })

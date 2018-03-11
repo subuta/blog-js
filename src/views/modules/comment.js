@@ -50,6 +50,17 @@ export const createComment = (params) => {
   }
 }
 
+export const updateComment = (params, id) => {
+  return (dispatch) => {
+    dispatch({type: REQUEST_COMMENTS})
+    return api.comment.update(params, id).then((data) => {
+
+      dispatch(setComments(normalize(data, comment)))
+      return data
+    })
+  }
+}
+
 export const deleteComment = (id) => {
   return (dispatch) => {
     dispatch({type: REQUEST_COMMENTS})

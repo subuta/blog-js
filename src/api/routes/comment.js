@@ -55,6 +55,26 @@ comment.post('/', auth, async (ctx) => {
   ctx.body = response
 })
 
+comment.put('/:id', auth, async (ctx) => {
+  const {Comment} = ctx.state.models
+  const {comment} = ctx.request.body
+  const {sub} = ctx.state.user
+
+  // update specified comment.
+  const params = {}
+
+
+
+  ctx.body = await Comment.query()
+    .patchAndFetchById(ctx.params.id, {
+      ...comment,
+      ...params
+    })
+    .eager(
+      '[channel.[comments.[attachment, commentedBy]], attachment, commentedBy]'
+    )
+})
+
 comment.delete('/:id', auth, async (ctx) => {
   const {Comment} = ctx.state.models
   await Comment.query()

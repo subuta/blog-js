@@ -3,11 +3,14 @@ import { withRouter } from 'next/router'
 import _ from 'lodash'
 import Layout from 'src/views/components/layout/Layout'
 import ActiveLink from 'src/views/components/common/ActiveLink'
+import FloatingActionButton from 'src/views/components/common/FloatingActionButton'
 
 import {
   compose,
   lifecycle,
 } from 'recompose'
+
+import MdAddIcon from 'react-icons/lib/md/add'
 
 import withStyles from './style'
 import connect from './connect'
@@ -31,7 +34,7 @@ export default enhance(({styles, articles}) => {
       <Content>
         <Header/>
 
-        <Paper>
+        <Paper className={styles.Paper}>
           <h4>Articles</h4>
 
           <ul className={styles.Articles}>
@@ -54,6 +57,10 @@ export default enhance(({styles, articles}) => {
               )
             })}
           </ul>
+
+          <FloatingActionButton className={styles.FloatingActionButton}>
+            <MdAddIcon />
+          </FloatingActionButton>
         </Paper>
       </Content>
     </Layout>

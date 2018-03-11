@@ -40,6 +40,7 @@ export default class MyDocument extends Document {
         <style dangerouslySetInnerHTML={{__html: this.props.css}}/>
 
         <link rel="stylesheet" href={`${staticFolder}/assets/sanitize.css`} />
+        <link rel="stylesheet" href={`${staticFolder}/assets/waves.css`} />
         <link rel="stylesheet" href={`${staticFolder}/assets/symbol/sprite.css`} />
 
         <script dangerouslySetInnerHTML={{__html: customScript()}}/>

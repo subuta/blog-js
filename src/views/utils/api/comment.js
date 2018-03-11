@@ -14,6 +14,12 @@ export const create = (params) => {
   })
 }
 
+export const update = (id, params) => {
+  return request.put(`/channels/${params.channelId}/comments/${id}`, {
+    comment: params
+  })
+}
+
 export const destroy = (id, params) => {
   return request.delete(`/channels/${params.channelId}/comments/${id}`)
 }
@@ -24,6 +30,7 @@ export const destroy = (id, params) => {
 let actions = {
   index,
   create,
+  update,
   destroy
 }
 

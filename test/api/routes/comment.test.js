@@ -81,6 +81,33 @@ test('post should create comment', async (t) => {
   )
 })
 
+test('update should update comment', async (t) => {
+  const {request} = t.context
+
+  // mock jwks
+  const token = createToken(privateKey, '123', currentUser)
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .put('/api/channels/undefined/comments/57447')
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      article: {
+        id: 57447,
+        text:
+          'Laudantium minus consequatur. Doloribus est aut modi illum et exercitationem. Nihil laudantium quas.'
+      }
+    })
+
+  t.is(response.status, 200)
+
+  t.deepEqual(response.body.id, 57447)
+  t.deepEqual(
+    response.body.text,
+    'Laudantium minus consequatur. Doloribus est aut modi illum et exercitationem. Nihil laudantium quas.'
+  )
+})
+
 test('delete should delete comment', async (t) => {
   const {request, Comment} = t.context
 

@@ -34,7 +34,6 @@ export const Routes = {
     ],
 
     except: [
-      'update',
       'show'
     ],
     eager: '[channel.[comments.[attachment, commentedBy]], attachment, commentedBy]',
