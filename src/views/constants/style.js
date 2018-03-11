@@ -15,6 +15,9 @@ export const SHADOW_COLOR = 'rgba(34, 36, 38, 0.15)'
 export const CHAT_APP_COLOR = '#6B6998'
 export const WIKI_APP_COLOR = '#7CC09E'
 
+// Global settings
+export const PAGE_MIN_HEIGHT = 456
+
 // header(description area)
 export const CHAT_HEADER_HEIGHT = 56
 export const WIKI_HEADER_HEIGHT = 128

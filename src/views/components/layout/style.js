@@ -12,6 +12,7 @@ import {
   PRIMARY_COLOR,
   BLACK_COLOR,
   SANS_FONT,
+  PAGE_MIN_HEIGHT,
   NOISE_PATTERN,
   NAVIGATION_WIDTH,
   SIDEBAR_WIDTH
@@ -110,9 +111,12 @@ const FontFaceNotoSansJapaneseBold = {
 }
 
 const Container = {
+  position: 'relative',
+  minHeight: PAGE_MIN_HEIGHT,
   display: 'flex',
   alignItems: 'flex-start',
-  justifyContent: 'flex-start'
+  justifyContent: 'flex-start',
+  overflow: 'scroll'
 }
 
 export default createWithStyles({

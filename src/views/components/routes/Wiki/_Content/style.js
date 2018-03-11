@@ -8,7 +8,8 @@ import {
 } from 'src/views/constants/style'
 
 const Content = {
-  minHeight: '100vh',
+  minHeight: 'inherit',
+  height: '100vh',
   flex: '1 0 auto',
   width: `calc(100% - ${SIDEBAR_WIDTH}px - ${NAVIGATION_WIDTH}px)`,
   backgroundColor: GRAY_COLOR

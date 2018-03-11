@@ -24,12 +24,12 @@ const Sidebar = {
   alignItems: 'flex-start',
   flexDirection: 'column',
   padding: 16,
+  minHeight: 'inherit',
   height: '100vh',
   width: SIDEBAR_WIDTH,
   flex: '0 0 auto',
   color: PRIMARY_COLOR,
   fontFamily: LATO_WITH_SANS_FONT,
-  transition: `all 0.3s ${EASE_STANDARD}`,
   background: CHAT_APP_COLOR,
 
   '&.is-chat': {

@@ -10,6 +10,7 @@ import {
 } from 'src/views/constants/style'
 
 const Navigation = {
+  minHeight: 'inherit',
   height: '100vh',
   padding: '16px 12px',
   display: 'flex',

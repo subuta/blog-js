@@ -5,6 +5,7 @@ import {
   DIMMED_BLACK_COLOR,
   PRIMARY_COLOR,
   ACCENT4_COLOR,
+  PAGE_MIN_HEIGHT,
   LIGHT_ACCENT3_COLOR,
   BLACK_COLOR,
   GRAY_COLOR,
@@ -20,11 +21,9 @@ import {
 
 const MIN_TEXT_AREA_HEIGHT = 40
 
-const Container = {
-  display: 'flex'
-}
-
 const Channels = {
+  minHeight: 'inherit',
+  height: '100vh',
   position: 'relative',
   flex: '1 0 auto'
 }
@@ -81,23 +80,19 @@ const Description = {
 }
 
 const Content = {
+  minHeight: `calc(${PAGE_MIN_HEIGHT}px - ${CHAT_HEADER_HEIGHT}px)`,
+  height: `calc(100% - ${CHAT_HEADER_HEIGHT}px)`,
   position: 'relative'
 }
 
-const CenteredContent = {
-  position: 'relative',
-  height: `calc(100vh - ${CHAT_HEADER_HEIGHT}px)`,
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  fontFamily: LATO_WITH_SANS_FONT,
-  fontWeight: 900
-}
-
 const Comments = {
+  height: `calc(100% - ${MIN_TEXT_AREA_HEIGHT}px)`,
   padding: `16px 16px ${MIN_TEXT_AREA_HEIGHT + 24 + 16}px`, // plus padding
-  height: `calc(100vh - ${CHAT_HEADER_HEIGHT}px)`,
   overflowY: 'scroll',
+
+  [`@media screen and (max-height: ${PAGE_MIN_HEIGHT}px)`]: {
+    padding: 16,
+  }
 }
 
 const Comment = {
@@ -199,14 +194,12 @@ const AddIcon = {
 }
 
 export default createWithStyles({
-  Container,
   Channels,
   DropTarget,
   Header,
   Title,
   Description,
   Content,
-  CenteredContent,
   Comments,
   Comment,
   Footer,
