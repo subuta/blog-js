@@ -6,6 +6,11 @@ import { getEntities as getChannelEntities } from 'src/views/modules/channel'
 import { denormalize } from 'src/views/utils/schema'
 
 import {
+  showMenu,
+  hideMenu
+} from 'src/views/modules/ui'
+
+import {
   getAll as getChannels,
   getIsRequestProgress as getIsChannelProgress,
   requestChannels
@@ -45,6 +50,8 @@ const mapStateToProps = (state, oldProps) => {
 }
 
 const mapDispatchToProps = {
+  showMenu,
+  hideMenu,
   createComment,
   createAttachment,
   uploadAttachment,

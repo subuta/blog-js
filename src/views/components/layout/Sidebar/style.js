@@ -12,6 +12,9 @@ import {
   GRAY_COLOR,
   DIMMED_BLACK_COLOR,
 
+  EASE_DECELERATION,
+  EASE_ACCELERATION,
+
   NAVIGATION_WIDTH,
   TABLET_MEDIA_QUERY,
 
@@ -54,7 +57,13 @@ const Sidebar = {
     left: -1000 + NAVIGATION_WIDTH,
     top: 0,
     bottom: 0,
-    zIndex: 100
+    zIndex: 100,
+    transition: `all 0.5s ${EASE_DECELERATION}`,
+
+    '.is-show-menu &': {
+      left: NAVIGATION_WIDTH,
+      transition: `all 0.5s ${EASE_ACCELERATION}`,
+    }
   }
 }
 

@@ -135,6 +135,8 @@ const Show = enhanceChatContent((props) => {
     canDrop,
     connectDropTargetToRef,
     styles,
+    showMenu,
+    hideMenu,
   } = props
 
   const {
@@ -155,7 +157,7 @@ const Show = enhanceChatContent((props) => {
         </div>
 
         <div className={styles.Header}>
-          <i><SvgIcon name="logo-small"/></i>
+          <i onClick={() => showMenu()}><SvgIcon name="logo-small"/></i>
 
           <div>
             <h4 className={styles.Title}>

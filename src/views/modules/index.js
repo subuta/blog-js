@@ -8,7 +8,11 @@ import attachment from './attachment'
 import tag from './tag'
 import user from './user'
 
-const reducers = {
+/* mat Custom imports [start] */
+import ui from './ui'
+/* mat Custom imports [end] */
+
+let reducers = {
   routing: routerReducer,
   channel,
   article,
@@ -17,6 +21,13 @@ const reducers = {
   tag,
   user
 }
+
+/* mat Custom reducers [start] */
+reducers = {
+  ...reducers,
+  ui
+}
+/* mat Custom reducers [end] */
 
 const makeRootReducer = (injectedReducers) => {
   return combineReducers({

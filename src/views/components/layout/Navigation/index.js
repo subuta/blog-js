@@ -32,14 +32,20 @@ const enhance = compose(
 export default enhance((props) => {
   const {
     currentUser,
-    styles
+    styles,
+    isShowMenu
   } = props
 
   const avatar = _.get(currentUser, 'avatar')
   const nickname = _.get(currentUser, 'nickname')
 
+  let navigationClass = styles.Navigation
+  if (isShowMenu) {
+    navigationClass += ` is-show`
+  }
+
   return (
-    <div className={styles.Navigation}>
+    <div className={navigationClass}>
       <div className={styles.Top}>
         {/*
         <a className={styles.Item} href="#">

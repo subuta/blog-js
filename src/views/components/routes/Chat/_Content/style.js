@@ -9,6 +9,7 @@ import {
 
 const Content = {
   ...NOISE_PATTERN,
+  position: 'relative',
   minHeight: 'inherit',
   height: '100vh',
   flex: '1 0 auto',
@@ -16,6 +17,22 @@ const Content = {
   boxShadow: `-4px 0px 12px 2px ${SHADOW_COLOR}`
 }
 
+const Mask = {
+  position: 'absolute',
+  display: 'none',
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0,
+  zIndex: 1,
+  backgroundColor: '#FFFFFF',
+  opacity: 0.8,
+  '.is-show-menu &': {
+    display: 'block'
+  }
+}
+
 export default createWithStyles({
-  Content
+  Content,
+  Mask
 })

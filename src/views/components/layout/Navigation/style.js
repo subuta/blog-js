@@ -6,6 +6,9 @@ import {
 
   TABLET_MEDIA_QUERY,
 
+  EASE_DECELERATION,
+  EASE_ACCELERATION,
+
   EASE_STANDARD,
   CHAT_APP_COLOR,
   WIKI_APP_COLOR
@@ -25,7 +28,13 @@ const Navigation = {
     left: -1000,
     top: 0,
     bottom: 0,
-    zIndex: 1000
+    zIndex: 1000,
+    transition: `all 0.5s ${EASE_DECELERATION}`,
+
+    '.is-show-menu &': {
+      left: 0,
+      transition: `all 0.5s ${EASE_ACCELERATION}`,
+    }
   }
 }
 
