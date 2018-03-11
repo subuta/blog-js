@@ -10,6 +10,9 @@ export default {
     },
     name: {
       type: 'string'
+    },
+    description: {
+      type: 'string'
     }
   },
 

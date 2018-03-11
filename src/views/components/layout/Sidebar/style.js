@@ -12,6 +12,9 @@ import {
   GRAY_COLOR,
   DIMMED_BLACK_COLOR,
 
+  NAVIGATION_WIDTH,
+  TABLET_MEDIA_QUERY,
+
   WIKI_HEADER_HEIGHT,
 
   CHAT_APP_COLOR,
@@ -44,6 +47,14 @@ const Sidebar = {
   '& h4': {
     fontFamily: 'inherit',
     fontWeight: '900'
+  },
+
+  [TABLET_MEDIA_QUERY]: {
+    position: 'fixed',
+    left: -1000 + NAVIGATION_WIDTH,
+    top: 0,
+    bottom: 0,
+    zIndex: 100
   }
 }
 

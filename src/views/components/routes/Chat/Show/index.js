@@ -12,6 +12,8 @@ import keycode from 'keycode'
 import Textarea from 'react-textarea-autosize'
 import MdAddIcon from 'react-icons/lib/md/add'
 
+import FaHashTagIcon from 'react-icons/lib/fa/hashtag'
+
 import withStyles from './style'
 import connect from './connect'
 
@@ -21,6 +23,8 @@ import Sidebar from '../_Sidebar'
 import Content from '../_Content'
 
 import Comment from 'src/views/components/common/Comment'
+
+import SvgIcon from 'src/views/components/common/SvgIcon'
 
 import {
   compose,
@@ -133,6 +137,11 @@ const Show = enhanceChatContent((props) => {
     styles,
   } = props
 
+  const {
+    name,
+    description
+  } = channel
+
   let channelsClass = styles.Channels
   if (isOver && canDrop) {
     channelsClass += ' can-drop'
@@ -146,14 +155,17 @@ const Show = enhanceChatContent((props) => {
         </div>
 
         <div className={styles.Header}>
-          <h4 className={styles.Title}>
-            <span className="list-icon">#</span>
-            <span>{channel.name}</span>
-          </h4>
-          <div className={styles.Description}>
-            <p>
-              Descriptionがここにきます
-            </p>
+          <i><SvgIcon name="logo-small"/></i>
+
+          <div>
+            <h4 className={styles.Title}>
+              <span className="icon"><FaHashTagIcon/></span>
+              <span className="name">{name}</span>
+            </h4>
+
+            <div className={styles.Description}>
+              <p>{description}</p>
+            </div>
           </div>
         </div>
         <div className={styles.Content}>

@@ -13,6 +13,8 @@ import {
   SANS_FONT,
   NOISE_PATTERN,
 
+  TABLET_MEDIA_QUERY,
+
   EASE_STANDARD,
   CHAT_HEADER_HEIGHT,
   NAVIGATION_WIDTH,
@@ -48,9 +50,27 @@ const DropTarget = {
 
 const Header = {
   height: CHAT_HEADER_HEIGHT,
+  display: 'flex',
+  justifyContent: 'flex-start',
+  alignItems: 'center',
   padding: '8px 16px',
   borderBottom: `1px solid ${BORDER_COLOR}`,
-  fontFamily: SANS_FONT
+  fontFamily: SANS_FONT,
+
+  '& > i': {
+    margin: '0 8px 0 0',
+    flex: '0 0 auto',
+    display: 'none',
+    '& svg': {
+      width: 40,
+    }
+  },
+
+  [TABLET_MEDIA_QUERY]: {
+    '& > i': {
+      display: 'block'
+    }
+  }
 }
 
 const Title = {
@@ -63,8 +83,17 @@ const Title = {
   fontSize: 16,
   fontWeight: 'bold',
   lineHeight: 1,
-  '& .list-icon': {
-    margin: '1px 4px 0 0'
+
+  '& .icon': {
+    margin: '0 2px 0 0',
+    '& svg': {
+      height: 14,
+      width: 'auto'
+    }
+  },
+
+  '& .name': {
+    margin: '2px 0 0 0'
   }
 }
 

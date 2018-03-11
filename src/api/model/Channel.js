@@ -19,6 +19,10 @@ export default class Channel extends Model {
     $id: 'http://sub-labo.com/schemas/channel.json',
     type: 'object',
     required: ['name'],
-    properties: {id: {type: 'integer'}, name: {type: 'string'}}
+    properties: {
+      id: {type: 'integer'},
+      name: {type: 'string'},
+      description: {type: 'string'}
+    }
   }
 }

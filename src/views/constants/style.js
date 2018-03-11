@@ -33,7 +33,7 @@ export const SERIF_FONT = '\'Noto Serif Japanese\', \'游ゴシック\', \'Yu Go
 
 // MEDIA QUERY
 export const MOBILE_MEDIA_QUERY = '@media (min-width: 320px)'
-export const TABLET_MEDIA_QUERY = '@media (min-width: 768px)'
+export const TABLET_MEDIA_QUERY = '@media (max-width: 768px)'
 export const PC_MEDIA_QUERY = '@media (min-width: 1280px)'
 
 // Z Index

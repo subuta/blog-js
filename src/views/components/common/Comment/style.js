@@ -3,7 +3,9 @@ import createWithStyles from 'src/views/utils/style'
 import {
   DIMMED_BLACK_COLOR,
   SANS_FONT,
-  LATO_WITH_SANS_FONT
+  LATO_WITH_SANS_FONT,
+
+  TABLET_MEDIA_QUERY
 } from 'src/views/constants/style'
 
 const CommentWrapper = {
@@ -38,7 +40,11 @@ const Comment = {
   '& > img': {
     display: 'block',
     height: 'auto',
-    maxWidth: 400
+    maxWidth: 400,
+
+    [TABLET_MEDIA_QUERY]: {
+      maxWidth: '100%'
+    }
   }
 }
 

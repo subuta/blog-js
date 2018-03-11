@@ -39,6 +39,12 @@ export default class MyDocument extends Document {
       <Head>
         <style dangerouslySetInnerHTML={{__html: this.props.css}}/>
 
+        <meta charset="UTF-8" />
+
+        <link href={`${staticFolder}/favicon.ico`} rel="icon" type="image/x-icon" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
         <link rel="stylesheet" href={`${staticFolder}/assets/sanitize.css`} />
         <link rel="stylesheet" href={`${staticFolder}/assets/waves.css`} />
         <link rel="stylesheet" href={`${staticFolder}/assets/symbol/sprite.css`} />

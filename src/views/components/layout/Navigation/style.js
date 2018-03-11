@@ -4,6 +4,8 @@ import {
   BLACK_COLOR,
   DIMMED_BLACK_COLOR,
 
+  TABLET_MEDIA_QUERY,
+
   EASE_STANDARD,
   CHAT_APP_COLOR,
   WIKI_APP_COLOR
@@ -17,6 +19,14 @@ const Navigation = {
   flexDirection: 'column',
   justifyContent: 'space-between',
   background: BLACK_COLOR,
+
+  [TABLET_MEDIA_QUERY]: {
+    position: 'fixed',
+    left: -1000,
+    top: 0,
+    bottom: 0,
+    zIndex: 1000
+  }
 }
 
 const Item = {

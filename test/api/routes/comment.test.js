@@ -46,7 +46,7 @@ test('index should list comment', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .get('/api/channels/68264/comments')
+    .get('/api/channels/82160/comments')
     .set('Authorization', `Bearer ${token}`)
 
   t.is(response.status, 200)
@@ -119,7 +119,7 @@ test('delete should delete comment', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .delete('/api/channels/68264/comments/57447')
+    .delete('/api/channels/82160/comments/57447')
     .set('Authorization', `Bearer ${token}`)
 
   comments = await Comment.query()

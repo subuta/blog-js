@@ -4,8 +4,12 @@ exports.seed = async (knex) => {
 
   // https://github.com/tgriesser/knex/issues/54
   await knex('channels').insert([
-    {id: 68264, name: 'convergence Administrator Clothing'},
-    {id: 36069, name: 'Baby Lead solutions'},
-    {id: 63669, name: 'functionalities'}
+    {id: 82160, name: 'Cloned', description: 'Customer'},
+    {id: 93680, name: 'RSS', description: 'hacking Corporate bandwidth'},
+    {
+      id: 58071,
+      name: 'Connecticut',
+      description: 'Awesome Fresh Pizza focus group optimize'
+    }
   ])
 }
