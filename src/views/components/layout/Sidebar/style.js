@@ -38,15 +38,6 @@ const Sidebar = {
   fontFamily: LATO_WITH_SANS_FONT,
   background: CHAT_APP_COLOR,
 
-  '&.is-chat': {
-    background: CHAT_APP_COLOR,
-  },
-
-  '&.is-wiki': {
-    background: GRAY_COLOR,
-    color: BLACK_COLOR
-  },
-
   '& h4': {
     fontFamily: 'inherit',
     fontWeight: '900'
@@ -75,46 +66,28 @@ export const List = {
   '& > li': {
     margin: '0 0 8px 0',
     padding: 0,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
+  },
 
-    '& > a': {
-      display: 'flex',
-      justifyContent: 'flex-start',
-      alignItems: 'flex-start',
-      lineHeight: 1,
-      textDecoration: 'none',
-      color: 'inherit',
-      transition: `background-color 0.2s ${EASE_STANDARD}`,
+  '& a': {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    lineHeight: 1,
+    textDecoration: 'none',
+    color: 'inherit',
+    transition: `background-color 0.2s ${EASE_STANDARD}`,
 
-      '.is-chat &:hover': {
-        textDecoration: 'underline'
-      },
+    '& .list-icon': {
+      margin: '0px 4px 0 0'
+    },
 
-      '.is-wiki &:hover': {
-        color: ACCENT4_COLOR
-      },
+    '& .name': {
+      margin: '1px 0 0 0'
+    },
 
-      '& .list-icon': {
-        margin: '0px 4px 0 0'
-      },
-
-      '& .name': {
-        margin: '1px 0 0 0'
-      },
-
-      '&:last-of-type': {
-        margin: 0
-      },
-
-      '.is-chat &.is-active': {
-        margin: '-4px -16px !important',
-        padding: '4px 16px',
-        backgroundColor: ACCENT4_COLOR
-      },
-
-      '.is-wiki &.is-active': {
-        color: ACCENT4_COLOR
-      }
+    '&:last-of-type': {
+      margin: 0
     }
   }
 }

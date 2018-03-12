@@ -26,7 +26,10 @@ export default enhance((props) => {
   } = props
 
   return (
-    <Sidebar app="wiki">
+    <Sidebar
+      className={styles.Sidebar}
+      app="wiki"
+    >
       <div className={styles.Menus}>
         <h4>Tags</h4>
 

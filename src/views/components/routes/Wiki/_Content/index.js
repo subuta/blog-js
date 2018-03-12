@@ -3,6 +3,7 @@ import {
   compose
 } from 'recompose'
 
+import NavigationBackdrop from 'src/views/components/layout/NavigationBackdrop'
 import withStyles from './style'
 
 const enhance = compose(
@@ -18,6 +19,7 @@ export default enhance((props) => {
 
   return (
     <div {...rest} className={styles.Content}>
+      <NavigationBackdrop/>
       {children}
     </div>
   )

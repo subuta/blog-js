@@ -135,8 +135,7 @@ const Show = enhanceChatContent((props) => {
     canDrop,
     connectDropTargetToRef,
     styles,
-    showMenu,
-    hideMenu,
+    showMenu
   } = props
 
   const {

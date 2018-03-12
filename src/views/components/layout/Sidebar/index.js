@@ -26,22 +26,22 @@ const getBaseRoute = (app) => {
 export default enhance((props) => {
   const {
     styles,
-    sidebarClass,
+    className,
     children,
     app
   } = props
 
-  let className = styles.Sidebar
-  if (sidebarClass) {
-    className += ` ${sidebarClass}`
+  let sidebarClass = styles.Sidebar
+  if (className) {
+    sidebarClass += ` ${className}`
   }
 
   if (app) {
-    className += ` is-${app}`
+    sidebarClass += ` is-${app}`
   }
 
   return (
-    <div className={className}>
+    <div className={sidebarClass}>
       <div className={styles.Menus}>
         <div className={styles.Logo}>
           <ActiveLink {...getBaseRoute(app)}>
