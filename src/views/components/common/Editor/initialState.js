@@ -1,17 +1,11 @@
-/** @jsx h */
-
 import { resetKeyGenerator } from 'slate'
-import h from 'slate-hyperscript'
+import Plain from 'slate-plain-serializer'
+
+import { source } from 'common-tags'
 
 // https://github.com/ianstormtaylor/slate/issues/1509
 resetKeyGenerator()
 
-export default (
-  <value>
-    <document>
-      <block type="paragraph">
-        A line of text in a paragraph.
-      </block>
-    </document>
-  </value>
-)
+export default Plain.deserialize(source`
+  Slate is flexible enough to add **decorators** that can format text based on its content. For example, this editor has **Markdown** preview decorators on it, to make it _dead_ simple to make an editor with built-in Markdown previewing.\\n## Try it out!\\nTry it out for yourself!
+`)
