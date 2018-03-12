@@ -7,7 +7,10 @@ import {
   EASE_STANDARD,
   DIMMED_BLACK_COLOR,
 
+  TABLET_MEDIA_QUERY,
+
   WIKI_APP_COLOR,
+  GRAY_COLOR,
 
   Z_INDEX_1
 } from 'src/views/constants/style'
@@ -54,8 +57,21 @@ const Articles = {
 
     '.created-at': {
       position: 'absolute',
+      display: 'block',
       top: 0,
-      right: 0
+      right: 0,
+      lineHeight: 1
+    }
+  },
+
+  [TABLET_MEDIA_QUERY]: {
+    'li': {
+      margin: '0 0 24px 0',
+
+      '.created-at': {
+        margin: '4px 0 0',
+        position: 'relative'
+      }
     }
   }
 }

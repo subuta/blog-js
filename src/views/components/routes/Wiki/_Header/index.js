@@ -6,6 +6,8 @@ import {
 import connect from './connect'
 import withStyles from './style'
 
+import MdSearchIcon from 'react-icons/lib/md/search'
+
 import SvgIcon from 'src/views/components/common/SvgIcon'
 
 const enhance = compose(
@@ -16,16 +18,24 @@ const enhance = compose(
 export default enhance((props) => {
   const {
     styles,
-    showMenu,
-    children
+    showMenu
   } = props
 
   return (
     <div className={styles.Header}>
-      <div>
+      <div className="logo">
         <i onClick={() => showMenu()}><SvgIcon name="logo-small"/></i>
       </div>
-      <div>{children}</div>
+
+      <div className="action">
+        <div className={styles.SearchBar}>
+          <MdSearchIcon />
+          <input
+            type="text"
+            placeholder="Search"
+          />
+        </div>
+      </div>
     </div>
   )
 })

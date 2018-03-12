@@ -3,6 +3,7 @@ import createWithStyles from 'src/views/utils/style'
 import {
   BLACK_COLOR,
   GRAY_COLOR,
+  PRIMARY_COLOR,
   ACCENT4_COLOR
 } from 'src/views/constants/style'
 

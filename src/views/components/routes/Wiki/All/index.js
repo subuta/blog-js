@@ -6,8 +6,7 @@ import ActiveLink from 'src/views/components/common/ActiveLink'
 import FloatingActionButton from 'src/views/components/common/FloatingActionButton'
 
 import {
-  compose,
-  lifecycle,
+  compose
 } from 'recompose'
 
 import MdAddIcon from 'react-icons/lib/md/add'
@@ -32,7 +31,7 @@ export default enhance(({styles, articles}) => {
       <Sidebar/>
 
       <Content>
-        <Header/>
+        <Header />
 
         <Paper className={styles.Paper}>
           <h4>Articles</h4>

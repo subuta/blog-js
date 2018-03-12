@@ -3,6 +3,8 @@ import createWithStyles from 'src/views/utils/style'
 import {
   PRIMARY_COLOR,
 
+  TABLET_MEDIA_QUERY,
+
   Z_INDEX_1
 } from 'src/views/constants/style'
 
@@ -27,6 +29,10 @@ const FloatingActionButton = {
 
   '&:hover': {
     backgroundColor: PRIMARY_COLOR
+  },
+
+  [TABLET_MEDIA_QUERY]: {
+    right: 16
   }
 }
 

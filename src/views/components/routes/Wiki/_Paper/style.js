@@ -4,7 +4,9 @@ import {
   PRIMARY_COLOR,
   BLACK_COLOR,
 
-  Z_INDEX_1
+  Z_INDEX_1,
+
+  TABLET_MEDIA_QUERY
 } from 'src/views/constants/style'
 
 const Paper = {
@@ -20,6 +22,17 @@ const Paper = {
     margin: ' 0 0 16px',
     fontFamily: 'inherit',
     fontWeight: '900'
+  },
+
+  [TABLET_MEDIA_QUERY]: {
+    margin: 0,
+    padding: 16,
+    boxShadow: 'none',
+    borderRadius: 0,
+
+    '& h4': {
+      margin: '16px 0'
+    }
   }
 }
 

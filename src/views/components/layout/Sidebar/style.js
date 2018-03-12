@@ -12,6 +12,8 @@ import {
   GRAY_COLOR,
   DIMMED_BLACK_COLOR,
 
+  Z_INDEX_3,
+
   EASE_DECELERATION,
   EASE_ACCELERATION,
 
@@ -44,6 +46,7 @@ const Sidebar = {
   },
 
   [TABLET_MEDIA_QUERY]: {
+    ...Z_INDEX_3,
     position: 'fixed',
     left: -1000 + NAVIGATION_WIDTH,
     top: 0,
