@@ -10,7 +10,7 @@ import {
 
 const FloatingActionButton = {
   ...Z_INDEX_1,
-  position: 'fixed',
+  position: 'fixed !important',
   padding: 0,
   right: 32,
   bottom: 16,
