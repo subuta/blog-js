@@ -1,5 +1,9 @@
 import createWithStyles from 'src/views/utils/style'
 
+import {
+  TABLET_MEDIA_QUERY
+} from 'src/views/constants/style'
+
 const Mask = {
   position: 'absolute',
   display: 'none',
@@ -10,8 +14,11 @@ const Mask = {
   zIndex: 1,
   backgroundColor: '#FFFFFF',
   opacity: 0.8,
-  '.is-show-menu &': {
-    display: 'block'
+
+  [TABLET_MEDIA_QUERY]: {
+    '.is-show-menu &': {
+      display: 'block'
+    }
   }
 }
 
