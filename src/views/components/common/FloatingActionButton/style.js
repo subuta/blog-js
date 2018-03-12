@@ -27,6 +27,10 @@ const FloatingActionButton = {
     width: 'auto'
   },
 
+  'a': {
+    color: 'inherit'
+  },
+
   '&:hover': {
     backgroundColor: PRIMARY_COLOR
   },

@@ -58,6 +58,13 @@ app.prepare()
       ctx.respond = false
     })
 
+    router.get('/w/:id/edit', async ctx => {
+      const actualPage = '/article'
+      const queryParams = {id: ctx.params.id, edit: true}
+      await app.render(ctx.req, ctx.res, actualPage, queryParams)
+      ctx.respond = false
+    })
+
     router.get('/w', async ctx => {
       const actualPage = '/articles'
       await app.render(ctx.req, ctx.res, actualPage, ctx.query)
