@@ -1,5 +1,8 @@
 import React from 'react'
-import { compose } from 'recompose'
+import {
+  compose,
+  withHandlers
+} from 'recompose'
 
 import Navigation from './Navigation'
 import withStyles from './style'
@@ -10,12 +13,45 @@ import withDragDropContext from 'src/views/utils/withDragDropContext'
 const enhance = compose(
   withStyles,
   connect,
-  withDragDropContext
+  withDragDropContext,
+  withHandlers(() => {
+    let ref = null
+    let _Hammer = null
+
+    const getHammer = async () => {
+      if (!_Hammer) {
+        _Hammer = await import('hammerjs')
+      }
+      return _Hammer
+    }
+
+    return {
+      setRef: ({ showMenu, hideMenu }) => async (_ref) => {
+        ref = _ref
+
+        const Hammer = await getHammer()
+        const mc = new Hammer.Manager(ref)
+
+        mc.add(new Hammer.Swipe({
+          direction: Hammer.DIRECTION_HORIZONTAL
+        }))
+
+        mc.on('swiperight', (e) => {
+          showMenu()
+        })
+
+        mc.on('swipeleft', (e) => {
+          hideMenu()
+        })
+      }
+    }
+  })
 )
 
 export default enhance((props) => {
   const {
-    isShowMenu
+    isShowMenu,
+    setRef
   } = props
 
   let containerClass = props.styles.Container
@@ -24,7 +60,10 @@ export default enhance((props) => {
   }
 
   return (
-    <div className={containerClass}>
+    <div
+      className={containerClass}
+      ref={setRef}
+    >
       <Navigation/>
       {props.children}
     </div>

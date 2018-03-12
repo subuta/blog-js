@@ -1,5 +1,4 @@
 import {combineReducers} from 'redux'
-import {routerReducer} from 'react-router-redux'
 import _ from 'lodash'
 import channel from './channel'
 import article from './article'
@@ -13,7 +12,6 @@ import ui from './ui'
 /* mat Custom imports [end] */
 
 let reducers = {
-  routing: routerReducer,
   channel,
   article,
   comment,
