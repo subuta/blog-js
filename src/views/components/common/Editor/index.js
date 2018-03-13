@@ -4,6 +4,8 @@ import { Value } from 'slate'
 import plugins from './plugins'
 import Plain from 'slate-plain-serializer'
 
+import marked from 'marked'
+
 import {
   compose,
   withState,
@@ -19,6 +21,11 @@ const enhance = compose(
   }),
   withHandlers({
     onChange: ({setEditorState}) => ({value}) => {
+      const str = Plain.serialize(value)
+
+      console.log('str = ', str);
+      console.log('marked(str) = ', marked(str));
+
       setEditorState(value)
     }
   })

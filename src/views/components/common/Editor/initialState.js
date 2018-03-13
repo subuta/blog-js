@@ -20,7 +20,7 @@ const h = createHyperscript({
 export default children => (
   <value>
     <document>
-      <code language="html">
+      <code language="markdown">
         {_.map(children, (child, _i) => <code_line>{child}</code_line>)}
       </code>
     </document>

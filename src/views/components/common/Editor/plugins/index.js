@@ -1,8 +1,8 @@
 import EditCode from 'slate-edit-code';
-import Lowlight from './Lowlight';
+// import Lowlight from './Lowlight';
 
 export default [
-  Lowlight(),
+  // Lowlight(),
   // call edit-code at last to catch event hook.
   EditCode({
     containerType: 'code',
