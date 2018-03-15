@@ -6,6 +6,7 @@ import markdown from 'highlight.js/lib/languages/markdown';
 import css from 'highlight.js/lib/languages/css';
 import _ from 'lodash';
 
+
 // only register expected languages.
 low.registerLanguage('javascript', js);
 low.registerLanguage('xml', xml);

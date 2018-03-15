@@ -1,28 +1,17 @@
 /** @jsx h */
 
+import Plain from 'slate-plain-serializer'
 import { resetKeyGenerator } from 'slate'
-import { createHyperscript } from 'slate-hyperscript';
 
-// https://github.com/ianstormtaylor/slate/issues/1509
-resetKeyGenerator()
+import { source } from 'common-tags'
 
-import _ from 'lodash';
+export default () => {
+  // https://github.com/ianstormtaylor/slate/issues/1509
+  resetKeyGenerator()
 
-const h = createHyperscript({
-  blocks: {
-    code: 'code',
-    code_line: 'code_line',
-  },
-  inlines: {},
-  marks: {},
-});
-
-export default children => (
-  <value>
-    <document>
-      <code language="markdown">
-        {_.map(children, (child, _i) => <code_line>{child}</code_line>)}
-      </code>
-    </document>
-  </value>
-);
+  return Plain.deserialize(source`
+  Slate is flexible enough to add **decorators** that can format text based on its content. For example, this editor has **Markdown** preview decorators on it, to make it _dead_ simple to make an editor with built-in Markdown previewing.
+  ## Try it out!
+  Try it out for yourself!
+  `)
+}
