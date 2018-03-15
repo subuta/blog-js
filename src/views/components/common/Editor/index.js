@@ -4,7 +4,8 @@ import { Value } from 'slate'
 import plugins from './plugins'
 import Plain from 'slate-plain-serializer'
 
-import marked from 'marked'
+import unified from 'unified'
+import markdown from 'remark-parse'
 
 import {
   compose,
@@ -24,7 +25,9 @@ const enhance = compose(
       const str = Plain.serialize(value)
 
       console.log('str = ', str);
-      console.log('marked(str) = ', marked(str));
+      console.log(unified().use(markdown).parse(str));
+
+      // console.log('marked(str) = ', marked(str));
 
       setEditorState(value)
     }
