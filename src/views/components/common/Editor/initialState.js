@@ -10,8 +10,11 @@ export default () => {
   resetKeyGenerator()
 
   return Plain.deserialize(source`
-  Slate is flexible enough to add **decorators** that can format text based on its content. For example, this editor has **Markdown** preview decorators on it, to make it _dead_ simple to make an editor with built-in Markdown previewing.
-  ## Try it out!
-  Try it out for yourself!
+\`\`\`javascript
+// 1aaa
+// 2aaaaaa
+// 3aaaaaa
+// 4aaaaaa
+\`\`\`
   `)
 }

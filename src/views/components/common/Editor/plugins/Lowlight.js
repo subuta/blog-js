@@ -1,18 +1,6 @@
 import React from 'react';
-import low from 'lowlight/lib/core';
-import js from 'highlight.js/lib/languages/javascript';
-import xml from 'highlight.js/lib/languages/xml';
-import markdown from 'highlight.js/lib/languages/markdown';
-import css from 'highlight.js/lib/languages/css';
+import low from 'src/views/utils/lowlight';
 import _ from 'lodash';
-
-
-// only register expected languages.
-low.registerLanguage('javascript', js);
-low.registerLanguage('xml', xml);
-low.registerLanguage('html', xml);
-low.registerLanguage('markdown', markdown);
-low.registerLanguage('css', css);
 
 const TOKEN_MARK = 'lowlight-token';
 
