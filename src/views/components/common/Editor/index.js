@@ -34,7 +34,7 @@ export default enhance((props) => {
   } = props
   return (
     <Editor
-      placeholder="Paste in some HTML..."
+      placeholder='Paste in some HTML...'
       value={editorState}
       plugins={plugins}
       spellCheck={false}

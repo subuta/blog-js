@@ -8,10 +8,11 @@ const tokenizer = unified().use(markdown)
 const renderMark = (props) => {
   const {children, mark} = props
 
+  console.log('mark.type = ', mark.type)
+  // console.log(children)
+
   // TODO: ここを色んなtypeで試して描画するやつを作る。
   switch (mark.type) {
-    case 'paragraph':
-      return <span className="paragraph">{children}</span>
     case 'strong':
       return <strong>{children}</strong>
     case 'emphasis':
@@ -23,6 +24,28 @@ const renderMark = (props) => {
         {},
         children
       )
+    case 'list':
+      return (
+        <span className='list'>
+          {children}
+        </span>
+      )
+    case 'listItem':
+      return (
+        <span
+          className='list-item'
+          style={{
+            paddingLeft: '10px',
+            lineHeight: '10px',
+            fontSize: '20px'
+          }}
+        >
+          {children}
+        </span>
+      )
+    default:
+    case 'paragraph':
+      return <span className='paragraph'>{children}</span>
     // case 'underlined':
     //   return <u>{children}</u>
     // case 'title': {
@@ -71,6 +94,36 @@ const renderMark = (props) => {
   }
 }
 
+// https://github.com/ianstormtaylor/slate/blob/514f3de1bef2dc7308e490148aa53ec5c30f7d46/packages/slate/src/models/node.js#L1561
+// modified version of getTextAtOffset(with LineFeed count)
+const getTextAtOffset = (node, offset) => {
+  // we should count line feed only for document
+  const shouldCountLineFeed = node.object === 'document'
+
+  let lineFeed = ''
+  if (shouldCountLineFeed) {
+    lineFeed = '\n'
+  }
+
+  const texts = node.getTexts()
+
+  const length = shouldCountLineFeed ? (
+    texts.reduce((acc, {text}) => acc + text + lineFeed, '')
+  ) : node.text.length
+
+  if (offset === 0) return node.getFirstText()
+  if (offset === length) return node.getLastText()
+  if (offset < 0 || offset > length) return null
+
+  let position = 0
+
+  return texts.find((n) => {
+    // plus line feed.
+    position += n.text.length + lineFeed.length
+    return position > offset
+  })
+}
+
 const decorateNode = (document) => {
   if (document.object !== 'document') return
 
@@ -85,28 +138,33 @@ const decorateNode = (document) => {
     if (_.isArray(tree)) {
       return tree.forEach(child => processTree(child, tree))
     } else if (tree.children) {
-      if (tree.type === 'root') {
-        return tree.children.forEach(child => processTree(child, tree))
-      }
-
-      const {position, _children, _type, ...rest} = tree
-      const {start, end} = position
-      const text = document.getTextAtOffset(start.offset)
-
-      const range = {
-        anchorKey: text.key,
-        anchorOffset: start.column - 1,
-        focusKey: text.key,
-        focusOffset: end.column - 1,
-        marks: [{
-          type: tree.type,
-          data: rest
-        }],
-      }
-
-      decorations.push(range)
-
+      // dig leaf node first
       tree.children.forEach(child => processTree(child, tree))
+
+      if (tree.type === 'root' || tree.type === 'paragraph') return
+
+      const {position, children, type, ...rest} = tree
+      const {start, end} = position
+      const anchorText = getTextAtOffset(document, start.offset)
+      const focusText = getTextAtOffset(document, end.offset)
+
+      if (anchorText && focusText) {
+        // const length = end.column - start.column
+        const range = {
+          anchorKey: anchorText.key,
+          anchorOffset: start.column - 1,
+          focusKey: focusText.key,
+          focusOffset: end.column - 1,
+          marks: [{
+            type: tree.type,
+            data: {
+              ...rest,
+              position
+            }
+          }]
+        }
+        decorations.push(range)
+      }
     } else {
       if (tree.type === 'text') return
     }
