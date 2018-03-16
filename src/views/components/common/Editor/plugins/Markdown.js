@@ -29,9 +29,10 @@ const renderMark = (props) => {
         </span>
       )
     case 'list':
-      const position = mark.data.get('position')
-      // const indent = _.reduce(position.indent || [], (acc, i) => acc + i, 0)
-      console.log('indent = ', position.indent)
+      // FIXME: handling of indent
+      // SEE: https://github.com/remarkjs/remark/issues/315
+      // const position = mark.data.get('position')
+      // console.log('position.indent = ', position.indent)
       return (
         <span
           className='list'
@@ -163,8 +164,11 @@ const decorateNode = (document) => {
       const anchorText = getTextAtOffset(document, start.offset)
       const focusText = getTextAtOffset(document, end.offset)
 
+      console.log('type = ', tree)
+      // console.log(anchorText && anchorText.text)
+      // console.log(focusText && focusText.text)
+
       if (anchorText && focusText) {
-        // const length = end.column - start.column
         const range = {
           anchorKey: anchorText.key,
           anchorOffset: start.column - 1,

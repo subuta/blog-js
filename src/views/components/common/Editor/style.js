@@ -5,11 +5,6 @@ import {
 } from 'src/views/constants/style'
 
 const Editor = {
-  '.list-item': {
-    // '&:before': {
-    //   content: '\'\''
-    // }
-  }
 }
 
 export default createWithStyles({
