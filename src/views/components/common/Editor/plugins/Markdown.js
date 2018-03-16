@@ -2,6 +2,7 @@ import React from 'react'
 import unified from 'unified'
 import markdown from 'remark-parse'
 import _ from 'lodash'
+import { source } from 'common-tags'
 
 const tokenizer = unified().use(markdown)
 
@@ -59,54 +60,27 @@ const renderMark = (props) => {
           {children}
         </span>
       )
+    case 'code':
+      return (
+        <span className='code'>
+          {children}
+        </span>
+      )
+    case 'hr':
+      return (
+        <span
+          style={{
+            borderBottom: '2px solid #000',
+            display: 'block',
+            opacity: 0.2,
+          }}
+        >
+          {children}
+        </span>
+      )
     default:
     case 'paragraph':
       return <span className='paragraph'>{children}</span>
-    // case 'underlined':
-    //   return <u>{children}</u>
-    // case 'title': {
-    //   return (
-    //     <span
-    //       style={{
-    //         fontWeight: 'bold',
-    //         fontSize: '20px',
-    //         margin: '20px 0 10px 0',
-    //         display: 'inline-block',
-    //       }}
-    //     >
-    //         {children}
-    //       </span>
-    //   )
-    // }
-    // case 'punctuation': {
-    //   return <span style={{opacity: 0.2}}>{children}</span>
-    // }
-    // case 'list': {
-    //   return (
-    //     <span
-    //       style={{
-    //         paddingLeft: '10px',
-    //         lineHeight: '10px',
-    //         fontSize: '20px',
-    //       }}
-    //     >
-    //         {children}
-    //       </span>
-    //   )
-    // }
-    // case 'hr': {
-    //   return (
-    //     <span
-    //       style={{
-    //         borderBottom: '2px solid #000',
-    //         display: 'block',
-    //         opacity: 0.2,
-    //       }}
-    //     >
-    //         {children}
-    //       </span>
-    //   )
-    // }
   }
 }
 
@@ -148,51 +122,52 @@ const decorateNode = (document) => {
 
   // concat string
   const string = texts.reduce((acc, {text}) => acc + text + '\n', '')
+
   const tokens = tokenizer.parse(string)
+
+  const createDecoration = (tree) => {
+    if (tree.type === 'root' || tree.type === 'paragraph') return
+
+    const {position, children, type, ...rest} = tree
+    const {start, end} = position
+    const anchorText = getTextAtOffset(document, start.offset)
+    const focusText = getTextAtOffset(document, end.offset)
+
+    if (anchorText && focusText) {
+      return {
+        anchorKey: anchorText.key,
+        anchorOffset: start.column - 1,
+        focusKey: focusText.key,
+        focusOffset: end.column - 1,
+        marks: [{
+          type: tree.type,
+          data: {
+            ...rest,
+            position
+          }
+        }]
+      }
+    }
+
+    return null
+  }
 
   const processTree = (tree) => {
     if (_.isArray(tree)) {
-      return tree.forEach(child => processTree(child, tree))
+      return tree.forEach(processTree)
     } else if (tree.children) {
       // dig leaf node first
-      tree.children.forEach(child => processTree(child, tree))
-
-      if (tree.type === 'root' || tree.type === 'paragraph') return
-
-      const {position, children, type, ...rest} = tree
-      const {start, end} = position
-      const anchorText = getTextAtOffset(document, start.offset)
-      const focusText = getTextAtOffset(document, end.offset)
-
-      console.log('type = ', tree)
-      // console.log(anchorText && anchorText.text)
-      // console.log(focusText && focusText.text)
-
-      if (anchorText && focusText) {
-        const range = {
-          anchorKey: anchorText.key,
-          anchorOffset: start.column - 1,
-          focusKey: focusText.key,
-          focusOffset: end.column - 1,
-          marks: [{
-            type: tree.type,
-            data: {
-              ...rest,
-              position
-            }
-          }]
-        }
-        decorations.push(range)
-      }
-    } else {
-      if (tree.type === 'text') return
+      tree.children.forEach(processTree)
     }
-    return undefined
+
+    if (tree.type === 'text') return
+
+    return decorations.push(createDecoration(tree))
   }
 
   processTree(tokens)
 
-  return decorations
+  return _.compact(decorations)
 }
 
 export default function MarkdownPlugin (opts = {}) {
