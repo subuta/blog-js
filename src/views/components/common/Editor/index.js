@@ -4,6 +4,8 @@ import { Value } from 'slate'
 import plugins from './plugins'
 import Plain from 'slate-plain-serializer'
 
+import withStyles from './style'
+
 import {
   compose,
   withState,
@@ -17,6 +19,7 @@ const enhance = compose(
     // TODO: valueからstateに変換する。例: Markdown -> Slate state
     return createInitialState()
   }),
+  withStyles,
   withHandlers({
     onChange: ({setEditorState}) => ({value}) => {
       // const str = Plain.serialize(value)
@@ -31,10 +34,12 @@ export default enhance((props) => {
   const {
     editorState,
     onChange,
+    styles
   } = props
   return (
     <Editor
       placeholder='Paste in some HTML...'
+      className={styles.Editor}
       value={editorState}
       plugins={plugins}
       spellCheck={false}

@@ -9,7 +9,7 @@ const renderMark = (props) => {
   const {children, mark} = props
 
   console.log('mark.type = ', mark.type)
-  // console.log(children)
+  // console.log(mark.data.toJSON())
 
   // TODO: ここを色んなtypeで試して描画するやつを作る。
   switch (mark.type) {
@@ -18,15 +18,29 @@ const renderMark = (props) => {
     case 'emphasis':
       return <em>{children}</em>
     case 'heading':
-      const depth = mark.data.get('depth') || 4
-      return React.createElement(
-        `h${depth}`,
-        {},
-        children
+      return (
+        <span
+          className={`heading d-${mark.data.get('depth')}`}
+          style={{
+            fontSize: 36 - (mark.data.get('depth') * 4)
+          }}
+        >
+          {children}
+        </span>
       )
     case 'list':
+      const position = mark.data.get('position')
+      // const indent = _.reduce(position.indent || [], (acc, i) => acc + i, 0)
+      console.log('indent = ', position.indent)
       return (
-        <span className='list'>
+        <span
+          className='list'
+          style={{
+            paddingLeft: 10,
+            lineHeight: 1,
+            fontSize: 14
+          }}
+        >
           {children}
         </span>
       )
@@ -34,12 +48,13 @@ const renderMark = (props) => {
       return (
         <span
           className='list-item'
-          style={{
-            paddingLeft: '10px',
-            lineHeight: '10px',
-            fontSize: '20px'
-          }}
         >
+          {children}
+        </span>
+      )
+    case 'blockquote':
+      return (
+        <span className='blockquote'>
           {children}
         </span>
       )
