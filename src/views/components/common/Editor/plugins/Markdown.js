@@ -193,22 +193,21 @@ const decorateNode = (document) => {
   }
 
   const parseLowlightValue = (codeTree, value) => {
-    let offset = 0
-
     const {position} = codeTree
     const {start, end} = position
 
     const startCodeText = getTextAtOffset(document, start.offset)
     const endCodeText = getTextAtOffset(document, end.offset)
     const startCodeLength = startCodeText.text.length
+    const endCodeLength = endCodeText.text.length
 
     if (!startCodeText || !endCodeText) return;
 
     // forward offset by startCodeText
-    offset += startCodeLength
-
-    let codeRowOffset = startCodeLength // plus line-feed
-    let codeRowText = document.getNextText(startCodeText.key)
+    let offset = startCodeLength
+    let currentRowOffset = startCodeLength
+    let currentRowText = document.getNextText(startCodeText.key)
+    let nextRowOffset = startCodeLength + currentRowText.text.length
 
     const processLowlightTree = (tree, parent) => {
       if (_.isArray(tree)) {
@@ -216,34 +215,30 @@ const decorateNode = (document) => {
       } else if (tree.children) {
         tree.children.forEach(child => processLowlightTree(child, tree))
       } else if (tree.value) {
+        // ignore line feed at this time.
+        if (tree.value.match(/\r?\n/)) return
+
         const current = offset
         offset += tree.value.length
 
         // ignore root node
-        if (_.isArray(parent)) return
+        if (_.isArray(parent) || !currentRowText) return
 
-        // get current row length
-        const codeRowLength = codeRowText.text.length
-        if (offset > codeRowOffset + codeRowLength) {
-          codeRowText = document.getNextText(codeRowText.key)
-          console.log(codeRowText.text);
-          // then retrieve next row length
-          codeRowOffset += codeRowText.text.length // plus line-feed
-        }
+        console.log('======');
 
-        // if exceeded.
-        if (!codeRowText) return
+        console.log('tree.value = ', tree.value);
+        console.log('nexgRowOffset[b] = ', nextRowOffset);
+        console.log('currentRowOffset = ', currentRowOffset);
+        console.log('current = ', current);
+        console.log('offset = ', offset);
 
-        // TODO: ここのズレを直す。
-        console.log('current = ', current - codeRowOffset);
-        console.log('offset = ', offset - codeRowOffset);
-        console.log('codeRowOffset = ', codeRowOffset);
+        console.log('nexgRowOffset[a] = ', nextRowOffset);
 
         decorations.push({
-          anchorKey: codeRowText.key,
-          anchorOffset: current - codeRowOffset,
-          focusKey: codeRowText.key,
-          focusOffset: offset - codeRowOffset,
+          anchorKey: currentRowText.key,
+          anchorOffset: current - currentRowOffset,
+          focusKey: currentRowText.key,
+          focusOffset: offset - currentRowOffset + endCodeLength,
           marks: [{
             type: parent.type,
             data: {
@@ -252,6 +247,14 @@ const decorateNode = (document) => {
             }
           }]
         })
+
+        // get current row length
+        if (offset >= nextRowOffset) {
+          currentRowText = document.getNextText(currentRowText.key)
+          currentRowOffset = nextRowOffset
+          // then retrieve next row length
+          nextRowOffset += currentRowText.text.length
+        }
       }
       return undefined
     }

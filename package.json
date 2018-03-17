@@ -135,7 +135,7 @@
     "koa-static": "^4.0.2",
     "lodash": "^4.17.4",
     "lowlight": "^1.9.1",
-    "next": "^5.0.1-canary.10",
+    "next": "^5.0.1-canary.16",
     "node-waves": "^0.7.6",
     "normalizr": "^3.2.4",
     "objection": "^0.9.2",
