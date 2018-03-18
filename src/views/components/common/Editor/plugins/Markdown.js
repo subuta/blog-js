@@ -1,26 +1,11 @@
 import React from 'react'
-import unified from 'unified'
-import markdown from 'remark-parse'
 import _ from 'lodash'
-import remarkKbd from 'remark-kbd'
-import remarkMath from 'remark-math'
 import { hasRegistered, highlight } from 'src/views/utils/highlight'
-
-const tokenizer = unified()
-  .use(markdown, {
-    gfm: true,
-    commonmark: true
-  })
-  .use(remarkKbd)
-  .use(remarkMath)
+import { tokenize } from 'src/views/utils/markdown'
 
 const renderMark = (props) => {
   const {children, mark} = props
 
-  console.log('mark.type = ', mark.type)
-  console.log(mark.data.toJSON())
-
-  // TODO: ここを色んなtypeで試して描画するやつを作る。
   switch (mark.type) {
     case 'strong':
       return <strong>{children}</strong>
@@ -129,6 +114,8 @@ const renderMark = (props) => {
       )
     default:
     case 'paragraph':
+      console.log('[default] mark.type = ', mark.type)
+      console.log('[default] data = ', mark.data.toJSON())
       return <span className='paragraph'>{children}</span>
   }
 }
@@ -169,7 +156,7 @@ const decorateNode = (document) => {
   // concat string
   const string = texts.reduce((acc, {text}) => acc + text + '\n', '')
 
-  const tokens = tokenizer.parse(string)
+  const tokens = tokenize(string)
 
   const createDecoration = (tree) => {
     const {position, children, type, ...rest} = tree

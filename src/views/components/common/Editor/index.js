@@ -1,6 +1,6 @@
 import { Editor, getEventTransfer } from 'slate-react'
 import { Value } from 'slate'
-import xss from 'xss'
+import { toHtml } from 'src/views/utils/markdown'
 
 import plugins from './plugins'
 import Plain from 'slate-plain-serializer'
@@ -23,19 +23,10 @@ const enhance = compose(
   withStyles,
   withHandlers({
     onChange: ({setEditorState}) => ({value}) => {
-      // const str = Plain.serialize(value)
-      // console.log('str = ', str);
-      // console.log('marked(str) = ', marked(str));
+      const str = Plain.serialize(value)
 
-      // sanitize tags
-      // const html = xss(mark.data.get('value'), {
-      //   stripIgnoreTag: true,
-      //   whiteList: {
-      //     // SEE: https://github.com/remarkjs/remark/issues/326
-      //     // only allow kbd tag inside div or span or html
-      //     kbd: []
-      //   }
-      // })
+      console.log('str = ', str);
+      console.log('html = ', toHtml(str));
 
       setEditorState(value)
     }
