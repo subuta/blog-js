@@ -199,6 +199,7 @@ const decorateNode = (document) => {
     const startCodeText = getTextAtOffset(document, start.offset)
     const endCodeText = getTextAtOffset(document, end.offset)
     const startCodeLength = startCodeText.text.length
+    const endOffset = end.offset - start.offset
 
     if (!startCodeText || !endCodeText) return
 
@@ -206,7 +207,6 @@ const decorateNode = (document) => {
     let offset = startCodeLength
     let currentRowOffset = startCodeLength
     let currentRowText = document.getNextText(startCodeText.key)
-    let nextRowOffset = startCodeLength + currentRowText.text.length
 
     const processLowlightTree = (tree, parent) => {
       if (_.isArray(tree)) {
@@ -221,50 +221,44 @@ const decorateNode = (document) => {
           // Workaround for things like '\n\n'(blank line)
           const lineFeeds = tree.value.match(/(\r?\n+)/)[1]
           console.log('lineFeeds = ', JSON.stringify(lineFeeds));
+          console.log('currentRowOffset[b]', currentRowOffset);
           currentRowOffset += lineFeeds.length
-          nextRowOffset += lineFeeds.length
+          console.log('currentRowOffset[a]', currentRowOffset);
         }
 
         const current = offset
         offset += tree.value.length
 
+        if (_.isArray(parent)) return
+
+        // ignore root node
+        let isMatched = !currentRowText.text || _.includes(currentRowText.text, tree.value)
+        while (!isMatched && offset < endOffset) {
+          currentRowOffset += currentRowText.text.length
+          currentRowText = document.getNextText(currentRowText.key)
+          isMatched = currentRowText.text && _.includes(currentRowText.text, tree.value)
+        }
+
         console.log('tree.value = ', tree.value)
-        console.log('nexgRowOffset = ', nextRowOffset)
         console.log('currentRowText.text = ', JSON.stringify(currentRowText.text))
         console.log('currentRowOffset = ', currentRowOffset)
         console.log('current = ', current)
         console.log('offset = ', offset)
+        console.log('endOffset = ', endOffset);
 
-        // ignore root node
-        const isNotRoot = !_.isArray(parent)
-        const isMatched = currentRowText.text && _.includes(currentRowText.text, tree.value)
-
-        if (isNotRoot && isMatched) {
-          decorations.push({
-            anchorKey: currentRowText.key,
-            anchorOffset: current - currentRowOffset,
-            focusKey: currentRowText.key,
-            focusOffset: offset - currentRowOffset,
-            marks: [{
-              type: parent.type,
-              data: {
-                tagName: parent.tagName,
-                properties: parent.properties
-              }
-            }]
-          })
-        }
-
-        // TODO: Markdownが含まれてない行をskipする処理を足す。
-        // get current row length
-        if (offset >= nextRowOffset) {
-          currentRowText = document.getNextText(currentRowText.key)
-          currentRowOffset = nextRowOffset
-          // TODO: skip non matched
-          // then retrieve next row length
-          // FIXME: Text.textには改行文字が含まれてない問題
-          nextRowOffset += currentRowText.text.length
-        }
+        decorations.push({
+          anchorKey: currentRowText.key,
+          anchorOffset: current - currentRowOffset,
+          focusKey: currentRowText.key,
+          focusOffset: offset - currentRowOffset,
+          marks: [{
+            type: parent.type,
+            data: {
+              tagName: parent.tagName,
+              properties: parent.properties
+            }
+          }]
+        })
       }
       return undefined
     }
