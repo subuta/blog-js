@@ -3,7 +3,8 @@
 Github like highlight.js style
 
 */
-
+code,
+code[class*='language-'],
 pre[class*='language-'] > code,
 .hljs,
 .code {
