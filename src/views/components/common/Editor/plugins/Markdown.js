@@ -2,6 +2,7 @@ import React from 'react'
 import unified from 'unified'
 import markdown from 'remark-parse'
 import _ from 'lodash'
+import remarkKbd from 'remark-kbd'
 import low, { hasRegistered } from 'src/views/utils/lowlight'
 
 const tokenizer = unified()
@@ -9,12 +10,13 @@ const tokenizer = unified()
     gfm: true,
     commonmark: true
   })
+  .use(remarkKbd)
 
 const renderMark = (props) => {
   const {children, mark} = props
 
-  // console.log('mark.type = ', mark.type)
-  // console.log(mark.data.toJSON())
+  console.log('mark.type = ', mark.type)
+  console.log(mark.data.toJSON())
 
   // TODO: ここを色んなtypeで試して描画するやつを作る。
   switch (mark.type) {
@@ -39,22 +41,13 @@ const renderMark = (props) => {
       // const position = mark.data.get('position')
       // console.log('position.indent = ', position.indent)
       return (
-        <span
-          className='list'
-          style={{
-            paddingLeft: 10,
-            lineHeight: 1,
-            fontSize: 14
-          }}
-        >
+        <span className='list'>
           {children}
         </span>
       )
     case 'listItem':
       return (
-        <span
-          className='list-item'
-        >
+        <span className='list-item'>
           {children}
         </span>
       )
@@ -64,12 +57,22 @@ const renderMark = (props) => {
           {children}
         </span>
       )
+    // code block
     case 'code':
       return (
         <span className='code'>
           {children}
         </span>
       )
+    // inline-code block
+    case 'inlineCode':
+      // no lowlight style for inline code.
+      return (
+        <span className='inline-code'>
+          {children}
+        </span>
+      )
+    // lowlight node.
     case 'element':
       let elementClass = 'element'
       _.each(mark.data.get('properties').className || [], (className) => {
@@ -80,17 +83,38 @@ const renderMark = (props) => {
           {children}
         </span>
       )
-    case 'hr':
+    case 'link':
+      return <span className='link'>{children}</span>
+    case 'image':
+      return <span className='image'>{children}</span>
+    case 'thematicBreak':
       return (
-        <span
-          style={{
-            borderBottom: '2px solid #000',
-            display: 'block',
-            opacity: 0.2,
-          }}
-        >
-          {children}
+        <span className='hr'>
+          <span>{children}</span>
         </span>
+      )
+    // html
+    case 'html':
+      return (
+        <span className='html'>{children}</span>
+      )
+    // tables
+    case 'table':
+      return (
+        <span className='table'>{children}</span>
+      )
+    case 'tableRow':
+      return (
+        <span className='tr'>{children}</span>
+      )
+    case 'tableCell':
+      return (
+        <span className='td'>{children}</span>
+      )
+    // via https://github.com/zestedesavoir/zmarkdown/tree/master/packages/remark-kbd
+    case 'kbd':
+      return (
+        <span className='kbd'>{children}</span>
       )
     default:
     case 'paragraph':

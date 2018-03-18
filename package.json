@@ -155,6 +155,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "remark": "^9.0.0",
+    "remark-kbd": "^1.0.10",
     "remark-parse": "^5.0.0",
     "reselect": "^3.0.1",
     "slate": "^0.33.0",
@@ -166,6 +167,7 @@
     "unified": "^6.1.6",
     "uuid": "^3.2.1",
     "webfontloader": "^1.6.28",
+    "xss": "^0.3.7",
     "zone.js": "^0.8.20"
   }
 }

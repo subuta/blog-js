@@ -10,9 +10,17 @@ export default () => {
   resetKeyGenerator()
 
   return Plain.deserialize(source`
+### Getting started
+
+- hoge
+- fuga
+- piyo
+  
+### Example
+  
 \`\`\`javascript
-// 1aaa
-// 2aaaaaa
+// some awesome code
+console.log('bang!');
 \`\`\`
   `)
 }
