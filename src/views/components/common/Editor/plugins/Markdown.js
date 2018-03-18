@@ -214,37 +214,19 @@ const decorateNode = (document) => {
       } else if (tree.children) {
         tree.children.forEach(child => processLowlightTree(child, tree))
       } else if (tree.value) {
-        console.log('======')
-
-        // ignore line feed at this time.
-        if (tree.value.match(/(\r?\n+)/)) {
-          // Workaround for things like '\n\n'(blank line)
-          const lineFeeds = tree.value.match(/(\r?\n+)/)[1]
-          console.log('lineFeeds = ', JSON.stringify(lineFeeds));
-          console.log('currentRowOffset[b]', currentRowOffset);
-          currentRowOffset += lineFeeds.length
-          console.log('currentRowOffset[a]', currentRowOffset);
-        }
-
         const current = offset
         offset += tree.value.length
 
+        // skip root(that has no className attribute) node.
         if (_.isArray(parent)) return
 
-        // ignore root node
+        // check is current row includes tree.value to decorate.
         let isMatched = !currentRowText.text || _.includes(currentRowText.text, tree.value)
         while (!isMatched && offset < endOffset) {
-          currentRowOffset += currentRowText.text.length
+          currentRowOffset += currentRowText.text.length + 1
           currentRowText = document.getNextText(currentRowText.key)
           isMatched = currentRowText.text && _.includes(currentRowText.text, tree.value)
         }
-
-        console.log('tree.value = ', tree.value)
-        console.log('currentRowText.text = ', JSON.stringify(currentRowText.text))
-        console.log('currentRowOffset = ', currentRowOffset)
-        console.log('current = ', current)
-        console.log('offset = ', offset)
-        console.log('endOffset = ', endOffset);
 
         decorations.push({
           anchorKey: currentRowText.key,
@@ -263,7 +245,12 @@ const decorateNode = (document) => {
       return undefined
     }
 
-    processLowlightTree(value)
+    // Ignore errors for invalid code.
+    try {
+      processLowlightTree(value)
+    } catch (e) {
+      console.debug('LowlightTree[Parse error]', e)
+    }
   }
 
   processTree(tokens)
