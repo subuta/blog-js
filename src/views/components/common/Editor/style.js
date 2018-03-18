@@ -118,6 +118,14 @@ const Editor = {
     ...GrayFont,
   },
 
+  '& .math': {
+    ...GrayFont,
+  },
+
+  '& .inline-math': {
+    ...GrayFont,
+  },
+
   '& .kbd': {
     ...CodeFont,
     padding: '0.1em 0.6em',

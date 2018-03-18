@@ -5,15 +5,14 @@ Github like highlight.js style
 */
 
 pre[class*='language-'] > code,
-.hljs {
-  color: #24292e;
+.hljs,
+.code {
   text-align: left;
   white-space: pre;
   word-spacing: normal;
   tab-size: 4;
   hyphens: none;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-  font-size: 12px !important;
   line-height: 1.4;
   direction: ltr;
   cursor: text;
@@ -82,7 +81,7 @@ pre[class*='language-'] > code,
 .hljs-bullet,
 .hljs-code,
 .hljs-addition {
-  color: #397300;
+  color: #795da3;
 }
 
 .hljs-meta {

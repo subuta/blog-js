@@ -3,7 +3,8 @@ import unified from 'unified'
 import markdown from 'remark-parse'
 import _ from 'lodash'
 import remarkKbd from 'remark-kbd'
-import low, { hasRegistered } from 'src/views/utils/lowlight'
+import remarkMath from 'remark-math'
+import { hasRegistered, highlight } from 'src/views/utils/highlight'
 
 const tokenizer = unified()
   .use(markdown, {
@@ -11,6 +12,7 @@ const tokenizer = unified()
     commonmark: true
   })
   .use(remarkKbd)
+  .use(remarkMath)
 
 const renderMark = (props) => {
   const {children, mark} = props
@@ -116,6 +118,15 @@ const renderMark = (props) => {
       return (
         <span className='kbd'>{children}</span>
       )
+    // via https://github.com/zestedesavoir/zmarkdown/tree/master/packages/remark-kbd
+    case 'math':
+      return (
+        <span className='math'>{children}</span>
+      )
+    case 'inlineMath':
+      return (
+        <span className='inline-math'>{children}</span>
+      )
     default:
     case 'paragraph':
       return <span className='paragraph'>{children}</span>
@@ -210,7 +221,7 @@ const decorateNode = (document) => {
       const {lang, value} = tree
       if (!lang || !hasRegistered(lang) || !value) return
       // call processTree for parsed result
-      return parseLowlightValue(tree, low.highlight(lang, value).value)
+      return parseLowlightValue(tree, highlight(lang, value))
     }
 
     return decorations.push(createDecoration(tree))
@@ -226,6 +237,29 @@ const decorateNode = (document) => {
     const endOffset = end.offset - start.offset
 
     if (!startCodeText || !endCodeText) return
+
+    // mark start & end line as code
+    decorations.push({
+      anchorKey: startCodeText.key,
+      anchorOffset: 0,
+      focusKey: startCodeText.key,
+      focusOffset: startCodeText.text.length,
+      marks: [{
+        type: 'code',
+        kind: 'start'
+      }]
+    })
+
+    decorations.push({
+      anchorKey: endCodeText.key,
+      anchorOffset: 0,
+      focusKey: endCodeText.key,
+      focusOffset: endCodeText.text.length,
+      marks: [{
+        type: 'code',
+        kind: 'end'
+      }]
+    })
 
     // forward offset by startCodeText
     let offset = startCodeLength
@@ -249,6 +283,18 @@ const decorateNode = (document) => {
         while (!isMatched && offset < endOffset) {
           currentRowOffset += currentRowText.text.length + 1
           currentRowText = document.getNextText(currentRowText.key)
+
+          decorations.push({
+            anchorKey: currentRowText.key,
+            anchorOffset: 0,
+            focusKey: currentRowText.key,
+            focusOffset: currentRowText.text.length,
+            marks: [{
+              type: 'code',
+              kind: 'row'
+            }]
+          })
+
           isMatched = currentRowText.text && _.includes(currentRowText.text, tree.value)
         }
 
