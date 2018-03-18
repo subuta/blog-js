@@ -13,8 +13,6 @@ export default () => {
 \`\`\`javascript
 // 1aaa
 // 2aaaaaa
-// 3aaaaaa
-// 4aaaaaa
 \`\`\`
   `)
 }
