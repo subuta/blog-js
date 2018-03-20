@@ -7,6 +7,15 @@ import {
   BORDER_COLOR
 } from 'src/views/constants/style'
 
+import {
+  headings,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5
+} from 'src/views/components/layout/style'
+
 const GrayFont = {
   color: '#888888',
   fontWeight: 'bold'
@@ -18,6 +27,28 @@ const CodeFont = {
 
 const Editor = {
   '& .image': GrayFont,
+
+  '& .heading': {
+    ...headings,
+    display: 'block',
+    margin: '16px 0 8px',
+
+    '&.d-1': {
+      ...h1,
+      margin: '16px 0 16px !important',
+      padding: '0 0 8px 0',
+      borderBottom: `2px solid ${BORDER_COLOR}`
+    },
+    '&.d-2': {
+      ...h2,
+      padding: '0 0 8px 0',
+      borderBottom: `1px solid ${BORDER_COLOR}`
+    },
+
+    '&.d-3': h3,
+    '&.d-4': h4,
+    '&.d-5': h5,
+  },
 
   '& .list': {
     ...GrayFont,

@@ -28,40 +28,42 @@ const enhance = compose(
 export default enhance(({styles, articles}) => {
   return (
     <Layout>
-      <Sidebar/>
+      <div className={styles.ScrollContainer}>
+        <Sidebar/>
 
-      <Content>
-        <Header />
+        <Content>
+          <Header />
 
-        <Paper className={styles.Paper}>
-          <h4>Articles</h4>
+          <Paper className={styles.Paper}>
+            <h4>Articles</h4>
 
-          <ul className={styles.Articles}>
-            {_.map(articles, (props) => {
-              const {id, title, summary} = props
-              const createdAt = moment(props.createdAt).format('MMMM Do YYYY')
-              return (
-                <li key={id}>
-                  <ActiveLink
-                    href={`/article?id=${id}`}
-                    as={`/w/${id}`}
-                  >
-                    <h4>{title}</h4>
-                  </ActiveLink>
+            <ul className={styles.Articles}>
+              {_.map(articles, (props) => {
+                const {id, title, summary} = props
+                const createdAt = moment(props.createdAt).format('MMMM Do YYYY')
+                return (
+                  <li key={id}>
+                    <ActiveLink
+                      href={`/article?id=${id}`}
+                      as={`/w/${id}`}
+                    >
+                      <h4>{title}</h4>
+                    </ActiveLink>
 
-                  <p>{summary}</p>
+                    <p>{summary}</p>
 
-                  <small className="created-at">{createdAt}</small>
-                </li>
-              )
-            })}
-          </ul>
+                    <small className="created-at">{createdAt}</small>
+                  </li>
+                )
+              })}
+            </ul>
 
-          <FloatingActionButton className={styles.FloatingActionButton}>
-            <MdAddIcon />
-          </FloatingActionButton>
-        </Paper>
-      </Content>
+            <FloatingActionButton className={styles.FloatingActionButton}>
+              <MdAddIcon />
+            </FloatingActionButton>
+          </Paper>
+        </Content>
+      </div>
     </Layout>
   )
 })

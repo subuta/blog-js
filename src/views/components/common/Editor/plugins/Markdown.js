@@ -15,9 +15,6 @@ const renderMark = (props) => {
       return (
         <span
           className={`heading d-${mark.data.get('depth')}`}
-          style={{
-            fontSize: 36 - (mark.data.get('depth') * 4)
-          }}
         >
           {children}
         </span>

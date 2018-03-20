@@ -61,27 +61,29 @@ export default enhance((props) => {
 
   return (
     <Layout>
-      <Sidebar/>
+      <div className={styles.ScrollContainer}>
+        <Sidebar/>
 
-      <Content>
-        <Header/>
+        <Content>
+          <Header/>
 
-        <Paper className={styles.Paper}>
-          <h4>{title}</h4>
-          <small className="created-at">{createdAt}</small>
+          <Paper className={styles.Paper}>
+            <h4>{title}</h4>
+            <small className="created-at">{createdAt}</small>
 
-          <ArticleContent {...props}/>
+            <ArticleContent {...props}/>
 
-          <FloatingActionButton className={styles.FloatingActionButton}>
-            <ActiveLink
-              href={`/article?id=${id}&edit=true`}
-              as={`/w/${id}/edit`}
-            >
-              <MdEditIcon/>
-            </ActiveLink>
-          </FloatingActionButton>
-        </Paper>
-      </Content>
+            <FloatingActionButton className={styles.FloatingActionButton}>
+              <ActiveLink
+                href={`/article?id=${id}&edit=true`}
+                as={`/w/${id}/edit`}
+              >
+                <MdEditIcon/>
+              </ActiveLink>
+            </FloatingActionButton>
+          </Paper>
+        </Content>
+      </div>
     </Layout>
   )
 })

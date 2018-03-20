@@ -11,7 +11,7 @@ import {
 
 const Paper = {
   ...Z_INDEX_1,
-  margin: '-32px 32px 0 0',
+  margin: '-32px 32px 32px 0',
   padding: 32,
   position: 'relative',
   backgroundColor: PRIMARY_COLOR,

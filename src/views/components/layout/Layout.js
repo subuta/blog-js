@@ -27,6 +27,8 @@ const enhance = compose(
 
     return {
       setRef: ({ showMenu, hideMenu }) => async (_ref) => {
+        if (!_ref) return
+
         ref = _ref
 
         const Hammer = await getHammer()

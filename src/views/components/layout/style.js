@@ -49,31 +49,35 @@ const p = {
   marginBottom: '1.3em'
 }
 
-const headings = {
+export const headings = {
   margin: '32px 0 16px',
   fontFamily: SANS_FONT,
   fontWeight: 'inherit',
   lineHeight: 1.2
 }
 
-const h1 = {
+export const h1 = {
   marginTop: 0,
   fontSize: '2.441em'
 }
 
-const h2 = {
+export const h2 = {
   fontSize: '1.953em'
 }
 
-const h3 = {
+export const h3 = {
   fontSize: '1.563em'
 }
 
-const h4 = {
+export const h4 = {
   fontSize: '1.25em'
 }
 
-const small = {
+export const h5 = {
+  fontSize: '1em'
+}
+
+export const small = {
   fontSize: '0.8em'
 }
 
@@ -130,6 +134,7 @@ export default createWithStyles({
     h2,
     h3,
     h4,
+    h5,
     small,
     'h1, h2, h3, h4': headings,
     [`button, html [type="button"], [type="reset"], [type="submit"]`]: button

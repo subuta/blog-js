@@ -8,7 +8,7 @@ export const PRIMARY_COLOR = '#FFFFFF'
 export const PRIMARY2_COLOR = '#FEFAEA'
 export const GRAY_COLOR = '#EEEEEE'
 export const DIMMED_BLACK_COLOR = color(BLACK_COLOR).fade(0.4).string()
-export const BORDER_COLOR = '#D4D4D5'
+export const BORDER_COLOR = 'rgba(212, 212, 212, 0.5)'
 export const SHADOW_COLOR = 'rgba(34, 36, 38, 0.15)'
 
 // Primary color for Chat app.

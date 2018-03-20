@@ -5,12 +5,12 @@ import {
   PRIMARY_COLOR,
   ACCENT4_COLOR,
   EASE_STANDARD,
+  GRAY_COLOR,
   DIMMED_BLACK_COLOR,
 
   TABLET_MEDIA_QUERY,
 
   WIKI_APP_COLOR,
-  GRAY_COLOR,
 
   Z_INDEX_1
 } from 'src/views/constants/style'
@@ -76,7 +76,21 @@ const Articles = {
   }
 }
 
+const ScrollContainer = {
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'flex-start',
+  justifyContent: 'flex-start',
+  overflow: 'scroll',
+  flex: '1 0 auto',
+  minHeight: 'inherit',
+  height: '100vh',
+  background: `${GRAY_COLOR} !important`,
+  color: `${BLACK_COLOR} !important`
+}
+
 export default createWithStyles({
   Paper,
+  ScrollContainer,
   Articles
 })
