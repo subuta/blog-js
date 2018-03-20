@@ -161,6 +161,7 @@
     "remark-kbd": "^1.0.10",
     "remark-math": "^1.0.3",
     "remark-parse": "^5.0.0",
+    "remark-slug": "^5.0.0",
     "reselect": "^3.0.1",
     "slate": "^0.33.0",
     "slate-edit-code": "^0.14.0",

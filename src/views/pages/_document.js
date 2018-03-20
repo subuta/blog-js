@@ -45,6 +45,7 @@ export default class MyDocument extends Document {
 
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"/>
 
+        {/* custom styles goes here */}
         <link rel="stylesheet" href={`${staticFolder}/assets/sanitize.css`}/>
         <link rel="stylesheet" href={`${staticFolder}/assets/waves.css`}/>
         <link rel="stylesheet" href={`${staticFolder}/assets/highlight-github.css`}/>
@@ -52,11 +53,15 @@ export default class MyDocument extends Document {
         <link rel="stylesheet" href={`${staticFolder}/assets/katex.min.css`}/>
         <link rel="stylesheet" href={`${staticFolder}/assets/symbol/sprite.css`}/>
 
+        {/* custom script goes here */}
+        <script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"/>
+
         <script dangerouslySetInnerHTML={{__html: customScript()}}/>
       </Head>
       <body>
       <Main/>
       <NextScript/>
+
       </body>
       </html>
     )
