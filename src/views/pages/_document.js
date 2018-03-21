@@ -49,6 +49,7 @@ export default class MyDocument extends Document {
         <link rel="stylesheet" href={`${staticFolder}/assets/sanitize.css`}/>
         <link rel="stylesheet" href={`${staticFolder}/assets/waves.css`}/>
         <link rel="stylesheet" href={`${staticFolder}/assets/emoji-mart.css`}/>
+        <link rel="stylesheet" href={`${staticFolder}/assets/emoji-js.css`}/>
         <link rel="stylesheet" href={`${staticFolder}/assets/highlight-github.css`}/>
         <link rel="stylesheet" href={`${staticFolder}/assets/prism-github.css`}/>
         <link rel="stylesheet" href={`${staticFolder}/assets/katex.min.css`}/>

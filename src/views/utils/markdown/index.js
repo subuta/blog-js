@@ -24,15 +24,15 @@ const processor = unified()
     throwOnError: false
   })
   .use(slug)
-  .use(emoji, {
-    padSpaceAfter: true
-  })
-  .use(html)
+  // Because we will sanitize by ourselves(via xss)
+  .use(html, { sanitize: false })
+  .use(emoji)
 
 export const tokenize = (markdown) => processor.parse(markdown)
 
 export const toHtml = (markdown) => {
   const html = processor.processSync(markdown).toString()
+
   return xss(html, {
     stripIgnoreTag: true,
     // just ignore script tag.
@@ -40,6 +40,15 @@ export const toHtml = (markdown) => {
     whiteList: {
       // extends default whiteList of xss.
       ...xss.whiteList,
+
+      // Add embed emoji html
+      span: [
+        'class',
+        'style',
+        'title',
+        'data-codepoints'
+      ],
+
       // Allow including embedly card in the Markdown.
       blockquote: [
         'cite',

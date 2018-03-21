@@ -1,11 +1,7 @@
 import createWithStyles, { Style } from 'src/views/utils/style'
-import getConfig from 'next/config'
-import { source } from 'common-tags'
+import { staticFolder } from 'src/views/constants/config'
 
-const config = getConfig()
-const {
-  staticFolder
-} = config.publicRuntimeConfig
+import { source } from 'common-tags'
 
 import {
   ACCENT3_COLOR,

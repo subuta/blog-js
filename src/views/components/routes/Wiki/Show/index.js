@@ -2,6 +2,8 @@ import moment from 'src/views/utils/moment'
 import Layout from 'src/views/components/layout/Layout'
 import _ from 'lodash'
 
+import { toHtml } from 'src/views/utils/markdown'
+
 import ActiveLink from 'src/views/components/common/ActiveLink'
 import FloatingActionButton from 'src/views/components/common/FloatingActionButton'
 import Editor from 'src/views/components/common/Editor'
@@ -14,6 +16,7 @@ import Paper from '../_Paper'
 import {
   compose,
   branch,
+  withState,
   renderComponent
 } from 'recompose'
 
@@ -23,15 +26,26 @@ import withStyles from './style'
 import connect from './connect'
 
 const enhanceContent = compose(
+  withState('draftContent', 'setDraftContent', ({article}) => article ? article.content : ''),
   branch(
     ({url}) => _.get(url, 'query.edit'),
-    renderComponent(({article}) => {
-      const {content} = article
+    renderComponent((props) => {
+      const {
+        setDraftContent,
+        draftContent
+      } = props
       return (
-        <Editor
-          className="article-content"
-          value={content}
-        />
+        <div>
+          <div dangerouslySetInnerHTML={{__html: toHtml(draftContent)}}/>
+
+          <hr/>
+
+          <Editor
+            className="article-content"
+            onSave={setDraftContent}
+            value={draftContent}
+          />
+        </div>
       )
     }),
     _.identity

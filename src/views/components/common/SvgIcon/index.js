@@ -1,13 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import getConfig from 'next/config'
-
-const config = getConfig()
-const {
-  staticFolder
-} = config.publicRuntimeConfig
-
+import { staticFolder } from 'src/views/constants/config'
 import withStyles from './style'
 
 import { compose, setDisplayName, setPropTypes } from 'recompose'
@@ -35,7 +29,7 @@ export default enhance((props) => {
 
   return (
     <svg {...rest} className={iconClass}>
-      <use xlinkHref={`${staticFolder}/assets/symbol/svg/sprite.symbol.svg#${name}`} />
+      <use xlinkHref={`${staticFolder}/assets/symbol/svg/sprite.symbol.svg#${name}`}/>
     </svg>
   )
 })
