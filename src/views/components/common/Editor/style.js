@@ -30,19 +30,17 @@ const Editor = {
 
   '& .heading': {
     ...headings,
-    display: 'block',
+    display: 'inline-block',
     margin: '16px 0 8px',
 
     '&.d-1': {
       ...h1,
       margin: '16px 0 16px !important',
-      padding: '0 0 8px 0',
-      borderBottom: `2px solid ${BORDER_COLOR}`
+      padding: '0 0 8px 0'
     },
     '&.d-2': {
       ...h2,
-      padding: '0 0 8px 0',
-      borderBottom: `1px solid ${BORDER_COLOR}`
+      padding: '0 0 8px 0'
     },
 
     '&.d-3': h3,
@@ -52,7 +50,6 @@ const Editor = {
 
   '& .list': {
     ...GrayFont,
-    paddingLeft: 10,
     lineHeight: 1
   },
 
