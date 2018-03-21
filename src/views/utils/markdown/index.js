@@ -53,7 +53,9 @@ export const toHtml = (markdown) => {
       blockquote: [
         'cite',
         'class',
-        'data-card-key'
+        'data-card-key',
+        'data-card-align',
+        'data-card-controls'
       ],
 
       // allow id for remark-slug
