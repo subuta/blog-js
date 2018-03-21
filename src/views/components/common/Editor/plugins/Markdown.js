@@ -109,7 +109,13 @@ const renderMark = (props) => {
       return (
         <span className='inline-math'>{children}</span>
       )
+    // via utils/markdown/emoji/parser
+    case 'emoji':
+      return (
+        <span className='emoji'>{mark.data.get('value')}</span>
+      )
     default:
+    case 'text':
     case 'paragraph':
       console.log('[default] mark.type = ', mark.type)
       console.log('[default] data = ', mark.data.toJSON())

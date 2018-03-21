@@ -157,6 +157,10 @@ const Editor = {
     ...GrayFont,
   },
 
+  '& .emoji': {
+    ...GrayFont,
+  },
+
   '& .kbd': {
     ...CodeFont,
     padding: '0.1em 0.6em',

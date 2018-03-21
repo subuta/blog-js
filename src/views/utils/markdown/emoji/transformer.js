@@ -10,7 +10,8 @@ const RE_EMOJI = /:\+1:|:-1:|:[\w-]+:/g
 const SHEET_COLUMNS = 52
 const multiply = 100 / (SHEET_COLUMNS - 1)
 
-export const SHEET_URL = isRetina() ? `${staticFolder}/assets/images/emoji-datasource-v4_0_2/sheet_apple_64.png` : `${staticFolder}/assets/images/emoji-datasource-v4_0_2/sheet_apple_32.png`
+// TODO: Fix prop did not match (if SSR(32/non-retina) -> Front(64/retina))
+export const SHEET_URL = isRetina() ? `${staticFolder}/assets/images/emoji-datasource-v4_0_2/sheet_apple_64.png` : `${staticFolder}/assets/images/emoji-datasource-v4_0_2/sheet_apple_64.png`
 
 const decorate = (_short_name, emoji) => {
   if (!emoji) return
@@ -27,7 +28,7 @@ const decorate = (_short_name, emoji) => {
   }
 }
 
-export default function plugin (settings) {
+export default function transformer (settings) {
   function getEmoji (match) {
     const emoji = decorate(match, getData(match, 1, 'apple'))
     if (!emoji) return match
@@ -40,7 +41,7 @@ export default function plugin (settings) {
   }
 
   function transformer (tree) {
-    visit(tree, 'text', function (node) {
+    visit(tree, 'emoji', function (node) {
       // ignore if not matched.
       if (!node.value.match(RE_EMOJI)) return
       node.value = node.value.replace(RE_EMOJI, getEmoji)
