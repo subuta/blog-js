@@ -5,7 +5,10 @@ import {
   withHandlers
 } from 'recompose'
 
+import withStyles from './style'
+
 const enhance = compose(
+  withStyles,
   withRouter,
   withHandlers({
     onClick: ({router, href, as}) => (e) => {

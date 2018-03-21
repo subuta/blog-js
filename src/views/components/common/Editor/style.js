@@ -193,12 +193,7 @@ const Editor = {
   }
 }
 
-const EmojiAutoComplete = {
-
-}
-
 export default createWithStyles({
   EditorWrapper,
-  Editor,
-  EmojiAutoComplete
+  Editor
 })
