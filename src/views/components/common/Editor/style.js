@@ -25,6 +25,10 @@ const CodeFont = {
   fontFamily: '"SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace'
 }
 
+const EditorWrapper = {
+  position: 'relative'
+}
+
 const Editor = {
   '& .image': GrayFont,
 
@@ -189,6 +193,12 @@ const Editor = {
   }
 }
 
+const EmojiAutoComplete = {
+
+}
+
 export default createWithStyles({
-  Editor
+  EditorWrapper,
+  Editor,
+  EmojiAutoComplete
 })

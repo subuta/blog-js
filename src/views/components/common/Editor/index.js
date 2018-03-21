@@ -3,6 +3,9 @@ import _ from 'lodash'
 
 import plugins from './plugins'
 import Plain from 'slate-plain-serializer'
+import { Picker } from 'emoji-mart'
+
+import { SHEET_URL } from 'src/views/utils/markdown/emoji/transformer'
 
 import withStyles from './style'
 
@@ -21,6 +24,11 @@ const enhance = compose(
     onChange: ({setEditorState, onSave = _.noop}) => ({value}) => {
       setEditorState(value)
       onSave(Plain.serialize(value))
+    },
+
+    onSelectEmoji: () => (emoji, e) => {
+      console.log('emoji = ', emoji);
+      console.log('e = ', e);
     }
   })
 )
@@ -32,16 +40,27 @@ export default enhance((props) => {
   const {
     editorState,
     onChange,
+    onSelectEmoji,
     styles
   } = props
   return (
-    <Editor
-      placeholder='Paste in some HTML...'
-      className={styles.Editor}
-      value={editorState}
-      plugins={plugins}
-      spellCheck={false}
-      onChange={onChange}
-    />
+    <div className={styles.EditorWrapper}>
+      <div className={styles.EmojiAutoComplete}>
+        <Picker
+          set='apple'
+          emojiTooltip={true}
+          onClick={onSelectEmoji}
+          backgroundImageFn={() => SHEET_URL}
+        />
+      </div>
+      <Editor
+        placeholder='Paste in some HTML...'
+        className={styles.Editor}
+        value={editorState}
+        plugins={plugins}
+        spellCheck={false}
+        onChange={onChange}
+      />
+    </div>
   )
 })

@@ -29,8 +29,12 @@ function tokenize (eat, value, silent) {
 
   pos = value.indexOf(C_COLON, 1)
 
-  if (pos === -1) {
-    return
+  if (pos === -1) return
+
+  // if skin-tone specified. (eg=`:+1::skin-tone-3:`)
+  if (value.charAt(pos + 1) === C_COLON) {
+    pos = value.indexOf(C_COLON, pos + 2)
+    if (pos === -1) return
   }
 
   subvalue = value.slice(1, pos)

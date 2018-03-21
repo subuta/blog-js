@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { staticFolder } from 'src/views/constants/config'
 import isRetina from 'src/views/utils/isRetina'
 
-const RE_EMOJI = /:\+1:|:-1:|:[\w-]+:/g
+const RE_EMOJI = /:[\w+\-1-:]+:/g
 
 // borrowed from https://github.com/missive/emoji-mart/blob/master/src/components/emoji.js
 const SHEET_COLUMNS = 52
