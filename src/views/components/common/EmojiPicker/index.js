@@ -1,14 +1,13 @@
 import React from 'react'
-import { findDOMNode, createPortal } from 'react-dom'
+import { createPortal, findDOMNode } from 'react-dom'
 import _ from 'lodash'
 import keycode from 'keycode'
 
-import { emojiIndex, Emoji } from 'emoji-mart'
-
+import { Picker } from 'emoji-mart'
 import Popper from 'popper.js'
 
 const isBrowser = typeof window !== 'undefined'
-const PORTAL_CLASS = '__EMOJI-AUTO-COMPLETE__'
+const PORTAL_CLASS = '__EMOJI-PICKER__'
 
 import withStyles from './style'
 
@@ -17,8 +16,7 @@ import {
   withState,
   withHandlers,
   shouldUpdate,
-  lifecycle,
-  withPropsOnChange
+  lifecycle
 } from 'recompose'
 
 import { SHEET_URL } from 'src/views/utils/markdown/emoji/transformer'
@@ -31,64 +29,23 @@ import {
 
 const enhance = compose(
   withStyles,
-  withState('cursor', 'setCursor', 0),
-  withState('isForcedHide', 'setIsForcedHide', false),
   withState('popperStyles', 'setPopperStyles', {}),
-  withPropsOnChange(
-    ['value'],
-    (props) => {
-      const {value, setCursor, setIsForcedHide} = props
-
-      // initialize state on value change.
-      setCursor(0)
-      setIsForcedHide(false)
-
-      return {
-        isShow: value.length >= 3,
-        candidates: emojiIndex.search(_.trimStart(value, ':')) || []
-      }
-    }
-  ),
+  withState('isShow', 'setIsShow', false),
   shouldUpdate((props, nextProps) => {
     // return true if popperStyle changed.
     const isPopperStyleChanged = !_.isEqual(props.popperStyles, nextProps.popperStyles)
     const isReferenceNodeChanged = props.referenceNode !== nextProps.referenceNode
-    const isValueChanged = props.value !== nextProps.value
-    const isForcedHideChanged = props.isForcedHide !== nextProps.isForcedHide
-    const isCursorChanged = props.cursor !== nextProps.cursor
-    return isPopperStyleChanged ||
-      isReferenceNodeChanged ||
-      isValueChanged ||
-      isForcedHideChanged ||
-      isCursorChanged
+    const isShowChanged = props.isShow !== nextProps.isShow
+    return isPopperStyleChanged || isReferenceNodeChanged || isShowChanged
   }),
   withHandlers({
-    onClickEmoji: ({onSelect}) => onSelect,
-    confirmEmoji: ({cursor, onSelect, candidates}) => (e) => {
-      if (!candidates[cursor]) return undefined
-
-      onSelect(candidates[cursor], e)
-
-      // cancel event.
-      e.preventDefault()
-      e.stopPropagation()
-      return false
-    },
-    // value might be +1 || -1
-    moveCursor: ({cursor, setCursor, candidates}) => (value) => {
-      let nextCursor = cursor + value
-      if (nextCursor < 0) {
-        nextCursor = candidates.length
-      } else if (nextCursor >= candidates.length) {
-        nextCursor = 0
-      }
-      setCursor(nextCursor)
-    },
+    onClickEmoji: ({onSelect, setIsShow}) => (emoji, e) => {
+      onSelect(emoji, e)
+      setIsShow(false)
+    }
   }),
-  withHandlers((props) => {
-    const {setPopperStyles, moveCursor, confirmEmoji, setIsForcedHide} = props
-
-    let autoCompleteNode = null
+  withHandlers(({setPopperStyles, setIsShow}) => {
+    let pickerNode = null
     let popper = null
     let referenceNode = null
     let unlisten = _.noop
@@ -102,13 +59,13 @@ const enhance = compose(
     const initialize = (referenceNode) => {
       popper = new Popper(
         referenceNode,
-        autoCompleteNode,
+        pickerNode,
         {
           placement: 'right-start-auto',
           removeOnDestroy: true,
           modifiers: {
             offset: {
-              offset: '-4px, 16px'
+              offset: '0, 16px'
             },
 
             preventOverflow: {
@@ -130,24 +87,15 @@ const enhance = compose(
     }
 
     const onKeyDown = (e) => {
-      // move upwards
-      if (keycode(e) === 'up') {
-        moveCursor(-1)
+      // Show EmojiPicker on mac like emoji-shortcut.
+      if (keycode(e) === 'space' && e.ctrlKey && e.metaKey) {
+        setIsShow(true)
         e.preventDefault()
         return false
       }
-
-      // move downwards
-      if (keycode(e) === 'down') {
-        moveCursor(1)
-        e.preventDefault()
-        return false
-      }
-
-      if (keycode(e) === 'enter') return confirmEmoji(e)
 
       if (keycode(e) === 'esc') {
-        setIsForcedHide(true)
+        setIsShow(false)
         e.preventDefault()
         return undefined
       }
@@ -156,7 +104,7 @@ const enhance = compose(
     return {
       setPickerRef: () => (ref) => {
         if (!ref) return
-        autoCompleteNode = findDOMNode(ref)
+        pickerNode = findDOMNode(ref)
       },
 
       update: () => (_referenceNode) => {
@@ -173,7 +121,6 @@ const enhance = compose(
           popper.reference = _referenceNode
           popper.scheduleUpdate()
 
-          // listen for mutation of referenceNode
           observer.observe(_referenceNode, {
             childList: true,
             subtree: true,
@@ -196,7 +143,6 @@ const enhance = compose(
         observer.disconnect()
         removePortalNode(PORTAL_CLASS)
 
-        portal = null
         popper = null
         observer = null
         unlisten = _.noop
@@ -219,63 +165,40 @@ const enhance = compose(
 export default enhance((props) => {
   let {
     styles,
+    isShow,
     popperStyles,
     setPickerRef,
     onClickEmoji,
-    candidates,
-    numOfEmojis = 5, // count of candidates.
-    isShow,
-    isForcedHide,
-    setIsForcedHide,
     getPortal,
-    cursor,
-    value = ''
+    setIsShow
   } = props
 
-  let autoCompleteClass = styles.AutoComplete
-  if (isShow && !isForcedHide) {
-    autoCompleteClass += ` is-show`
+  let pickerWrapperClass = styles.PickerWrapper
+  if (isShow) {
+    pickerWrapperClass += ` is-show`
   }
 
   let backdropClass = styles.Backdrop
-  if (isShow && !isForcedHide) {
+  if (isShow) {
     backdropClass += ` is-show`
   }
 
   const component = (
-    <div className={styles.AutoCompleteRoot}>
-      <div
-        className={autoCompleteClass}
-        style={popperStyles}
-        ref={setPickerRef}
-      >
-        <ul className={styles.Emojis}>
-          {_.map(_.take(candidates, numOfEmojis), (emoji, i) => {
-            let emojiClass = styles.Emoji
-            if (i === cursor) {
-              emojiClass += ' is-active'
-            }
-            return (
-              <li
-                key={emoji.id}
-                className={emojiClass}
-                onClick={(e) => onClickEmoji(emoji, e)}
-              >
-                <Emoji
-                  emoji={emoji}
-                  backgroundImageFn={() => SHEET_URL}
-                  size={24}
-                />
-                <b className='colons'>{emoji.colons}</b>
-              </li>
-            )
-          })}
-        </ul>
+    <div className={styles.PickerRoot}>
+      <div className={pickerWrapperClass}>
+        <Picker
+          set='apple'
+          ref={setPickerRef}
+          emojiTooltip={true}
+          onClick={onClickEmoji}
+          backgroundImageFn={() => SHEET_URL}
+          style={popperStyles}
+        />
       </div>
 
       <div
         className={backdropClass}
-        onClick={() => setIsForcedHide(true)}
+        onClick={() => setIsShow(false)}
       />
     </div>
   )

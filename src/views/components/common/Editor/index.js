@@ -8,6 +8,7 @@ import Plain from 'slate-plain-serializer'
 import withStyles from './style'
 
 import EmojiAutoComplete from 'src/views/components/common/EmojiAutoComplete'
+import EmojiPicker from 'src/views/components/common/EmojiPicker'
 
 import {
   compose,
@@ -47,8 +48,16 @@ const enhance = compose(
   withHandlers(function () {
     let draftEmoji = ''
 
+    const ignoredKeys = ['up', 'down', 'enter', 'esc']
+
     return {
-      onKeyDown: ({ setEmojiFilter }) => (e) => {
+      onKeyDown: (props) => (e) => {
+        const {
+          setEmojiFilter
+        } = props
+
+        if (_.includes(ignoredKeys, keycode(e))) return
+
         if (e.key === ':') {
           // clear draftEmoji
           return draftEmoji = e.key
@@ -61,20 +70,24 @@ const enhance = compose(
           setEmojiFilter('')
         }
 
-        // Mac like emoji-shortcut.
-        if (keycode(e) === 'space' && e.ctrlKey && e.metaKey) {
-          e.preventDefault();
-          draftEmoji = ':dummy'
-          // Cancel autoComplete.
-        } else if (keycode(e) === 'esc') {
-          e.preventDefault();
-          draftEmoji = ''
-        }
-
         setEmojiFilter(draftEmoji)
       },
 
-      onSelectEmoji: (props) => (emoji, e) => {
+      onSelectEmojiPicker: (props) => (emoji, e) => {
+        const {
+          editorState,
+          onChange
+        } = props
+
+        const change = editorState.change()
+        const nextState = change
+          .collapseToEnd()
+          .insertText(emoji.colons)
+
+        onChange(nextState)
+      },
+
+      onSelectEmojiAutoComplete: (props) => (emoji, e) => {
         const {
           editorState,
           onChange,
@@ -113,7 +126,8 @@ export default enhance((props) => {
     editorState,
     onChange,
     onKeyDown,
-    onSelectEmoji,
+    onSelectEmojiPicker,
+    onSelectEmojiAutoComplete,
     emojiFilter,
     styles
   } = props
@@ -122,8 +136,13 @@ export default enhance((props) => {
     <div className={styles.EditorWrapper}>
       <EmojiAutoComplete
         referenceNode={anchorNode}
-        isShow={emojiFilter.length >= 3}
-        onSelect={onSelectEmoji}
+        value={emojiFilter}
+        onSelect={onSelectEmojiAutoComplete}
+      />
+
+      <EmojiPicker
+        referenceNode={anchorNode}
+        onSelect={onSelectEmojiPicker}
       />
 
       <Editor
