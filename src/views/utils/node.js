@@ -52,6 +52,7 @@ export const appendPortalNode = (portalClass) => {
 export const removePortalNode = (portalClass) => {
   // skip at SSR
   if (!isBrowser) return
+  if (!document.querySelector(`.${portalClass}`)) return
 
   return body.removeChild(document.querySelector(`.${portalClass}`));
 }

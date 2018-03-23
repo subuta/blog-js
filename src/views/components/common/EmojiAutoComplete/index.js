@@ -91,8 +91,8 @@ const enhance = compose(
     let autoCompleteNode = null
     let popper = null
     let referenceNode = null
+    let portal = null
     let unlisten = _.noop
-    let portal = appendPortalNode(PORTAL_CLASS)
 
     // enable text change handler of referenceNode.
     let observer = isBrowser ? new MutationObserver((_mutations) => {
@@ -162,6 +162,7 @@ const enhance = compose(
       update: () => (_referenceNode) => {
         if (!_referenceNode) return
         if (!popper) return initialize(_referenceNode)
+        if (!portal) portal = appendPortalNode(PORTAL_CLASS)
 
         // if node reference changed
         if (referenceNode !== _referenceNode) {
@@ -280,7 +281,7 @@ export default enhance((props) => {
     </div>
   )
 
-  return isBrowser ? createPortal(
+  return isBrowser && getPortal() ? createPortal(
     component,
     getPortal()
   ) : component

@@ -14,6 +14,7 @@ import SignInIcon from 'react-icons/lib/go/sign-in'
 
 import Avatar from 'src/views/components/common/Avatar'
 import ActiveLink from 'src/views/components/common/ActiveLink'
+import Menu from 'src/views/components/common/Menu'
 
 import withStyles from './style'
 import connect from './connect'
@@ -82,13 +83,36 @@ export default enhance((props) => {
 
       <div className={styles.Bottom}>
         {isAuthenticated ? (
-          <div className={styles.User}>
-            <Avatar
-              avatar={avatar}
-              nickname={nickname}
-              rounded
-            />
-          </div>
+          <Menu
+            trigger={(
+              <div className={styles.User}>
+                <Avatar
+                  avatar={avatar}
+                  nickname={nickname}
+                  rounded
+                />
+              </div>
+            )}
+          >
+            <ul>
+              <li>
+                <ActiveLink
+                  href='/auth/profile'
+                  as='/auth/profile'
+                >
+                  Update your profile
+                </ActiveLink>
+              </li>
+              <li>
+                <ActiveLink
+                  href='/auth/logout'
+                  as='/auth/logout'
+                >
+                  Logout
+                </ActiveLink>
+              </li>
+            </ul>
+          </Menu>
         ) : (
           <ActiveLink
             className={styles.IconWrapper}

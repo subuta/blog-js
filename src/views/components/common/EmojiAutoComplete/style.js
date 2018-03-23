@@ -52,7 +52,7 @@ const Emoji = {
   alignItems: 'center',
   justifyContent: 'flex-start',
   borderBottom: `1px solid ${BORDER_COLOR}`,
-  transition: `backgroundColor 0.1s ${EASE_STANDARD}`,
+  transition: `all 0.1s ${EASE_STANDARD}`,
 
   '& > b': {
     display: 'inline-block',

@@ -62,6 +62,11 @@ const setSession = ({accessToken, expiresIn}) => {
   Cookie.set(AUTH0_EXPIRATION, expiresAt)
 }
 
+export const revokeSession = () => {
+  Cookie.remove(ACCESS_TOKEN)
+  Cookie.remove(AUTH0_EXPIRATION)
+}
+
 // called from both environment(server & browser)
 const getSession = (req = null) => {
   // retrieve req from current zone for SSR
@@ -83,6 +88,7 @@ export default {
   authorize,
   parseHash,
   setSession,
+  revokeSession,
   getSession,
   isAuthenticated
 }
