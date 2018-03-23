@@ -16,7 +16,9 @@ import {
   withState,
   withHandlers,
   shouldUpdate,
-  lifecycle
+  lifecycle,
+  branch,
+  renderComponent
 } from 'recompose'
 
 import { SHEET_URL } from 'src/views/utils/markdown/emoji/transformer'
@@ -30,13 +32,15 @@ import {
 const enhance = compose(
   withStyles,
   withState('popperStyles', 'setPopperStyles', {}),
+  withState('isMounted', 'setIsMounted', false),
   withState('isShow', 'setIsShow', false),
   shouldUpdate((props, nextProps) => {
     // return true if popperStyle changed.
     const isPopperStyleChanged = !_.isEqual(props.popperStyles, nextProps.popperStyles)
     const isReferenceNodeChanged = props.referenceNode !== nextProps.referenceNode
     const isShowChanged = props.isShow !== nextProps.isShow
-    return isPopperStyleChanged || isReferenceNodeChanged || isShowChanged
+    const isMountedChanged = props.isMounted !== nextProps.isMounted
+    return isPopperStyleChanged || isReferenceNodeChanged || isShowChanged || isMountedChanged
   }),
   withHandlers({
     onClickEmoji: ({onSelect, setIsShow}) => (emoji, e) => {
@@ -150,6 +154,11 @@ const enhance = compose(
     }
   }),
   lifecycle({
+    componentDidMount () {
+      const {setIsMounted} = this.props
+      setIsMounted(true)
+    },
+
     componentDidUpdate () {
       const {referenceNode, update} = this.props
       update(referenceNode)
@@ -159,13 +168,21 @@ const enhance = compose(
       const {destroy} = this.props
       destroy()
     }
-  })
+  }),
+  // Workaround for Universal rendering error.
+  // Delay component rendering after componentDidMount.
+  branch(
+    ({isMounted}) => !isMounted,
+    renderComponent(() => <div />),
+    _.identity
+  )
 )
 
 export default enhance((props) => {
   let {
     styles,
     isShow,
+    isMounted,
     popperStyles,
     setPickerRef,
     onClickEmoji,

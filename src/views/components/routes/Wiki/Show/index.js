@@ -57,9 +57,8 @@ const ArticleContent = enhanceContent(({article}) => {
   return (
     <div
       className="article-content"
-    >
-      {content}
-    </div>
+      dangerouslySetInnerHTML={{__html: toHtml(content)}}
+    />
   )
 })
 

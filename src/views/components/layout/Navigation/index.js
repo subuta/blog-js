@@ -24,7 +24,10 @@ const enhance = compose(
   connect,
   lifecycle({
     componentWillMount () {
-      this.props.requestMe().catch(err => console.log('[caught at navigation]', err))
+      this.props.requestMe().catch(err => {
+        if (err.status === 401) return
+        console.log('[caught at navigation]', err)
+      })
     }
   })
 )

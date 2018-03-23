@@ -13,6 +13,11 @@ const multiply = 100 / (SHEET_COLUMNS - 1)
 // TODO: Fix prop did not match (if SSR(32/non-retina) -> Front(64/retina))
 export const SHEET_URL = isRetina() ? `${staticFolder}/assets/images/emoji-datasource-v4_0_2/sheet_apple_64.png` : `${staticFolder}/assets/images/emoji-datasource-v4_0_2/sheet_apple_64.png`
 
+const round = (value, precision) => {
+  const multiplier = Math.pow(10, precision || 0);
+  return Math.round(value * multiplier) / multiplier;
+}
+
 const decorate = (_short_name, emoji) => {
   if (!emoji) return
 
@@ -23,8 +28,8 @@ const decorate = (_short_name, emoji) => {
     ...emoji,
     short_name,
     colons,
-    sheet_x: `${multiply * emoji.sheet_x}%`,
-    sheet_y: `${multiply * emoji.sheet_y}%`
+    sheet_x: `${round(multiply * emoji.sheet_x, 2)}%`,
+    sheet_y: `${round(multiply * emoji.sheet_y, 2)}%`
   }
 }
 
