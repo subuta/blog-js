@@ -68,7 +68,7 @@ const enhance = compose(
 )
 
 export default enhance((props) => {
-  const {article, styles} = props
+  const {article, styles, isAuthenticated} = props
   const {title, content, id} = article
   const createdAt = moment(article.createdAt).format('MMMM Do YYYY')
 
@@ -86,14 +86,16 @@ export default enhance((props) => {
 
             <ArticleContent {...props}/>
 
-            <FloatingActionButton className={styles.FloatingActionButton}>
-              <ActiveLink
-                href={`/article?id=${id}&edit=true`}
-                as={`/w/${id}/edit`}
-              >
-                <MdEditIcon/>
-              </ActiveLink>
-            </FloatingActionButton>
+            {isAuthenticated && (
+              <FloatingActionButton className={styles.FloatingActionButton}>
+                <ActiveLink
+                  href={`/article?id=${id}&edit=true`}
+                  as={`/w/${id}/edit`}
+                >
+                  <MdEditIcon/>
+                </ActiveLink>
+              </FloatingActionButton>
+            )}
           </Paper>
         </Content>
       </div>

@@ -4,7 +4,7 @@ import {
   GRAY_COLOR
 } from 'src/views/constants/style'
 
-const avatarSize = 40
+export const avatarSize = 40
 
 const Avatar = {
   '& > img': {

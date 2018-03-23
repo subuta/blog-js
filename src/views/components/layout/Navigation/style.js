@@ -14,6 +14,9 @@ import {
   WIKI_APP_COLOR
 } from 'src/views/constants/style'
 
+import { avatarSize } from 'src/views/components/common/Avatar/style'
+import { GRAY_COLOR } from '../../../constants/style'
+
 const Navigation = {
   minHeight: 'inherit',
   height: '100vh',
@@ -83,7 +86,29 @@ const User = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  margin: '16px 0 0',
+  margin: '16px 0 0'
+}
+
+const IconWrapper = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: GRAY_COLOR,
+  height: avatarSize,
+  width: avatarSize,
+  borderRadius: 4,
+  color: DIMMED_BLACK_COLOR,
+  transition: `all 0.3s ${EASE_STANDARD}`,
+  cursor: 'pointer',
+
+  '& > svg': {
+    height: avatarSize - 16,
+    width: avatarSize - 16
+  },
+
+  '&:hover': {
+    color: BLACK_COLOR
+  }
 }
 
 const ChatApp = {
@@ -106,6 +131,7 @@ export default createWithStyles({
   Navigation,
   Item,
   User,
+  IconWrapper,
   Top,
   Bottom,
   ChatApp,

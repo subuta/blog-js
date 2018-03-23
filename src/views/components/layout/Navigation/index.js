@@ -3,15 +3,14 @@ import _ from 'lodash'
 
 import {
   compose,
-  branch,
   lifecycle,
-  renderComponent,
-  withHandlers
+  withProps
 } from 'recompose'
 
 import MdChatIcon from 'react-icons/lib/md/chat'
 import MdSearchIcon from 'react-icons/lib/md/search'
 import GoBookIcon from 'react-icons/lib/go/book'
+import SignInIcon from 'react-icons/lib/go/sign-in'
 
 import Avatar from 'src/views/components/common/Avatar'
 import ActiveLink from 'src/views/components/common/ActiveLink'
@@ -22,6 +21,11 @@ import connect from './connect'
 const enhance = compose(
   withStyles,
   connect,
+  withProps(({currentUser}) => {
+    return {
+      isAuthenticated: !!currentUser
+    }
+  }),
   lifecycle({
     componentWillMount () {
       this.props.requestMe().catch(err => {
@@ -34,6 +38,7 @@ const enhance = compose(
 
 export default enhance((props) => {
   const {
+    isAuthenticated,
     currentUser,
     styles,
     isShowMenu
@@ -76,13 +81,23 @@ export default enhance((props) => {
       </div>
 
       <div className={styles.Bottom}>
-        <div className={styles.User}>
-          <Avatar
-            avatar={avatar}
-            nickname={nickname}
-            rounded
-          />
-        </div>
+        {isAuthenticated ? (
+          <div className={styles.User}>
+            <Avatar
+              avatar={avatar}
+              nickname={nickname}
+              rounded
+            />
+          </div>
+        ) : (
+          <ActiveLink
+            className={styles.IconWrapper}
+            href='/auth/login'
+            as='/auth/login'
+          >
+            <SignInIcon />
+          </ActiveLink>
+        )}
       </div>
     </div>
   )
