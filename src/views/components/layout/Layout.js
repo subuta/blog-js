@@ -10,6 +10,13 @@ import connect from './connect'
 
 import withDragDropContext from 'src/views/utils/withDragDropContext'
 
+const isBrowser = typeof window !== 'undefined'
+
+if (isBrowser) {
+  // load embedly
+  import('src/views/utils/embedly').then(({initialize}) => initialize(window, document))
+}
+
 const enhance = compose(
   withStyles,
   connect,
@@ -26,7 +33,7 @@ const enhance = compose(
     }
 
     return {
-      setRef: ({ showMenu, hideMenu }) => async (_ref) => {
+      setRef: ({showMenu, hideMenu}) => async (_ref) => {
         if (!_ref) return
 
         ref = _ref

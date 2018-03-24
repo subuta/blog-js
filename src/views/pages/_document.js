@@ -56,8 +56,6 @@ export default class MyDocument extends Document {
         <link rel="stylesheet" href={`${staticFolder}/assets/symbol/sprite.css`}/>
 
         {/* custom script goes here */}
-        <script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"/>
-
         <script dangerouslySetInnerHTML={{__html: customScript()}}/>
       </Head>
       <body>

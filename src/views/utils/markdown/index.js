@@ -25,63 +25,64 @@ const processor = unified()
   })
   .use(slug)
   // Because we will sanitize by ourselves(via xss)
-  .use(html, { sanitize: false })
+  .use(html, {sanitize: false})
   .use(emoji)
 
 export const tokenize = (markdown) => processor.parse(markdown)
 
+export const sanitizeHtml = (html) => xss(html, {
+  stripIgnoreTag: true,
+  // just ignore script tag.
+  stripIgnoreTagBody: ['script'],
+  whiteList: {
+    // extends default whiteList of xss.
+    ...xss.whiteList,
+
+    // Add embed emoji html
+    span: [
+      'class',
+      'style',
+      'title',
+      'data-codepoints'
+    ],
+
+    // Allow including embedly card in the Markdown.
+    blockquote: [
+      'cite',
+      'class',
+      'data-card-key',
+      'data-card-align',
+      'data-card-controls'
+    ],
+
+    // allow id for remark-slug
+    h1: [
+      'id'
+    ],
+
+    h2: [
+      'id'
+    ],
+
+    h3: [
+      'id'
+    ],
+
+    h4: [
+      'id'
+    ],
+
+    h5: [
+      'id'
+    ],
+
+    h6: [
+      'id'
+    ],
+  }
+})
+
 export const toHtml = (markdown) => {
   const html = processor.processSync(markdown).toString()
-
-  return xss(html, {
-    stripIgnoreTag: true,
-    // just ignore script tag.
-    stripIgnoreTagBody: ['script'],
-    whiteList: {
-      // extends default whiteList of xss.
-      ...xss.whiteList,
-
-      // Add embed emoji html
-      span: [
-        'class',
-        'style',
-        'title',
-        'data-codepoints'
-      ],
-
-      // Allow including embedly card in the Markdown.
-      blockquote: [
-        'cite',
-        'class',
-        'data-card-key',
-        'data-card-align',
-        'data-card-controls'
-      ],
-
-      // allow id for remark-slug
-      h1: [
-        'id'
-      ],
-
-      h2: [
-        'id'
-      ],
-
-      h3: [
-        'id'
-      ],
-
-      h4: [
-        'id'
-      ],
-
-      h5: [
-        'id'
-      ],
-
-      h6: [
-        'id'
-      ],
-    }
-  })
+  return sanitizeHtml(html)
 }

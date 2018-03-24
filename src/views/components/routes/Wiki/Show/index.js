@@ -7,6 +7,7 @@ import { toHtml } from 'src/views/utils/markdown'
 import ActiveLink from 'src/views/components/common/ActiveLink'
 import FloatingActionButton from 'src/views/components/common/FloatingActionButton'
 import Editor from 'src/views/components/common/Editor'
+import MarkdownContent from 'src/views/components/common/MarkdownContent'
 
 import Sidebar from '../_Sidebar'
 import Header from '../_Header'
@@ -46,9 +47,8 @@ const enhanceContent = compose(
             value={draftContent}
           />
 
-          <div
-            className="content"
-            dangerouslySetInnerHTML={{__html: toHtml(draftContent)}}
+          <MarkdownContent
+            html={toHtml(draftContent)}
           />
         </div>
       )
