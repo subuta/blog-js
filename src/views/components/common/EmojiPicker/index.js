@@ -72,10 +72,6 @@ const enhance = compose(
               offset: '0, 16px'
             },
 
-            preventOverflow: {
-              escapeWithReference: true,
-            },
-
             applyStyle: {enabled: false},
 
             applyReactStyle: {

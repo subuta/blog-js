@@ -12,7 +12,7 @@ export default function (Component) {
   render.getInitialProps = async (ctx) => {
     const fn = Component.getInitialProps || _.noop
 
-    const isAuthenticated = auth0.isAuthenticated(ctx)
+    const isAuthenticated = auth0.isAuthenticated(ctx.req)
 
     // decorate ctx.
     if (!!ctx.res) {

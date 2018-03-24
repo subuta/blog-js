@@ -17,6 +17,7 @@ import {
   compose,
   branch,
   withState,
+  withProps,
   renderComponent
 } from 'recompose'
 
@@ -28,7 +29,7 @@ import connect from './connect'
 const enhanceContent = compose(
   withState('draftContent', 'setDraftContent', ({article}) => article ? article.content : ''),
   branch(
-    ({url}) => _.get(url, 'query.edit'),
+    ({isEditing}) => isEditing,
     renderComponent((props) => {
       const {
         setDraftContent,
@@ -64,11 +65,22 @@ const ArticleContent = enhanceContent(({article}) => {
 
 const enhance = compose(
   withStyles,
+  withProps(({url}) => {
+    return {
+      isEditing: _.get(url, 'query.edit')
+    }
+  }),
   connect,
 )
 
 export default enhance((props) => {
-  const {article, styles, isAuthenticated} = props
+  const {
+    article,
+    styles,
+    isAuthenticated,
+    isEditing
+  } = props
+
   const {title, content, id} = article
   const createdAt = moment(article.createdAt).format('MMMM Do YYYY')
 

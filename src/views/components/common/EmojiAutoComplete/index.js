@@ -111,10 +111,6 @@ const enhance = compose(
               offset: '-4px, 16px'
             },
 
-            preventOverflow: {
-              escapeWithReference: true,
-            },
-
             applyStyle: {enabled: false},
 
             applyReactStyle: {
@@ -163,6 +159,8 @@ const enhance = compose(
         if (!_referenceNode) return
         if (!popper) return initialize(_referenceNode)
         if (!portal) portal = appendPortalNode(PORTAL_CLASS)
+
+        console.log('referenceNode=  ', referenceNode);
 
         // if node reference changed
         if (referenceNode !== _referenceNode) {
