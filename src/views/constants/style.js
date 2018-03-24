@@ -30,6 +30,7 @@ export const SIDEBAR_WIDTH = 204
 export const LATO_WITH_SANS_FONT = '\'Lato\', \'Noto Sans Japanese\', \'Noto Serif Japanese\', \'游ゴシック\', \'Yu Gothic\', \'HiraKakuProN-W3\', \'Hiragino Kaku Gothic ProN\', \'メイリオ\', \'Meiryo\', \'ＭＳ Ｐゴシック\', sans-serif'
 export const SANS_FONT = '\'Noto Sans Japanese\', \'Noto Serif Japanese\', \'游ゴシック\', \'Yu Gothic\', \'HiraKakuProN-W3\', \'Hiragino Kaku Gothic ProN\', \'メイリオ\', \'Meiryo\', \'ＭＳ\ Ｐゴシック\', sans-serif'
 export const SERIF_FONT = '\'Noto Serif Japanese\', \'游ゴシック\', \'Yu Gothic\', \'HiraKakuProN-W3\', \'Hiragino Kaku Gothic ProN\', \'メイリオ\', \'Meiryo\', \'ＭＳ\ Ｐゴシック\' ,serif'
+export const CODE_FONT = '\'SFMono-Regular\', Consolas, \'Liberation Mono\', Menlo, Courier, monospace'
 
 // MEDIA QUERY
 export const MOBILE_MEDIA_QUERY = '@media (min-width: 320px)'

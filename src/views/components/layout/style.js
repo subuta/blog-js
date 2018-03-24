@@ -11,8 +11,14 @@ import {
   PAGE_MIN_HEIGHT,
   NOISE_PATTERN,
   NAVIGATION_WIDTH,
-  SIDEBAR_WIDTH
+  SIDEBAR_WIDTH,
+
+  TABLET_MEDIA_QUERY,
+
+  CODE_FONT,
+  BORDER_COLOR
 } from 'src/views/constants/style'
+import { ACCENT4_COLOR } from '../../constants/style'
 
 const isBrowser = typeof window !== 'undefined'
 
@@ -77,8 +83,98 @@ export const small = {
   fontSize: '0.8em'
 }
 
-const button = {
+export const button = {
   '-webkit-appearance': 'none !important'
+}
+
+export const kbd = {
+  fontFamily: CODE_FONT,
+  padding: '0.1em 0.6em',
+  border: '1px solid #ccc',
+  fontSize: 12,
+  backgroundColor: '#f7f7f7',
+  color: '#333',
+  boxShadow: '0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset',
+  borderRadius: 3,
+  display: 'inline-block',
+  margin: '0 4px',
+  textShadow: '0 1px 0 #fff',
+  lineHeight: 1.4,
+  whiteSpace: 'nowrap'
+}
+
+export const hr = {
+  border: 'none',
+  '&:after': {
+    content: '\'\'', // who knew you could do this? The internet, that's who.
+    display: 'block',
+    borderBottom: `3px solid ${BORDER_COLOR}`
+  }
+}
+
+export const inlineCode = {
+  fontFamily: CODE_FONT,
+  margin: '0 0 0 4px',
+  padding: '0 4px',
+  display: 'inline-block',
+  borderRadius: 4,
+  fontSize: 13,
+  fontWeight: 'bold',
+  backgroundColor: '#F4F4F4',
+  border: '1px solid #DDDDDD',
+  color: ACCENT4_COLOR
+}
+
+export const table = {
+  // RWD idea from http://codepen.io/geoffyuen/pen/FCBEg?editors=1100
+  margin: `8px 0`,
+  width: '100%',
+  boxSizing: 'border-box',
+
+  '& th': {
+    padding: `0 0 4px`,
+    display: 'table-cell',
+    fontWeight: 'bold',
+
+    [TABLET_MEDIA_QUERY]: {
+      display: 'none',
+      padding: `8px 8px 8px 0 !important`
+    }
+  },
+
+  '& tr': {
+    borderTop: 'none',
+    [TABLET_MEDIA_QUERY]: {
+      borderTop: `1px solid ${BORDER_COLOR}`,
+      borderBottom: `1px solid ${BORDER_COLOR}`
+    }
+  },
+
+  '& td': {
+    padding: `0 0 4px`,
+    display: 'table-cell',
+
+    [TABLET_MEDIA_QUERY]: {
+      display: 'flex',
+      textAlign: 'left',
+      padding: `8px 8px 8px 0 !important`,
+
+      '&:first-child': {
+        padding: `4px 0`
+      }
+    },
+
+    '&:before': {
+      margin: '0 4px 0 0',
+      display: 'none',
+
+      [TABLET_MEDIA_QUERY]: {
+        display: 'inline-block',
+        fontWeight: 'bold',
+        content: 'attr(data-th)\": \"', // who knew you could do this? The internet, that's who.
+      }
+    }
+  }
 }
 
 const FontFaceNotoSerifJapanese = {
@@ -132,6 +228,10 @@ export default createWithStyles({
     h4,
     h5,
     small,
+    table,
+    kbd,
+    hr,
+    'code.inline': inlineCode,
     'h1, h2, h3, h4': headings,
     [`button, html [type="button"], [type="reset"], [type="submit"]`]: button
   },

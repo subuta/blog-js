@@ -3,7 +3,6 @@ import xss from 'xss'
 
 // parser
 import markdown from 'remark-parse'
-import remarkKbd from 'remark-kbd'
 import remarkMath from 'remark-math'
 
 // transformer
@@ -11,24 +10,27 @@ import katexHtml from 'remark-html-katex'
 import html from 'remark-html'
 import slug from 'remark-slug'
 import highlight from './highlight'
+import table from './table'
 
 // parser & transformer
 import emoji from './emoji'
+import kbd from './kbd'
 
 const processor = unified()
   .use(markdown, {
     gfm: true,
     commonmark: true
   })
-  .use(remarkKbd)
   .use(remarkMath)
   .use(katexHtml, {
     // ignore katex parser error.
     throwOnError: false
   })
   .use(slug)
+  .use(kbd)
   .use(highlight)
   .use(emoji)
+  .use(table)
   // Because we will sanitize by ourselves(via xss)
   .use(html, {sanitize: false})
 
@@ -61,6 +63,12 @@ export const sanitizeHtml = (html) => xss(html, {
 
     code: [
       'class'
+    ],
+
+    // for Responsive table.
+    td: [
+      ...xss.whiteList.td,
+      'data-th'
     ],
 
     // allow id for remark-slug

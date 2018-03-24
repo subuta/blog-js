@@ -48,6 +48,7 @@ const enhanceContent = compose(
           />
 
           <MarkdownContent
+            className="content"
             html={toHtml(draftContent)}
           />
         </div>
@@ -60,9 +61,9 @@ const enhanceContent = compose(
 const ArticleContent = enhanceContent(({article}) => {
   const {content} = article
   return (
-    <div
+    <MarkdownContent
       className="content"
-      dangerouslySetInnerHTML={{__html: toHtml(content)}}
+      html={toHtml(content)}
     />
   )
 })

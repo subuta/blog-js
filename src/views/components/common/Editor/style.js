@@ -4,7 +4,8 @@ import {
   PRIMARY_COLOR,
   ACCENT4_COLOR,
   TABLET_MEDIA_QUERY,
-  BORDER_COLOR
+  BORDER_COLOR,
+  CODE_FONT
 } from 'src/views/constants/style'
 
 import {
@@ -13,16 +14,15 @@ import {
   h2,
   h3,
   h4,
-  h5
+  h5,
+  kbd,
+  hr,
+  inlineCode
 } from 'src/views/components/layout/style'
 
 const GrayFont = {
   color: '#888888',
   fontWeight: 'bold'
-}
-
-const CodeFont = {
-  fontFamily: '"SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace'
 }
 
 const EditorWrapper = {
@@ -57,18 +57,7 @@ const Editor = {
     lineHeight: 1
   },
 
-  '& .inline-code': {
-    ...CodeFont,
-    margin: '0 0 0 4px',
-    padding: '0 4px',
-    display: 'inline-block',
-    borderRadius: 4,
-    fontSize: 13,
-    fontWeight: 'bold',
-    backgroundColor: '#F4F4F4',
-    border: '1px solid #DDDDDD',
-    color: ACCENT4_COLOR
-  },
+  '& .inline-code': inlineCode,
 
   '& .link': {
     margin: 0,
@@ -101,51 +90,6 @@ const Editor = {
     ...GrayFont
   },
 
-  // // RWD idea from http://codepen.io/geoffyuen/pen/FCBEg?editors=1100
-  // '& .table': {
-  //   margin: `8px 0`,
-  //   width: '100%',
-  //   boxSizing: 'border-box',
-  //
-  //   '& .th': {
-  //     fontWeight: 'bold',
-  //     display: 'none'
-  //   },
-  //
-  //   '& .tr': {
-  //     borderTop: `1px solid ${BORDER_COLOR}`,
-  //     borderBottom: `1px solid ${BORDER_COLOR}`,
-  //     [TABLET_MEDIA_QUERY]: {
-  //       borderTop: 'none'
-  //     }
-  //   },
-  //
-  //   '& .td': {
-  //     display: 'block',
-  //     '&:first-child': {
-  //       padding: `4px 0`
-  //     },
-  //
-  //     '&:before': {
-  //       content: 'attr(data-th)": "', // who knew you could do this? The internet, that's who.
-  //       fontWeight: 'bold',
-  //
-  //       [TABLET_MEDIA_QUERY]: {
-  //         display: 'none'
-  //       }
-  //     }
-  //   },
-  //
-  //   '& .th, & .td': {
-  //     textAlign: 'left',
-  //     padding: `0 0 4px`,
-  //     [TABLET_MEDIA_QUERY]: {
-  //       padding: `8px 8px 8px 0 !important`,
-  //       display: 'table-cell'
-  //     }
-  //   }
-  // },
-
   '& .html': {
     ...GrayFont,
   },
@@ -162,33 +106,13 @@ const Editor = {
     ...GrayFont,
   },
 
-  '& .kbd': {
-    ...CodeFont,
-    padding: '0.1em 0.6em',
-    border: '1px solid #ccc',
-    fontSize: 12,
-    backgroundColor: '#f7f7f7',
-    color: '#333',
-    boxShadow: '0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset',
-    borderRadius: 3,
-    display: 'inline-block',
-    margin: '0 4px',
-    textShadow: '0 1px 0 #fff',
-    lineHeight: 1.4,
-    whiteSpace: 'nowrap'
-  },
+  '& .kbd': kbd,
 
   '& .hr': {
+    ...hr,
     ...GrayFont,
-
     '& > span': {
       opacity: 0.2
-    },
-
-    '&:after': {
-      content: '\'\'', // who knew you could do this? The internet, that's who.
-      display: 'block',
-      borderBottom: `3px solid ${BORDER_COLOR}`
     }
   }
 }
