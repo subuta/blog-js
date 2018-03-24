@@ -10,6 +10,9 @@ import remarkMath from 'remark-math'
 import katexHtml from 'remark-html-katex'
 import html from 'remark-html'
 import slug from 'remark-slug'
+import highlight from './highlight'
+
+// parser & transformer
 import emoji from './emoji'
 
 const processor = unified()
@@ -24,9 +27,10 @@ const processor = unified()
     throwOnError: false
   })
   .use(slug)
+  .use(highlight)
+  .use(emoji)
   // Because we will sanitize by ourselves(via xss)
   .use(html, {sanitize: false})
-  .use(emoji)
 
 export const tokenize = (markdown) => processor.parse(markdown)
 
@@ -53,6 +57,10 @@ export const sanitizeHtml = (html) => xss(html, {
       'data-card-key',
       'data-card-align',
       'data-card-controls'
+    ],
+
+    code: [
+      'class'
     ],
 
     // allow id for remark-slug

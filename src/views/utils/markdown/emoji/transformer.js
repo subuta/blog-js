@@ -46,7 +46,7 @@ export default function transformer (settings) {
   }
 
   function transformer (tree) {
-    visit(tree, 'emoji', function (node) {
+    visit(tree, 'emoji', (node) => {
       // ignore if not matched.
       if (!node.value.match(RE_EMOJI)) return
       node.value = node.value.replace(RE_EMOJI, getEmoji)

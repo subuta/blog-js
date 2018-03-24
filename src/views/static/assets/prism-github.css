@@ -3,6 +3,8 @@
  * @author Luke Askew http://github.com/lukeaskew
  * FROM: https://github.com/LukeAskew/prism-github
  */
+
+/* Use prism only for jsx highlighting until highlight.js's better jsx support landing. :) */
 code,
 code[class*='language-jsx'],
 pre[class*='language-jsx'],
