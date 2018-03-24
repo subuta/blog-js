@@ -3,6 +3,7 @@ import createWithStyles from 'src/views/utils/style'
 import {
   BLACK_COLOR,
   GRAY_COLOR,
+  BORDER_COLOR,
   PRIMARY_COLOR,
   WIKI_APP_COLOR
 } from 'src/views/constants/style'
@@ -24,8 +25,15 @@ const Paper = {
     display: 'inline-block'
   },
 
-  '.article-content': {
-    margin: '16px 0 0'
+  '.editor, .content': {
+    margin: '16px 0 0 !important',
+    whiteSpace: 'pre-wrap',
+    wordWrap: 'break-word',
+    overflowWrap: 'break-word',
+
+    '& > *:first-of-type': {
+      marginTop: 0
+    }
   }
 }
 
@@ -42,7 +50,24 @@ const ScrollContainer = {
   color: `${BLACK_COLOR} !important`
 }
 
+const EditorArea = {
+  display: 'flex',
+
+  '& > .editor': {
+    paddingRight: 8,
+    flex: '0 0 auto',
+    width: '50%',
+    borderRight: `3px solid ${BORDER_COLOR}`
+  },
+  '& > .content': {
+    paddingLeft: 8,
+    flex: '0 0 auto',
+    width: '50%'
+  }
+}
+
 export default createWithStyles({
   Paper,
-  ScrollContainer
+  ScrollContainer,
+  EditorArea
 })

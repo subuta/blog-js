@@ -17,11 +17,13 @@ import {
   compose,
   branch,
   withState,
+  withHandlers,
   withProps,
   renderComponent
 } from 'recompose'
 
 import MdEditIcon from 'react-icons/lib/md/edit'
+import MdSaveIcon from 'react-icons/lib/md/save'
 
 import withStyles from './style'
 import connect from './connect'
@@ -33,18 +35,20 @@ const enhanceContent = compose(
     renderComponent((props) => {
       const {
         setDraftContent,
-        draftContent
+        draftContent,
+        styles
       } = props
       return (
-        <div>
-          <div dangerouslySetInnerHTML={{__html: toHtml(draftContent)}}/>
-
-          <hr/>
-
+        <div className={styles.EditorArea}>
           <Editor
-            className="article-content"
+            className="editor"
             onSave={setDraftContent}
             value={draftContent}
+          />
+
+          <div
+            className="content"
+            dangerouslySetInnerHTML={{__html: toHtml(draftContent)}}
           />
         </div>
       )
@@ -57,9 +61,43 @@ const ArticleContent = enhanceContent(({article}) => {
   const {content} = article
   return (
     <div
-      className="article-content"
+      className="content"
       dangerouslySetInnerHTML={{__html: toHtml(content)}}
     />
+  )
+})
+
+const enhanceArticleAction = compose(
+  branch(
+    ({isEditing}) => isEditing,
+    renderComponent((props) => {
+      const {article, styles} = props
+      return (
+        <FloatingActionButton className={styles.FloatingActionButton}>
+          <ActiveLink
+            href={`/article?id=${article.id}&edit=true`}
+            as={`/w/${article.id}/edit`}
+          >
+            <MdSaveIcon/>
+          </ActiveLink>
+        </FloatingActionButton>
+      )
+    }),
+    _.identity
+  )
+)
+
+const ArticleAction = enhanceArticleAction((props) => {
+  const {article, styles} = props
+  return (
+    <FloatingActionButton className={styles.FloatingActionButton}>
+      <ActiveLink
+        href={`/article?id=${article.id}&edit=true`}
+        as={`/w/${article.id}/edit`}
+      >
+        <MdEditIcon/>
+      </ActiveLink>
+    </FloatingActionButton>
   )
 })
 
@@ -77,8 +115,7 @@ export default enhance((props) => {
   const {
     article,
     styles,
-    isAuthenticated,
-    isEditing
+    isAuthenticated
   } = props
 
   const {title, content, id} = article
@@ -98,16 +135,7 @@ export default enhance((props) => {
 
             <ArticleContent {...props}/>
 
-            {isAuthenticated && (
-              <FloatingActionButton className={styles.FloatingActionButton}>
-                <ActiveLink
-                  href={`/article?id=${id}&edit=true`}
-                  as={`/w/${id}/edit`}
-                >
-                  <MdEditIcon/>
-                </ActiveLink>
-              </FloatingActionButton>
-            )}
+            {isAuthenticated && <ArticleAction {...props}/>}
           </Paper>
         </Content>
       </div>

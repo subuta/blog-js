@@ -122,6 +122,7 @@ const enhance = compose(
 //       ブロック表示されるnodeのプレビュー機能を足す。
 export default enhance((props) => {
   const {
+    className,
     anchorNode,
     editorState,
     onChange,
@@ -132,8 +133,13 @@ export default enhance((props) => {
     styles
   } = props
 
+  let editorWrapperClass = styles.EditorWrapper
+  if (className) {
+    editorWrapperClass += ` ${className}`
+  }
+
   return (
-    <div className={styles.EditorWrapper}>
+    <div className={editorWrapperClass}>
       <EmojiAutoComplete
         referenceNode={anchorNode}
         value={emojiFilter}

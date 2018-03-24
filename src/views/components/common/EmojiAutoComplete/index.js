@@ -64,8 +64,8 @@ const enhance = compose(
   }),
   withHandlers({
     onClickEmoji: ({onSelect}) => onSelect,
-    confirmEmoji: ({cursor, onSelect, candidates}) => (e) => {
-      if (!candidates[cursor]) return undefined
+    confirmEmoji: ({cursor, onSelect, candidates, isShow}) => (e) => {
+      if (!isShow) return undefined
 
       onSelect(candidates[cursor], e)
 
@@ -75,7 +75,9 @@ const enhance = compose(
       return false
     },
     // value might be +1 || -1
-    moveCursor: ({cursor, setCursor, candidates}) => (value) => {
+    moveCursor: ({cursor, setCursor, candidates, isShow}) => (value, e) => {
+      if (!isShow) return undefined
+
       let nextCursor = cursor + value
       if (nextCursor < 0) {
         nextCursor = candidates.length
@@ -83,6 +85,9 @@ const enhance = compose(
         nextCursor = 0
       }
       setCursor(nextCursor)
+
+      e.preventDefault()
+      return false
     },
   }),
   withHandlers((props) => {
@@ -128,16 +133,12 @@ const enhance = compose(
     const onKeyDown = (e) => {
       // move upwards
       if (keycode(e) === 'up') {
-        moveCursor(-1)
-        e.preventDefault()
-        return false
+        return moveCursor(-1, e)
       }
 
       // move downwards
       if (keycode(e) === 'down') {
-        moveCursor(1)
-        e.preventDefault()
-        return false
+        return moveCursor(1, e)
       }
 
       if (keycode(e) === 'enter') return confirmEmoji(e)
@@ -159,8 +160,6 @@ const enhance = compose(
         if (!_referenceNode) return
         if (!popper) return initialize(_referenceNode)
         if (!portal) portal = appendPortalNode(PORTAL_CLASS)
-
-        console.log('referenceNode=  ', referenceNode);
 
         // if node reference changed
         if (referenceNode !== _referenceNode) {
