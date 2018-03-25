@@ -36,6 +36,10 @@ const Paper = {
   }
 }
 
+const Title = {
+  margin: '0 !important'
+}
+
 const ScrollContainer = {
   position: 'relative',
   display: 'flex',
@@ -67,6 +71,7 @@ const EditorArea = {
 
 export default createWithStyles({
   Paper,
+  Title,
   ScrollContainer,
   EditorArea
 })

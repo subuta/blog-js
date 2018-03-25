@@ -41,6 +41,7 @@ const Sidebar = {
   background: CHAT_APP_COLOR,
 
   '& h4': {
+    margin: '16px 0 16px',
     fontFamily: 'inherit',
     fontWeight: '900'
   },

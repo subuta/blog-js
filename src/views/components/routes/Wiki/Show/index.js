@@ -131,7 +131,7 @@ export default enhance((props) => {
           <Header/>
 
           <Paper className={styles.Paper}>
-            <h4>{title}</h4>
+            <h4 className={styles.Title}>{title}</h4>
             <small className="created-at">{createdAt}</small>
 
             <ArticleContent {...props}/>

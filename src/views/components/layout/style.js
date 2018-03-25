@@ -67,7 +67,7 @@ const a = {
 }
 
 export const headings = {
-  margin: '0 0 16px',
+  margin: '8px 0 16px',
   fontFamily: SANS_FONT,
   fontWeight: 'inherit',
   lineHeight: 1.2
