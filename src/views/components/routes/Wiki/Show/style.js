@@ -27,7 +27,6 @@ const Paper = {
 
   '.editor, .content': {
     margin: '16px 0 0 !important',
-    whiteSpace: 'pre-wrap',
     wordWrap: 'break-word',
     overflowWrap: 'break-word',
 

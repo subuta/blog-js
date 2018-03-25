@@ -52,7 +52,7 @@ export default class MyDocument extends Document {
         <link rel="stylesheet" href={`${staticFolder}/assets/emoji-js.css`}/>
         <link rel="stylesheet" href={`${staticFolder}/assets/highlight-github.css`}/>
         <link rel="stylesheet" href={`${staticFolder}/assets/prism-github.css`}/>
-        <link rel="stylesheet" href={`${staticFolder}/assets/katex.min.css`}/>
+        <link rel="stylesheet" href={`${staticFolder}/assets/katex.css`}/>
         <link rel="stylesheet" href={`${staticFolder}/assets/symbol/sprite.css`}/>
 
         {/* custom script goes here */}
