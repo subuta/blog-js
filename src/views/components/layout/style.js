@@ -4,7 +4,7 @@ import { staticFolder } from 'src/views/constants/config'
 import { source } from 'common-tags'
 
 import {
-  ACCENT3_COLOR,
+  ACCENT4_COLOR,
   PRIMARY_COLOR,
   BLACK_COLOR,
   SANS_FONT,
@@ -18,7 +18,6 @@ import {
   CODE_FONT,
   BORDER_COLOR
 } from 'src/views/constants/style'
-import { ACCENT4_COLOR } from '../../constants/style'
 
 const isBrowser = typeof window !== 'undefined'
 
@@ -48,11 +47,27 @@ const body = {
 }
 
 const p = {
-  marginBottom: '1.3em'
+  margin: '0 0 16px 0',
+  lineHeight: '1.5rem',
+  minHeight: '1.5rem',
+  [TABLET_MEDIA_QUERY]: {
+    letterSpacing: '0.2px',
+  }
+}
+
+const a = {
+  margin: 0,
+  color: ACCENT4_COLOR,
+  fontWeight: 'bold',
+  wordBreak: 'break-all',
+  textDecoration: 'none',
+  '&:hover': {
+    textDecoration: 'underline'
+  }
 }
 
 export const headings = {
-  margin: '32px 0 16px',
+  margin: '0 0 16px',
   fontFamily: SANS_FONT,
   fontWeight: 'inherit',
   lineHeight: 1.2
@@ -87,6 +102,24 @@ export const button = {
   '-webkit-appearance': 'none !important'
 }
 
+export const blockquote = {
+  margin: `8px 0 !important`,
+  padding: `8px 0 8px 16px`,
+  position: 'relative',
+  fontStyle: 'italic',
+  fontWeight: 'bold',
+  lineHeight: '1em',
+  color: '#888888',
+  '&:after': {
+    content: '\'\'',
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    borderLeft: `4px solid ${BORDER_COLOR}`
+  }
+}
+
 export const kbd = {
   fontFamily: CODE_FONT,
   padding: '0.1em 0.6em',
@@ -112,6 +145,11 @@ export const hr = {
   }
 }
 
+export const code = {
+  padding: 8,
+  backgroundColor: '#F4F4F4'
+}
+
 export const inlineCode = {
   fontFamily: CODE_FONT,
   margin: '0 4px',
@@ -132,7 +170,7 @@ export const table = {
   boxSizing: 'border-box',
 
   '& th': {
-    padding: `0 0 4px`,
+    padding: `8px 0`,
     display: 'table-cell',
     fontWeight: 'bold',
 
@@ -144,24 +182,24 @@ export const table = {
 
   '& tr': {
     borderTop: 'none',
+    borderBottom: `1px solid ${BORDER_COLOR}`,
     [TABLET_MEDIA_QUERY]: {
-      borderTop: `1px solid ${BORDER_COLOR}`,
-      borderBottom: `1px solid ${BORDER_COLOR}`
+      borderTop: `1px solid ${BORDER_COLOR}`
+    },
+
+    '&:first-of-type': {
+      borderTop: `1px solid ${BORDER_COLOR}`
     }
   },
 
   '& td': {
-    padding: `0 0 4px`,
+    padding: `8px 0`,
     display: 'table-cell',
 
     [TABLET_MEDIA_QUERY]: {
       display: 'flex',
       textAlign: 'left',
-      padding: `8px 8px 8px 0 !important`,
-
-      '&:first-child': {
-        padding: `4px 0`
-      }
+      padding: `8px 8px 8px 0 !important`
     },
 
     '&:before': {
@@ -222,6 +260,7 @@ export default createWithStyles({
     html,
     body,
     p,
+    a,
     h1,
     h2,
     h3,
@@ -231,8 +270,10 @@ export default createWithStyles({
     table,
     kbd,
     hr,
+    code,
+    blockquote,
     'code.inline': inlineCode,
-    'h1, h2, h3, h4': headings,
+    'h1, h2, h3, h4, h5': headings,
     [`button, html [type="button"], [type="reset"], [type="submit"]`]: button
   },
   rules: [

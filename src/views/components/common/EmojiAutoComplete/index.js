@@ -44,7 +44,7 @@ const enhance = compose(
       setIsForcedHide(false)
 
       return {
-        isShow: value.length >= 3,
+        isShow: value.length >= 2,
         candidates: emojiIndex.search(_.trimStart(value, ':')) || []
       }
     }

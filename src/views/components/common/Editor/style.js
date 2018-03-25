@@ -17,6 +17,7 @@ import {
   h5,
   kbd,
   hr,
+  blockquote,
   inlineCode
 } from 'src/views/components/layout/style'
 
@@ -35,18 +36,9 @@ const Editor = {
   '& .heading': {
     ...headings,
     display: 'inline-block',
-    margin: '16px 0 8px',
 
-    '&.d-1': {
-      ...h1,
-      margin: '16px 0 16px !important',
-      padding: '0 0 8px 0'
-    },
-    '&.d-2': {
-      ...h2,
-      padding: '0 0 8px 0'
-    },
-
+    '&.d-1': h1,
+    '&.d-2': h2,
     '&.d-3': h3,
     '&.d-4': h4,
     '&.d-5': h5,
@@ -71,18 +63,7 @@ const Editor = {
 
   '& .blockquote': {
     ...GrayFont,
-    margin: `8px 0 !important`,
-    padding: `0 0 0 8px`,
-    position: 'relative',
-    fontStyle: 'italic',
-    '&:after': {
-      content: '\'\'',
-      position: 'absolute',
-      left: 0,
-      top: 0,
-      bottom: 0,
-      borderLeft: `4px solid ${BORDER_COLOR}`
-    }
+    ...blockquote
   },
 
   // RWD idea from http://codepen.io/geoffyuen/pen/FCBEg?editors=1100

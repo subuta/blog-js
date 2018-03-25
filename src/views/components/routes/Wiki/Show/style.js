@@ -17,8 +17,8 @@ const Paper = {
     }
   },
 
-  'h4': {
-    margin: '0 !important'
+  '& > h4': {
+    margin: 0
   },
 
   '.created-at': {
