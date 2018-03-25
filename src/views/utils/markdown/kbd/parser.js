@@ -72,7 +72,6 @@ function plugin () {
   // Stringify
   if (Compiler) {
     // FIXME: remark-htmlのuseを上にずらすと、Compilerが定義されるものの、Compiler.prototype.visitorsがいない・・
-    console.log('Compiler.prototype = ', Compiler.prototype.visitors);
     // const visitors = Compiler.prototype.visitors
     // visitors.kbd = function (node) {
     //   console.log('here!!!');

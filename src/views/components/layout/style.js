@@ -114,7 +114,7 @@ export const hr = {
 
 export const inlineCode = {
   fontFamily: CODE_FONT,
-  margin: '0 0 0 4px',
+  margin: '0 4px',
   padding: '0 4px',
   display: 'inline-block',
   borderRadius: 4,

@@ -3,6 +3,7 @@ import { getData } from 'emoji-mart/dist/utils'
 import _ from 'lodash'
 import { staticFolder } from 'src/views/constants/config'
 import isRetina from 'src/views/utils/isRetina'
+import { html2hast } from 'src/views/utils/markdown/util'
 
 const RE_EMOJI = /:[\w+\-1-:]+:/g
 
@@ -14,13 +15,12 @@ const multiply = 100 / (SHEET_COLUMNS - 1)
 export const SHEET_URL = isRetina() ? `${staticFolder}/assets/images/emoji-datasource-v4_0_2/sheet_apple_64.png` : `${staticFolder}/assets/images/emoji-datasource-v4_0_2/sheet_apple_64.png`
 
 const round = (value, precision) => {
-  const multiplier = Math.pow(10, precision || 0);
-  return Math.round(value * multiplier) / multiplier;
+  const multiplier = Math.pow(10, precision || 0)
+  return Math.round(value * multiplier) / multiplier
 }
 
 const decorate = (_short_name, emoji) => {
   if (!emoji) return
-
   const short_name = _.trim(_short_name, ':')
   const colons = `:${short_name}:`
 
@@ -35,22 +35,23 @@ const decorate = (_short_name, emoji) => {
 
 export default function transformer (settings) {
   function getEmoji (match) {
-    const emoji = decorate(match, getData(match, 1, 'apple'))
-    if (!emoji) return match
-
+    const emoji = decorate(match, getData(_.trim(match, ':'), 1, 'apple'))
     const style = `background: url(${SHEET_URL});background-position: ${emoji.sheet_x} ${emoji.sheet_y};background-size: ${100 * SHEET_COLUMNS}% ${100 * SHEET_COLUMNS}%`
-    const got = `<span class="emoji-outer emoji-sizer x2"><span class="emoji-inner" style="${style}" title="${emoji.short_name}" data-codepoints="${emoji.unified}">${emoji.short_name}</span></span>`
-
-    if (!got) return match
-    return got
+    return `<span class="emoji-outer emoji-sizer x2"><span class="emoji-inner" style="${style}" title="${emoji.short_name}" data-codepoints="${emoji.unified}">${emoji.short_name}</span></span>`
   }
 
   function transformer (tree) {
-    visit(tree, 'emoji', (node) => {
+    visit(tree, 'text', (node) => {
       // ignore if not matched.
-      if (!node.value.match(RE_EMOJI)) return
-      node.value = node.value.replace(RE_EMOJI, getEmoji)
-      node.type = 'html'
+      const match = node.value.match(RE_EMOJI)
+      if (!match || !getData(_.trim(match, ':'), 1, 'apple')) return
+
+      // transform emoji HTML to HAST.
+      const root = html2hast(node.value.replace(RE_EMOJI, getEmoji))
+
+      node.type = root.type
+      node.tagName = root.tagName
+      node.children = root.children
     })
   }
 

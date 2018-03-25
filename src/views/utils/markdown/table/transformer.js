@@ -2,6 +2,7 @@ import visit from 'unist-util-visit'
 
 import _ from 'lodash'
 
+// FIXME: make code base compatible with rehype.
 export default function transformer (settings = {}) {
   function visitor (node) {
     if (node.type !== 'table') return
