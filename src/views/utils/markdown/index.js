@@ -3,11 +3,10 @@ import xss from 'xss'
 
 // parser
 import markdown from 'remark-parse'
-import remarkMath from 'remark-math'
+import math from 'remark-math'
 
 // transformer
-import katexHtml from 'remark-html-katex'
-import html from 'remark-html'
+import katex from 'rehype-katex'
 import slug from 'remark-slug'
 import highlight from './highlight'
 import table from './table'
@@ -15,24 +14,28 @@ import table from './table'
 // parser & transformer
 import emoji from './emoji'
 import kbd from './kbd'
+import m2h from 'remark-rehype'
+import stringify from 'rehype-stringify'
 
 const processor = unified()
   .use(markdown, {
     gfm: true,
     commonmark: true
   })
-  .use(remarkMath)
-  .use(katexHtml, {
+  .use(m2h, {allowDangerousHTML: true})
+  .use(math)
+  .use(katex, {
     // ignore katex parser error.
     throwOnError: false
   })
   .use(slug)
-  .use(kbd)
   .use(highlight)
   .use(emoji)
   .use(table)
-  // Because we will sanitize by ourselves(via xss)
-  .use(html, {sanitize: false})
+  .use(stringify, {
+    allowDangerousHTML: true
+  })
+  .use(kbd)
 
 export const tokenize = (markdown) => processor.parse(markdown)
 

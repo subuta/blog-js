@@ -1,4 +1,5 @@
 import visit from 'unist-util-visit'
+
 import _ from 'lodash'
 
 export default function transformer (settings = {}) {
