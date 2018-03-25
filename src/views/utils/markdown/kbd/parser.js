@@ -27,9 +27,6 @@ function plugin () {
     let subvalue = ''
     let index = 1
     const length = value.length
-    const now = eat.now()
-    now.column += 2
-    now.offset += 2
 
     while (++index < length) {
       character = value.charAt(index)
@@ -43,13 +40,10 @@ function plugin () {
         /* istanbul ignore if - never used (yet) */
         if (silent) return true
 
-        return eat(DOUBLE + subvalue + DOUBLE)({
-          type: 'kbd',
-          children: this.tokenizeInline(subvalue, now),
-          data: {
-            hName: 'kbd',
-          },
-        })
+        /* Eat a text-node. */
+        subvalue = DOUBLE + subvalue + DOUBLE
+
+        return eat(subvalue)({type: 'kbd', value: subvalue})
       }
 
       subvalue += previous
@@ -57,6 +51,7 @@ function plugin () {
       previous = character
     }
   }
+
   inlineTokenizer.locator = locator
 
   const Parser = this.Parser
@@ -65,19 +60,7 @@ function plugin () {
   const inlineTokenizers = Parser.prototype.inlineTokenizers
   const inlineMethods = Parser.prototype.inlineMethods
   inlineTokenizers.kbd = inlineTokenizer
-  inlineMethods.splice(inlineMethods.indexOf('text'), 0, 'kbd')
-
-  const Compiler = this.Compiler
-
-  // Stringify
-  if (Compiler) {
-    // FIXME: remark-htmlのuseを上にずらすと、Compilerが定義されるものの、Compiler.prototype.visitorsがいない・・
-    // const visitors = Compiler.prototype.visitors
-    // visitors.kbd = function (node) {
-    //   console.log('here!!!');
-    //   return `||${this.all(node).join('')}||`
-    // }
-  }
+  inlineMethods.splice(inlineMethods.indexOf('strong'), 0, 'kbd')
 }
 
 export default plugin

@@ -32,10 +32,10 @@ const processor = unified()
   .use(highlight)
   .use(emoji)
   .use(table)
+  .use(kbd)
   .use(stringify, {
     allowDangerousHTML: true
   })
-  .use(kbd)
 
 export const tokenize = (markdown) => processor.parse(markdown)
 
@@ -98,6 +98,8 @@ export const sanitizeHtml = (html) => xss(html, {
     h6: [
       'id'
     ],
+
+    kbd: []
   }
 })
 

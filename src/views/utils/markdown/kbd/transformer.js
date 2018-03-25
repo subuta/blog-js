@@ -1,31 +1,18 @@
 import visit from 'unist-util-visit'
 import _ from 'lodash'
 
-// TODO: この辺を参考にしつつ、kbdタグをparseできるようにする。
-// https://github.com/rehypejs/rehype-highlight/blob/master/index.js
+const RE_KBD = /\|\|[\S\s ]+\|\|/g
+
 export default function transformer (settings = {}) {
   return tree => {
-    // console.log(tree);
-    visit(tree, 'kbd', (node) => {
-      // node = {
-      //   type: node.type,
-      //   value: _.get(node, 'children.0.value'),
-      //   data: {
-      //     hName: 'kbd',
-      //     hProperties: {},
-      //     hChildren: [
-      //       {
-      //         type: 'text',
-      //         value: _.get(node, 'children.0.value')
-      //       }
-      //     ]
-      //   }
-      // }
-      // node.data = {
-      //   hName: 'kbd',
-      //   hChildren: node.children
-      // }
-      return node
+    visit(tree, 'text', (node) => {
+      if (!node.value.match(RE_KBD)) return
+      node.type = 'element'
+      node.tagName = 'kbd'
+      node.children = [{
+        type: 'text',
+        value: _.trim(node.value.match(RE_KBD), '|')
+      }]
     })
   }
 }
