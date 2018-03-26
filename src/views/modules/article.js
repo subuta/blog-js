@@ -63,10 +63,10 @@ export const createArticle = (params) => {
   }
 }
 
-export const updateArticle = (params, id) => {
+export const updateArticle = (id, params) => {
   return (dispatch) => {
     dispatch({type: REQUEST_ARTICLES})
-    return api.article.update(params, id).then((data) => {
+    return api.article.update(id, params).then((data) => {
       /* mat Update data transform [start] */
       /* mat Update data transform [end] */
       dispatch(setArticles(normalize(data, article)))

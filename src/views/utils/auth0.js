@@ -62,7 +62,7 @@ const setSession = ({accessToken, expiresIn}) => {
   Cookie.set(AUTH0_EXPIRATION, expiresAt)
 }
 
-export const revokeSession = () => {
+const revokeSession = () => {
   Cookie.remove(ACCESS_TOKEN)
   Cookie.remove(AUTH0_EXPIRATION)
 }

@@ -30,7 +30,6 @@ import withStyles from './style'
 import connect from './connect'
 
 const enhanceContent = compose(
-  withState('draftContent', 'setDraftContent', ({article}) => article ? article.content : ''),
   branch(
     ({isEditing}) => isEditing,
     renderComponent((props) => {
@@ -72,14 +71,18 @@ const enhanceArticleAction = compose(
   branch(
     ({isEditing}) => isEditing,
     renderComponent((props) => {
-      const {article, styles} = props
+      const {
+        article,
+        styles,
+        onClickSave
+      } = props
       return (
         <FloatingActionButton className={styles.FloatingActionButton}>
           <ActiveLink
             href={`/article?id=${article.id}&edit=true`}
             as={`/w/${article.id}/edit`}
           >
-            <MdSaveIcon/>
+            <MdSaveIcon onClick={onClickSave}/>
           </ActiveLink>
         </FloatingActionButton>
       )
@@ -104,12 +107,18 @@ const ArticleAction = enhanceArticleAction((props) => {
 
 const enhance = compose(
   withStyles,
+  connect,
+  withState('draftContent', 'setDraftContent', ({article}) => article ? article.content : ''),
   withProps(({url}) => {
     return {
       isEditing: _.get(url, 'query.edit')
     }
   }),
-  connect,
+  withHandlers({
+    onClickSave: ({article, draftContent, updateArticle}) => () => {
+      updateArticle(article.id, {...article, content: draftContent})
+    }
+  })
 )
 
 export default enhance((props) => {

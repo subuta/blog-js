@@ -50,10 +50,10 @@ export const createComment = (params) => {
   }
 }
 
-export const updateComment = (params, id) => {
+export const updateComment = (id, params) => {
   return (dispatch) => {
     dispatch({type: REQUEST_COMMENTS})
-    return api.comment.update(params, id).then((data) => {
+    return api.comment.update(id, params).then((data) => {
 
       dispatch(setComments(normalize(data, comment)))
       return data

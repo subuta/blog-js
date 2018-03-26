@@ -25,7 +25,13 @@ const enhance = compose(
   withRouter
 )
 
-export default enhance(({styles, articles}) => {
+export default enhance((props) => {
+  const {
+    styles,
+    articles,
+    isAuthenticated,
+  } = props
+
   return (
     <Layout>
       <div className={styles.ScrollContainer}>
@@ -58,9 +64,11 @@ export default enhance(({styles, articles}) => {
               })}
             </ul>
 
-            <FloatingActionButton className={styles.FloatingActionButton}>
-              <MdAddIcon />
-            </FloatingActionButton>
+            {isAuthenticated && (
+              <FloatingActionButton className={styles.FloatingActionButton}>
+                <MdAddIcon />
+              </FloatingActionButton>
+            )}
           </Paper>
         </Content>
       </div>
