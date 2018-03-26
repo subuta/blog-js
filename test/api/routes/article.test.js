@@ -136,6 +136,7 @@ test('update should update article', async (t) => {
   t.deepEqual(response.body.id, 14129)
   t.deepEqual(response.body.title, 'Shoes Nakfa')
   t.deepEqual(response.body.summary, 'Mews channels')
+  // FIXME: boolean value become integer at SQLite but not for Postgres ;)
   t.deepEqual(response.body.isPublished, true)
   t.deepEqual(
     response.body.content,

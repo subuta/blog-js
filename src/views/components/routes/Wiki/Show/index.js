@@ -25,6 +25,8 @@ import {
 
 import MdEditIcon from 'react-icons/lib/md/edit'
 import MdSaveIcon from 'react-icons/lib/md/save'
+import MdPublishIcon from 'react-icons/lib/md/publish'
+import MdLockIcon from 'react-icons/lib/md/lock-outline'
 
 import withStyles from './style'
 import connect from './connect'
@@ -74,10 +76,31 @@ const enhanceArticleAction = compose(
       const {
         article,
         styles,
-        onClickSave
+        onClickSave,
+        onClickPublish
       } = props
+
+      let subActions = []
+
+      if (article.isPublished) {
+        subActions.push((
+          <MdLockIcon
+            onClick={onClickPublish}
+          />
+        ))
+      } else {
+        subActions.push((
+          <MdPublishIcon
+            onClick={onClickPublish}
+          />
+        ))
+      }
+
       return (
-        <FloatingActionButton className={styles.FloatingActionButton}>
+        <FloatingActionButton
+          className='button-fab'
+          subActions={subActions}
+        >
           <ActiveLink
             href={`/article?id=${article.id}&edit=true`}
             as={`/w/${article.id}/edit`}
@@ -94,7 +117,7 @@ const enhanceArticleAction = compose(
 const ArticleAction = enhanceArticleAction((props) => {
   const {article, styles} = props
   return (
-    <FloatingActionButton className={styles.FloatingActionButton}>
+    <FloatingActionButton className='button-fab'>
       <ActiveLink
         href={`/article?id=${article.id}&edit=true`}
         as={`/w/${article.id}/edit`}
@@ -115,6 +138,12 @@ const enhance = compose(
     }
   }),
   withHandlers({
+    onClickPublish: ({article, updateArticle}) => () => {
+      const {isPublished} = article
+      // toggle published state.
+      updateArticle(article.id, {...article, isPublished: !isPublished})
+    },
+
     onClickSave: ({article, draftContent, updateArticle}) => () => {
       updateArticle(article.id, {...article, content: draftContent})
     }

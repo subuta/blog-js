@@ -5,15 +5,22 @@ import {
 
   TABLET_MEDIA_QUERY,
 
+  EASE_STANDARD,
   Z_INDEX_1
 } from 'src/views/constants/style'
 
-const FloatingActionButton = {
-  ...Z_INDEX_1,
+const FloatingActionButtonWrapper = {
   position: 'fixed !important',
-  padding: 0,
   right: 32,
   bottom: 16,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center'
+}
+
+const FloatingActionButton = {
+  ...Z_INDEX_1,
+  padding: 0,
   height: 56,
   width: 56,
   textAlign: 'center',
@@ -31,6 +38,20 @@ const FloatingActionButton = {
     color: 'inherit'
   },
 
+  '&.is-sub': {
+    opacity: 0,
+    margin: '0 0 8px',
+    height: 48,
+    width: 48,
+    pointerEvents: 'none',
+    transition: `all 0.3s ${EASE_STANDARD}`,
+
+    '.is-hovered &': {
+      opacity: 1,
+      pointerEvents: 'auto'
+    }
+  },
+
   '&:hover': {
     backgroundColor: PRIMARY_COLOR
   },
@@ -41,5 +62,6 @@ const FloatingActionButton = {
 }
 
 export default createWithStyles({
+  FloatingActionButtonWrapper,
   FloatingActionButton
 })

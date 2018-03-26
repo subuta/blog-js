@@ -1,13 +1,14 @@
 import Model from './Model'
 
 export default class Articletag extends Model {
-  $parseDatabaseJson(json) {
+  // SEE: https://github.com/Vincit/objection.js/issues/825
+  $parseDatabaseJson(db) {
     // Remember to call the super class's implementation.
-    json = super.$parseDatabaseJson(json)
-    // Parse boolean props.
-    // SEE: https://github.com/Vincit/objection.js/issues/174
+    return super.$parseDatabaseJson(db)
+  }
 
-    return json
+  $formatDatabaseJson(json) {
+    return super.$formatDatabaseJson(json)
   }
 
   static register = (models) => {

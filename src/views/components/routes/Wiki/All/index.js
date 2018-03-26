@@ -65,7 +65,7 @@ export default enhance((props) => {
             </ul>
 
             {isAuthenticated && (
-              <FloatingActionButton className={styles.FloatingActionButton}>
+              <FloatingActionButton className='button-fab'>
                 <MdAddIcon />
               </FloatingActionButton>
             )}
