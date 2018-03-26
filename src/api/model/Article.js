@@ -1,6 +1,15 @@
 import Model from './Model'
 
 export default class Article extends Model {
+  $parseDatabaseJson(json) {
+    // Remember to call the super class's implementation.
+    json = super.$parseDatabaseJson(json)
+    // Parse boolean props.
+    // SEE: https://github.com/Vincit/objection.js/issues/174
+    json['isPublished'] = !!parseInt(json['isPublished'])
+    return json
+  }
+
   static register = (models) => {
     // then define relationMappings.
     Article.relationMappings = {
@@ -27,6 +36,7 @@ export default class Article extends Model {
       id: {type: 'integer'},
       title: {type: 'string'},
       summary: {type: 'string'},
+      isPublished: {type: 'boolean'},
       content: {type: 'string'}
     }
   }

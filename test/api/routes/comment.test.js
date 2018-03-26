@@ -89,13 +89,16 @@ test('update should update comment', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .put('/api/channels/undefined/comments/57447')
+    .put('/api/channels/82160/comments/57447')
     .set('Authorization', `Bearer ${token}`)
     .send({
-      article: {
+      comment: {
         id: 57447,
         text:
-          'Laudantium minus consequatur. Doloribus est aut modi illum et exercitationem. Nihil laudantium quas.'
+          'Laudantium minus consequatur. Doloribus est aut modi illum et exercitationem. Nihil laudantium quas.',
+        channelId: 82160,
+        commentedById: 54551,
+        attachmentId: '28d15c5a-a70c-48e4-9772-bc910f421907'
       }
     })
 
@@ -105,6 +108,12 @@ test('update should update comment', async (t) => {
   t.deepEqual(
     response.body.text,
     'Laudantium minus consequatur. Doloribus est aut modi illum et exercitationem. Nihil laudantium quas.'
+  )
+  t.deepEqual(response.body.channelId, 82160)
+  t.deepEqual(response.body.commentedById, 54551)
+  t.deepEqual(
+    response.body.attachmentId,
+    '28d15c5a-a70c-48e4-9772-bc910f421907'
   )
 })
 

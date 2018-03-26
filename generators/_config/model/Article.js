@@ -15,6 +15,9 @@ export default {
     summary: {
       'type': 'string'
     },
+    isPublished: {
+      'type': 'boolean'
+    },
     content: {
       'type': 'string'
     }

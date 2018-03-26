@@ -5,25 +5,28 @@ exports.seed = async (knex) => {
   // https://github.com/tgriesser/knex/issues/54
   await knex('articles').insert([
     {
-      id: 68554,
-      title: 'China Salad eyeballs',
-      summary: 'Avon Wooden Designer',
+      id: 14129,
+      title: 'Plastic Shoes expedite',
+      summary: 'Auto Loan Account',
+      isPublished: false,
       content:
-        'Inventore nostrum deserunt quae deleniti nulla aut est accusamus aspernatur. Inventore praesentium officiis occaecati necessitatibus occaecati nulla voluptatem minima ea. Consequuntur cum neque est.'
+        'Veniam fuga provident. Et consequuntur qui iure quam cumque impedit. Sed quidem dolorem deleniti assumenda earum suscipit sed sapiente rerum. Eius optio nostrum. Doloremque ut dolores ullam sunt occaecati unde hic.'
     },
     {
-      id: 68018,
-      title: 'Bulgarian Lev SQL calculate',
-      summary: 'withdrawal',
+      id: 85002,
+      title: 'online sky blue Towels',
+      summary: 'back-end monitor JBOD',
+      isPublished: false,
       content:
-        'Cumque quis soluta sint impedit aut. Velit totam consectetur quae cum aperiam. Aut reiciendis ut iure reprehenderit aut quod nam nisi.'
+        'Voluptatibus neque iusto deserunt voluptatem. Aspernatur qui harum dolorem sit. Consequuntur qui possimus aut quo eius ipsam natus et excepturi. Commodi eligendi dolores. Est eligendi soluta accusamus omnis voluptatem ut voluptatem labore.'
     },
     {
-      id: 96438,
-      title: 'interface invoice Investment Account',
-      summary: 'Cotton',
+      id: 73427,
+      title: 'Gorgeous Plastic Shirt Intelligent Chair',
+      summary: 'teal',
+      isPublished: true,
       content:
-        'Qui aut provident nihil ut eligendi consequatur autem. Voluptatum est non non eum sunt accusamus. Fuga voluptatem est perspiciatis quod in possimus vitae. Ipsa architecto repudiandae fugiat aut corrupti maxime.'
+        'Accusantium eaque sunt vel. Est consequatur illum. Vero sint at. Reprehenderit consequatur sunt consequatur est quos consequuntur quia sint perspiciatis.'
     }
   ])
 }
