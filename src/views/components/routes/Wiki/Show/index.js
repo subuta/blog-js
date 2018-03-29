@@ -102,8 +102,8 @@ const enhanceArticleAction = compose(
           subActions={subActions}
         >
           <ActiveLink
-            href={`/article?id=${article.id}&edit=true`}
-            as={`/w/${article.id}/edit`}
+            href={`/article?slug=${article.slug}`}
+            as={`/w/${article.slug}`}
           >
             <MdSaveIcon onClick={onClickSave}/>
           </ActiveLink>
@@ -119,8 +119,8 @@ const ArticleAction = enhanceArticleAction((props) => {
   return (
     <FloatingActionButton className='button-fab'>
       <ActiveLink
-        href={`/article?id=${article.id}&edit=true`}
-        as={`/w/${article.id}/edit`}
+        href={`/article?slug=${article.slug}&edit=true`}
+        as={`/w/${article.slug}/edit`}
       >
         <MdEditIcon/>
       </ActiveLink>
@@ -157,7 +157,7 @@ export default enhance((props) => {
     isAuthenticated
   } = props
 
-  const {title, content, id} = article
+  const {title, isPublished, content, id} = article
   const createdAt = moment(article.createdAt).format('MMMM Do YYYY')
 
   return (
@@ -170,7 +170,11 @@ export default enhance((props) => {
 
           <Paper className={styles.Paper}>
             <h4 className={styles.Title}>{title}</h4>
-            <small className="created-at">{createdAt}</small>
+
+            <div className={styles.SubTitle}>
+              <small className="created-at">{createdAt}</small>
+              <small className="published">{isPublished ? '' : 'draft'}</small>
+            </div>
 
             <ArticleContent {...props}/>
 

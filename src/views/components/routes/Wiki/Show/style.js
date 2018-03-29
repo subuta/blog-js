@@ -25,6 +25,12 @@ const Paper = {
     display: 'inline-block'
   },
 
+  '.published': {
+    margin: '-2px 0 0 4px',
+    display: 'inline-block',
+    textDecoration: 'underline'
+  },
+
   '.editor, .content': {
     margin: '16px 0 0 !important',
     wordWrap: 'break-word',
@@ -38,6 +44,13 @@ const Paper = {
 
 const Title = {
   margin: '0 !important'
+}
+
+const SubTitle = {
+  margin: '4px 0 0',
+  display: 'flex',
+  justifyContent: 'flex-start',
+  alignItems: 'center'
 }
 
 const ScrollContainer = {
@@ -72,6 +85,7 @@ const EditorArea = {
 export default createWithStyles({
   Paper,
   Title,
+  SubTitle,
   ScrollContainer,
   EditorArea
 })
