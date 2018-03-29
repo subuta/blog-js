@@ -96,6 +96,18 @@ export const requestArticlesByTagId = (params) => {
     })
   }
 }
+
+export const requestArticleBySlug = (slug) => {
+  return (dispatch) => {
+    dispatch({type: REQUEST_ARTICLES})
+    return api.article.showBySlug(slug).then((data) => {
+      /* mat Index data transform [start] */
+      /* mat Index data transform [end] */
+      dispatch(setArticles(normalize(data, article)))
+      return data
+    })
+  }
+}
 /* mat Custom actionCreators [end] */
 
 // -------------

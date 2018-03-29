@@ -7,9 +7,9 @@ import {
 
 const mapStateToProps = (state, oldProps) => {
   const entities = getArticleEntities(state)
-  const articleId = _.get(oldProps, 'url.query.id', '')
+  const slug = _.get(oldProps, 'url.query.slug', '')
   return {
-    article: entities[articleId]
+    article: _.find(entities, {slug})
   }
 }
 

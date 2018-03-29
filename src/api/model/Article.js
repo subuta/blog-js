@@ -1,10 +1,17 @@
 import Model from './Model'
+import _ from 'lodash'
 
 export default class Article extends Model {
   // SEE: https://github.com/Vincit/objection.js/issues/825
   $parseDatabaseJson(db) {
     // Remember to call the super class's implementation.
-    return super.$parseDatabaseJson(db)
+    const json = super.$parseDatabaseJson(db)
+
+    if (_.isNumber(parseInt(json['isPublished']))) {
+      json['isPublished'] = !!json['isPublished']
+    }
+
+    return json
   }
 
   $formatDatabaseJson(json) {
@@ -37,6 +44,7 @@ export default class Article extends Model {
       id: {type: 'integer'},
       title: {type: 'string'},
       summary: {type: 'string'},
+      slug: {type: 'string'},
       isPublished: {type: 'boolean'},
       content: {type: 'string'}
     }

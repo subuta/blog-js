@@ -84,6 +84,17 @@ article.delete('/:id', auth, async (ctx) => {
 })
 
 /* mat Custom actions [start] */
+article.get('/slug/:slug', async (ctx) => {
+  const {Article} = ctx.state.models
+  let params = {}
+
+  /* mat Before show [start] */
+  /* mat Before show [end] */
+
+  ctx.body = await Article.query()
+    .eager('[tags.articles]')
+    .findFirst({...params, slug: ctx.params.slug})
+})
 /* mat Custom actions [end] */
 
 export default {

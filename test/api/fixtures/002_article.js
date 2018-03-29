@@ -5,28 +5,31 @@ exports.seed = async (knex) => {
   // https://github.com/tgriesser/knex/issues/54
   await knex('articles').insert([
     {
-      id: 14129,
-      title: 'Plastic Shoes expedite',
-      summary: 'Auto Loan Account',
-      isPublished: false,
-      content:
-        'Veniam fuga provident. Et consequuntur qui iure quam cumque impedit. Sed quidem dolorem deleniti assumenda earum suscipit sed sapiente rerum. Eius optio nostrum. Doloremque ut dolores ullam sunt occaecati unde hic.'
-    },
-    {
-      id: 85002,
-      title: 'online sky blue Towels',
-      summary: 'back-end monitor JBOD',
-      isPublished: false,
-      content:
-        'Voluptatibus neque iusto deserunt voluptatem. Aspernatur qui harum dolorem sit. Consequuntur qui possimus aut quo eius ipsam natus et excepturi. Commodi eligendi dolores. Est eligendi soluta accusamus omnis voluptatem ut voluptatem labore.'
-    },
-    {
-      id: 73427,
-      title: 'Gorgeous Plastic Shirt Intelligent Chair',
-      summary: 'teal',
+      id: 76958,
+      title: 'HDD cross-platform core',
+      summary: 'Cambridgeshire',
+      slug: 'accusantium-non-fugiat',
       isPublished: true,
       content:
-        'Accusantium eaque sunt vel. Est consequatur illum. Vero sint at. Reprehenderit consequatur sunt consequatur est quos consequuntur quia sint perspiciatis.'
+        'Doloremque eveniet aut corporis sunt autem nihil quia. Velit modi mollitia sit nulla. Corrupti est deserunt sed dolores deserunt. Ut corporis qui. Sunt dolor culpa corporis error.'
+    },
+    {
+      id: 75213,
+      title: 'blue',
+      summary: 'online',
+      slug: 'ut-sunt-asperiores',
+      isPublished: true,
+      content:
+        'Sapiente voluptatem enim ipsa. Sequi quod quos dolorem saepe dignissimos. Commodi molestiae corporis sequi quo non est nihil rerum ut. Minus maiores illo.'
+    },
+    {
+      id: 52552,
+      title: 'cyan implementation',
+      summary: 'Benin Tuna Wyoming',
+      slug: 'mollitia-soluta-iure',
+      isPublished: true,
+      content:
+        'Animi nobis aliquam non. Non iusto exercitationem. Est iste architecto a expedita ut. Facilis voluptas commodi consectetur eius. Asperiores amet praesentium quas consequuntur perferendis.'
     }
   ])
 }

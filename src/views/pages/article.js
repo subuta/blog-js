@@ -2,12 +2,13 @@ import connext from 'src/views/hoc/connext'
 import { compose } from 'recompose'
 import authorized from 'src/views/hoc/authorized'
 import ShowWikiRoute from 'src/views/components/routes/Wiki/Show'
+import _ from 'lodash'
 
-import { requestArticles } from 'src/views/modules/article'
+import { requestArticleBySlug } from 'src/views/modules/article'
 import { requestTags } from 'src/views/modules/tag'
 
 const mapDispatchToProps = {
-  requestArticles,
+  requestArticleBySlug,
   requestTags
 }
 
@@ -19,10 +20,16 @@ const enhance = compose(
 const ShowWiki = (props) => <ShowWikiRoute {...props}/>
 
 ShowWiki.getInitialProps = async function (ctx) {
-  await Promise.all([
-    ctx.dispatch(requestArticles()),
-    ctx.dispatch(requestTags())
-  ])
+  let promises = []
+
+  promises.push(ctx.dispatch(requestTags()))
+
+  // find article by slug.
+  const slug = _.get(ctx, 'query.slug', '')
+  promises.push(ctx.dispatch(requestArticleBySlug(slug)))
+
+  await Promise.all(promises)
+
   return {}
 }
 

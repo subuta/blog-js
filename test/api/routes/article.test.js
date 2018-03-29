@@ -51,7 +51,7 @@ test('index should list article', async (t) => {
 
   t.is(response.status, 200)
   t.deepEqual(response.body.length, 3)
-  t.deepEqual(_.map(response.body, 'id').sort(), [14129, 73427, 85002])
+  t.deepEqual(_.map(response.body, 'id').sort(), [52552, 75213, 76958])
 })
 
 test('show should return article', async (t) => {
@@ -62,18 +62,19 @@ test('show should return article', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .get('/api/articles/14129')
+    .get('/api/articles/76958')
     .set('Authorization', `Bearer ${token}`)
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 14129)
-  t.deepEqual(response.body.title, 'Plastic Shoes expedite')
-  t.deepEqual(response.body.summary, 'Auto Loan Account')
-  t.deepEqual(response.body.isPublished, false)
+  t.deepEqual(response.body.id, 76958)
+  t.deepEqual(response.body.title, 'HDD cross-platform core')
+  t.deepEqual(response.body.summary, 'Cambridgeshire')
+  t.deepEqual(response.body.slug, 'accusantium-non-fugiat')
+  t.deepEqual(response.body.isPublished, true)
   t.deepEqual(
     response.body.content,
-    'Veniam fuga provident. Et consequuntur qui iure quam cumque impedit. Sed quidem dolorem deleniti assumenda earum suscipit sed sapiente rerum. Eius optio nostrum. Doloremque ut dolores ullam sunt occaecati unde hic.'
+    'Doloremque eveniet aut corporis sunt autem nihil quia. Velit modi mollitia sit nulla. Corrupti est deserunt sed dolores deserunt. Ut corporis qui. Sunt dolor culpa corporis error.'
   )
 })
 
@@ -89,24 +90,26 @@ test('post should create article', async (t) => {
     .set('Authorization', `Bearer ${token}`)
     .send({
       article: {
-        id: 90778,
-        title: 'Shoes Nakfa',
-        summary: 'Mews channels',
-        isPublished: true,
+        id: 7034,
+        title: 'Yemeni Rial',
+        summary: 'Open-architected Avon',
+        slug: 'ex-corporis-quia',
+        isPublished: false,
         content:
-          'Veritatis beatae est velit et voluptatem provident vero. Harum doloremque labore. Ea aut quo alias et explicabo voluptas. Corporis ex voluptatum deleniti rerum laborum. Ex quia qui itaque iure totam molestiae earum. Distinctio et laborum consequatur autem sequi hic in.'
+          'Laboriosam tenetur recusandae. Quia similique ut. Sapiente eligendi maiores nam. Non velit ducimus dignissimos vel voluptatem animi. Dolorem velit alias eveniet.'
       }
     })
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 90778)
-  t.deepEqual(response.body.title, 'Shoes Nakfa')
-  t.deepEqual(response.body.summary, 'Mews channels')
-  t.deepEqual(response.body.isPublished, true)
+  t.deepEqual(response.body.id, 7034)
+  t.deepEqual(response.body.title, 'Yemeni Rial')
+  t.deepEqual(response.body.summary, 'Open-architected Avon')
+  t.deepEqual(response.body.slug, 'ex-corporis-quia')
+  t.deepEqual(response.body.isPublished, false)
   t.deepEqual(
     response.body.content,
-    'Veritatis beatae est velit et voluptatem provident vero. Harum doloremque labore. Ea aut quo alias et explicabo voluptas. Corporis ex voluptatum deleniti rerum laborum. Ex quia qui itaque iure totam molestiae earum. Distinctio et laborum consequatur autem sequi hic in.'
+    'Laboriosam tenetur recusandae. Quia similique ut. Sapiente eligendi maiores nam. Non velit ducimus dignissimos vel voluptatem animi. Dolorem velit alias eveniet.'
   )
 })
 
@@ -118,29 +121,30 @@ test('update should update article', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .put('/api/articles/14129')
+    .put('/api/articles/76958')
     .set('Authorization', `Bearer ${token}`)
     .send({
       article: {
-        id: 14129,
-        title: 'Shoes Nakfa',
-        summary: 'Mews channels',
-        isPublished: true,
+        id: 76958,
+        title: 'Yemeni Rial',
+        summary: 'Open-architected Avon',
+        slug: 'ex-corporis-quia',
+        isPublished: false,
         content:
-          'Veritatis beatae est velit et voluptatem provident vero. Harum doloremque labore. Ea aut quo alias et explicabo voluptas. Corporis ex voluptatum deleniti rerum laborum. Ex quia qui itaque iure totam molestiae earum. Distinctio et laborum consequatur autem sequi hic in.'
+          'Laboriosam tenetur recusandae. Quia similique ut. Sapiente eligendi maiores nam. Non velit ducimus dignissimos vel voluptatem animi. Dolorem velit alias eveniet.'
       }
     })
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 14129)
-  t.deepEqual(response.body.title, 'Shoes Nakfa')
-  t.deepEqual(response.body.summary, 'Mews channels')
-  // FIXME: boolean value become integer at SQLite but not for Postgres ;)
-  t.deepEqual(response.body.isPublished, true)
+  t.deepEqual(response.body.id, 76958)
+  t.deepEqual(response.body.title, 'Yemeni Rial')
+  t.deepEqual(response.body.summary, 'Open-architected Avon')
+  t.deepEqual(response.body.slug, 'ex-corporis-quia')
+  t.deepEqual(response.body.isPublished, false)
   t.deepEqual(
     response.body.content,
-    'Veritatis beatae est velit et voluptatem provident vero. Harum doloremque labore. Ea aut quo alias et explicabo voluptas. Corporis ex voluptatum deleniti rerum laborum. Ex quia qui itaque iure totam molestiae earum. Distinctio et laborum consequatur autem sequi hic in.'
+    'Laboriosam tenetur recusandae. Quia similique ut. Sapiente eligendi maiores nam. Non velit ducimus dignissimos vel voluptatem animi. Dolorem velit alias eveniet.'
   )
 })
 
@@ -155,7 +159,7 @@ test('delete should delete article', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .delete('/api/articles/14129')
+    .delete('/api/articles/76958')
     .set('Authorization', `Bearer ${token}`)
 
   articles = await Article.query()
@@ -180,6 +184,6 @@ test('index should list article and filter by tag', async (t) => {
 
   t.is(response.status, 200)
   t.deepEqual(response.body.length, 1)
-  t.deepEqual(_.map(response.body, 'id').sort(), [14129])
+  t.deepEqual(_.map(response.body, 'id').sort(), [76958])
 })
 /* mat Custom tests [end] */

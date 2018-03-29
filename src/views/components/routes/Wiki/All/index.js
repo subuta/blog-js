@@ -45,13 +45,13 @@ export default enhance((props) => {
 
             <ul className={styles.Articles}>
               {_.map(articles, (props) => {
-                const {id, title, summary} = props
+                const {id, slug, title, summary} = props
                 const createdAt = moment(props.createdAt).format('MMMM Do YYYY')
                 return (
                   <li key={id}>
                     <ActiveLink
-                      href={`/article?id=${id}`}
-                      as={`/w/${id}`}
+                      href={`/article?slug=${slug}`}
+                      as={`/w/${slug}`}
                     >
                       <h4>{title}</h4>
                     </ActiveLink>

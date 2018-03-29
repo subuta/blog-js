@@ -31,6 +31,10 @@ export const destroy = (id) => {
 export const filterByTagId = (tagId) => {
   return request.get(`/articles?tagId=${tagId}`)
 }
+
+export const showBySlug = (slug) => {
+  return request.get(`/articles/slug/${slug}`)
+}
 /* mat Custom action [end] */
 
 let actions = {
@@ -44,6 +48,7 @@ let actions = {
 /* mat Custom exports [start] */
 actions = {
   ...actions,
+  showBySlug,
   filterByTagId
 }
 /* mat Custom exports [end] */

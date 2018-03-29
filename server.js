@@ -51,16 +51,16 @@ app.prepare()
       ctx.respond = false
     })
 
-    router.get('/w/:id', async ctx => {
+    router.get('/w/:slug', async ctx => {
       const actualPage = '/article'
-      const queryParams = {id: ctx.params.id}
+      const queryParams = {slug: ctx.params.slug}
       await app.render(ctx.req, ctx.res, actualPage, queryParams)
       ctx.respond = false
     })
 
-    router.get('/w/:id/edit', async ctx => {
+    router.get('/w/:slug/edit', async ctx => {
       const actualPage = '/article'
-      const queryParams = {id: ctx.params.id, edit: true}
+      const queryParams = {slug: ctx.params.slug, edit: true}
       await app.render(ctx.req, ctx.res, actualPage, queryParams)
       ctx.respond = false
     })

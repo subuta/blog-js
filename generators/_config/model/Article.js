@@ -15,6 +15,9 @@ export default {
     summary: {
       'type': 'string'
     },
+    slug: {
+      'type': 'string'
+    },
     isPublished: {
       'type': 'boolean'
     },
