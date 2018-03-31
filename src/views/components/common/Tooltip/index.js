@@ -1,5 +1,5 @@
 import React from 'react'
-import tippy from 'tippy.js'
+import createTippy from 'tippy.js'
 import _ from 'lodash'
 
 import MdWarningIcon from 'react-icons/lib/md/warning'
@@ -30,64 +30,76 @@ const enhance = compose(
   }),
   withHandlers(() => {
     let toolTipRef = null
+    let tippy = null
+
+    const destroy = () => {
+      tippy && tippy.destroy()
+      toolTipRef = null
+      tippy = null
+    }
+
+    const initialize = (props) => {
+      const {
+        placement,
+        offset,
+        size,
+        warn,
+        error,
+        shownOnInit,
+        getTemplateRef
+      } = props
+
+      let arrow = true
+
+      let theme = ''
+      if (warn) {
+        theme = 'warning'
+        arrow = false
+      }
+
+      if (error) {
+        theme = 'error'
+        arrow = false
+      }
+
+      createTippy(toolTipRef, {
+        theme,
+        arrow,
+        html: getTemplateRef(),
+        placement: placement || 'top',
+        offset: offset || 0,
+        animation: 'fade',
+        size: size || 'regular',
+        dynamicTitle: true,
+        duration: [200, 100],
+        performance: true,
+        arrowType: 'sharp',
+        sticky: true,
+        arrowTransform: 'scale(0.75) translateY(-1.5px)'
+      })
+
+      tippy = toolTipRef._tippy
+
+      // for tutorial
+      if (shownOnInit) {
+        tippy.show(300)
+        _.delay(() => tippy && tippy.hide(), 1000)
+      }
+    }
 
     return {
       setToolTipRef: (props) => (ref) => {
         if (!ref) return
-        const {
-          placement,
-          offset,
-          size,
-          warn,
-          error,
-          shownOnInit,
-          getTemplateRef
-        } = props
-
+        if (toolTipRef === ref) return
+        if (toolTipRef) destroy()
         toolTipRef = ref
-
-        let arrow = true
-
-        let theme = ''
-        if (warn) {
-          theme = 'warning'
-          arrow = false
-        }
-
-        if (error) {
-          theme = 'error'
-          arrow = false
-        }
-
-        tippy(toolTipRef, {
-          theme,
-          arrow,
-          html: getTemplateRef(),
-          placement: placement || 'top',
-          offset: offset || 0,
-          animation: 'fade',
-          size: size || 'regular',
-          dynamicTitle: true,
-          duration: [200, 100],
-          performance: true,
-          arrowType: 'sharp',
-          arrowTransform: 'scale(0.75) translateY(-1.5px)'
-        })
-
-        // for tutorial
-        if (shownOnInit) {
-          toolTipRef._tippy.show(300)
-          _.delay(() => toolTipRef && toolTipRef._tippy.hide(), 1000)
-        }
+        initialize(props)
       },
 
-      destroyTippy: () => () => {
-        toolTipRef._tippy.destroy()
-        toolTipRef = null
-      },
+      destroyTippy: () => destroy,
 
-      enableTippy: () => () => toolTipRef._tippy.enable(),
-      disableTippy: () => () => toolTipRef._tippy.disable(),
+      enableTippy: () => () => tippy.enable(),
+      disableTippy: () => () => tippy.disable(),
     }
   }),
   lifecycle({
@@ -142,15 +154,20 @@ export default enhance((props) => {
       title={title}
       ref={setToolTipRef}
     >
-      {children}
       <span ref={setTemplateRef} className={styles.Template}>
         {warn && (
           <MdWarningIcon/>
         )}
+
         {error && (
           <MdErrorIcon/>
         )}
+
         <span>{title}</span>
+      </span>
+
+      <span>
+        {children}
       </span>
     </span>
   )

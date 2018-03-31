@@ -83,44 +83,29 @@ const enhanceArticleAction = compose(
 
       let subActions = []
 
-      // FIXME: Failed to execute 'insertBefore' on 'Node': The node before which the new node is to be inserted is not a child of this node.
-      // if (article.isPublished)
-      //   subActions.push((
-      //     <Tooltip
-      //       title="Mark this article as draft"
-      //       placement="left"
-      //       size="small"
-      //     >
-      //       <MdLockIcon
-      //         onClick={onClickPublish}
-      //       />
-      //     </Tooltip>
-      //   ))
-      // } else {
-      //   subActions.push((
-      //     <Tooltip
-      //       title="Publish this article"
-      //       placement="left"
-      //       size="small"
-      //     >
-      //       <MdPublishIcon
-      //         onClick={onClickPublish}
-      //       />
-      //     </Tooltip>
-      //   ))
-      // }
-
       if (article.isPublished) {
-        subActions.push((
-          <MdLockIcon
-            onClick={onClickPublish}
-          />
-        ))
+        subActions.push(
+          <Tooltip
+            title="Mark this article as draft"
+            placement="left"
+            size="small"
+          >
+            <MdLockIcon
+              onClick={onClickPublish}
+            />
+          </Tooltip>
+        )
       } else {
         subActions.push((
-          <MdPublishIcon
-            onClick={onClickPublish}
-          />
+          <Tooltip
+            title="Publish this article"
+            placement="left"
+            size="small"
+          >
+            <MdPublishIcon
+              onClick={onClickPublish}
+            />
+          </Tooltip>
         ))
       }
 
