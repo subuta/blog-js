@@ -45,7 +45,6 @@ const Item = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  margin: '16px 0 0',
   padding: 6,
   fontSize: 20,
   background: '#DDDDDD',
@@ -54,10 +53,6 @@ const Item = {
   color: DIMMED_BLACK_COLOR,
   border: '4px solid #DDDDDD',
   transition: `all 0.3s ${EASE_STANDARD}`,
-
-  '&:first-child': {
-    margin: 0
-  },
 
   '&.is-active': {
     opacity: 1,
@@ -75,7 +70,16 @@ const Item = {
 }
 
 const Top = {
+  display: 'flex',
+  flexDirection: 'column',
 
+  '& > *': {
+    margin: '16px 0 0',
+
+    '&:first-child': {
+      margin: 0
+    },
+  }
 }
 
 const Bottom = {
@@ -86,7 +90,8 @@ const User = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  margin: '16px 0 0'
+  margin: '16px 0 0',
+  cursor: 'pointer'
 }
 
 const IconWrapper = {

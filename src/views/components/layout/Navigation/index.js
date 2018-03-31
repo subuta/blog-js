@@ -15,6 +15,7 @@ import SignInIcon from 'react-icons/lib/go/sign-in'
 import Avatar from 'src/views/components/common/Avatar'
 import ActiveLink from 'src/views/components/common/ActiveLink'
 import Menu from 'src/views/components/common/Menu'
+import Tooltip from 'src/views/components/common/Tooltip'
 
 import withStyles from './style'
 import connect from './connect'
@@ -62,23 +63,37 @@ export default enhance((props) => {
         </a>
         */}
 
-        <ActiveLink
-          isActive={(router) => _.startsWith(router.pathname, '/channel')}
-          className={styles.ChatApp}
-          href='/channels'
-          as='/c'
+        <Tooltip
+          title="Go to chat"
+          placement="right"
+          size="small"
+          offset='0, 8px'
         >
-          <MdChatIcon />
-        </ActiveLink>
+          <ActiveLink
+            isActive={(router) => _.startsWith(router.pathname, '/channel')}
+            className={styles.ChatApp}
+            href='/channels'
+            as='/c'
+          >
+            <MdChatIcon />
+          </ActiveLink>
+        </Tooltip>
 
-        <ActiveLink
-          isActive={(router) => _.startsWith(router.pathname, '/article')}
-          className={styles.WikiApp}
-          href='/articles'
-          as='/w'
+        <Tooltip
+          title="Go to wiki"
+          placement="right"
+          size="small"
+          offset='0, 8px'
         >
-          <GoBookIcon />
-        </ActiveLink>
+          <ActiveLink
+            isActive={(router) => _.startsWith(router.pathname, '/article')}
+            className={styles.WikiApp}
+            href='/articles'
+            as='/w'
+          >
+            <GoBookIcon />
+          </ActiveLink>
+        </Tooltip>
       </div>
 
       <div className={styles.Bottom}>
@@ -114,13 +129,20 @@ export default enhance((props) => {
             </ul>
           </Menu>
         ) : (
-          <ActiveLink
-            className={styles.IconWrapper}
-            href='/auth/login'
-            as='/auth/login'
+          <Tooltip
+            title="Click to Login!"
+            placement="right"
+            size="small"
+            offset='0, 8px'
           >
-            <SignInIcon />
-          </ActiveLink>
+            <ActiveLink
+              className={styles.IconWrapper}
+              href='/auth/login'
+              as='/auth/login'
+            >
+              <SignInIcon />
+            </ActiveLink>
+          </Tooltip>
         )}
       </div>
     </div>

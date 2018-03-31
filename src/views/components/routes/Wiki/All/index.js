@@ -4,6 +4,7 @@ import _ from 'lodash'
 import Layout from 'src/views/components/layout/Layout'
 import ActiveLink from 'src/views/components/common/ActiveLink'
 import FloatingActionButton from 'src/views/components/common/FloatingActionButton'
+import Tooltip from 'src/views/components/common/Tooltip'
 
 import {
   compose
@@ -66,7 +67,13 @@ export default enhance((props) => {
 
             {isAuthenticated && (
               <FloatingActionButton className='button-fab'>
-                <MdAddIcon />
+                <Tooltip
+                  title="Add article"
+                  placement="left"
+                  size="small"
+                >
+                  <MdAddIcon />
+                </Tooltip>
               </FloatingActionButton>
             )}
           </Paper>

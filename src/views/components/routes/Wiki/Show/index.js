@@ -8,6 +8,7 @@ import ActiveLink from 'src/views/components/common/ActiveLink'
 import FloatingActionButton from 'src/views/components/common/FloatingActionButton'
 import Editor from 'src/views/components/common/Editor'
 import MarkdownContent from 'src/views/components/common/MarkdownContent'
+import Tooltip from 'src/views/components/common/Tooltip'
 
 import Sidebar from '../_Sidebar'
 import Header from '../_Header'
@@ -82,6 +83,33 @@ const enhanceArticleAction = compose(
 
       let subActions = []
 
+      // FIXME: Failed to execute 'insertBefore' on 'Node': The node before which the new node is to be inserted is not a child of this node.
+      // if (article.isPublished)
+      //   subActions.push((
+      //     <Tooltip
+      //       title="Mark this article as draft"
+      //       placement="left"
+      //       size="small"
+      //     >
+      //       <MdLockIcon
+      //         onClick={onClickPublish}
+      //       />
+      //     </Tooltip>
+      //   ))
+      // } else {
+      //   subActions.push((
+      //     <Tooltip
+      //       title="Publish this article"
+      //       placement="left"
+      //       size="small"
+      //     >
+      //       <MdPublishIcon
+      //         onClick={onClickPublish}
+      //       />
+      //     </Tooltip>
+      //   ))
+      // }
+
       if (article.isPublished) {
         subActions.push((
           <MdLockIcon
@@ -101,12 +129,18 @@ const enhanceArticleAction = compose(
           className='button-fab'
           subActions={subActions}
         >
-          <ActiveLink
-            href={`/article?slug=${article.slug}`}
-            as={`/w/${article.slug}`}
+          <Tooltip
+            title="Save this article"
+            placement="left"
+            size="small"
           >
-            <MdSaveIcon onClick={onClickSave}/>
-          </ActiveLink>
+            <ActiveLink
+              href={`/article?slug=${article.slug}`}
+              as={`/w/${article.slug}`}
+            >
+              <MdSaveIcon onClick={onClickSave}/>
+            </ActiveLink>
+          </Tooltip>
         </FloatingActionButton>
       )
     }),
@@ -118,12 +152,18 @@ const ArticleAction = enhanceArticleAction((props) => {
   const {article, styles} = props
   return (
     <FloatingActionButton className='button-fab'>
-      <ActiveLink
-        href={`/article?slug=${article.slug}&edit=true`}
-        as={`/w/${article.slug}/edit`}
+      <Tooltip
+        title="Edit this article"
+        placement="left"
+        size="small"
       >
-        <MdEditIcon/>
-      </ActiveLink>
+        <ActiveLink
+          href={`/article?slug=${article.slug}&edit=true`}
+          as={`/w/${article.slug}/edit`}
+        >
+          <MdEditIcon/>
+        </ActiveLink>
+      </Tooltip>
     </FloatingActionButton>
   )
 })
