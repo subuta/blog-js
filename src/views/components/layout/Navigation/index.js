@@ -4,7 +4,9 @@ import _ from 'lodash'
 import {
   compose,
   lifecycle,
-  withProps
+  withState,
+  withProps,
+  withHandlers
 } from 'recompose'
 
 import MdChatIcon from 'react-icons/lib/md/chat'
@@ -23,6 +25,18 @@ import connect from './connect'
 const enhance = compose(
   withStyles,
   connect,
+  withState('isShowMenu', 'setIsShowMenu', false),
+  withHandlers(() => {
+    let targetRef = null
+
+    return {
+      setTargetRef: () => (ref) => {
+        targetRef = ref
+      },
+
+      getTargetRef: () => () => targetRef
+    }
+  }),
   withProps(({currentUser}) => {
     return {
       isAuthenticated: !!currentUser
@@ -43,7 +57,10 @@ export default enhance((props) => {
     isAuthenticated,
     currentUser,
     styles,
-    isShowMenu
+    isShowMenu,
+    setIsShowMenu,
+    setTargetRef,
+    getTargetRef
   } = props
 
   const avatar = _.get(currentUser, 'avatar')
@@ -75,7 +92,7 @@ export default enhance((props) => {
             href='/channels'
             as='/c'
           >
-            <MdChatIcon />
+            <MdChatIcon/>
           </ActiveLink>
         </Tooltip>
 
@@ -91,43 +108,51 @@ export default enhance((props) => {
             href='/articles'
             as='/w'
           >
-            <GoBookIcon />
+            <GoBookIcon/>
           </ActiveLink>
         </Tooltip>
       </div>
 
       <div className={styles.Bottom}>
+        <Menu
+          placement='bottom-end-auto'
+          offset='-2px, 20px'
+          isShow={isShowMenu}
+          onHide={() => setIsShowMenu(false)}
+          trigger={getTargetRef()}
+        >
+          <ul>
+            <li>
+              <ActiveLink
+                href='/auth/profile'
+                as='/auth/profile'
+              >
+                Update your profile
+              </ActiveLink>
+            </li>
+            <li>
+              <ActiveLink
+                href='/auth/logout'
+                as='/auth/logout'
+              >
+                Logout
+              </ActiveLink>
+            </li>
+          </ul>
+        </Menu>
+
         {isAuthenticated ? (
-          <Menu
-            trigger={(
-              <div className={styles.User}>
-                <Avatar
-                  avatar={avatar}
-                  nickname={nickname}
-                  rounded
-                />
-              </div>
-            )}
+          <div
+            className={styles.User}
+            ref={setTargetRef}
+            onClick={() => setIsShowMenu(true)}
           >
-            <ul>
-              <li>
-                <ActiveLink
-                  href='/auth/profile'
-                  as='/auth/profile'
-                >
-                  Update your profile
-                </ActiveLink>
-              </li>
-              <li>
-                <ActiveLink
-                  href='/auth/logout'
-                  as='/auth/logout'
-                >
-                  Logout
-                </ActiveLink>
-              </li>
-            </ul>
-          </Menu>
+            <Avatar
+              avatar={avatar}
+              nickname={nickname}
+              rounded
+            />
+          </div>
         ) : (
           <Tooltip
             title="Click to Login!"
@@ -140,7 +165,7 @@ export default enhance((props) => {
               href='/auth/login'
               as='/auth/login'
             >
-              <SignInIcon />
+              <SignInIcon/>
             </ActiveLink>
           </Tooltip>
         )}

@@ -10,6 +10,9 @@ import Editor from 'src/views/components/common/Editor'
 import MarkdownContent from 'src/views/components/common/MarkdownContent'
 import Tooltip from 'src/views/components/common/Tooltip'
 
+import Menu from 'src/views/components/common/Menu'
+import MaterialButton from 'src/views/components/common/MaterialButton'
+
 import Sidebar from '../_Sidebar'
 import Header from '../_Header'
 import Content from '../_Content'
@@ -28,6 +31,7 @@ import MdEditIcon from 'react-icons/lib/md/edit'
 import MdSaveIcon from 'react-icons/lib/md/save'
 import MdPublishIcon from 'react-icons/lib/md/publish'
 import MdLockIcon from 'react-icons/lib/md/lock-outline'
+import MdMoreVertIcon from 'react-icons/lib/md/more-vert'
 
 import withStyles from './style'
 import connect from './connect'
@@ -157,6 +161,18 @@ const enhance = compose(
   withStyles,
   connect,
   withState('draftContent', 'setDraftContent', ({article}) => article ? article.content : ''),
+  withState('isShowMenu', 'setIsShowMenu', false),
+  withHandlers(() => {
+    let targetRef = null
+
+    return {
+      setTargetRef: () => (ref) => {
+        targetRef = ref
+      },
+
+      getTargetRef: () => () => targetRef
+    }
+  }),
   withProps(({url}) => {
     return {
       isEditing: _.get(url, 'query.edit')
@@ -179,7 +195,11 @@ export default enhance((props) => {
   const {
     article,
     styles,
-    isAuthenticated
+    isAuthenticated,
+    isShowMenu,
+    setIsShowMenu,
+    getTargetRef,
+    setTargetRef
   } = props
 
   const {title, isPublished, content, id} = article
@@ -194,6 +214,33 @@ export default enhance((props) => {
           <Header/>
 
           <Paper className={styles.Paper}>
+            <Menu
+              placement='top-start-auto'
+              offset='-2px, 8px'
+              isShow={isShowMenu}
+              onHide={() => setIsShowMenu(false)}
+              trigger={getTargetRef()}
+            >
+              <ul>
+                <li>
+                  Delete this article
+                </li>
+                <li>
+                  Change slug
+                </li>
+              </ul>
+            </Menu>
+
+            <MaterialButton
+              className={styles.MenuButton}
+              wavesClasses={['waves-float']}
+              ref={setTargetRef}
+              onClick={() => setIsShowMenu(true)}
+              ghost
+            >
+              <MdMoreVertIcon/>
+            </MaterialButton>
+
             <h4 className={styles.Title}>{title}</h4>
 
             <div className={styles.SubTitle}>

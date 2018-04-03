@@ -9,58 +9,7 @@ import {
 
 import withStyles from './style'
 
-const enhanceFAB = compose(
-  withStyles,
-  withHandlers(() => {
-    let ref = null
-    let _Waves = null
-
-    const getWaves = async () => {
-      if (!_Waves) {
-        _Waves = await import('node-waves')
-        _Waves.init({
-          duration: 500,
-          delay: 200
-        })
-      }
-      return _Waves
-    }
-
-    return {
-      setRef: (props) => async (_ref) => {
-        ref = _ref
-
-        let wavesClasses = props.wavesClasses || ['waves-float', 'waves-light']
-
-        const Waves = await getWaves()
-        Waves.attach(ref, wavesClasses)
-      }
-    }
-  })
-)
-
-const FAB = enhanceFAB((props) => {
-  const {
-    styles,
-    children,
-    className,
-    setRef
-  } = props
-
-  let fabClass = styles.FloatingActionButton
-  if (className) {
-    fabClass += ` ${className}`
-  }
-
-  return (
-    <button
-      className={fabClass}
-      ref={setRef}
-    >
-      {children}
-    </button>
-  )
-})
+import MaterialButton from 'src/views/components/common/MaterialButton'
 
 const enhance = compose(
   withStyles,
@@ -82,6 +31,11 @@ export default enhance((props) => {
     fabWrapperClass += ' is-hovered'
   }
 
+  let fabClass = styles.FloatingActionButton
+  if (className) {
+    fabClass += ` ${className}`
+  }
+
   return (
     <div
       className={fabWrapperClass}
@@ -90,21 +44,19 @@ export default enhance((props) => {
     >
       {_.map(subActions, (action, i) => {
         return (
-          <FAB
-            className='is-sub'
+          <MaterialButton
+            className={`${styles.FloatingActionButton} is-sub`}
             wavesClasses={['waves-float']}
             key={i}
           >
             {action}
-          </FAB>
+          </MaterialButton>
         )
       })}
 
-      <FAB
-        className={className}
-      >
+      <MaterialButton className={fabClass}>
         {children}
-      </FAB>
+      </MaterialButton>
     </div>
   )
 })

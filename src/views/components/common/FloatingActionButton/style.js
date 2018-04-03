@@ -23,20 +23,8 @@ const FloatingActionButton = {
   padding: 0,
   height: 56,
   width: 56,
-  textAlign: 'center',
-  border: 'none',
-  borderRadius: '50%',
   backgroundColor: PRIMARY_COLOR,
-  outline: 'none',
-
-  '& svg': {
-    height: 24,
-    width: 'auto'
-  },
-
-  'a': {
-    color: 'inherit'
-  },
+  borderRadius: '50% !important',
 
   '&.is-sub': {
     opacity: 0,
@@ -50,10 +38,6 @@ const FloatingActionButton = {
       opacity: 1,
       pointerEvents: 'auto'
     }
-  },
-
-  '&:hover': {
-    backgroundColor: PRIMARY_COLOR
   },
 
   [TABLET_MEDIA_QUERY]: {

@@ -26,7 +26,6 @@ import { bindOnClosestInput, removePortalNode } from '../../../utils/node'
 
 const enhance = compose(
   withStyles,
-  withState('isShow', 'setIsShow', false),
   withState('popperStyles', 'setPopperStyles', {}),
   shouldUpdate((props, nextProps) => {
     // return true if popperStyle changed.
@@ -40,20 +39,22 @@ const enhance = compose(
     const {setPopperStyles} = props
 
     let menuRef = null
-    let triggerRef = null
     let popper = null
     let portal = null
 
-    const initialize = (triggerRefNode) => {
+    const initialize = (props) => {
+      if (popper) return
+
       popper = new Popper(
-        triggerRefNode,
+        findDOMNode(props.trigger),
         menuRef,
         {
-          placement: 'bottom-end-auto',
+          placement: props.placement || 'auto',
           removeOnDestroy: true,
+
           modifiers: {
             offset: {
-              offset: '-2px, 8px'
+              offset: props.offset || 0
             },
 
             applyStyle: {enabled: false},
@@ -66,6 +67,7 @@ const enhance = compose(
           }
         }
       )
+
       // enable scroll/resize handler.
       popper.enableEventListeners()
     }
@@ -76,26 +78,23 @@ const enhance = compose(
         menuRef = findDOMNode(ref)
       },
 
-      setTriggerRef: () => (ref) => {
-        if (!ref) return
-        if (!popper) return initialize(ref)
-        if (!portal) portal = appendPortalNode(PORTAL_CLASS)
-
-        // if node reference changed
-        if (triggerRef !== ref) {
-          // Update reference node after popper instantiated, means re-use popper instance always :)
-          // SEE: https://github.com/FezVrasta/popper.js/issues/538
-          popper.reference = ref
-          popper.scheduleUpdate()
-
-          triggerRef = ref
-        }
+      appendPortalNode: () => () => {
+        portal = appendPortalNode(PORTAL_CLASS)
       },
 
       getPortal: () => () => portal,
 
-      syncPopper: ({isShow}) => () => {
-        if (!isShow) return
+      onUpdate: () => (prevProps, props) => {
+        if (!props.isShow) return
+        if (!popper) return initialize(props)
+
+        // if node reference changed
+        if (prevProps.trigger !== props.trigger) {
+          // Update reference node after popper instantiated, means re-use popper instance always :)
+          // SEE: https://github.com/FezVrasta/popper.js/issues/538
+          popper.reference = props.trigger
+        }
+
         popper.scheduleUpdate()
       },
 
@@ -112,9 +111,14 @@ const enhance = compose(
     }
   }),
   lifecycle({
-    componentDidUpdate () {
-      const {syncPopper} = this.props
-      syncPopper()
+    componentDidMount () {
+      const {appendPortalNode} = this.props
+      appendPortalNode()
+    },
+
+    componentDidUpdate (prevProps) {
+      const {onUpdate} = this.props
+      onUpdate(prevProps, this.props)
     },
 
     componentWillUnmount () {
@@ -127,13 +131,12 @@ const enhance = compose(
 export default enhance((props) => {
   const {
     children,
-    setIsShow,
     setMenuRef,
-    setTriggerRef,
     getPortal,
     styles,
     isShow,
-    popperStyles
+    popperStyles,
+    onHide = _.noop
   } = props
 
   let menuClass = styles.Menu
@@ -146,19 +149,11 @@ export default enhance((props) => {
     backdropClass += ` is-show`
   }
 
-  const WrappedTrigger = cloneElement(
-    props.trigger,
-    {
-      ref: setTriggerRef,
-      onClick: () => setIsShow(true)
-    }
-  )
-
   let menu = (
     <div>
       <div
         className={backdropClass}
-        onClick={() => setIsShow(false)}
+        onClick={onHide}
       />
 
       <div
@@ -178,10 +173,5 @@ export default enhance((props) => {
     )
   }
 
-  return (
-    <div>
-      {menu}
-      {WrappedTrigger}
-    </div>
-  )
+  return menu
 })

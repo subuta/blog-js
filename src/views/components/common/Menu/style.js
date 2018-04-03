@@ -33,6 +33,7 @@ const Menu = {
       transition: `all 0.1s ${EASE_STANDARD}`,
       backgroundColor: PRIMARY_COLOR,
       userSelect: 'none',
+      fontWeight: 'bold',
 
       '&:hover': {
         backgroundColor: ACCENT4_COLOR,

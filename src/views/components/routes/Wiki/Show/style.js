@@ -82,10 +82,18 @@ const EditorArea = {
   }
 }
 
+const MenuButton = {
+  position: 'absolute',
+  top: 32,
+  right: 32,
+  borderRadius: '50% !important'
+}
+
 export default createWithStyles({
   Paper,
   Title,
   SubTitle,
   ScrollContainer,
-  EditorArea
+  EditorArea,
+  MenuButton
 })
