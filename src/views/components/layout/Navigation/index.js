@@ -116,7 +116,11 @@ export default enhance((props) => {
       <div className={styles.Bottom}>
         <Menu
           placement='bottom-end-auto'
-          offset='-2px, 20px'
+          modifiers={{
+            offset: {
+              offset: '-2px, 20px'
+            },
+          }}
           isShow={isShowMenu}
           onHide={() => setIsShowMenu(false)}
           trigger={getTargetRef()}

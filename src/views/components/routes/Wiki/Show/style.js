@@ -5,7 +5,8 @@ import {
   GRAY_COLOR,
   BORDER_COLOR,
   PRIMARY_COLOR,
-  WIKI_APP_COLOR
+  WIKI_APP_COLOR,
+  TABLET_MEDIA_QUERY
 } from 'src/views/constants/style'
 
 const Paper = {
@@ -73,20 +74,35 @@ const EditorArea = {
     paddingRight: 8,
     flex: '0 0 auto',
     width: '50%',
-    borderRight: `3px solid ${BORDER_COLOR}`
+    borderRight: `3px solid ${BORDER_COLOR}`,
+
+    [TABLET_MEDIA_QUERY]: {
+      width: '100%',
+      borderRight: 'none',
+    }
   },
+
   '& > .content': {
     paddingLeft: 8,
     flex: '0 0 auto',
-    width: '50%'
+    width: '50%',
+
+    [TABLET_MEDIA_QUERY]: {
+      display: 'none'
+    }
   }
 }
 
 const MenuButton = {
   position: 'absolute',
   top: 32,
-  right: 32,
-  borderRadius: '50% !important'
+  right: 24,
+  borderRadius: '50% !important',
+
+  [TABLET_MEDIA_QUERY]: {
+    top: 16,
+    right: 16
+  }
 }
 
 export default createWithStyles({

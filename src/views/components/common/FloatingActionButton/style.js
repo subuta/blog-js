@@ -15,7 +15,11 @@ const FloatingActionButtonWrapper = {
   bottom: 16,
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'center'
+  alignItems: 'center',
+
+  [TABLET_MEDIA_QUERY]: {
+    right: 16
+  }
 }
 
 const FloatingActionButton = {
@@ -38,10 +42,6 @@ const FloatingActionButton = {
       opacity: 1,
       pointerEvents: 'auto'
     }
-  },
-
-  [TABLET_MEDIA_QUERY]: {
-    right: 16
   }
 }
 

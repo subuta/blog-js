@@ -215,8 +215,23 @@ export default enhance((props) => {
 
           <Paper className={styles.Paper}>
             <Menu
-              placement='top-start-auto'
-              offset='-2px, 8px'
+              placement='top-end'
+              modifiers={{
+                inner: { enabled: true },
+
+                preventOverflow: {
+                  enabled: false,
+                  padding: 0
+                },
+
+                hide: {
+                  enabled: false
+                },
+
+                offset: {
+                  offset: '-2px, 8px'
+                },
+              }}
               isShow={isShowMenu}
               onHide={() => setIsShowMenu(false)}
               trigger={getTargetRef()}

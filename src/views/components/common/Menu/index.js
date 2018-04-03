@@ -45,17 +45,20 @@ const enhance = compose(
     const initialize = (props) => {
       if (popper) return
 
+      const {
+        placement,
+        modifiers = {}
+      } = props
+
       popper = new Popper(
         findDOMNode(props.trigger),
         menuRef,
         {
-          placement: props.placement || 'auto',
+          placement: placement || 'auto',
           removeOnDestroy: true,
 
           modifiers: {
-            offset: {
-              offset: props.offset || 0
-            },
+            ...modifiers,
 
             applyStyle: {enabled: false},
 
