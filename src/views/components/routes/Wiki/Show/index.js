@@ -214,49 +214,49 @@ export default enhance((props) => {
           <Header/>
 
           <Paper className={styles.Paper}>
-            {isAuthenticated && (
-              <Menu
-                placement='top-end'
-                modifiers={{
-                  inner: { enabled: true },
+            <Menu
+              placement='top-end'
+              modifiers={{
+                inner: { enabled: true },
 
-                  preventOverflow: {
-                    enabled: false,
-                    padding: 0
-                  },
+                preventOverflow: {
+                  enabled: false,
+                  padding: 0
+                },
 
-                  hide: {
-                    enabled: false
-                  },
+                hide: {
+                  enabled: false
+                },
 
-                  offset: {
-                    offset: '-2px, 8px'
-                  },
-                }}
-                isShow={isShowMenu}
-                onHide={() => setIsShowMenu(false)}
-                trigger={getTargetRef()}
-              >
-                <ul>
-                  <li>
-                    Delete this article
-                  </li>
-                  <li>
-                    Change slug
-                  </li>
-                </ul>
-              </Menu>
-            )}
-
-            <MaterialButton
-              className={styles.MenuButton}
-              wavesClasses={['waves-float']}
-              ref={setTargetRef}
-              onClick={() => setIsShowMenu(true)}
-              ghost
+                offset: {
+                  offset: '-2px, 8px'
+                },
+              }}
+              isShow={isShowMenu}
+              onHide={() => setIsShowMenu(false)}
+              trigger={getTargetRef()}
             >
-              <MdMoreVertIcon/>
-            </MaterialButton>
+              <ul>
+                <li>
+                  Delete this article
+                </li>
+                <li>
+                  Change slug
+                </li>
+              </ul>
+            </Menu>
+
+            {isAuthenticated && (
+              <MaterialButton
+                className={styles.MenuButton}
+                wavesClasses={['waves-float']}
+                ref={setTargetRef}
+                onClick={() => setIsShowMenu(true)}
+                ghost
+              >
+                <MdMoreVertIcon/>
+              </MaterialButton>
+            )}
 
             <h4 className={styles.Title}>{title}</h4>
 
