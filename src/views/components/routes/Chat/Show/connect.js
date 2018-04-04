@@ -5,6 +5,8 @@ import { createSelector } from 'reselect'
 import { getEntities as getChannelEntities } from 'src/views/modules/channel'
 import { denormalize } from 'src/views/utils/schema'
 
+import { throw404 } from 'src/views/utils/next'
+
 import {
   showMenu,
   hideMenu
@@ -33,6 +35,10 @@ const getChannelComments = (channelId) => createSelector(
   _.identity,
   (commentEntities, channelEntities, state) => {
     const channel = channelEntities[channelId]
+
+    // throw nextjs Error if no valid channel found.
+    if (!channel) return throw404();
+
     return channel.comments.map((id) => {
       return denormalize(commentEntities[id], 'comment', state)
     })

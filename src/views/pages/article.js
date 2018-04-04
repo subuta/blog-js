@@ -1,6 +1,7 @@
 import connext from 'src/views/hoc/connext'
 import { compose } from 'recompose'
 import authorized from 'src/views/hoc/authorized'
+import catchError from 'src/views/hoc/catchError'
 import ShowWikiRoute from 'src/views/components/routes/Wiki/Show'
 import _ from 'lodash'
 
@@ -14,7 +15,8 @@ const mapDispatchToProps = {
 
 const enhance = compose(
   connext(() => ({}), mapDispatchToProps),
-  authorized
+  authorized,
+  catchError
 )
 
 const ShowWiki = (props) => <ShowWikiRoute {...props}/>
@@ -28,13 +30,7 @@ ShowWiki.getInitialProps = async function (ctx) {
   const slug = _.get(ctx, 'query.slug', '')
   promises.push(ctx.dispatch(requestArticleBySlug(slug)))
 
-  await Promise.all(promises).catch((error) => {
-    if (error.status === 404) {
-      const err = new Error()
-      err.code = 'ENOENT'
-      throw err
-    }
-  })
+  await Promise.all(promises)
 
   return {}
 }

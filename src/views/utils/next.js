@@ -13,3 +13,10 @@ export const extract = (ctx, key) => {
   if (!ctx || !ctx.res) return
   return _.get(ctx, ['res', 'locals', key])
 }
+
+// SEE: https://github.com/zeit/next.js/issues/746
+export const throw404 = () => {
+  const nextError = new Error()
+  nextError.code = 'ENOENT'
+  throw nextError
+}

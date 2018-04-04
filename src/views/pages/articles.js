@@ -1,5 +1,6 @@
 import connext from 'src/views/hoc/connext'
 import authorized from 'src/views/hoc/authorized'
+import catchError from 'src/views/hoc/catchError'
 import { compose } from 'recompose'
 import AllWikiRoute from 'src/views/components/routes/Wiki/All'
 import _ from 'lodash'
@@ -17,7 +18,8 @@ const mapDispatchToProps = {
 
 const enhance = compose(
   connext(() => ({}), mapDispatchToProps),
-  authorized
+  authorized,
+  catchError
 )
 
 const AllWiki = (props) => <AllWikiRoute {...props}/>

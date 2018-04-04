@@ -2,6 +2,7 @@ import connext from 'src/views/hoc/connext'
 import { requestChannels } from 'src/views/modules/channel'
 import { compose } from 'recompose'
 import authorized from 'src/views/hoc/authorized'
+import catchError from 'src/views/hoc/catchError'
 import ShowChannelRoute from 'src/views/components/routes/Chat/Show'
 
 const mapDispatchToProps = {
@@ -10,6 +11,7 @@ const mapDispatchToProps = {
 
 const enhance = compose(
   connext(() => ({}), mapDispatchToProps),
+  catchError,
   authorized
 )
 
