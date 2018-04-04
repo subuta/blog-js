@@ -214,37 +214,39 @@ export default enhance((props) => {
           <Header/>
 
           <Paper className={styles.Paper}>
-            <Menu
-              placement='top-end'
-              modifiers={{
-                inner: { enabled: true },
+            {isAuthenticated && (
+              <Menu
+                placement='top-end'
+                modifiers={{
+                  inner: { enabled: true },
 
-                preventOverflow: {
-                  enabled: false,
-                  padding: 0
-                },
+                  preventOverflow: {
+                    enabled: false,
+                    padding: 0
+                  },
 
-                hide: {
-                  enabled: false
-                },
+                  hide: {
+                    enabled: false
+                  },
 
-                offset: {
-                  offset: '-2px, 8px'
-                },
-              }}
-              isShow={isShowMenu}
-              onHide={() => setIsShowMenu(false)}
-              trigger={getTargetRef()}
-            >
-              <ul>
-                <li>
-                  Delete this article
-                </li>
-                <li>
-                  Change slug
-                </li>
-              </ul>
-            </Menu>
+                  offset: {
+                    offset: '-2px, 8px'
+                  },
+                }}
+                isShow={isShowMenu}
+                onHide={() => setIsShowMenu(false)}
+                trigger={getTargetRef()}
+              >
+                <ul>
+                  <li>
+                    Delete this article
+                  </li>
+                  <li>
+                    Change slug
+                  </li>
+                </ul>
+              </Menu>
+            )}
 
             <MaterialButton
               className={styles.MenuButton}

@@ -2,17 +2,19 @@ import { build, format, snippets as s } from 'bld.js'
 import Promise from 'bluebird'
 import _ from 'lodash'
 
-import Models from '@subuta/snippets/lib/koa/api/middlewares/Models'
-import Auth from '@subuta/snippets/lib/koa/api/middlewares/Auth'
-import withZone from '@subuta/snippets/lib/koa/middlewares/zone'
+import models from '@subuta/snippets/lib/koa/api/middlewares/models'
+import auth from '@subuta/snippets/lib/koa/api/middlewares/auth'
+import withZone from '@subuta/snippets/lib/koa/api/middlewares/zone'
+import validateResponse from '@subuta/snippets/lib/koa/api/middlewares/validateResponse'
 
 export default async (ctx) => {
   const {filePath, fileName, fs} = ctx
 
   const Middlewares = {
-    'models': Models,
-    'auth': Auth,
-    'withZone': withZone
+    models,
+    auth,
+    withZone,
+    validateResponse,
   }
 
   return Promise.map(_.toPairs(Middlewares), async ([fileName, Middleware]) => {

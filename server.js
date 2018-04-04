@@ -8,6 +8,7 @@ import 'zone.js'
 import uuid from 'uuid/v4'
 
 import routes from 'src/api/routes'
+import withZone from 'src/api/middlewares/withZone'
 
 import { PUBLIC_DIR } from './config'
 
@@ -18,17 +19,6 @@ const app = next({
   dir: 'src/views'
 })
 const handle = app.getRequestHandler()
-
-// Middleware for injecting req and uuid to current zone.
-const withZone = async (ctx, next) => {
-  const requestZone = Zone.current.fork({name: 'request'})
-  await requestZone.run(async () => {
-    // init zone at each request.
-    Zone.current.req = ctx.req
-    Zone.current.uuid = uuid()
-    await next()
-  })
-}
 
 app.prepare()
   .then(() => {

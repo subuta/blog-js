@@ -28,7 +28,13 @@ ShowWiki.getInitialProps = async function (ctx) {
   const slug = _.get(ctx, 'query.slug', '')
   promises.push(ctx.dispatch(requestArticleBySlug(slug)))
 
-  await Promise.all(promises)
+  await Promise.all(promises).catch((error) => {
+    if (error.status === 404) {
+      const err = new Error()
+      err.code = 'ENOENT'
+      throw err
+    }
+  })
 
   return {}
 }

@@ -3,6 +3,7 @@ import _ from 'lodash'
 import koaBody from 'koa-body'
 import auth, {getCurrentUser} from 'src/api/middlewares/auth'
 import models from 'src/api/middlewares/models'
+import validateResponse from 'src/api/middlewares/validateResponse'
 import channel from './channel'
 import article from './article'
 import comment from './comment'
@@ -38,6 +39,9 @@ api.use(models)
 
 // inject getCurrentUser to state for ease of use.
 api.use(getCurrentUser)
+
+// inject validateResponse middleware to ensure response has correct format.
+api.use(validateResponse)
 
 // routers set after auth middleware will be protected
 registerRouters({
