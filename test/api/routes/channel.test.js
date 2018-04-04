@@ -68,7 +68,7 @@ test('show should return channel', async (t) => {
   t.is(response.status, 200)
 
   t.deepEqual(response.body.id, 82160)
-  t.deepEqual(response.body.name, 'Cloned')
+  t.deepEqual(response.body.name, 'ball')
   t.deepEqual(response.body.description, 'Customer')
 })
 
@@ -83,17 +83,13 @@ test('post should create channel', async (t) => {
     .post('/api/channels')
     .set('Authorization', `Bearer ${token}`)
     .send({
-      channel: {
-        id: 7983,
-        name: 'Division Wooden Handcrafted Wooden Shoes',
-        description: 'front-end'
-      }
+      channel: {id: 7983, name: 'capacitor', description: 'front-end'}
     })
 
   t.is(response.status, 200)
 
   t.deepEqual(response.body.id, 7983)
-  t.deepEqual(response.body.name, 'Division Wooden Handcrafted Wooden Shoes')
+  t.deepEqual(response.body.name, 'capacitor')
   t.deepEqual(response.body.description, 'front-end')
 })
 

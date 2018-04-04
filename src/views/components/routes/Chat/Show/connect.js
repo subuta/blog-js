@@ -29,15 +29,15 @@ import {
   uploadAttachment
 } from 'src/views/modules/attachment'
 
-const getChannelComments = (channelId) => createSelector(
+const getChannelComments = (name) => createSelector(
   getCommentEntities,
   getChannelEntities,
   _.identity,
   (commentEntities, channelEntities, state) => {
-    const channel = channelEntities[channelId]
+    const channel = _.find(channelEntities, {name})
 
     // throw nextjs Error if no valid channel found.
-    if (!channel) return throw404();
+    if (!channel) return throw404()
 
     return channel.comments.map((id) => {
       return denormalize(commentEntities[id], 'comment', state)
@@ -46,12 +46,13 @@ const getChannelComments = (channelId) => createSelector(
 
 const mapStateToProps = (state, oldProps) => {
   const channelEntities = getChannelEntities(state)
-  const channelId = _.get(oldProps, 'url.query.id', '')
+  const name = _.get(oldProps, 'url.query.name', '')
+  const channel = _.find(channelEntities, {name})
   return {
     channels: getChannels(state),
-    channelComments: getChannelComments(channelId)(state),
+    channelComments: getChannelComments(name)(state),
     isChannelProgress: getIsChannelProgress(state),
-    channel: channelEntities[channelId]
+    channel
   }
 }
 

@@ -53,6 +53,17 @@ channel.post('/', async (ctx) => {
 })
 
 /* mat Custom actions [start] */
+channel.get('/name/:name', async (ctx) => {
+  const {Channel} = ctx.state.models
+  let params = {}
+
+  /* mat Before show [start] */
+  /* mat Before show [end] */
+
+  ctx.body = await Channel.query()
+    .eager('[comments.[attachment, commentedBy]]')
+    .findFirst({...params, name: ctx.params.name})
+})
 /* mat Custom actions [end] */
 
 export default {

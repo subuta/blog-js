@@ -60,6 +60,15 @@ export const createChannel = (params) => {
 }
 
 /* mat Custom actionCreators [start] */
+export const requestChannelByName = (name) => {
+  return (dispatch) => {
+    dispatch({type: REQUEST_CHANNELS})
+    return api.channel.showByName(name).then((data) => {
+      dispatch(setChannels(normalize(data, channel)))
+      return data
+    })
+  }
+}
 /* mat Custom actionCreators [end] */
 
 // -------------

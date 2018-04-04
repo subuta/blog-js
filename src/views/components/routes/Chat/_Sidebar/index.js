@@ -38,8 +38,8 @@ export default enhance((props) => {
             return (
               <li key={id}>
                 <ActiveLink
-                  href={`/channel?id=${id}`}
-                  as={`/c/${id}`}
+                  href={`/channel?name=${name}`}
+                  as={`/c/${name}`}
                 >
                   <span className="list-icon"><FaHashTagIcon /></span>
                   <span className="name">{name}</span>

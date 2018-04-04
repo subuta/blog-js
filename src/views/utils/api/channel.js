@@ -18,6 +18,9 @@ export const create = (params) => {
 }
 
 /* mat Custom action [start] */
+export const showByName = (name) => {
+  return request.get(`/channels/name/${name}`)
+}
 /* mat Custom action [end] */
 
 let actions = {
@@ -27,6 +30,10 @@ let actions = {
 }
 
 /* mat Custom exports [start] */
+actions = {
+  ...actions,
+  showByName
+}
 /* mat Custom exports [end] */
 
 export default actions

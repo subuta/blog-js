@@ -22,7 +22,7 @@ const enhance = compose(
     componentWillMount () {
       const {router, channels} = this.props
       const channel = _.first(channels)
-      router.replace(`/channel?id=${channel.id}`, `/c/${channel.id}`)
+      router.replace(`/channel?name=${channel.name}`, `/c/${channel.name}`)
     }
   })
 )
