@@ -3,6 +3,7 @@ import createWithStyles from 'src/views/utils/style'
 import {
   PRIMARY_COLOR,
   EASE_STANDARD,
+  GRAY_COLOR,
   Z_INDEX_1
 } from 'src/views/constants/style'
 
@@ -14,9 +15,22 @@ const MaterialButton = {
   borderRadius: 2,
   outline: 'none',
   transition: `all 0.3s ${EASE_STANDARD}`,
+  fontWeight: 'bold',
 
   '&.is-ghost': {
-    boxShadow: 'none'
+    boxShadow: 'none',
+
+    '&:hover': {
+      backgroundColor: GRAY_COLOR
+    }
+  },
+
+  '&.is-secondary': {
+    opacity: 0.6,
+
+    '&:hover': {
+      opacity: 1
+    }
   },
 
   '& svg': {

@@ -44,6 +44,7 @@ export default enhance((props) => {
     className,
     setRef,
     ghost = false,
+    secondary = false,
     wavesClasses,
     ...rest
   } = props
@@ -55,6 +56,10 @@ export default enhance((props) => {
 
   if (ghost) {
     buttonClass += ` is-ghost`
+  }
+
+  if (secondary) {
+    buttonClass += ` is-secondary`
   }
 
   return (

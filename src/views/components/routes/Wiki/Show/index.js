@@ -8,10 +8,12 @@ import ActiveLink from 'src/views/components/common/ActiveLink'
 import FloatingActionButton from 'src/views/components/common/FloatingActionButton'
 import Editor from 'src/views/components/common/Editor'
 import MarkdownContent from 'src/views/components/common/MarkdownContent'
+import TextField from 'src/views/components/common/TextField'
 import Tooltip from 'src/views/components/common/Tooltip'
 
 import Menu from 'src/views/components/common/Menu'
 import MaterialButton from 'src/views/components/common/MaterialButton'
+import Modal from 'src/views/components/common/Modal'
 
 import Sidebar from '../_Sidebar'
 import Header from '../_Header'
@@ -23,7 +25,7 @@ import {
   branch,
   withState,
   withHandlers,
-  withProps,
+  withPropsOnChange,
   renderComponent
 } from 'recompose'
 
@@ -161,6 +163,8 @@ const enhance = compose(
   withStyles,
   connect,
   withState('draftContent', 'setDraftContent', ({article}) => article ? article.content : ''),
+  withState('draftSlug', 'setDraftSlug', ({article}) => article ? article.slug : ''),
+  withState('isShowSlugModal', 'setIsShowSlugModal', false),
   withState('isShowMenu', 'setIsShowMenu', false),
   withHandlers(() => {
     let targetRef = null
@@ -173,11 +177,23 @@ const enhance = compose(
       getTargetRef: () => () => targetRef
     }
   }),
-  withProps(({url}) => {
-    return {
-      isEditing: _.get(url, 'query.edit')
-    }
-  }),
+  withPropsOnChange(
+    ['url', 'article'],
+    (props) => {
+      const {
+        url,
+        article,
+        setDraftContent,
+        setDraftSlug
+      } = props
+
+      setDraftContent(article.content)
+      setDraftSlug(article.slug)
+
+      return {
+        isEditing: _.get(url, 'query.edit')
+      }
+    }),
   withHandlers({
     onClickPublish: ({article, updateArticle}) => () => {
       const {isPublished} = article
@@ -197,9 +213,14 @@ export default enhance((props) => {
     styles,
     isAuthenticated,
     isShowMenu,
+    isShowSlugModal,
+    draftSlug,
     setIsShowMenu,
+    setIsShowSlugModal,
+    setDraftSlug,
     getTargetRef,
-    setTargetRef
+    setTargetRef,
+    isEditing
   } = props
 
   const {title, isPublished, content, id} = article
@@ -210,6 +231,26 @@ export default enhance((props) => {
       <div className={styles.ScrollContainer}>
         <Sidebar/>
 
+        <Modal
+          title='Change slug of this article'
+          isShow={isShowSlugModal}
+          onClose={() => {
+            setDraftSlug(article.slug)
+            setIsShowSlugModal(false)
+          }}
+          onSubmit={() => {
+            console.log('draftSlug = ', draftSlug)
+            setIsShowSlugModal(false)
+          }}
+        >
+          <TextField
+            label='slug'
+            onChange={setDraftSlug}
+            value={draftSlug}
+            placeholder='Put slug for this article'
+          />
+        </Modal>
+
         <Content>
           <Header/>
 
@@ -217,7 +258,7 @@ export default enhance((props) => {
             <Menu
               placement='top-end'
               modifiers={{
-                inner: { enabled: true },
+                inner: {enabled: true},
 
                 preventOverflow: {
                   enabled: false,
@@ -240,7 +281,10 @@ export default enhance((props) => {
                 <li>
                   Delete this article
                 </li>
-                <li>
+                <li onClick={() => {
+                  setIsShowMenu(false)
+                  setIsShowSlugModal(true)
+                }}>
                   Change slug
                 </li>
               </ul>
@@ -248,7 +292,7 @@ export default enhance((props) => {
 
             {isAuthenticated && (
               <MaterialButton
-                className={styles.MenuButton}
+                className={`${styles.MenuButton} ${isEditing ? 'is-show' : ''}`}
                 wavesClasses={['waves-float']}
                 ref={setTargetRef}
                 onClick={() => setIsShowMenu(true)}

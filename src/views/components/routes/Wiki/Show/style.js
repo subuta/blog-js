@@ -98,6 +98,11 @@ const MenuButton = {
   top: 32,
   right: 24,
   borderRadius: '50% !important',
+  display: 'none',
+
+  '&.is-show': {
+    display: 'block'
+  },
 
   [TABLET_MEDIA_QUERY]: {
     top: 16,
