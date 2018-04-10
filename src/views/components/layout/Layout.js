@@ -10,6 +10,11 @@ import connect from './connect'
 
 import withDragDropContext from 'src/views/utils/withDragDropContext'
 
+import {
+  isMobile,
+  isTablet
+} from 'src/views/utils/browser'
+
 const isBrowser = typeof window !== 'undefined'
 
 if (isBrowser) {
@@ -35,6 +40,7 @@ const enhance = compose(
     return {
       setRef: ({showMenu, hideMenu}) => async (_ref) => {
         if (!_ref) return
+        if (!isMobile && !isTablet) return
 
         ref = _ref
 

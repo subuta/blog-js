@@ -1,6 +1,9 @@
 import Document, { Head, Main, NextScript } from 'next/document'
 import * as ReactFreeStyle from 'react-free-style'
 
+import bowser from 'bowser'
+import _ from 'lodash'
+
 import getConfig from 'next/config'
 
 const config = getConfig()
@@ -27,17 +30,30 @@ const customScript = () => `
 `
 
 export default class MyDocument extends Document {
-  static async getInitialProps ({renderPage}) {
-    const page = renderPage()
+  static async getInitialProps (ctx) {
+    const page = ctx.renderPage()
+
+    const headers = _.get(ctx, 'req.headers', {})
+    const browser = bowser.detect(headers['user-agent'])
+
     const styles = ReactFreeStyle.rewind()
-    return {...page, css: styles.toCss()}
+    return {...page, css: styles.toCss(), browser}
   }
 
   render () {
+    const { browser, css } = this.props
+
+    let bodyClass = _.toLower(browser.name)
+    if (browser.tablet) {
+      bodyClass += ` tablet`
+    } else if (browser.mobile) {
+      bodyClass += ` mobile`
+    }
+
     return (
       <html>
       <Head>
-        <style dangerouslySetInnerHTML={{__html: this.props.css}}/>
+        <style dangerouslySetInnerHTML={{__html: css}}/>
 
         <meta charSet="UTF-8"/>
 
@@ -58,7 +74,7 @@ export default class MyDocument extends Document {
         {/* custom script goes here */}
         <script dangerouslySetInnerHTML={{__html: customScript()}}/>
       </Head>
-      <body>
+      <body className={bodyClass}>
       <Main/>
       <NextScript/>
 
