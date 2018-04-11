@@ -3,6 +3,7 @@ import Layout from 'src/views/components/layout/Layout'
 import _ from 'lodash'
 
 import { toHtml } from 'src/views/utils/markdown'
+import Router from 'next/router'
 
 import ActiveLink from 'src/views/components/common/ActiveLink'
 import FloatingActionButton from 'src/views/components/common/FloatingActionButton'
@@ -187,8 +188,10 @@ const enhance = compose(
         setDraftSlug
       } = props
 
-      setDraftContent(article.content)
-      setDraftSlug(article.slug)
+      if (article) {
+        setDraftContent(article.content)
+        setDraftSlug(article.slug)
+      }
 
       return {
         isEditing: _.get(url, 'query.edit')
@@ -199,6 +202,13 @@ const enhance = compose(
       const {isPublished} = article
       // toggle published state.
       updateArticle(article.id, {...article, isPublished: !isPublished})
+    },
+
+    onChangeSlug: ({article, draftSlug, updateArticle}) => () => {
+      const slug = draftSlug
+      updateArticle(article.id, {...article, slug}).then(() => {
+        requestAnimationFrame(() => Router.push(`/article?slug=${slug}&edit=true`, `/w/${slug}/edit`));
+      })
     },
 
     onClickSave: ({article, draftContent, updateArticle}) => () => {
@@ -214,6 +224,7 @@ export default enhance((props) => {
     isAuthenticated,
     isShowMenu,
     isShowSlugModal,
+    onChangeSlug,
     draftSlug,
     setIsShowMenu,
     setIsShowSlugModal,
@@ -222,6 +233,8 @@ export default enhance((props) => {
     setTargetRef,
     isEditing
   } = props
+
+  if (!article) return null
 
   const {title, isPublished, content, id} = article
   const createdAt = moment(article.createdAt).format('MMMM Do YYYY')
@@ -239,7 +252,7 @@ export default enhance((props) => {
             setIsShowSlugModal(false)
           }}
           onSubmit={() => {
-            console.log('draftSlug = ', draftSlug)
+            onChangeSlug()
             setIsShowSlugModal(false)
           }}
         >
