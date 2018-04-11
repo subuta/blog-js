@@ -21,7 +21,9 @@ const enhance = compose(
       const {router} = this.props
       auth0.revokeSession()
       // force reload browser
-      location.href = '/'
+      if (location) {
+        location.href = '/'
+      }
     }
   })
 )

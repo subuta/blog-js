@@ -64,9 +64,9 @@ export const entities = (state = {}, action) => {
 export const ids = (state = [], action) => {
   if (action.type === SET_ATTACHMENTS) {
     if (_.isArray(action.payload.result)) {
-      return _.uniq([...state, ...action.payload.result])
+      return _.compact(_.uniq([...state, ...action.payload.result]))
     }
-    return _.uniq([...state, action.payload.result])
+    return _.compact(_.uniq([...state, action.payload.result]))
   }
   return state
 }

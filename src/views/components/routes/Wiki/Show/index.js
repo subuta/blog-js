@@ -84,8 +84,8 @@ const enhanceArticleAction = compose(
       const {
         article,
         styles,
-        onClickSave,
-        onClickPublish
+        onSave,
+        onPublish
       } = props
 
       let subActions = []
@@ -98,7 +98,7 @@ const enhanceArticleAction = compose(
             size="small"
           >
             <MdLockIcon
-              onClick={onClickPublish}
+              onClick={onPublish}
             />
           </Tooltip>
         )
@@ -110,7 +110,7 @@ const enhanceArticleAction = compose(
             size="small"
           >
             <MdPublishIcon
-              onClick={onClickPublish}
+              onClick={onPublish}
             />
           </Tooltip>
         ))
@@ -130,7 +130,7 @@ const enhanceArticleAction = compose(
               href={`/article?slug=${article.slug}`}
               as={`/w/${article.slug}`}
             >
-              <MdSaveIcon onClick={onClickSave}/>
+              <MdSaveIcon onClick={onSave}/>
             </ActiveLink>
           </Tooltip>
         </FloatingActionButton>
@@ -198,20 +198,26 @@ const enhance = compose(
       }
     }),
   withHandlers({
-    onClickPublish: ({article, updateArticle}) => () => {
+    onPublish: ({article, updateArticle}) => () => {
       const {isPublished} = article
       // toggle published state.
       updateArticle(article.id, {...article, isPublished: !isPublished})
     },
 
-    onChangeSlug: ({article, draftSlug, updateArticle}) => () => {
-      const slug = draftSlug
-      updateArticle(article.id, {...article, slug}).then(() => {
-        requestAnimationFrame(() => Router.push(`/article?slug=${slug}&edit=true`, `/w/${slug}/edit`));
+    onDelete: ({article, deleteArticle}) => () => {
+      deleteArticle(article.id).then(() => {
+        Router.push(`/articles`, `/w`)
       })
     },
 
-    onClickSave: ({article, draftContent, updateArticle}) => () => {
+    onChangeSlug: ({article, draftSlug, updateArticle}) => () => {
+      const slug = draftSlug
+      updateArticle(article.id, {...article, slug}).then(() => {
+        Router.push(`/article?slug=${slug}&edit=true`, `/w/${slug}/edit`)
+      })
+    },
+
+    onSave: ({article, draftContent, updateArticle}) => () => {
       updateArticle(article.id, {...article, content: draftContent})
     }
   })
@@ -225,6 +231,7 @@ export default enhance((props) => {
     isShowMenu,
     isShowSlugModal,
     onChangeSlug,
+    onDelete,
     draftSlug,
     setIsShowMenu,
     setIsShowSlugModal,
@@ -291,7 +298,10 @@ export default enhance((props) => {
               trigger={getTargetRef()}
             >
               <ul>
-                <li>
+                <li onClick={() => {
+                  setIsShowMenu(false)
+                  onDelete()
+                }}>
                   Delete this article
                 </li>
                 <li onClick={() => {

@@ -2,7 +2,8 @@ import _ from 'lodash'
 import { connect } from 'react-redux'
 import {
   getEntities as getArticleEntities,
-  updateArticle
+  updateArticle,
+  deleteArticle
 } from 'src/views/modules/article'
 
 const mapStateToProps = (state, oldProps) => {
@@ -14,7 +15,8 @@ const mapStateToProps = (state, oldProps) => {
 }
 
 const mapDispatchToProps = {
-  updateArticle
+  updateArticle,
+  deleteArticle
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)

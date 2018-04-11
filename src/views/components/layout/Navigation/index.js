@@ -1,6 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
 
+import Router from 'next/router'
+
 import {
   compose,
   lifecycle,
@@ -46,6 +48,8 @@ const enhance = compose(
     componentWillMount () {
       this.props.requestMe().catch(err => {
         if (err.status === 401) return
+        // logout user if user not found (expired)
+        if (err.status === 404) return Router.replace('/auth/logout')
         console.log('[caught at navigation]', err)
       })
     }

@@ -45,8 +45,8 @@ export default enhance((props) => {
             <h4>Articles</h4>
 
             <ul className={styles.Articles}>
-              {_.map(articles, (props) => {
-                const {id, slug, title, summary} = props
+              {_.map(articles, (article) => {
+                const {id, slug, title, summary} = article
                 const createdAt = moment(props.createdAt).format('MMMM Do YYYY')
                 return (
                   <li key={id}>
