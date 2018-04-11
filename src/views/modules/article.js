@@ -13,6 +13,7 @@ import {SET_TAGS} from './tag'
 export const REQUEST_ARTICLES = 'REQUEST_ARTICLES'
 export const REQUEST_ARTICLES_FAILURE = 'REQUEST_ARTICLES_FAILURE'
 export const SET_ARTICLES = 'SET_ARTICLES'
+export const SET_ARTICLE_IDS = 'SET_ARTICLE_IDS'
 
 /* mat Custom constants [start] */
 /* mat Custom constants [end] */
@@ -24,6 +25,13 @@ export const setArticles = (articles) => {
   return {
     type: SET_ARTICLES,
     payload: articles
+  }
+}
+
+export const setArticleIds = (ids) => {
+  return {
+    type: SET_ARTICLE_IDS,
+    payload: ids
   }
 }
 
@@ -76,10 +84,12 @@ export const updateArticle = (id, params) => {
 }
 
 export const deleteArticle = (id) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({type: REQUEST_ARTICLES})
     return api.article.destroy(id).then(() => {
-      dispatch(setArticles({}))
+      const state = getState()
+      const nextIds = _.without(getIds(state), id)
+      dispatch(setArticleIds(nextIds))
     })
   }
 }
@@ -126,6 +136,8 @@ export const ids = (state = [], action) => {
       return _.compact(_.uniq([...state, ...action.payload.result]))
     }
     return _.compact(_.uniq([...state, action.payload.result]))
+  } else if (action.type === SET_ARTICLE_IDS) {
+    return _.compact(_.uniq(action.payload))
   }
   return state
 }

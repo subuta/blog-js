@@ -13,6 +13,7 @@ import {SET_ARTICLES} from './article'
 export const REQUEST_TAGS = 'REQUEST_TAGS'
 export const REQUEST_TAGS_FAILURE = 'REQUEST_TAGS_FAILURE'
 export const SET_TAGS = 'SET_TAGS'
+export const SET_TAG_IDS = 'SET_TAG_IDS'
 
 /* mat Custom constants [start] */
 /* mat Custom constants [end] */
@@ -24,6 +25,13 @@ export const setTags = (tags) => {
   return {
     type: SET_TAGS,
     payload: tags
+  }
+}
+
+export const setTagIds = (ids) => {
+  return {
+    type: SET_TAG_IDS,
+    payload: ids
   }
 }
 
@@ -58,6 +66,8 @@ export const ids = (state = [], action) => {
       return _.compact(_.uniq([...state, ...action.payload.result]))
     }
     return _.compact(_.uniq([...state, action.payload.result]))
+  } else if (action.type === SET_TAG_IDS) {
+    return _.compact(_.uniq(action.payload))
   }
   return state
 }

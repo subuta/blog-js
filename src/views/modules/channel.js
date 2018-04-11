@@ -13,6 +13,7 @@ import {SET_COMMENTS} from './comment'
 export const REQUEST_CHANNELS = 'REQUEST_CHANNELS'
 export const REQUEST_CHANNELS_FAILURE = 'REQUEST_CHANNELS_FAILURE'
 export const SET_CHANNELS = 'SET_CHANNELS'
+export const SET_CHANNEL_IDS = 'SET_CHANNEL_IDS'
 
 
 
@@ -23,6 +24,13 @@ export const setChannels = (channels) => {
   return {
     type: SET_CHANNELS,
     payload: channels
+  }
+}
+
+export const setChannelIds = (ids) => {
+  return {
+    type: SET_CHANNEL_IDS,
+    payload: ids
   }
 }
 
@@ -87,6 +95,8 @@ export const ids = (state = [], action) => {
       return _.compact(_.uniq([...state, ...action.payload.result]))
     }
     return _.compact(_.uniq([...state, action.payload.result]))
+  } else if (action.type === SET_CHANNEL_IDS) {
+    return _.compact(_.uniq(action.payload))
   }
   return state
 }

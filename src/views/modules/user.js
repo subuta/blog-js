@@ -13,6 +13,7 @@ import {SET_COMMENTS} from './comment'
 export const REQUEST_USERS = 'REQUEST_USERS'
 export const REQUEST_USERS_FAILURE = 'REQUEST_USERS_FAILURE'
 export const SET_USERS = 'SET_USERS'
+export const SET_USER_IDS = 'SET_USER_IDS'
 
 /* mat Custom constants [start] */
 export const SET_CURRENT_USER = 'SET_CURRENT_USER'
@@ -25,6 +26,13 @@ export const setUsers = (users) => {
   return {
     type: SET_USERS,
     payload: users
+  }
+}
+
+export const setUserIds = (ids) => {
+  return {
+    type: SET_USER_IDS,
+    payload: ids
   }
 }
 
@@ -72,6 +80,8 @@ export const ids = (state = [], action) => {
       return _.compact(_.uniq([...state, ...action.payload.result]))
     }
     return _.compact(_.uniq([...state, action.payload.result]))
+  } else if (action.type === SET_USER_IDS) {
+    return _.compact(_.uniq(action.payload))
   }
   return state
 }

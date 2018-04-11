@@ -15,6 +15,7 @@ import {SET_ATTACHMENTS} from './attachment'
 export const REQUEST_COMMENTS = 'REQUEST_COMMENTS'
 export const REQUEST_COMMENTS_FAILURE = 'REQUEST_COMMENTS_FAILURE'
 export const SET_COMMENTS = 'SET_COMMENTS'
+export const SET_COMMENT_IDS = 'SET_COMMENT_IDS'
 
 
 
@@ -25,6 +26,13 @@ export const setComments = (comments) => {
   return {
     type: SET_COMMENTS,
     payload: comments
+  }
+}
+
+export const setCommentIds = (ids) => {
+  return {
+    type: SET_COMMENT_IDS,
+    payload: ids
   }
 }
 
@@ -62,10 +70,12 @@ export const updateComment = (id, params) => {
 }
 
 export const deleteComment = (id) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch({type: REQUEST_COMMENTS})
     return api.comment.destroy(id).then(() => {
-      dispatch(setComments({}))
+      const state = getState()
+      const nextIds = _.without(getIds(state), id)
+      dispatch(setCommentIds(nextIds))
     })
   }
 }
@@ -89,6 +99,8 @@ export const ids = (state = [], action) => {
       return _.compact(_.uniq([...state, ...action.payload.result]))
     }
     return _.compact(_.uniq([...state, action.payload.result]))
+  } else if (action.type === SET_COMMENT_IDS) {
+    return _.compact(_.uniq(action.payload))
   }
   return state
 }

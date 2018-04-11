@@ -13,6 +13,7 @@ import {SET_COMMENTS} from './comment'
 export const REQUEST_ATTACHMENTS = 'REQUEST_ATTACHMENTS'
 export const REQUEST_ATTACHMENTS_FAILURE = 'REQUEST_ATTACHMENTS_FAILURE'
 export const SET_ATTACHMENTS = 'SET_ATTACHMENTS'
+export const SET_ATTACHMENT_IDS = 'SET_ATTACHMENT_IDS'
 
 
 
@@ -23,6 +24,13 @@ export const setAttachments = (attachments) => {
   return {
     type: SET_ATTACHMENTS,
     payload: attachments
+  }
+}
+
+export const setAttachmentIds = (ids) => {
+  return {
+    type: SET_ATTACHMENT_IDS,
+    payload: ids
   }
 }
 
@@ -67,6 +75,8 @@ export const ids = (state = [], action) => {
       return _.compact(_.uniq([...state, ...action.payload.result]))
     }
     return _.compact(_.uniq([...state, action.payload.result]))
+  } else if (action.type === SET_ATTACHMENT_IDS) {
+    return _.compact(_.uniq(action.payload))
   }
   return state
 }
