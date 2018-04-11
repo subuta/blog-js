@@ -110,6 +110,11 @@ export const blockquote = {
   fontWeight: 'bold',
   lineHeight: '1em',
   color: '#888888',
+
+  '& p': {
+    margin: 0
+  },
+
   '&:after': {
     content: '\'\'',
     position: 'absolute',
