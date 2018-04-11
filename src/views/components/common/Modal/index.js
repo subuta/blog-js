@@ -57,6 +57,8 @@ export default enhance((props) => {
     getPortal,
     isShow,
     title,
+    cancelText = 'Cancel',
+    okText = 'OK',
     onSubmit = _.noop,
     onClose = _.noop
   } = props
@@ -87,7 +89,7 @@ export default enhance((props) => {
                 ghost
                 secondary
               >
-                Cancel
+                {cancelText}
               </MaterialButton>
 
               <MaterialButton
@@ -95,7 +97,7 @@ export default enhance((props) => {
                 onClick={onSubmit}
                 ghost
               >
-                OK
+                {okText}
               </MaterialButton>
             </footer>
           </div>

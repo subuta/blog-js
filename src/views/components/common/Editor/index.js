@@ -45,10 +45,15 @@ const enhance = compose(
       }
     }
   }),
-  withHandlers(function () {
+  withHandlers(function ({ setEmojiFilter }) {
     let draftEmoji = ''
 
     const ignoredKeys = ['up', 'down', 'enter', 'esc']
+
+    const resetDraftEmoji = () => {
+      draftEmoji = ''
+      setEmojiFilter('')
+    }
 
     return {
       onKeyDown: (props) => (e) => {
@@ -66,8 +71,7 @@ const enhance = compose(
         } else if (keycode(e) === 'backspace') {
           draftEmoji = draftEmoji.slice(0, -1)
         } else {
-          draftEmoji = ''
-          setEmojiFilter('')
+          return resetDraftEmoji()
         }
 
         setEmojiFilter(draftEmoji)
@@ -112,7 +116,8 @@ const enhance = compose(
           .insertText(emoji.colons)
 
         onChange(nextState)
-        setEmojiFilter('')
+
+        return resetDraftEmoji()
       }
     }
   })

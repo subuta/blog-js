@@ -65,7 +65,7 @@ const enhance = compose(
   withHandlers({
     onClickEmoji: ({onSelect}) => onSelect,
     confirmEmoji: ({cursor, onSelect, candidates, isShow}) => (e) => {
-      if (!isShow) return undefined
+      if (!isShow || !candidates[cursor]) return undefined
 
       onSelect(candidates[cursor], e)
 

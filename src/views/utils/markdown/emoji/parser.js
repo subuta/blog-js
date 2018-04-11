@@ -43,8 +43,8 @@ function tokenize (eat, value, silent) {
     return true
   }
 
-  // ignore the value contains line feed.
-  if (subvalue.match(/\r?\n/)) return
+  // ignore the value contains line feed or blank space.
+  if (subvalue.match(/[\s|\r?\n]/)) return
 
   /* Eat a text-node. */
   subvalue = C_COLON + subvalue + C_COLON

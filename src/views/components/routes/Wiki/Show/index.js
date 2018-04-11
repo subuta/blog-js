@@ -15,6 +15,7 @@ import Tooltip from 'src/views/components/common/Tooltip'
 import Menu from 'src/views/components/common/Menu'
 import MaterialButton from 'src/views/components/common/MaterialButton'
 import Modal from 'src/views/components/common/Modal'
+import Confirm from 'src/views/components/common/Confirm'
 
 import Sidebar from '../_Sidebar'
 import Header from '../_Header'
@@ -166,6 +167,7 @@ const enhance = compose(
   withState('draftContent', 'setDraftContent', ({article}) => article ? article.content : ''),
   withState('draftSlug', 'setDraftSlug', ({article}) => article ? article.slug : ''),
   withState('isShowSlugModal', 'setIsShowSlugModal', false),
+  withState('isShowConfirmArticleDeleteModal', 'setIsShowConfirmArticleDeleteModal', false),
   withState('isShowMenu', 'setIsShowMenu', false),
   withHandlers(() => {
     let targetRef = null
@@ -230,11 +232,13 @@ export default enhance((props) => {
     isAuthenticated,
     isShowMenu,
     isShowSlugModal,
+    isShowConfirmArticleDeleteModal,
     onChangeSlug,
     onDelete,
     draftSlug,
     setIsShowMenu,
     setIsShowSlugModal,
+    setIsShowConfirmArticleDeleteModal,
     setDraftSlug,
     getTargetRef,
     setTargetRef,
@@ -271,6 +275,19 @@ export default enhance((props) => {
           />
         </Modal>
 
+        <Confirm
+          title='Are you sure?'
+          message='Do you really want to delete this Article? (This action cannot be un-done)'
+          isShow={isShowConfirmArticleDeleteModal}
+          onCancel={() => {
+            setIsShowConfirmArticleDeleteModal(false)
+          }}
+          onConfirm={() => {
+            setIsShowConfirmArticleDeleteModal(false)
+            onDelete()
+          }}
+        />
+
         <Content>
           <Header/>
 
@@ -300,7 +317,7 @@ export default enhance((props) => {
               <ul>
                 <li onClick={() => {
                   setIsShowMenu(false)
-                  onDelete()
+                  setIsShowConfirmArticleDeleteModal(true)
                 }}>
                   Delete this article
                 </li>
