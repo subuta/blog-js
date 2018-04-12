@@ -57,11 +57,17 @@ export default enhance((props) => {
     getPortal,
     isShow,
     title,
+    className,
     cancelText = 'Cancel',
     okText = 'OK',
     onSubmit = _.noop,
     onClose = _.noop
   } = props
+
+  let modalClass = styles.Modal
+  if (className) {
+    modalClass += ` ${className}`
+  }
 
   let modal = (
     <ReactCSSTransitionGroup
@@ -70,7 +76,7 @@ export default enhance((props) => {
       transitionLeaveTimeout={300}
     >
       {isShow && (
-        <div className={styles.Modal}>
+        <div className={modalClass}>
           <div className={styles.Body}>
             {title && (
               <header>

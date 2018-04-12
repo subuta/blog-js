@@ -43,6 +43,15 @@ const Paper = {
   }
 }
 
+const UpdateArticleModal = {
+  '& .text-field': {
+    margin: '0 0 8px 0',
+    '&:last-of-type': {
+      margin: 0
+    }
+  }
+}
+
 const Title = {
   margin: '0 !important'
 }
@@ -112,6 +121,7 @@ const MenuButton = {
 
 export default createWithStyles({
   Paper,
+  UpdateArticleModal,
   Title,
   SubTitle,
   ScrollContainer,

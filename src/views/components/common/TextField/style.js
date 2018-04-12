@@ -14,11 +14,13 @@ const TextField = {
     alignItems: 'baseline',
 
     '& > span': {
+      flex: '0 0 0px',
       margin: '0 8px 0 0',
       fontWeight: 'bold'
     },
 
     '& > input': {
+      flex: '1 1 100%',
       padding: '4px 0',
       minWidth: 200,
       appearance: 'none',

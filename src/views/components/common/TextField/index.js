@@ -18,7 +18,7 @@ export default enhance((props) => {
   } = props
 
   return (
-    <div className={styles.TextField}>
+    <div className={`${styles.TextField} text-field`}>
       <label>
         {label && (
           <span>{label}:</span>

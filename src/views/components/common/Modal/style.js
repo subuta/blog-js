@@ -44,15 +44,15 @@ const Body = {
   },
 
   '.modal-content': {
-    padding: '32px 16px',
-    minWidth: 200,
+    padding: '32px 24px',
+    minWidth: 320,
   },
 
   '& header': {
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    padding: '8px 16px',
+    padding: '16px 24px',
     borderBottom: `1px solid ${BORDER_COLOR}`,
     fontWeight: 'bold'
   },
@@ -61,7 +61,7 @@ const Body = {
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    padding: '4px 8px',
+    padding: '8px 16px',
     borderTop: `1px solid ${BORDER_COLOR}`,
 
     '& > button': {

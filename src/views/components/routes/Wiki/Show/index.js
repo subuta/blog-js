@@ -166,6 +166,7 @@ const enhance = compose(
   connect,
   withState('draftContent', 'setDraftContent', ({article}) => article ? article.content : ''),
   withState('draftSlug', 'setDraftSlug', ({article}) => article ? article.slug : ''),
+  withState('draftTitle', 'setDraftTitle', ({article}) => article ? article.title : ''),
   withState('isShowSlugModal', 'setIsShowSlugModal', false),
   withState('isShowConfirmArticleDeleteModal', 'setIsShowConfirmArticleDeleteModal', false),
   withState('isShowMenu', 'setIsShowMenu', false),
@@ -212,10 +213,10 @@ const enhance = compose(
       })
     },
 
-    onChangeSlug: ({article, draftSlug, updateArticle}) => () => {
+    onUpdateArticle: ({article, draftSlug, draftTitle, updateArticle}) => () => {
       const slug = draftSlug
-      updateArticle(article.id, {...article, slug}).then(() => {
-        Router.push(`/article?slug=${slug}&edit=true`, `/w/${slug}/edit`)
+      updateArticle(article.id, {...article, slug, title: draftTitle}).then(() => {
+        Router.replace(`/article?slug=${slug}&edit=true`, `/w/${slug}/edit`)
       })
     },
 
@@ -233,13 +234,15 @@ export default enhance((props) => {
     isShowMenu,
     isShowSlugModal,
     isShowConfirmArticleDeleteModal,
-    onChangeSlug,
+    onUpdateArticle,
     onDelete,
     draftSlug,
+    draftTitle,
     setIsShowMenu,
     setIsShowSlugModal,
     setIsShowConfirmArticleDeleteModal,
     setDraftSlug,
+    setDraftTitle,
     getTargetRef,
     setTargetRef,
     isEditing
@@ -256,19 +259,28 @@ export default enhance((props) => {
         <Sidebar/>
 
         <Modal
-          title='Change slug of this article'
+          title='Update article settings'
           isShow={isShowSlugModal}
+          className={styles.UpdateArticleModal}
           onClose={() => {
             setDraftSlug(article.slug)
+            setDraftTitle(article.title)
             setIsShowSlugModal(false)
           }}
           onSubmit={() => {
-            onChangeSlug()
+            onUpdateArticle()
             setIsShowSlugModal(false)
           }}
         >
           <TextField
-            label='slug'
+            label='Title'
+            onChange={setDraftTitle}
+            value={draftTitle}
+            placeholder='Put title for this article'
+          />
+
+          <TextField
+            label='Slug'
             onChange={setDraftSlug}
             value={draftSlug}
             placeholder='Put slug for this article'
@@ -317,15 +329,16 @@ export default enhance((props) => {
               <ul>
                 <li onClick={() => {
                   setIsShowMenu(false)
+                  setIsShowSlugModal(true)
+                }}>
+                  Update article settings
+                </li>
+
+                <li onClick={() => {
+                  setIsShowMenu(false)
                   setIsShowConfirmArticleDeleteModal(true)
                 }}>
                   Delete this article
-                </li>
-                <li onClick={() => {
-                  setIsShowMenu(false)
-                  setIsShowSlugModal(true)
-                }}>
-                  Change slug
                 </li>
               </ul>
             </Menu>
