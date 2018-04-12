@@ -29,6 +29,17 @@ export default class Article extends Model {
           through: {from: 'articles_tags.articleId', to: 'articles_tags.tagId'},
           to: 'tags.id'
         }
+      },
+      reactions: {
+        modelClass: models.Reaction,
+        relation: Model.HasManyRelation,
+        filter: {
+          reactableType: 'Article'
+        },
+        beforeInsert: (model) => {
+          model.reactableType = 'Article'
+        },
+        join: {from: 'articles.id', to: 'reactions.reactableId'}
       }
     }
   }
@@ -39,14 +50,14 @@ export default class Article extends Model {
     title: 'Article',
     $id: 'http://sub-labo.com/schemas/article.json',
     type: 'object',
-    required: ['title', 'content'],
+    required: ['title', 'slug'],
     properties: {
       id: {type: 'integer'},
       title: {type: 'string'},
-      summary: {type: 'string'},
+      summary: {type: 'string', default: '', maxLength: 300},
       slug: {type: 'string'},
-      isPublished: {type: 'boolean'},
-      content: {type: 'string'}
+      isPublished: {type: 'boolean', default: false},
+      content: {type: 'string', default: ''}
     }
   }
 }

@@ -2,7 +2,7 @@ export default {
   tableName: 'articles',
   required: [
     'title',
-    'content',
+    'slug',
   ],
 
   properties: {
@@ -13,16 +13,21 @@ export default {
       'type': 'string'
     },
     summary: {
-      'type': 'string'
+      'type': 'string',
+      'default': '',
+      // for og:content
+      'maxLength': 300
     },
     slug: {
       'type': 'string'
     },
     isPublished: {
-      'type': 'boolean'
+      'type': 'boolean',
+      'default': false
     },
     content: {
-      'type': 'string'
+      'type': 'string',
+      'default': ''
     }
   },
 
@@ -38,5 +43,14 @@ export default {
         to: 'tags.id',
       }
     },
+
+    reactions: {
+      hasMany: 'reactions',
+      morphAs: 'reactable',
+      join: {
+        from: 'articles.id',
+        to: 'reactions.reactableId'
+      }
+    }
   }
 }

@@ -37,7 +37,7 @@ const Body = {
     opacity: 0,
   },
 
-  '.modal-leave &': {
+  '.modal-exit &': {
     transform: 'translate3d(0, -24px, 0)',
     opacity: 0,
     transition: `all 0.3s ${EASE_DECELERATION}`,
@@ -45,7 +45,9 @@ const Body = {
 
   '.modal-content': {
     padding: '32px 24px',
-    minWidth: 320,
+    minWidth: '30vw',
+    maxHeight: 400,
+    overflow: 'scroll'
   },
 
   '& header': {
@@ -91,7 +93,7 @@ const Backdrop = {
     opacity: 0
   },
 
-  '.modal-leave &': {
+  '.modal-exit &': {
     opacity: 0
   }
 }

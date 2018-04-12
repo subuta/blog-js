@@ -76,6 +76,15 @@ const Articles = {
   }
 }
 
+const CreateArticleModal = {
+  '& .input': {
+    margin: '0 0 16px 0',
+    '&:last-of-type': {
+      margin: 0
+    }
+  }
+}
+
 const ScrollContainer = {
   position: 'relative',
   display: 'flex',
@@ -91,6 +100,7 @@ const ScrollContainer = {
 
 export default createWithStyles({
   Paper,
+  CreateArticleModal,
   ScrollContainer,
   Articles
 })

@@ -7,6 +7,7 @@ import ArticleTag from './ArticleTag'
 import Channel from './Channel'
 import Comment from './Comment'
 import Tag from './Tag'
+import Reaction from './Reaction'
 import User from './User'
 
 // assign connection to knex.
@@ -20,6 +21,7 @@ const modules = {
   Channel,
   Comment,
   Tag,
+  Reaction,
   User
 }
 

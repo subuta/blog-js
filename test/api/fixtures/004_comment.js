@@ -5,25 +5,25 @@ exports.seed = async (knex) => {
   // https://github.com/tgriesser/knex/issues/54
   await knex('comments').insert([
     {
-      id: 57447,
+      id: 2826,
       text:
-        'Ut amet molestiae aliquam numquam ad ut et. Et ut perspiciatis fugiat expedita fuga hic odio. Ducimus cumque aut harum in perferendis veritatis tempora aut. Facilis officia sed. Eum excepturi officia ipsum sunt voluptatem eius. Rerum qui doloremque ex velit porro animi odio saepe sunt.',
+        'Aut repellendus rerum. Ut dolores est libero provident. Explicabo repellendus dolor similique velit qui ut asperiores. Et nihil quis omnis iusto. Inventore impedit doloremque excepturi ut explicabo recusandae eos odio. Accusantium quae quibusdam aliquid adipisci consequatur et.',
       channelId: 82160,
       commentedById: 54551,
       attachmentId: '28d15c5a-a70c-48e4-9772-bc910f421907'
     },
     {
-      id: 33984,
+      id: 85551,
       text:
-        'Id optio rem culpa minus. Nostrum aut et. Aliquam repellat est reprehenderit.',
+        'Ad numquam laborum nihil. Impedit sed dolor voluptas tempora dolorem odit voluptas nemo modi. Molestiae consectetur molestias et. Velit et facilis repellat nisi eum laboriosam. Libero ut aliquid est consequatur assumenda non. Voluptatum architecto reiciendis sint dolorum dolorum.',
       channelId: 93680,
       commentedById: 15599,
       attachmentId: 'abfbc020-04b2-4d70-a1ed-aa85e702e181'
     },
     {
-      id: 46230,
+      id: 13285,
       text:
-        'Facilis cupiditate quo nemo hic. Rem nesciunt aliquid aut qui architecto saepe enim laborum. Quia dolor consequuntur et dolorem tenetur totam nisi asperiores.',
+        'Aliquid error recusandae deleniti sint corporis. Qui dolorem voluptatem eaque officiis asperiores amet nobis. Officiis rem quis nemo in est dolores nobis. Vel quod mollitia id occaecati eveniet veritatis earum delectus dicta. Architecto reprehenderit officia et sit enim assumenda nisi sint. Minima aliquam dolor iste.',
       channelId: 58071,
       commentedById: 34490,
       attachmentId: '62fc4caf-224d-4658-949e-b68307f974d2'

@@ -37,5 +37,14 @@ export default {
         to: 'attachments.id'
       }
     },
+
+    reactions: {
+      hasMany: 'reactions',
+      morphAs: 'reactable',
+      join: {
+        from: 'comments.id',
+        to: 'reactions.reactableId'
+      }
+    }
   }
 }

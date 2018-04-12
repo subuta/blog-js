@@ -20,6 +20,9 @@ export const commentList = new schema.Array(comment)
 export const tag = new schema.Entity('tag')
 export const tagList = new schema.Array(tag)
 
+export const reaction = new schema.Entity('reaction')
+export const reactionList = new schema.Array(reaction)
+
 export const user = new schema.Entity('user')
 export const userList = new schema.Array(user)
 
@@ -28,7 +31,8 @@ attachment.define({
 })
 
 article.define({
-  tags: [tag]
+  tags: [tag],
+  reactions: [reaction]
 })
 
 channel.define({
@@ -38,11 +42,16 @@ channel.define({
 comment.define({
   channel,
   commentedBy: user,
-  attachment
+  attachment,
+  reactions: [reaction]
 })
 
 tag.define({
   articles: [article]
+})
+
+reaction.define({
+  reactedBy: user
 })
 
 user.define({
@@ -60,6 +69,8 @@ const models = {
   commentList,
   tag,
   tagList,
+  reaction,
+  reactionList,
   user,
   userList
 }

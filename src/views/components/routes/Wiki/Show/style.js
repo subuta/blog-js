@@ -44,8 +44,8 @@ const Paper = {
 }
 
 const UpdateArticleModal = {
-  '& .text-field': {
-    margin: '0 0 8px 0',
+  '& .input': {
+    margin: '0 0 16px 0',
     '&:last-of-type': {
       margin: 0
     }

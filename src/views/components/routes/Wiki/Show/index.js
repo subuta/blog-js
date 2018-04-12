@@ -10,6 +10,7 @@ import FloatingActionButton from 'src/views/components/common/FloatingActionButt
 import Editor from 'src/views/components/common/Editor'
 import MarkdownContent from 'src/views/components/common/MarkdownContent'
 import TextField from 'src/views/components/common/TextField'
+import TextArea from 'src/views/components/common/TextArea'
 import Tooltip from 'src/views/components/common/Tooltip'
 
 import Menu from 'src/views/components/common/Menu'
@@ -166,8 +167,9 @@ const enhance = compose(
   connect,
   withState('draftContent', 'setDraftContent', ({article}) => article ? article.content : ''),
   withState('draftSlug', 'setDraftSlug', ({article}) => article ? article.slug : ''),
+  withState('draftSummary', 'setDraftSummary', ({article}) => article ? article.summary : ''),
   withState('draftTitle', 'setDraftTitle', ({article}) => article ? article.title : ''),
-  withState('isShowSlugModal', 'setIsShowSlugModal', false),
+  withState('isShowUpdateArticleModal', 'setIsShowUpdateArticleModal', false),
   withState('isShowConfirmArticleDeleteModal', 'setIsShowConfirmArticleDeleteModal', false),
   withState('isShowMenu', 'setIsShowMenu', false),
   withHandlers(() => {
@@ -213,9 +215,23 @@ const enhance = compose(
       })
     },
 
-    onUpdateArticle: ({article, draftSlug, draftTitle, updateArticle}) => () => {
+    onUpdateArticle: (props) => () => {
+      const {
+        article,
+        draftSlug,
+        draftTitle,
+        draftSummary,
+        updateArticle
+      } = props
+
       const slug = draftSlug
-      updateArticle(article.id, {...article, slug, title: draftTitle}).then(() => {
+      const nextArticle = {
+        title: draftTitle,
+        summary: draftSummary,
+        slug,
+      }
+
+      updateArticle(article.id, nextArticle).then(() => {
         Router.replace(`/article?slug=${slug}&edit=true`, `/w/${slug}/edit`)
       })
     },
@@ -232,17 +248,19 @@ export default enhance((props) => {
     styles,
     isAuthenticated,
     isShowMenu,
-    isShowSlugModal,
+    isShowUpdateArticleModal,
     isShowConfirmArticleDeleteModal,
     onUpdateArticle,
     onDelete,
     draftSlug,
     draftTitle,
+    draftSummary,
     setIsShowMenu,
-    setIsShowSlugModal,
+    setIsShowUpdateArticleModal,
     setIsShowConfirmArticleDeleteModal,
     setDraftSlug,
     setDraftTitle,
+    setDraftSummary,
     getTargetRef,
     setTargetRef,
     isEditing
@@ -260,16 +278,16 @@ export default enhance((props) => {
 
         <Modal
           title='Update article settings'
-          isShow={isShowSlugModal}
+          isShow={isShowUpdateArticleModal}
           className={styles.UpdateArticleModal}
           onClose={() => {
             setDraftSlug(article.slug)
             setDraftTitle(article.title)
-            setIsShowSlugModal(false)
+            setIsShowUpdateArticleModal(false)
           }}
           onSubmit={() => {
             onUpdateArticle()
-            setIsShowSlugModal(false)
+            setIsShowUpdateArticleModal(false)
           }}
         >
           <TextField
@@ -284,6 +302,14 @@ export default enhance((props) => {
             onChange={setDraftSlug}
             value={draftSlug}
             placeholder='Put slug for this article'
+          />
+
+          <TextArea
+            label='Summary'
+            onChange={setDraftSummary}
+            value={draftSummary}
+            placeholder='Put summary for this article'
+            maxLength={300}
           />
         </Modal>
 
@@ -329,7 +355,7 @@ export default enhance((props) => {
               <ul>
                 <li onClick={() => {
                   setIsShowMenu(false)
-                  setIsShowSlugModal(true)
+                  setIsShowUpdateArticleModal(true)
                 }}>
                   Update article settings
                 </li>

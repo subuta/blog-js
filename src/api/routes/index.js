@@ -9,6 +9,7 @@ import article from './article'
 import comment from './comment'
 import attachment from './attachment'
 import tag from './tag'
+import reaction from './reaction'
 import user from './user'
 
 const api = new Router({
@@ -50,6 +51,7 @@ registerRouters({
   comment,
   attachment,
   tag,
+  reaction,
   user
 })
 

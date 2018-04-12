@@ -1,6 +1,10 @@
 import _ from 'lodash'
 import { connect } from 'react-redux'
 
+import {
+  createArticle
+} from 'src/views/modules/article'
+
 import { getAll as getArticles } from 'src/views/modules/article'
 import { getAll as getTags } from 'src/views/modules/tag'
 
@@ -19,6 +23,8 @@ const mapStateToProps = (state, oldProps) => {
   }
 }
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  createArticle
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)

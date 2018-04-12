@@ -51,7 +51,7 @@ test('index should list comment', async (t) => {
 
   t.is(response.status, 200)
   t.deepEqual(response.body.length, 1)
-  t.deepEqual(_.map(response.body, 'id').sort(), [57447])
+  t.deepEqual(_.map(response.body, 'id').sort(), [2826])
 })
 
 test('post should create comment', async (t) => {
@@ -66,18 +66,18 @@ test('post should create comment', async (t) => {
     .set('Authorization', `Bearer ${token}`)
     .send({
       comment: {
-        id: 63978,
+        id: 39166,
         text:
-          'Laudantium minus consequatur. Doloribus est aut modi illum et exercitationem. Nihil laudantium quas.'
+          'Corporis sed nemo totam est. Optio in sed aut et rerum commodi non distinctio quibusdam. Alias ducimus consequatur fuga et nobis ratione enim necessitatibus. Qui eius quas officia iste omnis impedit.'
       }
     })
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 63978)
+  t.deepEqual(response.body.id, 39166)
   t.deepEqual(
     response.body.text,
-    'Laudantium minus consequatur. Doloribus est aut modi illum et exercitationem. Nihil laudantium quas.'
+    'Corporis sed nemo totam est. Optio in sed aut et rerum commodi non distinctio quibusdam. Alias ducimus consequatur fuga et nobis ratione enim necessitatibus. Qui eius quas officia iste omnis impedit.'
   )
 })
 
@@ -89,13 +89,13 @@ test('update should update comment', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .put('/api/channels/82160/comments/57447')
+    .put('/api/channels/82160/comments/2826')
     .set('Authorization', `Bearer ${token}`)
     .send({
       comment: {
-        id: 57447,
+        id: 2826,
         text:
-          'Laudantium minus consequatur. Doloribus est aut modi illum et exercitationem. Nihil laudantium quas.',
+          'Corporis sed nemo totam est. Optio in sed aut et rerum commodi non distinctio quibusdam. Alias ducimus consequatur fuga et nobis ratione enim necessitatibus. Qui eius quas officia iste omnis impedit.',
         channelId: 82160,
         commentedById: 54551,
         attachmentId: '28d15c5a-a70c-48e4-9772-bc910f421907'
@@ -104,10 +104,10 @@ test('update should update comment', async (t) => {
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 57447)
+  t.deepEqual(response.body.id, 2826)
   t.deepEqual(
     response.body.text,
-    'Laudantium minus consequatur. Doloribus est aut modi illum et exercitationem. Nihil laudantium quas.'
+    'Corporis sed nemo totam est. Optio in sed aut et rerum commodi non distinctio quibusdam. Alias ducimus consequatur fuga et nobis ratione enim necessitatibus. Qui eius quas officia iste omnis impedit.'
   )
   t.deepEqual(response.body.channelId, 82160)
   t.deepEqual(response.body.commentedById, 54551)
@@ -128,7 +128,7 @@ test('delete should delete comment', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .delete('/api/channels/82160/comments/57447')
+    .delete('/api/channels/82160/comments/2826')
     .set('Authorization', `Bearer ${token}`)
 
   comments = await Comment.query()

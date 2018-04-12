@@ -5,6 +5,7 @@ import ArticleTag from './model/ArticleTag'
 import Tag from './model/Tag'
 import Channel from './model/Channel'
 import Comment from './model/Comment'
+import Reaction from './model/Reaction'
 import User from './model/User'
 
 export const Routes = {
@@ -22,7 +23,7 @@ export const Routes = {
       'index',
       'show'
     ],
-    eager: '[tags.articles]',
+    eager: '[tags.articles, reactions]',
     joinRelation: '[tags]'
   },
   comment: {
@@ -36,7 +37,8 @@ export const Routes = {
     except: [
       'show'
     ],
-    eager: '[channel.[comments.[attachment, commentedBy]], attachment, commentedBy]',
+
+    eager: '[channel.[comments.[attachment, commentedBy]], attachment, commentedBy, reactions]',
     joinRelation: ''
   },
   attachment: {
@@ -60,11 +62,16 @@ export const Routes = {
     skipAuth: true,
     eager: '[articles]'
   },
+  reaction: {
+    eager: '',
+    only: [],
+    joinRelation: ''
+  },
   user: {
     eager: '',
     only: [],
     joinRelation: ''
-  }
+  },
 }
 
 export const Models = {
@@ -92,6 +99,10 @@ export const Models = {
   tag: {
     schema: Tag,
     seeds: 3
+  },
+  reaction: {
+    schema: Reaction,
+    seeds: 0
   },
   user: {
     schema: User,

@@ -5,6 +5,7 @@ import article from './article'
 import comment from './comment'
 import attachment from './attachment'
 import tag from './tag'
+import reaction from './reaction'
 import user from './user'
 
 /* mat Custom imports [start] */
@@ -17,6 +18,7 @@ let reducers = {
   comment,
   attachment,
   tag,
+  reaction,
   user
 }
 

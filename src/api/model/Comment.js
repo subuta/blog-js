@@ -31,6 +31,17 @@ export default class Comment extends Model {
         modelClass: models.Attachment,
         relation: Model.HasOneRelation,
         join: {from: 'comments.attachmentId', to: 'attachments.id'}
+      },
+      reactions: {
+        modelClass: models.Reaction,
+        relation: Model.HasManyRelation,
+        filter: {
+          reactableType: 'Comment'
+        },
+        beforeInsert: (model) => {
+          model.reactableType = 'Comment'
+        },
+        join: {from: 'comments.id', to: 'reactions.reactableId'}
       }
     }
   }

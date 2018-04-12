@@ -12,7 +12,7 @@ import {
   createPortal
 } from 'react-dom'
 
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { CSSTransition } from 'react-transition-group';
 
 import _ from 'lodash'
 
@@ -70,51 +70,50 @@ export default enhance((props) => {
   }
 
   let modal = (
-    <ReactCSSTransitionGroup
-      transitionName="modal"
-      transitionEnterTimeout={300}
-      transitionLeaveTimeout={300}
+    <CSSTransition
+      in={isShow}
+      classNames="modal"
+      timeout={300}
+      unmountOnExit
     >
-      {isShow && (
-        <div className={modalClass}>
-          <div className={styles.Body}>
-            {title && (
-              <header>
-                {title}
-              </header>
-            )}
+      <div className={modalClass}>
+        <div className={styles.Body}>
+          {title && (
+            <header>
+              {title}
+            </header>
+          )}
 
-            <div className='modal-content'>
-             {props.children}
-            </div>
-
-            <footer>
-              <MaterialButton
-                wavesClasses={['waves-float']}
-                onClick={onClose}
-                ghost
-                secondary
-              >
-                {cancelText}
-              </MaterialButton>
-
-              <MaterialButton
-                wavesClasses={['waves-float']}
-                onClick={onSubmit}
-                ghost
-              >
-                {okText}
-              </MaterialButton>
-            </footer>
+          <div className='modal-content'>
+            {props.children}
           </div>
 
-          <div
-            className={styles.Backdrop}
-            onClick={onClose}
-          />
+          <footer>
+            <MaterialButton
+              wavesClasses={['waves-float']}
+              onClick={onClose}
+              ghost
+              secondary
+            >
+              {cancelText}
+            </MaterialButton>
+
+            <MaterialButton
+              wavesClasses={['waves-float']}
+              onClick={onSubmit}
+              ghost
+            >
+              {okText}
+            </MaterialButton>
+          </footer>
         </div>
-      )}
-    </ReactCSSTransitionGroup>
+
+        <div
+          className={styles.Backdrop}
+          onClick={onClose}
+        />
+      </div>
+    </CSSTransition>
   )
 
   if (isBrowser && getPortal()) {

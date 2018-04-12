@@ -5,31 +5,31 @@ exports.seed = async (knex) => {
   // https://github.com/tgriesser/knex/issues/54
   await knex('articles').insert([
     {
-      id: 76958,
-      title: 'HDD cross-platform core',
-      summary: 'Cambridgeshire',
-      slug: 'accusantium-non-fugiat',
+      id: 89832,
+      title: 'capacitor Handmade Fresh Car withdrawal',
+      summary: 'cultivate core PCI',
+      slug: 'unde-ad-et',
       isPublished: true,
       content:
-        'Doloremque eveniet aut corporis sunt autem nihil quia. Velit modi mollitia sit nulla. Corrupti est deserunt sed dolores deserunt. Ut corporis qui. Sunt dolor culpa corporis error.'
+        'Rem commodi iusto inventore. Rerum voluptatem necessitatibus quo repellat rerum. Itaque minus voluptate. Quia error temporibus libero unde cupiditate distinctio ex quibusdam. Earum sit qui excepturi sit dolorem voluptatem. Odio laborum natus laborum omnis.'
     },
     {
-      id: 75213,
-      title: 'blue',
-      summary: 'online',
-      slug: 'ut-sunt-asperiores',
+      id: 50794,
+      title: 'synthesizing parsing Norwegian Krone',
+      summary: 'transmit Plastic Central',
+      slug: 'cupiditate-quibusdam-beatae',
       isPublished: true,
       content:
-        'Sapiente voluptatem enim ipsa. Sequi quod quos dolorem saepe dignissimos. Commodi molestiae corporis sequi quo non est nihil rerum ut. Minus maiores illo.'
+        'Aut reprehenderit optio enim quo omnis voluptatem reprehenderit quis. Reiciendis aliquid facere. Id dolorem officia quis repellat aliquid. Cumque id dolores. Et accusamus inventore harum.'
     },
     {
-      id: 52552,
-      title: 'cyan implementation',
-      summary: 'Benin Tuna Wyoming',
-      slug: 'mollitia-soluta-iure',
+      id: 90697,
+      title: 'maroon programming Credit Card Account',
+      summary: 'Rustic Keyboard',
+      slug: 'et-ea-qui',
       isPublished: true,
       content:
-        'Animi nobis aliquam non. Non iusto exercitationem. Est iste architecto a expedita ut. Facilis voluptas commodi consectetur eius. Asperiores amet praesentium quas consequuntur perferendis.'
+        'Non porro tempora ab cum temporibus. Omnis consequuntur nihil. Dolorem at qui officia praesentium. Enim modi consequatur aut laudantium.'
     }
   ])
 }
