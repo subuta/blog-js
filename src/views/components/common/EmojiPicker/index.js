@@ -33,7 +33,6 @@ const enhance = compose(
   withStyles,
   withState('popperStyles', 'setPopperStyles', {}),
   withState('isMounted', 'setIsMounted', false),
-  withState('isShow', 'setIsShow', false),
   shouldUpdate((props, nextProps) => {
     // return true if popperStyle changed.
     const isPopperStyleChanged = !_.isEqual(props.popperStyles, nextProps.popperStyles)
@@ -43,9 +42,9 @@ const enhance = compose(
     return isPopperStyleChanged || isReferenceNodeChanged || isShowChanged || isMountedChanged
   }),
   withHandlers({
-    onClickEmoji: ({onSelect, setIsShow}) => (emoji, e) => {
+    onClickEmoji: ({onSelect, onClose = _.noop}) => (emoji, e) => {
       onSelect(emoji, e)
-      setIsShow(false)
+      onClose()
     }
   }),
   withHandlers(({setPopperStyles, setIsShow}) => {
@@ -53,7 +52,6 @@ const enhance = compose(
     let popper = null
     let referenceNode = null
     let portal = null
-    let unlisten = _.noop
 
     // enable text change handler of referenceNode.
     let observer = isBrowser ? new MutationObserver((_mutations) => {
@@ -86,21 +84,6 @@ const enhance = compose(
       popper.enableEventListeners()
     }
 
-    const onKeyDown = (e) => {
-      // Show EmojiPicker on mac like emoji-shortcut.
-      if (keycode(e) === 'space' && e.ctrlKey && e.metaKey) {
-        setIsShow(true)
-        e.preventDefault()
-        return false
-      }
-
-      if (keycode(e) === 'esc') {
-        setIsShow(false)
-        e.preventDefault()
-        return undefined
-      }
-    }
-
     return {
       setPickerRef: () => (ref) => {
         if (!ref) return
@@ -114,7 +97,6 @@ const enhance = compose(
 
         // if node reference changed
         if (referenceNode !== _referenceNode) {
-          unlisten()
           observer.disconnect()
 
           // Update reference node after popper instantiated, means re-use popper instance always :)
@@ -128,9 +110,6 @@ const enhance = compose(
             characterData: true
           })
 
-          // listen for keyDown event of referenceNode
-          unlisten = bindOnClosestInput(_referenceNode, 'keydown', onKeyDown)
-
           referenceNode = _referenceNode
         }
       },
@@ -138,7 +117,6 @@ const enhance = compose(
       getPortal: () => () => portal,
 
       destroy: () => () => {
-        unlisten()
         popper && popper.disableEventListeners()
         popper && popper.destroy()
         observer.disconnect()
@@ -146,7 +124,6 @@ const enhance = compose(
 
         popper = null
         observer = null
-        unlisten = _.noop
       }
     }
   }),
@@ -184,7 +161,7 @@ export default enhance((props) => {
     setPickerRef,
     onClickEmoji,
     getPortal,
-    setIsShow
+    onClose = _.noop
   } = props
 
   let pickerWrapperClass = styles.PickerWrapper
@@ -212,7 +189,7 @@ export default enhance((props) => {
 
       <div
         className={backdropClass}
-        onClick={() => setIsShow(false)}
+        onClick={onClose}
       />
     </div>
   )

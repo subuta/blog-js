@@ -23,6 +23,7 @@ const RE_EMOJI_LIKE = /^:[\w+\-1-:]+/
 const enhance = compose(
   withState('anchorNode', 'setAnchorNode', null),
   withState('emojiFilter', 'setEmojiFilter', ''),
+  withState('isShowEmojiPicker', 'setIsShowEmojiPicker', false),
   withState('editorState', 'setEditorState', ({value}) => createInitialState(value)),
   withStyles,
   withHandlers(function () {
@@ -58,10 +59,24 @@ const enhance = compose(
     return {
       onKeyDown: (props) => (e) => {
         const {
-          setEmojiFilter
+          setEmojiFilter,
+          setIsShowEmojiPicker
         } = props
 
-        if (_.includes(ignoredKeys, keycode(e))) return
+        // Show EmojiPicker on mac like emoji-shortcut.
+        if (keycode(e) === 'space' && e.ctrlKey && e.metaKey) {
+          setIsShowEmojiPicker(true)
+          e.preventDefault()
+          return false
+        }
+
+        if (keycode(e) === 'esc') {
+          setIsShowEmojiPicker(false)
+          e.preventDefault()
+          return undefined
+        }
+
+        if (_.includes(ignoredKeys, keycode(e))) return undefined
 
         if (e.key === ':') {
           // clear draftEmoji
@@ -130,11 +145,13 @@ export default enhance((props) => {
     className,
     anchorNode,
     editorState,
+    isShowEmojiPicker,
     onChange,
     onKeyDown,
     onSelectEmojiPicker,
     onSelectEmojiAutoComplete,
     emojiFilter,
+    setIsShowEmojiPicker,
     styles
   } = props
 
@@ -154,6 +171,8 @@ export default enhance((props) => {
       <EmojiPicker
         referenceNode={anchorNode}
         onSelect={onSelectEmojiPicker}
+        onClose={() => setIsShowEmojiPicker(false)}
+        isShow={isShowEmojiPicker}
       />
 
       <Editor

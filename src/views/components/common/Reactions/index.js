@@ -12,6 +12,7 @@ import Tooltip from 'src/views/components/common/Tooltip'
 
 const enhance = compose(
   withStyles,
+  withState('isShowEmojiPicker', 'setIsShowEmojiPicker', false),
   withState('isHover', 'setIsHover', false),
   withHandlers(() => {
     let buttonRef
@@ -32,7 +33,9 @@ export default enhance((props) => {
   let {
     styles,
     isHover,
+    isShowEmojiPicker,
     setIsHover,
+    setIsShowEmojiPicker,
     setButtonRef,
     getButtonRef
   } = props
@@ -55,6 +58,7 @@ export default enhance((props) => {
         <button
           className={styles.ReactionButton}
           ref={setButtonRef}
+          onClick={() => setIsShowEmojiPicker(true)}
         >
           <MdInsertEmoticonIcon/>
         </button>
@@ -63,6 +67,8 @@ export default enhance((props) => {
       <EmojiPicker
         referenceNode={getButtonRef()}
         onSelect={(emoji) => console.log('emoji = ', emoji)}
+        onClose={() => setIsShowEmojiPicker(false)}
+        isShow={isShowEmojiPicker}
       />
     </div>
   )
