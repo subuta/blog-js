@@ -6,6 +6,8 @@ import {
 
 import withStyles from './style'
 
+import _ from 'lodash'
+
 import MdInsertEmoticonIcon from 'react-icons/lib/md/insert-emoticon'
 import EmojiPicker from 'src/views/components/common/EmojiPicker'
 import Tooltip from 'src/views/components/common/Tooltip'
@@ -37,7 +39,8 @@ export default enhance((props) => {
     setIsHover,
     setIsShowEmojiPicker,
     setButtonRef,
-    getButtonRef
+    getButtonRef,
+    onReaction = _.noop
   } = props
 
   let reactionsClass = styles.Reactions
@@ -66,7 +69,7 @@ export default enhance((props) => {
 
       <EmojiPicker
         referenceNode={getButtonRef()}
-        onSelect={(emoji) => console.log('emoji = ', emoji)}
+        onSelect={onReaction}
         onClose={() => setIsShowEmojiPicker(false)}
         isShow={isShowEmojiPicker}
       />

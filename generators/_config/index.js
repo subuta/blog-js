@@ -102,7 +102,7 @@ export const Models = {
   },
   reaction: {
     schema: Reaction,
-    seeds: 0
+    seeds: 3
   },
   user: {
     schema: User,

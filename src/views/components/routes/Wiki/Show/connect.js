@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import { connect } from 'react-redux'
+
 import {
   getEntities as getArticleEntities,
   updateArticle,

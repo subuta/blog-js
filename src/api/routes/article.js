@@ -95,6 +95,45 @@ article.get('/slug/:slug', async (ctx) => {
     .eager('[tags.articles]')
     .findFirst({...params, slug: ctx.params.slug})
 })
+
+article.put('/:id/reaction', auth, async (ctx) => {
+  const {Article} = ctx.state.models
+  const {reaction} = ctx.request.body
+
+  const article = await Article.query()
+    .findById(ctx.params.id)
+    .eager('[tags.articles, reactions]')
+
+  const currentUser = await ctx.state.getCurrentUser()
+  reaction['reactedById'] = currentUser.id
+
+  await article
+    .$relatedQuery('reactions')
+    .insert(reaction)
+
+  ctx.body = await article.$query()
+    .eager('[tags.articles, reactions]')
+})
+
+article.delete('/:id/reaction', auth, async (ctx) => {
+  const {Article} = ctx.state.models
+  const query = ctx.request.query
+
+  const article = await Article.query()
+    .findById(ctx.params.id)
+    .eager('[tags.articles, reactions]')
+
+  const currentUser = await ctx.state.getCurrentUser()
+  query['reactedById'] = currentUser.id
+
+  await article
+    .$relatedQuery('reactions')
+    .delete()
+    .where(query)
+
+  ctx.body = await article.$query()
+    .eager('[tags.articles, reactions]')
+})
 /* mat Custom actions [end] */
 
 export default {

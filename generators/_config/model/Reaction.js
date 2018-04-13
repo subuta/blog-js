@@ -1,9 +1,7 @@
 export default {
   tableName: 'reactions',
   required: [
-    'reactableId',
-    'reactableType',
-    'emoji',
+    'emoji'
   ],
 
   properties: {

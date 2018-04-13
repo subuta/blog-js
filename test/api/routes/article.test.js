@@ -186,4 +186,108 @@ test('index should list article and filter by tag', async (t) => {
   t.deepEqual(response.body.length, 1)
   t.deepEqual(_.map(response.body, 'id').sort(), [89832])
 })
+
+test('get should return article by slug', async (t) => {
+  const {request} = t.context
+
+  // mock jwks
+  const token = createToken(privateKey, '123', currentUser)
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .get('/api/articles/slug/unde-ad-et')
+    .query({tagId: 82337})
+    .set('Authorization', `Bearer ${token}`)
+
+  t.is(response.status, 200)
+
+  t.deepEqual(response.body.id, 89832)
+  t.deepEqual(response.body.title, 'capacitor Handmade Fresh Car withdrawal')
+  t.deepEqual(response.body.summary, 'cultivate core PCI')
+  t.deepEqual(response.body.slug, 'unde-ad-et')
+  t.deepEqual(response.body.isPublished, true)
+  t.deepEqual(
+    response.body.content,
+    'Rem commodi iusto inventore. Rerum voluptatem necessitatibus quo repellat rerum. Itaque minus voluptate. Quia error temporibus libero unde cupiditate distinctio ex quibusdam. Earum sit qui excepturi sit dolorem voluptatem. Odio laborum natus laborum omnis.'
+  )
+})
+
+test('put reaction should add reaction to article', async (t) => {
+  const {request} = t.context
+
+  // mock jwks
+  const token = createToken(privateKey, '123', currentUser)
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .put('/api/articles/89832/reaction')
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      reaction: {
+        emoji: ':+1:'
+      }
+    })
+
+  t.is(response.status, 200)
+
+  t.deepEqual(response.body.id, 89832)
+  t.deepEqual(response.body.title, 'capacitor Handmade Fresh Car withdrawal')
+  t.deepEqual(response.body.summary, 'cultivate core PCI')
+  t.deepEqual(response.body.slug, 'unde-ad-et')
+  t.deepEqual(response.body.isPublished, true)
+  t.deepEqual(
+    response.body.content,
+    'Rem commodi iusto inventore. Rerum voluptatem necessitatibus quo repellat rerum. Itaque minus voluptate. Quia error temporibus libero unde cupiditate distinctio ex quibusdam. Earum sit qui excepturi sit dolorem voluptatem. Odio laborum natus laborum omnis.'
+  )
+  t.deepEqual(_.get(response.body.reactions, [0, 'emoji']), ':+1:')
+})
+
+test('delete reaction should delete reaction from article', async (t) => {
+  const {request, Article, User} = t.context
+
+  const _currentUser = await User.query().findOne({auth0Id: currentUser.sub})
+
+  let article = await Article.query()
+    .findById(89832)
+    .eager('[tags.articles, reactions]')
+
+  await article
+    .$relatedQuery('reactions')
+    .insert({
+      emoji: ':+1:',
+      reactedById: _currentUser.id
+    })
+
+  // should have reaction before delete.
+  t.deepEqual(_.get(article.reactions, [0, 'emoji']), ':+1:')
+
+  // mock jwks
+  const token = createToken(privateKey, '123', currentUser)
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .delete('/api/articles/89832/reaction')
+    .set('Authorization', `Bearer ${token}`)
+    .query({
+      emoji: ':+1:'
+    })
+
+  t.is(response.status, 200)
+
+  t.deepEqual(response.body.id, 89832)
+  t.deepEqual(response.body.title, 'capacitor Handmade Fresh Car withdrawal')
+  t.deepEqual(response.body.summary, 'cultivate core PCI')
+  t.deepEqual(response.body.slug, 'unde-ad-et')
+  t.deepEqual(response.body.isPublished, true)
+  t.deepEqual(
+    response.body.content,
+    'Rem commodi iusto inventore. Rerum voluptatem necessitatibus quo repellat rerum. Itaque minus voluptate. Quia error temporibus libero unde cupiditate distinctio ex quibusdam. Earum sit qui excepturi sit dolorem voluptatem. Odio laborum natus laborum omnis.'
+  )
+
+  // should not have reaction after delete.
+  article = await article.$query()
+    .eager('[tags.articles, reactions]')
+
+  t.deepEqual(_.get(article.reactions, [0, 'emoji']), undefined)
+})
 /* mat Custom tests [end] */

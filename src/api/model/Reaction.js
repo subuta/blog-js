@@ -31,7 +31,7 @@ export default class Reaction extends Model {
     title: 'Reaction',
     $id: 'http://sub-labo.com/schemas/reaction.json',
     type: 'object',
-    required: ['reactableId', 'reactableType', 'emoji'],
+    required: ['emoji'],
     properties: {
       id: {type: 'integer'},
       emoji: {type: 'string', minLength: 1},
