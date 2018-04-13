@@ -19,11 +19,13 @@ const Paper = {
   },
 
   '& > h4': {
-    margin: 0
+    margin: 0,
+    cursor: 'text'
   },
 
   '.created-at': {
-    display: 'inline-block'
+    display: 'inline-block',
+    cursor: 'text'
   },
 
   '.published': {
@@ -36,6 +38,7 @@ const Paper = {
     margin: '16px 0 0 !important',
     wordWrap: 'break-word',
     overflowWrap: 'break-word',
+    cursor: 'text',
 
     '& > *:first-of-type': {
       marginTop: 0

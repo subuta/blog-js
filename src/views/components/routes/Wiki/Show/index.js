@@ -17,6 +17,7 @@ import Menu from 'src/views/components/common/Menu'
 import MaterialButton from 'src/views/components/common/MaterialButton'
 import Modal from 'src/views/components/common/Modal'
 import Confirm from 'src/views/components/common/Confirm'
+import Reactions from 'src/views/components/common/Reactions'
 
 import Sidebar from '../_Sidebar'
 import Header from '../_Header'
@@ -389,6 +390,8 @@ export default enhance((props) => {
             </div>
 
             <ArticleContent {...props}/>
+
+            <Reactions />
 
             {isAuthenticated && <ArticleAction {...props}/>}
           </Paper>
