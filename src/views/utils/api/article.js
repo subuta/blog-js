@@ -35,6 +35,18 @@ export const filterByTagId = (tagId) => {
 export const showBySlug = (slug) => {
   return request.get(`/articles/slug/${slug}`)
 }
+
+export const addReaction = (id, params) => {
+  return request.put(`/articles/${id}/reaction`, {
+    reaction: params
+  })
+}
+
+export const removeReaction = (id, params) => {
+  return request.delete(`/articles/${id}/reaction`, {
+    params
+  })
+}
 /* mat Custom action [end] */
 
 let actions = {
@@ -49,7 +61,9 @@ let actions = {
 actions = {
   ...actions,
   showBySlug,
-  filterByTagId
+  filterByTagId,
+  addReaction,
+  removeReaction
 }
 /* mat Custom exports [end] */
 

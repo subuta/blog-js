@@ -9,7 +9,7 @@ export default async (ctx) => {
   const {filePath, fs} = ctx
 
   // make junction table created lately.
-  const models = _.sortBy(_.toPairs(modelsConfig), ([_, config]) => config.isJunction || false)
+  const models = _.sortBy(_.toPairs(modelsConfig), ([_, config]) => config.isJunction || config.hasDependency || false)
 
   return Promise.map(models, async ([model], i) => {
 

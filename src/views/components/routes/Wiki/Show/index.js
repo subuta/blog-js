@@ -216,6 +216,16 @@ const enhance = compose(
       })
     },
 
+    onAddReaction: ({article, addReaction}) => (emoji) => {
+      // toggle published state.
+      addReaction(article.id, { emoji: emoji.colons })
+    },
+
+    onRemoveReaction: ({article, removeReaction}) => (emoji) => {
+      // toggle published state.
+      removeReaction(article.id, { emoji })
+    },
+
     onUpdateArticle: (props) => () => {
       const {
         article,
@@ -253,6 +263,8 @@ export default enhance((props) => {
     isShowConfirmArticleDeleteModal,
     onUpdateArticle,
     onDelete,
+    onAddReaction,
+    onRemoveReaction,
     draftSlug,
     draftTitle,
     draftSummary,
@@ -264,6 +276,7 @@ export default enhance((props) => {
     setDraftSummary,
     getTargetRef,
     setTargetRef,
+    currentUser,
     isEditing
   } = props
 
@@ -391,7 +404,13 @@ export default enhance((props) => {
 
             <ArticleContent {...props}/>
 
-            <Reactions />
+            <Reactions
+              reactions={article.reactions}
+              onAddReaction={onAddReaction}
+              onRemoveReaction={onRemoveReaction}
+              disabled={!isAuthenticated}
+              currentUser={currentUser}
+            />
 
             {isAuthenticated && <ArticleAction {...props}/>}
           </Paper>

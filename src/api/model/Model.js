@@ -1,6 +1,11 @@
 import _ from 'lodash'
 import {Model} from 'objection'
+import visibilityPlugin from 'objection-visibility'
 import ajvValidator from 'src/api/utils/ajvValidator'
+
+// apply plugins to Objection.js Model.
+// https://github.com/oscaroox/objection-visibility
+const compose = _.flow([visibilityPlugin])
 
 // Based on https://github.com/Vincit/objection.js/blob/master/examples/plugin/index.js
 // Base Model class
@@ -18,7 +23,7 @@ class CustomQueryBuilder extends Model.QueryBuilder {
   }
 }
 
-export default class extends Model {
+export default class extends compose(Model) {
   static QueryBuilder = CustomQueryBuilder
 
   static createValidator() {

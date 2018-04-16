@@ -98,6 +98,11 @@ const enhance = compose(
 
       destroyTippy: () => destroy,
 
+      scheduleUpdate: () => () => {
+        if (!_.get(tippy, 'popperInstance')) return
+        tippy.popperInstance.scheduleUpdate()
+      },
+
       enableTippy: () => () => tippy.enable(),
       disableTippy: () => () => tippy.disable(),
     }
@@ -108,6 +113,8 @@ const enhance = compose(
     },
 
     componentDidUpdate () {
+      this.props.scheduleUpdate()
+
       if (this.props.disabled === undefined) return
 
       if (this.props.disabled) {

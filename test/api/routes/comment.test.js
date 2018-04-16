@@ -97,7 +97,7 @@ test('update should update comment', async (t) => {
         text:
           'Corporis sed nemo totam est. Optio in sed aut et rerum commodi non distinctio quibusdam. Alias ducimus consequatur fuga et nobis ratione enim necessitatibus. Qui eius quas officia iste omnis impedit.',
         channelId: 82160,
-        commentedById: 54551,
+        commentedById: 83,
         attachmentId: '28d15c5a-a70c-48e4-9772-bc910f421907'
       }
     })
@@ -110,7 +110,7 @@ test('update should update comment', async (t) => {
     'Corporis sed nemo totam est. Optio in sed aut et rerum commodi non distinctio quibusdam. Alias ducimus consequatur fuga et nobis ratione enim necessitatibus. Qui eius quas officia iste omnis impedit.'
   )
   t.deepEqual(response.body.channelId, 82160)
-  t.deepEqual(response.body.commentedById, 54551)
+  t.deepEqual(response.body.commentedById, 83)
   t.deepEqual(
     response.body.attachmentId,
     '28d15c5a-a70c-48e4-9772-bc910f421907'

@@ -23,7 +23,7 @@ export const Routes = {
       'index',
       'show'
     ],
-    eager: '[tags.articles, reactions]',
+    eager: '[tags.articles, reactions.reactedBy]',
     joinRelation: '[tags]'
   },
   comment: {
@@ -38,7 +38,7 @@ export const Routes = {
       'show'
     ],
 
-    eager: '[channel.[comments.[attachment, commentedBy]], attachment, commentedBy, reactions]',
+    eager: '[channel.[comments.[attachment, commentedBy]], attachment, commentedBy, reactions.reactedBy]',
     joinRelation: ''
   },
   attachment: {
@@ -60,7 +60,8 @@ export const Routes = {
       'index'
     ],
     skipAuth: true,
-    eager: '[articles]'
+    eager: '[articles.[reactions.reactedBy, tags]]',
+    joinRelation: '[articles]'
   },
   reaction: {
     eager: '',
@@ -102,6 +103,7 @@ export const Models = {
   },
   reaction: {
     schema: Reaction,
+    hasDependency: true,
     seeds: 3
   },
   user: {

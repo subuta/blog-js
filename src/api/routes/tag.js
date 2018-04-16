@@ -14,7 +14,8 @@ tag.get('/', async (ctx) => {
   /* mat Before index [end] */
 
   ctx.body = await Tag.query()
-    .eager('[articles]')
+    .eager('[articles.[reactions.reactedBy, tags]]')
+    .joinRelation('[articles]')
     .where(params)
 })
 

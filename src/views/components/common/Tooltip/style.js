@@ -14,12 +14,18 @@ import {
 
 const placements = ['top', 'bottom', 'left', 'right']
 const arrowWidth = 7
+const maxWidth = 200
 const backgroundColor = BLACK_COLOR
 
 const tippyContent = {
+  maxWidth,
   color: DIMMED_PRIMARY_COLOR,
   fontSize: 13,
   fontWeight: 'bold',
+  textAlign: 'center',
+  whiteSpace: 'pre-wrap',
+  wordWrap: 'break-word',
+  overflowWrap: 'break-word',
 
   '& > div': {
     display: 'inline-block'
@@ -63,11 +69,10 @@ const Tooltip = {
 
 const Template = {
   // should not show at initial state.
+  maxWidth,
   display: 'none',
   justifyContent: 'center',
   alignItems: 'flex-start',
-  maxWidth: 200,
-  fontSize: 13,
 
   // should show after loaded (by tippy.js)
   '.tippy-content &': {
@@ -82,8 +87,7 @@ const Template = {
   },
 
   '& > span': {
-    lineHeight: '16px',
-    textAlign: 'left'
+    lineHeight: '16px'
   }
 }
 

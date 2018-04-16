@@ -9,21 +9,21 @@ exports.seed = async (knex) => {
       emoji: 'synergize Small Ouguiya',
       reactableId: 78552,
       reactableType: 'plum calculating SCSI',
-      reactedById: 54551
+      reactedById: 83
     },
     {
       id: 24671,
       emoji: 'transmit SQL',
       reactableId: 17443,
       reactableType: 'Mouse back up',
-      reactedById: 15599
+      reactedById: 96532
     },
     {
       id: 42224,
       emoji: 'Comoro Franc',
       reactableId: 77999,
       reactableType: 'Rand Loti Pants Steel',
-      reactedById: 34490
+      reactedById: 48632
     }
   ])
 }

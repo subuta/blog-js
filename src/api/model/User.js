@@ -41,4 +41,8 @@ export default class User extends Model {
       avatar: {type: 'string'}
     }
   }
+
+  static get visible() {
+    return ['id', 'nickname', 'status', 'avatar']
+  }
 }

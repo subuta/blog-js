@@ -26,6 +26,13 @@ export default {
     }
   },
 
+  visible: [
+    'id',
+    'nickname',
+    'status',
+    'avatar'
+  ],
+
   relations: {
     comments: {
       hasMany: 'comments',

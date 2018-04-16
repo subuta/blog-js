@@ -119,6 +119,25 @@ export const requestArticleBySlug = (slug) => {
     })
   }
 }
+
+export const addReaction = (id, params) => {
+  return (dispatch) => {
+    dispatch({type: REQUEST_ARTICLES})
+    return api.article.addReaction(id, params).then((data) => {
+      dispatch(setArticles(normalize(data, article)))
+      return data
+    })
+  }
+}
+
+export const removeReaction = (id, params) => {
+  return (dispatch) => {
+    dispatch({type: REQUEST_ARTICLES})
+    return api.article.removeReaction(id, params).then((data) => {
+      dispatch(setArticles(normalize(data, article)))
+    })
+  }
+}
 /* mat Custom actionCreators [end] */
 
 // -------------
