@@ -71,7 +71,7 @@ const enhance = compose(
         animation: 'fade',
         size: size || 'regular',
         dynamicTitle: true,
-        duration: [200, 100],
+        duration: [200, 0],
         performance: true,
         arrowType: 'sharp',
         sticky: true,

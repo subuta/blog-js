@@ -129,12 +129,7 @@ const enhanceArticleAction = compose(
             placement="left"
             size="small"
           >
-            <ActiveLink
-              href={`/article?slug=${article.slug}`}
-              as={`/w/${article.slug}`}
-            >
-              <MdSaveIcon onClick={onSave}/>
-            </ActiveLink>
+            <MdSaveIcon onClick={onSave}/>
           </Tooltip>
         </FloatingActionButton>
       )
@@ -218,37 +213,40 @@ const enhance = compose(
 
     onAddReaction: ({article, addReaction}) => (emoji) => {
       // toggle published state.
-      addReaction(article.id, { emoji: emoji.colons })
+      addReaction(article.id, {emoji: emoji.colons})
     },
 
     onRemoveReaction: ({article, removeReaction}) => (emoji) => {
       // toggle published state.
-      removeReaction(article.id, { emoji })
+      removeReaction(article.id, {emoji})
     },
 
-    onUpdateArticle: (props) => () => {
+    onSave: (props) => () => {
       const {
         article,
         draftSlug,
         draftTitle,
+        draftContent,
         draftSummary,
         updateArticle
       } = props
 
       const slug = draftSlug
       const nextArticle = {
+        ...article,
         title: draftTitle,
         summary: draftSummary,
+        content: draftContent,
         slug,
+      }
+
+      if (_.isEqual(article, nextArticle)) {
+        return Router.replace(`/article?slug=${article.slug}`, `/w/${article.slug}`)
       }
 
       updateArticle(article.id, nextArticle).then(() => {
         Router.replace(`/article?slug=${slug}&edit=true`, `/w/${slug}/edit`)
       })
-    },
-
-    onSave: ({article, draftContent, updateArticle}) => () => {
-      updateArticle(article.id, {...article, content: draftContent})
     }
   })
 )
@@ -261,7 +259,7 @@ export default enhance((props) => {
     isShowMenu,
     isShowUpdateArticleModal,
     isShowConfirmArticleDeleteModal,
-    onUpdateArticle,
+    onSave,
     onDelete,
     onAddReaction,
     onRemoveReaction,
@@ -300,7 +298,7 @@ export default enhance((props) => {
             setIsShowUpdateArticleModal(false)
           }}
           onSubmit={() => {
-            onUpdateArticle()
+            onSave()
             setIsShowUpdateArticleModal(false)
           }}
         >
@@ -404,13 +402,15 @@ export default enhance((props) => {
 
             <ArticleContent {...props}/>
 
-            <Reactions
-              reactions={article.reactions}
-              onAddReaction={onAddReaction}
-              onRemoveReaction={onRemoveReaction}
-              disabled={!isAuthenticated}
-              currentUser={currentUser}
-            />
+            {!isEditing && (
+              <Reactions
+                reactions={article.reactions}
+                onAddReaction={onAddReaction}
+                onRemoveReaction={onRemoveReaction}
+                disabled={!isAuthenticated}
+                currentUser={currentUser}
+              />
+            )}
 
             {isAuthenticated && <ArticleAction {...props}/>}
           </Paper>
