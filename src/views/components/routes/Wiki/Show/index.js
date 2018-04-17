@@ -198,55 +198,69 @@ const enhance = compose(
         isEditing: _.get(url, 'query.edit')
       }
     }),
-  withHandlers({
-    onPublish: ({article, updateArticle}) => () => {
-      const {isPublished} = article
-      // toggle published state.
-      updateArticle(article.id, {...article, isPublished: !isPublished})
-    },
+  withHandlers(() => {
+    const sanitizeArticleProps = (article) => _.pick(article, [
+      'title',
+      'summary',
+      'content',
+      'slug',
+      'isPublished'
+    ])
 
-    onDelete: ({article, deleteArticle}) => () => {
-      deleteArticle(article.id).then(() => {
-        Router.push(`/articles`, `/w`)
-      })
-    },
+    return {
+      onPublish: ({article, updateArticle}) => () => {
+        const {isPublished} = article
 
-    onAddReaction: ({article, addReaction}) => (emoji) => {
-      // toggle published state.
-      addReaction(article.id, {emoji: emoji.colons})
-    },
+        // toggle published state.
+        updateArticle(article.id, sanitizeArticleProps({
+          ...article,
+          isPublished: !isPublished
+        }))
+      },
 
-    onRemoveReaction: ({article, removeReaction}) => (emoji) => {
-      // toggle published state.
-      removeReaction(article.id, {emoji})
-    },
+      onDelete: ({article, deleteArticle}) => () => {
+        deleteArticle(article.id).then(() => {
+          Router.push(`/articles`, `/w`)
+        })
+      },
 
-    onSave: (props) => () => {
-      const {
-        article,
-        draftSlug,
-        draftTitle,
-        draftContent,
-        draftSummary,
-        updateArticle
-      } = props
+      onAddReaction: ({article, addReaction}) => (emoji) => {
+        // toggle published state.
+        addReaction(article.id, {emoji: emoji.colons})
+      },
 
-      const slug = draftSlug
-      const nextArticle = {
-        ...article,
-        title: draftTitle,
-        summary: draftSummary,
-        content: draftContent,
-        slug,
+      onRemoveReaction: ({article, removeReaction}) => (emoji) => {
+        // toggle published state.
+        removeReaction(article.id, {emoji})
+      },
+
+      onSave: (props) => () => {
+        const {
+          article,
+          draftSlug,
+          draftTitle,
+          draftContent,
+          draftSummary,
+          updateArticle
+        } = props
+
+        const slug = draftSlug
+
+        const nextArticle = sanitizeArticleProps({
+          title: draftTitle,
+          summary: draftSummary,
+          content: draftContent,
+          slug,
+        })
+
+        if (_.isEqual(sanitizeArticleProps(article), nextArticle)) {
+          return Router.replace(`/article?slug=${article.slug}`, `/w/${article.slug}`)
+        }
+
+        updateArticle(article.id, nextArticle).then(() => {
+          Router.replace(`/article?slug=${slug}`, `/w/${slug}`)
+        })
       }
-
-      if (_.isEqual(article, nextArticle)) {
-        return Router.replace(`/article?slug=${article.slug}`, `/w/${article.slug}`)
-      }
-
-      updateArticle(article.id, nextArticle).then(() => {
-        Router.replace(`/article?slug=${slug}&edit=true`, `/w/${slug}/edit`)
-      })
     }
   })
 )
