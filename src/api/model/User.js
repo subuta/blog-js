@@ -42,7 +42,7 @@ export default class User extends Model {
     }
   }
 
-  static get visible() {
-    return ['id', 'nickname', 'status', 'avatar']
+  static get hidden() {
+    return ['auth0Id']
   }
 }

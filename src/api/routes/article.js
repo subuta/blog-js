@@ -77,6 +77,9 @@ article.put('/:id', auth, async (ctx) => {
 
 article.delete('/:id', auth, async (ctx) => {
   const {Article} = ctx.state.models
+  /* mat Before destroy [start] */
+  /* mat Before destroy [end] */
+
   await Article.query()
     .delete()
     .where({id: ctx.params.id})

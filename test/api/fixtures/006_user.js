@@ -5,29 +5,30 @@ exports.seed = async (knex) => {
   // https://github.com/tgriesser/knex/issues/54
   await knex('users').insert([
     {
-      id: 83,
-      auth0Id: '3b0b2519-d80d-430a-8688-9cc37b09c36b',
-      locale: 'pt_BR',
-      nickname: 'Frida37',
-      status: 'clicks-and-mortar',
+      id: 65979,
+      auth0Id: 'a699f07d-803c-4ede-8625-156c632fa035',
+      locale: 'de_CH',
+      nickname: 'Marilyne.Ward',
+      status: 'e-services',
       avatar:
-        'https://s3.amazonaws.com/uifaces/faces/twitter/rob_thomas10/128.jpg'
+        'https://s3.amazonaws.com/uifaces/faces/twitter/manekenthe/128.jpg'
     },
     {
-      id: 96532,
-      auth0Id: '3720f07a-a128-4089-886c-64ad95f7116b',
-      locale: 'id_ID',
-      nickname: 'Vallie_Kuphal',
-      status: 'Cook Islands Pants B2C',
-      avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/matkins/128.jpg'
+      id: 79221,
+      auth0Id: '5007908f-5269-4e73-a0f2-cb56c90a93f0',
+      locale: 'ge',
+      nickname: 'Alda_Oberbrunner',
+      status: 'online Small convergence',
+      avatar:
+        'https://s3.amazonaws.com/uifaces/faces/twitter/ateneupopular/128.jpg'
     },
     {
-      id: 48632,
-      auth0Id: '0ac720ab-8579-49c1-a789-ed20a3f50aea',
-      locale: 'it',
-      nickname: 'Samson_Langosh',
-      status: 'payment compress',
-      avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/pifagor/128.jpg'
+      id: 29687,
+      auth0Id: 'fcc7f983-ed1b-40de-b2eb-0adc4ab135f8',
+      locale: 'tr',
+      nickname: 'Julian.Buckridge',
+      status: 'overriding',
+      avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/irae/128.jpg'
     }
   ])
 }

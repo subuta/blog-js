@@ -2,6 +2,7 @@ import _ from 'lodash'
 import request from 'src/views/utils/request'
 import {normalize} from 'normalizr'
 import {comment, commentList} from 'src/views/utils/schema'
+import { filterByTagId, showBySlug } from './article'
 
 export const index = (params) => {
   const {channelId} = params
@@ -25,6 +26,17 @@ export const destroy = (id, params) => {
 }
 
 /* mat Custom action [start] */
+export const addReaction = (id, params) => {
+  return request.put(`/channels/${params.channelId}/comments/${id}/reaction`, {
+    reaction: params
+  })
+}
+
+export const removeReaction = (id, params) => {
+  return request.delete(`/channels/${params.channelId}/comments/${id}/reaction`, {
+    params
+  })
+}
 /* mat Custom action [end] */
 
 let actions = {
@@ -35,6 +47,11 @@ let actions = {
 }
 
 /* mat Custom exports [start] */
+actions = {
+  ...actions,
+  addReaction,
+  removeReaction
+}
 /* mat Custom exports [end] */
 
 export default actions

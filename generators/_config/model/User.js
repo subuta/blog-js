@@ -26,11 +26,8 @@ export default {
     }
   },
 
-  visible: [
-    'id',
-    'nickname',
-    'status',
-    'avatar'
+  hidden: [
+    'auth0Id'
   ],
 
   relations: {

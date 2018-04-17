@@ -9,6 +9,8 @@ import {SET_CHANNELS} from './channel'
 import {SET_USERS} from './user'
 import {SET_ATTACHMENTS} from './attachment'
 import {SET_REACTIONS} from './reaction'
+import { REQUEST_ARTICLES, setArticles } from './article'
+import { article } from '../utils/schema'
 
 // -------------
 // Constants
@@ -82,6 +84,24 @@ export const deleteComment = (id) => {
 }
 
 /* mat Custom actionCreators [start] */
+export const addReaction = (id, params) => {
+  return (dispatch) => {
+    dispatch({type: REQUEST_COMMENTS})
+    return api.comment.addReaction(id, params).then((data) => {
+      dispatch(setComments(normalize(data, comment)))
+      return data
+    })
+  }
+}
+
+export const removeReaction = (id, params) => {
+  return (dispatch) => {
+    dispatch({type: REQUEST_COMMENTS})
+    return api.comment.removeReaction(id, params).then((data) => {
+      dispatch(setComments(normalize(data, comment)))
+    })
+  }
+}
 /* mat Custom actionCreators [end] */
 
 // -------------

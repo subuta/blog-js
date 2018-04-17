@@ -63,7 +63,12 @@ comment.put('/:id', auth, async (ctx) => {
   // update specified comment.
   const params = {}
 
-
+  /* mat Before update [start] */
+  const currentUser = await ctx.state.getCurrentUser()
+  if (currentUser) {
+    console.log(currentUser);
+  }
+  /* mat Before update [end] */
 
   ctx.body = await Comment.query()
     .patchAndFetchById(ctx.params.id, {
@@ -77,13 +82,55 @@ comment.put('/:id', auth, async (ctx) => {
 
 comment.delete('/:id', auth, async (ctx) => {
   const {Comment} = ctx.state.models
+  /* mat Before destroy [start] */
+  /* mat Before destroy [end] */
+
   await Comment.query()
     .delete()
     .where({id: ctx.params.id})
   ctx.body = null
 })
 
+/* mat Custom actions [start] */
+comment.put('/:id/reaction', auth, async (ctx) => {
+  const {Comment} = ctx.state.models
+  const {reaction} = ctx.request.body
 
+  const comment = await Comment.query()
+    .findById(ctx.params.id)
+    .eager('[channel.[comments.[attachment, commentedBy]], attachment, commentedBy, reactions.reactedBy]')
+
+  const currentUser = await ctx.state.getCurrentUser()
+  reaction['reactedById'] = currentUser.id
+
+  await comment
+    .$relatedQuery('reactions')
+    .insert(reaction)
+
+  ctx.body = await comment.$query()
+    .eager('[channel.[comments.[attachment, commentedBy]], attachment, commentedBy, reactions.reactedBy]')
+})
+
+comment.delete('/:id/reaction', auth, async (ctx) => {
+  const {Comment} = ctx.state.models
+  const query = ctx.request.query
+
+  const comment = await Comment.query()
+    .findById(ctx.params.id)
+    .eager('[channel.[comments.[attachment, commentedBy]], attachment, commentedBy, reactions.reactedBy]')
+
+  const currentUser = await ctx.state.getCurrentUser()
+  query['reactedById'] = currentUser.id
+
+  await comment
+    .$relatedQuery('reactions')
+    .delete()
+    .where(query)
+
+  ctx.body = await comment.$query()
+    .eager('[channel.[comments.[attachment, commentedBy]], attachment, commentedBy, reactions.reactedBy]')
+})
+/* mat Custom actions [end] */
 
 export default {
   routes: () => _.cloneDeep(comment.routes()),

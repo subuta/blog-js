@@ -9,7 +9,7 @@ exports.seed = async (knex) => {
       text:
         'Aut repellendus rerum. Ut dolores est libero provident. Explicabo repellendus dolor similique velit qui ut asperiores. Et nihil quis omnis iusto. Inventore impedit doloremque excepturi ut explicabo recusandae eos odio. Accusantium quae quibusdam aliquid adipisci consequatur et.',
       channelId: 82160,
-      commentedById: 83,
+      commentedById: 65979,
       attachmentId: '28d15c5a-a70c-48e4-9772-bc910f421907'
     },
     {
@@ -17,7 +17,7 @@ exports.seed = async (knex) => {
       text:
         'Ad numquam laborum nihil. Impedit sed dolor voluptas tempora dolorem odit voluptas nemo modi. Molestiae consectetur molestias et. Velit et facilis repellat nisi eum laboriosam. Libero ut aliquid est consequatur assumenda non. Voluptatum architecto reiciendis sint dolorum dolorum.',
       channelId: 93680,
-      commentedById: 96532,
+      commentedById: 79221,
       attachmentId: 'abfbc020-04b2-4d70-a1ed-aa85e702e181'
     },
     {
@@ -25,7 +25,7 @@ exports.seed = async (knex) => {
       text:
         'Aliquid error recusandae deleniti sint corporis. Qui dolorem voluptatem eaque officiis asperiores amet nobis. Officiis rem quis nemo in est dolores nobis. Vel quod mollitia id occaecati eveniet veritatis earum delectus dicta. Architecto reprehenderit officia et sit enim assumenda nisi sint. Minima aliquam dolor iste.',
       channelId: 58071,
-      commentedById: 48632,
+      commentedById: 29687,
       attachmentId: '62fc4caf-224d-4658-949e-b68307f974d2'
     }
   ])
