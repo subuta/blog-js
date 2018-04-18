@@ -116,7 +116,7 @@ const Content = {
 
 const Comments = {
   height: `calc(100% - ${MIN_TEXT_AREA_HEIGHT}px)`,
-  padding: `16px 16px ${MIN_TEXT_AREA_HEIGHT + 24 + 16}px`, // plus padding
+  padding: `12px 0 ${MIN_TEXT_AREA_HEIGHT + 24}px`, // plus padding
   overflowY: 'scroll',
 
   [`@media screen and (max-height: ${PAGE_MIN_HEIGHT}px)`]: {

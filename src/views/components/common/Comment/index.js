@@ -4,10 +4,25 @@ import _ from 'lodash'
 
 import withStyles from './style'
 
+import {
+  compose,
+  withState
+} from 'recompose'
+
 import Avatar from 'src/views/components/common/Avatar'
 
-export default withStyles((props) => {
-  const {comment, styles} = props
+const enhance = compose(
+  withStyles,
+  withState('isHover', 'setIsHover', false)
+)
+
+export default enhance((props) => {
+  const {
+    comment,
+    styles,
+    isHover,
+    setIsHover
+  } = props
 
   const {
     id,
@@ -20,8 +35,17 @@ export default withStyles((props) => {
   const avatar = _.get(commentedBy, 'avatar')
   const nickname = _.get(commentedBy, 'nickname')
 
+  let commentWrapperClass = styles.CommentWrapper
+  if (isHover) {
+    commentWrapperClass += ' is-hovered'
+  }
+
   return (
-    <div className={styles.CommentWrapper}>
+    <div
+      className={commentWrapperClass}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+    >
       <Avatar avatar={avatar} nickname={nickname} size={40} />
 
       <div className={styles.Comment}>

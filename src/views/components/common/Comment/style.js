@@ -4,18 +4,27 @@ import {
   DIMMED_BLACK_COLOR,
   SANS_FONT,
   LATO_WITH_SANS_FONT,
+  GRAY_COLOR,
+
+  EASE_STANDARD,
 
   TABLET_MEDIA_QUERY
 } from 'src/views/constants/style'
 
 const CommentWrapper = {
-  margin: '0 0 16px 0',
+  padding: '4px 16px',
   position: 'relative',
   display: 'flex',
   justifyContent: 'flex-start',
   alignItems: 'flex-start',
+  transition: `all 0.1s ${EASE_STANDARD}`,
+
   '&:last-of-type': {
     margin: 0
+  },
+
+  '&.is-hovered': {
+    background: GRAY_COLOR
   }
 }
 
