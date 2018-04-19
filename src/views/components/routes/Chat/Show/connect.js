@@ -20,6 +20,8 @@ import {
 
 import {
   createComment,
+  updateComment,
+  deleteComment,
   getEntities as getCommentEntities
 } from 'src/views/modules/comment'
 

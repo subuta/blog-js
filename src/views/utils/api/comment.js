@@ -2,7 +2,6 @@ import _ from 'lodash'
 import request from 'src/views/utils/request'
 import {normalize} from 'normalizr'
 import {comment, commentList} from 'src/views/utils/schema'
-import { filterByTagId, showBySlug } from './article'
 
 export const index = (params) => {
   const {channelId} = params

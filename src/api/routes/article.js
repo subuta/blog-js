@@ -65,6 +65,15 @@ article.put('/:id', auth, async (ctx) => {
   const params = {}
 
   /* mat Before update [start] */
+  const currentUser = await ctx.state.getCurrentUser()
+
+  // ignore deleting other users comment(if not admin).
+  const oldArticle = await Article.query()
+    .findFirst({id: ctx.params.id})
+
+  if (!currentUser.isAdmin && oldArticle.authorId !== currentUser.id) {
+    return
+  }
   /* mat Before update [end] */
 
   ctx.body = await Article.query()
@@ -77,12 +86,20 @@ article.put('/:id', auth, async (ctx) => {
 
 article.delete('/:id', auth, async (ctx) => {
   const {Article} = ctx.state.models
+  let params = {id: ctx.params.id}
+
   /* mat Before destroy [start] */
+  const currentUser = await ctx.state.getCurrentUser()
+
+  // ignore deleting other users comment(if not admin).
+  if (!currentUser.isAdmin) {
+    params['authorId'] = currentUser.id
+  }
   /* mat Before destroy [end] */
 
   await Article.query()
     .delete()
-    .where({id: ctx.params.id})
+    .where(params)
   ctx.body = null
 })
 

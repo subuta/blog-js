@@ -5,4 +5,4 @@ export const createPayload = (sub) => ({
   scope: 'openid profile email'
 })
 
-export const currentUser = createPayload('a699f07d-803c-4ede-8625-156c632fa035')
+export const currentUser = createPayload('e57308da-b81c-4e24-af84-6b963ccb8375')

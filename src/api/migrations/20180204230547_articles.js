@@ -4,6 +4,7 @@ exports.up = function(knex, Promise) {
     table.text('title').notNullable()
     table.string('slug').notNullable()
     table.boolean('isPublished').notNullable()
+    table.integer('authorId')
     table.text('summary')
     table.text('content').notNullable()
     table.timestamps(true, true)

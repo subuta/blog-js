@@ -51,13 +51,14 @@ test('get me should return user', async (t) => {
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 65979)
-  t.deepEqual(response.body.locale, 'de_CH')
-  t.deepEqual(response.body.nickname, 'Marilyne.Ward')
-  t.deepEqual(response.body.status, 'e-services')
+  t.deepEqual(response.body.id, 75900)
+  t.deepEqual(response.body.locale, 'sk')
+  t.deepEqual(response.body.nickname, 'Ransom_Harris')
+  t.deepEqual(response.body.status, 'Avon')
+  t.deepEqual(response.body.isAdmin, true)
   t.deepEqual(
     response.body.avatar,
-    'https://s3.amazonaws.com/uifaces/faces/twitter/manekenthe/128.jpg'
+    'https://s3.amazonaws.com/uifaces/faces/twitter/robbschiller/128.jpg'
   )
 })
 
@@ -65,7 +66,7 @@ test('put me should update user if exists', async (t) => {
   const {request, User} = t.context
 
   const user = await User.query().findOne({
-    auth0Id: 'a699f07d-803c-4ede-8625-156c632fa035'
+    auth0Id: 'e57308da-b81c-4e24-af84-6b963ccb8375'
   })
   t.not(user, undefined)
 
@@ -78,25 +79,27 @@ test('put me should update user if exists', async (t) => {
     .set('Authorization', `Bearer ${token}`)
     .send({
       user: {
-        id: 65979,
-        auth0Id: 'a699f07d-803c-4ede-8625-156c632fa035',
-        locale: 'sk',
-        nickname: 'Kirsten_OConnell34',
-        status: 'Tactics',
+        id: 75900,
+        auth0Id: 'e57308da-b81c-4e24-af84-6b963ccb8375',
+        locale: 'az',
+        nickname: 'Loren27',
+        status: 'UAE Dirham Wyoming Berkshire',
+        isAdmin: false,
         avatar:
-          'https://s3.amazonaws.com/uifaces/faces/twitter/josevnclch/128.jpg'
+          'https://s3.amazonaws.com/uifaces/faces/twitter/miguelmendes/128.jpg'
       }
     })
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 65979)
-  t.deepEqual(response.body.locale, 'sk')
-  t.deepEqual(response.body.nickname, 'Kirsten_OConnell34')
-  t.deepEqual(response.body.status, 'Tactics')
+  t.deepEqual(response.body.id, 75900)
+  t.deepEqual(response.body.locale, 'az')
+  t.deepEqual(response.body.nickname, 'Loren27')
+  t.deepEqual(response.body.status, 'UAE Dirham Wyoming Berkshire')
+  t.deepEqual(response.body.isAdmin, false)
   t.deepEqual(
     response.body.avatar,
-    'https://s3.amazonaws.com/uifaces/faces/twitter/josevnclch/128.jpg'
+    'https://s3.amazonaws.com/uifaces/faces/twitter/miguelmendes/128.jpg'
   )
 })
 
@@ -104,7 +107,7 @@ test('put me should create user if not exists', async (t) => {
   const {request, User} = t.context
 
   const user = await User.query().findOne({
-    auth0Id: 'd2216917-901c-4732-9610-3e6a8a474c82'
+    auth0Id: '0a4a4c5f-eb77-4819-8da8-6e5b8bdd06f9'
   })
   t.is(user, undefined)
 
@@ -112,7 +115,7 @@ test('put me should create user if not exists', async (t) => {
   const token = createToken(
     privateKey,
     '123',
-    createPayload('d2216917-901c-4732-9610-3e6a8a474c82')
+    createPayload('0a4a4c5f-eb77-4819-8da8-6e5b8bdd06f9')
   )
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
@@ -121,27 +124,29 @@ test('put me should create user if not exists', async (t) => {
     .set('Authorization', `Bearer ${token}`)
     .send({
       user: {
-        id: 66697,
-        auth0Id: 'd2216917-901c-4732-9610-3e6a8a474c82',
-        locale: 'sk',
-        nickname: 'Kirsten_OConnell34',
-        status: 'Tactics',
+        id: 40843,
+        auth0Id: '0a4a4c5f-eb77-4819-8da8-6e5b8bdd06f9',
+        locale: 'az',
+        nickname: 'Loren27',
+        status: 'UAE Dirham Wyoming Berkshire',
+        isAdmin: false,
         avatar:
-          'https://s3.amazonaws.com/uifaces/faces/twitter/josevnclch/128.jpg'
+          'https://s3.amazonaws.com/uifaces/faces/twitter/miguelmendes/128.jpg'
       }
     })
 
   t.is(response.status, 200)
 
   // should ignore invalid id param
-  t.not(response.body.id, 66697)
+  t.not(response.body.id, 40843)
 
   // other props should persisted.
-  t.deepEqual(response.body.locale, 'sk')
-  t.deepEqual(response.body.nickname, 'Kirsten_OConnell34')
-  t.deepEqual(response.body.status, 'Tactics')
+  t.deepEqual(response.body.locale, 'az')
+  t.deepEqual(response.body.nickname, 'Loren27')
+  t.deepEqual(response.body.status, 'UAE Dirham Wyoming Berkshire')
+  t.deepEqual(response.body.isAdmin, false)
   t.deepEqual(
     response.body.avatar,
-    'https://s3.amazonaws.com/uifaces/faces/twitter/josevnclch/128.jpg'
+    'https://s3.amazonaws.com/uifaces/faces/twitter/miguelmendes/128.jpg'
   )
 })

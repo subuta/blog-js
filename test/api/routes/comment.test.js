@@ -8,9 +8,13 @@ import {createToken} from 'jwks-rsa/tests/mocks/tokens'
 import Koa from 'koa'
 import importFresh from 'import-fresh'
 import {absolutePath} from '../../../config'
-import {currentUser} from 'test/api/helper/user'
+import {currentUser, createPayload} from 'test/api/helper/user'
 import runSeed, {runMigration} from 'test/api/helper/fixtures'
 import proxyquire from 'proxyquire'
+
+/* mat Custom imports [start] */
+import { ids as userIds } from 'test/api/fixtures/006_user'
+/* mat Custom imports [end] */
 
 const sandbox = sinon.sandbox.create()
 
@@ -97,7 +101,7 @@ test('update should update comment', async (t) => {
         text:
           'Corporis sed nemo totam est. Optio in sed aut et rerum commodi non distinctio quibusdam. Alias ducimus consequatur fuga et nobis ratione enim necessitatibus. Qui eius quas officia iste omnis impedit.',
         channelId: 82160,
-        commentedById: 65979,
+        commentedById: 75900,
         attachmentId: '28d15c5a-a70c-48e4-9772-bc910f421907'
       }
     })
@@ -110,7 +114,7 @@ test('update should update comment', async (t) => {
     'Corporis sed nemo totam est. Optio in sed aut et rerum commodi non distinctio quibusdam. Alias ducimus consequatur fuga et nobis ratione enim necessitatibus. Qui eius quas officia iste omnis impedit.'
   )
   t.deepEqual(response.body.channelId, 82160)
-  t.deepEqual(response.body.commentedById, 65979)
+  t.deepEqual(response.body.commentedById, 75900)
   t.deepEqual(
     response.body.attachmentId,
     '28d15c5a-a70c-48e4-9772-bc910f421907'
@@ -163,7 +167,7 @@ test('put reaction should add reaction to comment', async (t) => {
     'Aut repellendus rerum. Ut dolores est libero provident. Explicabo repellendus dolor similique velit qui ut asperiores. Et nihil quis omnis iusto. Inventore impedit doloremque excepturi ut explicabo recusandae eos odio. Accusantium quae quibusdam aliquid adipisci consequatur et.'
   )
   t.deepEqual(response.body.channelId, 82160)
-  t.deepEqual(response.body.commentedById, 65979)
+  t.deepEqual(response.body.commentedById, 75900)
   t.deepEqual(
     response.body.attachmentId,
     '28d15c5a-a70c-48e4-9772-bc910f421907'
@@ -210,7 +214,7 @@ test('delete reaction should delete reaction from comment', async (t) => {
     'Aut repellendus rerum. Ut dolores est libero provident. Explicabo repellendus dolor similique velit qui ut asperiores. Et nihil quis omnis iusto. Inventore impedit doloremque excepturi ut explicabo recusandae eos odio. Accusantium quae quibusdam aliquid adipisci consequatur et.'
   )
   t.deepEqual(response.body.channelId, 82160)
-  t.deepEqual(response.body.commentedById, 65979)
+  t.deepEqual(response.body.commentedById, 75900)
   t.deepEqual(
     response.body.attachmentId,
     '28d15c5a-a70c-48e4-9772-bc910f421907'
@@ -221,5 +225,109 @@ test('delete reaction should delete reaction from comment', async (t) => {
     .eager('[channel.[comments.[attachment, commentedBy]], attachment, commentedBy, reactions.reactedBy]')
 
   t.deepEqual(_.get(comment.reactions, [0, 'emoji']), undefined)
+})
+
+test('delete should delete comment of other user if currentUser is admin', async (t) => {
+  const {request, User, Comment} = t.context
+
+  let comments = await Comment.query()
+  t.deepEqual(comments.length, 3)
+
+  // set User as admin
+  let adminUser = await User.query().findFirst({id: userIds.admin})
+  let comment = await Comment.query().findFirst({commentedById: userIds.user})
+
+  // mock jwks
+  const token = createToken(privateKey, '123', createPayload(adminUser.auth0Id))
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .delete(`/api/channels/82160/comments/${comment.id}`)
+    .set('Authorization', `Bearer ${token}`)
+
+  comments = await Comment.query()
+  t.deepEqual(comments.length, 2)
+
+  t.is(response.status, 204)
+  t.deepEqual(response.body, {})
+})
+
+test('delete should not delete comment of other user if currentUser is not admin', async (t) => {
+  const {request, User, Comment} = t.context
+
+  let comments = await Comment.query()
+  t.deepEqual(comments.length, 3)
+
+  // set User as non-admin
+  let nonAdminUser = await User.query().findFirst({id: userIds.user})
+  let comment = await Comment.query().findFirst({commentedById: userIds.admin})
+
+  // mock jwks
+  const token = createToken(privateKey, '123', createPayload(nonAdminUser.auth0Id))
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .delete(`/api/channels/82160/comments/${comment.id}`)
+    .set('Authorization', `Bearer ${token}`)
+
+  comments = await Comment.query()
+  t.deepEqual(comments.length, 3)
+
+  t.is(response.status, 204)
+  t.deepEqual(response.body, {})
+})
+
+test('update should update comment of other user if currentUser is admin', async (t) => {
+  const {request, User, Comment} = t.context
+
+  // set User as admin
+  let adminUser = await User.query().findFirst({id: userIds.admin})
+  let comment = await Comment.query().findFirst({commentedById: userIds.user})
+
+  // mock jwks
+  const token = createToken(privateKey, '123', createPayload(adminUser.auth0Id))
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .put(`/api/channels/82160/comments/${comment.id}`)
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      comment: {
+        id: comment.id,
+        text: 'Updated comment',
+      }
+    })
+
+  t.is(response.status, 200)
+
+  t.deepEqual(response.body.id, comment.id)
+  t.deepEqual(response.body.text, 'Updated comment')
+})
+
+test('update should not update comment of other user if currentUser is not admin', async (t) => {
+  const {request, User, Comment} = t.context
+
+  // set User as admin
+  let adminUser = await User.query().findFirst({id: userIds.user})
+  let comment = await Comment.query().findFirst({commentedById: userIds.admin})
+
+  // mock jwks
+  const token = createToken(privateKey, '123', createPayload(adminUser.auth0Id))
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .put(`/api/channels/82160/comments/${comment.id}`)
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      comment: {
+        id: comment.id,
+        text: 'Updated comment',
+      }
+    })
+
+  t.is(response.status, 404)
+  comment = await comment.$query();
+
+  t.not(comment.text, 'Updated comment')
 })
 /* mat Custom tests [end] */

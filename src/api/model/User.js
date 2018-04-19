@@ -7,6 +7,10 @@ export default class User extends Model {
     // Remember to call the super class's implementation.
     const json = super.$parseDatabaseJson(db)
 
+    if (_.isNumber(parseInt(json['isAdmin']))) {
+      json['isAdmin'] = !!json['isAdmin']
+    }
+
     return json
   }
 
@@ -38,6 +42,7 @@ export default class User extends Model {
       locale: {type: 'string'},
       nickname: {type: 'string'},
       status: {type: 'string'},
+      isAdmin: {type: 'boolean', default: false},
       avatar: {type: 'string'}
     }
   }

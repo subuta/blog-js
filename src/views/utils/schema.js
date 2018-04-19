@@ -32,6 +32,7 @@ attachment.define({
 
 article.define({
   tags: [tag],
+  author: user,
   reactions: [reaction]
 })
 

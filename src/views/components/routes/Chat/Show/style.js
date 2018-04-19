@@ -105,6 +105,10 @@ const Description = {
   '& > *': {
     margin: 0,
     lineHeight: 1
+  },
+
+  '& p': {
+    minHeight: 'auto'
   }
 }
 

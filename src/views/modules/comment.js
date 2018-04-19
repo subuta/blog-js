@@ -9,8 +9,6 @@ import {SET_CHANNELS} from './channel'
 import {SET_USERS} from './user'
 import {SET_ATTACHMENTS} from './attachment'
 import {SET_REACTIONS} from './reaction'
-import { REQUEST_ARTICLES, setArticles } from './article'
-import { article } from '../utils/schema'
 
 // -------------
 // Constants

@@ -6,6 +6,7 @@ import {article, articleList, denormalize} from 'src/views/utils/schema'
 import api from 'src/views/utils/api'
 
 import {SET_TAGS} from './tag'
+import {SET_USERS} from './user'
 import {SET_REACTIONS} from './reaction'
 
 // -------------

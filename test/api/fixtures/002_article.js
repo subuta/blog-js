@@ -5,31 +5,34 @@ exports.seed = async (knex) => {
   // https://github.com/tgriesser/knex/issues/54
   await knex('articles').insert([
     {
-      id: 89832,
-      title: 'capacitor Handmade Fresh Car withdrawal',
-      summary: 'cultivate core PCI',
-      slug: 'unde-ad-et',
-      isPublished: true,
+      id: 35666,
+      title: 'Refined Rubber Tuna user-centric expedite',
+      summary: 'monitor Armenian Dram enhance',
+      slug: 'velit-voluptatibus-incidunt',
+      isPublished: false,
       content:
-        'Rem commodi iusto inventore. Rerum voluptatem necessitatibus quo repellat rerum. Itaque minus voluptate. Quia error temporibus libero unde cupiditate distinctio ex quibusdam. Earum sit qui excepturi sit dolorem voluptatem. Odio laborum natus laborum omnis.'
+        'Beatae voluptatem voluptatem ut temporibus quia. Id perferendis aperiam et mollitia debitis et nihil et. Explicabo eligendi mollitia cumque eius quas illo rerum accusamus veritatis. Rerum sed nesciunt. Maxime assumenda molestiae enim est perspiciatis aperiam amet quas. Maxime veritatis vitae maxime rerum beatae laborum cupiditate.',
+      authorId: 75900
     },
     {
-      id: 50794,
-      title: 'synthesizing parsing Norwegian Krone',
-      summary: 'transmit Plastic Central',
-      slug: 'cupiditate-quibusdam-beatae',
+      id: 60920,
+      title: 'Tanzania',
+      summary: 'copy',
+      slug: 'ea-voluptatem-voluptatem',
       isPublished: true,
       content:
-        'Aut reprehenderit optio enim quo omnis voluptatem reprehenderit quis. Reiciendis aliquid facere. Id dolorem officia quis repellat aliquid. Cumque id dolores. Et accusamus inventore harum.'
+        'Fuga molestiae totam eveniet. Cum est veritatis facilis qui rem voluptate omnis molestiae possimus. Sit sapiente quaerat non aperiam sed rerum. Repellendus quas et laborum alias assumenda laboriosam eligendi.',
+      authorId: 1796
     },
     {
-      id: 90697,
-      title: 'maroon programming Credit Card Account',
-      summary: 'Rustic Keyboard',
-      slug: 'et-ea-qui',
-      isPublished: true,
+      id: 66239,
+      title: 'Ergonomic Wooden Sausages 1080p Sleek Plastic Mouse',
+      summary: 'Gibraltar Sleek Cotton Tuna portal',
+      slug: 'illo-sequi-dolores',
+      isPublished: false,
       content:
-        'Non porro tempora ab cum temporibus. Omnis consequuntur nihil. Dolorem at qui officia praesentium. Enim modi consequatur aut laudantium.'
+        'Deleniti et non quaerat explicabo. Mollitia est cumque fugit consequatur debitis itaque nihil sit. Voluptatem animi laudantium sit quis tempore cumque voluptatum consequuntur. Aut sed quia sit.',
+      authorId: 25425
     }
   ])
 }

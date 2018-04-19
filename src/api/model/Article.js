@@ -30,6 +30,11 @@ export default class Article extends Model {
           to: 'tags.id'
         }
       },
+      author: {
+        modelClass: models.User,
+        relation: Model.BelongsToOneRelation,
+        join: {from: 'articles.authorId', to: 'users.id'}
+      },
       reactions: {
         modelClass: models.Reaction,
         relation: Model.HasManyRelation,

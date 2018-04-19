@@ -44,6 +44,14 @@ export default {
       }
     },
 
+    author: {
+      belongsTo: 'users',
+      join: {
+        from: 'articles.authorId',
+        to: 'users.id'
+      }
+    },
+
     reactions: {
       hasMany: 'reactions',
       morphAs: 'reactable',

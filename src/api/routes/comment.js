@@ -65,8 +65,13 @@ comment.put('/:id', auth, async (ctx) => {
 
   /* mat Before update [start] */
   const currentUser = await ctx.state.getCurrentUser()
-  if (currentUser) {
-    console.log(currentUser);
+
+  // ignore deleting other users comment(if not admin).
+  const oldComment = await Comment.query()
+    .findFirst({id: ctx.params.id})
+
+  if (!currentUser.isAdmin && oldComment.commentedById !== currentUser.id) {
+    return
   }
   /* mat Before update [end] */
 
@@ -82,12 +87,20 @@ comment.put('/:id', auth, async (ctx) => {
 
 comment.delete('/:id', auth, async (ctx) => {
   const {Comment} = ctx.state.models
+  let params = {id: ctx.params.id}
+
   /* mat Before destroy [start] */
+  const currentUser = await ctx.state.getCurrentUser()
+
+  // ignore deleting other users comment(if not admin).
+  if (!currentUser.isAdmin) {
+    params['commentedById'] = currentUser.id
+  }
   /* mat Before destroy [end] */
 
   await Comment.query()
     .delete()
-    .where({id: ctx.params.id})
+    .where(params)
   ctx.body = null
 })
 

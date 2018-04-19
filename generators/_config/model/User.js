@@ -21,6 +21,10 @@ export default {
     status: {
       'type': 'string'
     },
+    isAdmin: {
+      'type': 'boolean',
+      'default': false
+    },
     avatar: {
       'type': 'string'
     }

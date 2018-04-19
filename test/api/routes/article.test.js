@@ -8,9 +8,13 @@ import {createToken} from 'jwks-rsa/tests/mocks/tokens'
 import Koa from 'koa'
 import importFresh from 'import-fresh'
 import {absolutePath} from '../../../config'
-import {currentUser} from 'test/api/helper/user'
+import {currentUser, createPayload} from 'test/api/helper/user'
 import runSeed, {runMigration} from 'test/api/helper/fixtures'
 import proxyquire from 'proxyquire'
+
+/* mat Custom imports [start] */
+import { ids as userIds } from 'test/api/fixtures/006_user'
+/* mat Custom imports [end] */
 
 const sandbox = sinon.sandbox.create()
 
@@ -51,7 +55,7 @@ test('index should list article', async (t) => {
 
   t.is(response.status, 200)
   t.deepEqual(response.body.length, 3)
-  t.deepEqual(_.map(response.body, 'id').sort(), [50794, 89832, 90697])
+  t.deepEqual(_.map(response.body, 'id').sort(), [35666, 60920, 66239])
 })
 
 test('show should return article', async (t) => {
@@ -62,20 +66,21 @@ test('show should return article', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .get('/api/articles/89832')
+    .get('/api/articles/35666')
     .set('Authorization', `Bearer ${token}`)
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 89832)
-  t.deepEqual(response.body.title, 'capacitor Handmade Fresh Car withdrawal')
-  t.deepEqual(response.body.summary, 'cultivate core PCI')
-  t.deepEqual(response.body.slug, 'unde-ad-et')
-  t.deepEqual(response.body.isPublished, true)
+  t.deepEqual(response.body.id, 35666)
+  t.deepEqual(response.body.title, 'Refined Rubber Tuna user-centric expedite')
+  t.deepEqual(response.body.summary, 'monitor Armenian Dram enhance')
+  t.deepEqual(response.body.slug, 'velit-voluptatibus-incidunt')
+  t.deepEqual(response.body.isPublished, false)
   t.deepEqual(
     response.body.content,
-    'Rem commodi iusto inventore. Rerum voluptatem necessitatibus quo repellat rerum. Itaque minus voluptate. Quia error temporibus libero unde cupiditate distinctio ex quibusdam. Earum sit qui excepturi sit dolorem voluptatem. Odio laborum natus laborum omnis.'
+    'Beatae voluptatem voluptatem ut temporibus quia. Id perferendis aperiam et mollitia debitis et nihil et. Explicabo eligendi mollitia cumque eius quas illo rerum accusamus veritatis. Rerum sed nesciunt. Maxime assumenda molestiae enim est perspiciatis aperiam amet quas. Maxime veritatis vitae maxime rerum beatae laborum cupiditate.'
   )
+  t.deepEqual(response.body.authorId, 75900)
 })
 
 test('post should create article', async (t) => {
@@ -90,26 +95,26 @@ test('post should create article', async (t) => {
     .set('Authorization', `Bearer ${token}`)
     .send({
       article: {
-        id: 83051,
-        title: 'Intelligent reboot',
-        summary: 'Hungary open-source',
-        slug: 'consequatur-vitae-necessitatibus',
-        isPublished: false,
+        id: 36060,
+        title: 'deposit Applications',
+        summary: 'Customer neural-net',
+        slug: 'tempora-eum-harum',
+        isPublished: true,
         content:
-          'Aperiam ut esse quia laudantium ipsum. Beatae nisi rerum neque voluptatem eaque ratione porro ipsa sit. Et quis tenetur maxime similique et modi ex sapiente. Eum ut nihil ducimus incidunt quia fuga repudiandae occaecati. Est tenetur aut qui facere aspernatur.'
+          'Dolorum possimus harum sed quos. Rerum consequatur soluta ratione unde cumque nobis. Amet ut tempora.'
       }
     })
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 83051)
-  t.deepEqual(response.body.title, 'Intelligent reboot')
-  t.deepEqual(response.body.summary, 'Hungary open-source')
-  t.deepEqual(response.body.slug, 'consequatur-vitae-necessitatibus')
-  t.deepEqual(response.body.isPublished, false)
+  t.deepEqual(response.body.id, 36060)
+  t.deepEqual(response.body.title, 'deposit Applications')
+  t.deepEqual(response.body.summary, 'Customer neural-net')
+  t.deepEqual(response.body.slug, 'tempora-eum-harum')
+  t.deepEqual(response.body.isPublished, true)
   t.deepEqual(
     response.body.content,
-    'Aperiam ut esse quia laudantium ipsum. Beatae nisi rerum neque voluptatem eaque ratione porro ipsa sit. Et quis tenetur maxime similique et modi ex sapiente. Eum ut nihil ducimus incidunt quia fuga repudiandae occaecati. Est tenetur aut qui facere aspernatur.'
+    'Dolorum possimus harum sed quos. Rerum consequatur soluta ratione unde cumque nobis. Amet ut tempora.'
   )
 })
 
@@ -121,31 +126,33 @@ test('update should update article', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .put('/api/articles/89832')
+    .put('/api/articles/35666')
     .set('Authorization', `Bearer ${token}`)
     .send({
       article: {
-        id: 89832,
-        title: 'Intelligent reboot',
-        summary: 'Hungary open-source',
-        slug: 'consequatur-vitae-necessitatibus',
-        isPublished: false,
+        id: 35666,
+        title: 'deposit Applications',
+        summary: 'Customer neural-net',
+        slug: 'tempora-eum-harum',
+        isPublished: true,
         content:
-          'Aperiam ut esse quia laudantium ipsum. Beatae nisi rerum neque voluptatem eaque ratione porro ipsa sit. Et quis tenetur maxime similique et modi ex sapiente. Eum ut nihil ducimus incidunt quia fuga repudiandae occaecati. Est tenetur aut qui facere aspernatur.'
+          'Dolorum possimus harum sed quos. Rerum consequatur soluta ratione unde cumque nobis. Amet ut tempora.',
+        authorId: 75900
       }
     })
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 89832)
-  t.deepEqual(response.body.title, 'Intelligent reboot')
-  t.deepEqual(response.body.summary, 'Hungary open-source')
-  t.deepEqual(response.body.slug, 'consequatur-vitae-necessitatibus')
-  t.deepEqual(response.body.isPublished, false)
+  t.deepEqual(response.body.id, 35666)
+  t.deepEqual(response.body.title, 'deposit Applications')
+  t.deepEqual(response.body.summary, 'Customer neural-net')
+  t.deepEqual(response.body.slug, 'tempora-eum-harum')
+  t.deepEqual(response.body.isPublished, true)
   t.deepEqual(
     response.body.content,
-    'Aperiam ut esse quia laudantium ipsum. Beatae nisi rerum neque voluptatem eaque ratione porro ipsa sit. Et quis tenetur maxime similique et modi ex sapiente. Eum ut nihil ducimus incidunt quia fuga repudiandae occaecati. Est tenetur aut qui facere aspernatur.'
+    'Dolorum possimus harum sed quos. Rerum consequatur soluta ratione unde cumque nobis. Amet ut tempora.'
   )
+  t.deepEqual(response.body.authorId, 75900)
 })
 
 test('delete should delete article', async (t) => {
@@ -159,7 +166,7 @@ test('delete should delete article', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .delete('/api/articles/89832')
+    .delete('/api/articles/35666')
     .set('Authorization', `Bearer ${token}`)
 
   articles = await Article.query()
@@ -184,7 +191,7 @@ test('index should list article and filter by tag', async (t) => {
 
   t.is(response.status, 200)
   t.deepEqual(response.body.length, 1)
-  t.deepEqual(_.map(response.body, 'id').sort(), [89832])
+  t.deepEqual(_.map(response.body, 'id').sort(), [35666])
 })
 
 test('get should return article by slug', async (t) => {
@@ -195,20 +202,19 @@ test('get should return article by slug', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .get('/api/articles/slug/unde-ad-et')
-    .query({tagId: 82337})
+    .get('/api/articles/slug/velit-voluptatibus-incidunt')
     .set('Authorization', `Bearer ${token}`)
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 89832)
-  t.deepEqual(response.body.title, 'capacitor Handmade Fresh Car withdrawal')
-  t.deepEqual(response.body.summary, 'cultivate core PCI')
-  t.deepEqual(response.body.slug, 'unde-ad-et')
-  t.deepEqual(response.body.isPublished, true)
+  t.deepEqual(response.body.id, 35666)
+  t.deepEqual(response.body.title, 'Refined Rubber Tuna user-centric expedite')
+  t.deepEqual(response.body.summary, 'monitor Armenian Dram enhance')
+  t.deepEqual(response.body.slug, 'velit-voluptatibus-incidunt')
+  t.deepEqual(response.body.isPublished, false)
   t.deepEqual(
     response.body.content,
-    'Rem commodi iusto inventore. Rerum voluptatem necessitatibus quo repellat rerum. Itaque minus voluptate. Quia error temporibus libero unde cupiditate distinctio ex quibusdam. Earum sit qui excepturi sit dolorem voluptatem. Odio laborum natus laborum omnis.'
+    'Beatae voluptatem voluptatem ut temporibus quia. Id perferendis aperiam et mollitia debitis et nihil et. Explicabo eligendi mollitia cumque eius quas illo rerum accusamus veritatis. Rerum sed nesciunt. Maxime assumenda molestiae enim est perspiciatis aperiam amet quas. Maxime veritatis vitae maxime rerum beatae laborum cupiditate.'
   )
 })
 
@@ -220,7 +226,7 @@ test('put reaction should add reaction to article', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .put('/api/articles/89832/reaction')
+    .put('/api/articles/35666/reaction')
     .set('Authorization', `Bearer ${token}`)
     .send({
       reaction: {
@@ -230,14 +236,14 @@ test('put reaction should add reaction to article', async (t) => {
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 89832)
-  t.deepEqual(response.body.title, 'capacitor Handmade Fresh Car withdrawal')
-  t.deepEqual(response.body.summary, 'cultivate core PCI')
-  t.deepEqual(response.body.slug, 'unde-ad-et')
-  t.deepEqual(response.body.isPublished, true)
+  t.deepEqual(response.body.id, 35666)
+  t.deepEqual(response.body.title, 'Refined Rubber Tuna user-centric expedite')
+  t.deepEqual(response.body.summary, 'monitor Armenian Dram enhance')
+  t.deepEqual(response.body.slug, 'velit-voluptatibus-incidunt')
+  t.deepEqual(response.body.isPublished, false)
   t.deepEqual(
     response.body.content,
-    'Rem commodi iusto inventore. Rerum voluptatem necessitatibus quo repellat rerum. Itaque minus voluptate. Quia error temporibus libero unde cupiditate distinctio ex quibusdam. Earum sit qui excepturi sit dolorem voluptatem. Odio laborum natus laborum omnis.'
+    'Beatae voluptatem voluptatem ut temporibus quia. Id perferendis aperiam et mollitia debitis et nihil et. Explicabo eligendi mollitia cumque eius quas illo rerum accusamus veritatis. Rerum sed nesciunt. Maxime assumenda molestiae enim est perspiciatis aperiam amet quas. Maxime veritatis vitae maxime rerum beatae laborum cupiditate.'
   )
   t.deepEqual(_.get(response.body.reactions, [0, 'emoji']), ':+1:')
 })
@@ -248,7 +254,7 @@ test('delete reaction should delete reaction from article', async (t) => {
   const _currentUser = await User.query().findOne({auth0Id: currentUser.sub})
 
   let article = await Article.query()
-    .findById(89832)
+    .findById(35666)
     .eager('[tags.articles, reactions]')
 
   await article
@@ -266,7 +272,7 @@ test('delete reaction should delete reaction from article', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .delete('/api/articles/89832/reaction')
+    .delete('/api/articles/35666/reaction')
     .set('Authorization', `Bearer ${token}`)
     .query({
       emoji: ':+1:'
@@ -274,14 +280,14 @@ test('delete reaction should delete reaction from article', async (t) => {
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 89832)
-  t.deepEqual(response.body.title, 'capacitor Handmade Fresh Car withdrawal')
-  t.deepEqual(response.body.summary, 'cultivate core PCI')
-  t.deepEqual(response.body.slug, 'unde-ad-et')
-  t.deepEqual(response.body.isPublished, true)
+  t.deepEqual(response.body.id, 35666)
+  t.deepEqual(response.body.title, 'Refined Rubber Tuna user-centric expedite')
+  t.deepEqual(response.body.summary, 'monitor Armenian Dram enhance')
+  t.deepEqual(response.body.slug, 'velit-voluptatibus-incidunt')
+  t.deepEqual(response.body.isPublished, false)
   t.deepEqual(
     response.body.content,
-    'Rem commodi iusto inventore. Rerum voluptatem necessitatibus quo repellat rerum. Itaque minus voluptate. Quia error temporibus libero unde cupiditate distinctio ex quibusdam. Earum sit qui excepturi sit dolorem voluptatem. Odio laborum natus laborum omnis.'
+    'Beatae voluptatem voluptatem ut temporibus quia. Id perferendis aperiam et mollitia debitis et nihil et. Explicabo eligendi mollitia cumque eius quas illo rerum accusamus veritatis. Rerum sed nesciunt. Maxime assumenda molestiae enim est perspiciatis aperiam amet quas. Maxime veritatis vitae maxime rerum beatae laborum cupiditate.'
   )
 
   // should not have reaction after delete.
@@ -289,5 +295,111 @@ test('delete reaction should delete reaction from article', async (t) => {
     .eager('[tags.articles, reactions]')
 
   t.deepEqual(_.get(article.reactions, [0, 'emoji']), undefined)
+})
+
+test('delete should delete article of other user if currentUser is admin', async (t) => {
+  const {request, User, Article} = t.context
+
+  let articles = await Article.query()
+  t.deepEqual(articles.length, 3)
+
+  // set User as admin
+  let adminUser = await User.query().findFirst({id: userIds.admin})
+  let article = await Article.query().findFirst({authorId: userIds.user})
+
+  // mock jwks
+  const token = createToken(privateKey, '123', createPayload(adminUser.auth0Id))
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .delete(`/api/articles/${article.id}`)
+    .set('Authorization', `Bearer ${token}`)
+
+  articles = await Article.query()
+  t.deepEqual(articles.length, 2)
+
+  t.is(response.status, 204)
+  t.deepEqual(response.body, {})
+})
+
+test('delete should not delete article of other user if currentUser is not admin', async (t) => {
+  const {request, User, Article} = t.context
+
+  let articles = await Article.query()
+  t.deepEqual(articles.length, 3)
+
+  // set User as admin
+  let nonAdminUser = await User.query().findFirst({id: userIds.user})
+  let article = await Article.query().findFirst({authorId: userIds.admin})
+
+  // mock jwks
+  const token = createToken(privateKey, '123', createPayload(nonAdminUser.auth0Id))
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .delete(`/api/articles/${article.id}`)
+    .set('Authorization', `Bearer ${token}`)
+
+  articles = await Article.query()
+  t.deepEqual(articles.length, 3)
+
+  t.is(response.status, 204)
+  t.deepEqual(response.body, {})
+})
+
+test('update should update article of other user if currentUser is admin', async (t) => {
+  const {request, User, Article} = t.context
+
+  // mock jwks
+  // set User as admin
+  let adminUser = await User.query().findFirst({id: userIds.admin})
+  let article = await Article.query().findFirst({authorId: userIds.user})
+
+  // mock jwks
+  const token = createToken(privateKey, '123', createPayload(adminUser.auth0Id))
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .put(`/api/articles/${article.id}`)
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      article: {
+        id: article.id,
+        content: 'Updated content'
+      }
+    })
+
+  t.is(response.status, 200)
+
+  t.deepEqual(response.body.id, article.id)
+  t.deepEqual(
+    response.body.content,
+    'Updated content'
+  )
+})
+
+test('update should not update article of other user if currentUser is not admin', async (t) => {
+  const {request, User, Article} = t.context
+
+  // mock jwks
+  // set User as admin
+  let nonAdminUser = await User.query().findFirst({id: userIds.user})
+  let article = await Article.query().findFirst({authorId: userIds.admin})
+
+  // mock jwks
+  const token = createToken(privateKey, '123', createPayload(nonAdminUser.auth0Id))
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .put(`/api/articles/${article.id}`)
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      article: {
+        id: article.id,
+        content: 'Updated content'
+      }
+    })
+
+  t.is(response.status, 404)
 })
 /* mat Custom tests [end] */
