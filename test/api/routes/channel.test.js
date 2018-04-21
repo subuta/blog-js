@@ -105,7 +105,6 @@ test('show should return channel with correct comments order', async (t) => {
 
   // insert 50 comment
   const comments = _.times(50, (i) => `comment ${i}`);
-  const wait = (ms = 0) => new Promise((resolve) => _.delay(resolve, ms))
 
   // should preserve order.
   await Promise.each(comments, async (comment) => {
@@ -115,7 +114,6 @@ test('show should return channel with correct comments order', async (t) => {
         commentedById: adminUser.id,
         text: comment
       })
-    await wait(1)
   })
 
   // mock jwks

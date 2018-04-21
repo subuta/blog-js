@@ -60,6 +60,7 @@ export default class Comment extends Model {
   static namedFilters = {
     last30: (builder) => builder
       .orderBy('created_at', 'desc')
+      .orderBy('id', 'desc')
       .limit(30)
   }
   /* mat Custom methods [end] */
