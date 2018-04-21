@@ -55,4 +55,12 @@ export default class Comment extends Model {
     required: ['text'],
     properties: {id: {type: 'integer'}, text: {type: 'string'}}
   }
+
+  /* mat Custom methods [start] */
+  static namedFilters = {
+    last30: (builder) => builder
+      .orderBy('created_at', 'desc')
+      .limit(30)
+  }
+  /* mat Custom methods [end] */
 }

@@ -41,9 +41,9 @@ const getChannelComments = (name) => createSelector(
     // throw nextjs Error if no valid channel found.
     if (!channel) return throw404()
 
-    return channel.comments.map((id) => {
+    return _.reverse(channel.comments.map((id) => {
       return denormalize(commentEntities[id], 'comment', state)
-    })
+    }))
   })
 
 const mapStateToProps = (state, oldProps) => {

@@ -38,4 +38,7 @@ export default class Channel extends Model {
       description: {type: 'string'}
     }
   }
+
+  /* mat Custom methods [start] */
+  /* mat Custom methods [end] */
 }

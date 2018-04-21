@@ -65,4 +65,7 @@ export default class Article extends Model {
       content: {type: 'string', default: ''}
     }
   }
+
+  /* mat Custom methods [start] */
+  /* mat Custom methods [end] */
 }

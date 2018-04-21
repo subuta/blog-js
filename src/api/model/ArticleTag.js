@@ -43,4 +43,7 @@ export default class Articletag extends Model {
       tagId: {type: 'integer'}
     }
   }
+
+  /* mat Custom methods [start] */
+  /* mat Custom methods [end] */
 }

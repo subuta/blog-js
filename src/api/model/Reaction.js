@@ -39,4 +39,7 @@ export default class Reaction extends Model {
       reactableType: {type: 'string'}
     }
   }
+
+  /* mat Custom methods [start] */
+  /* mat Custom methods [end] */
 }

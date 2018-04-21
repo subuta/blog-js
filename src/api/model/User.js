@@ -50,4 +50,7 @@ export default class User extends Model {
   static get hidden() {
     return ['auth0Id']
   }
+
+  /* mat Custom methods [start] */
+  /* mat Custom methods [end] */
 }

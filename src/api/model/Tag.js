@@ -38,4 +38,7 @@ export default class Tag extends Model {
     required: ['label'],
     properties: {id: {type: 'integer'}, label: {type: 'string'}}
   }
+
+  /* mat Custom methods [start] */
+  /* mat Custom methods [end] */
 }

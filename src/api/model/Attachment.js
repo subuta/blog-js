@@ -39,4 +39,7 @@ export default class Attachment extends Model {
       imageUrl: {type: 'string'}
     }
   }
+
+  /* mat Custom methods [start] */
+  /* mat Custom methods [end] */
 }
