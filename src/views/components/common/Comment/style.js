@@ -1,10 +1,14 @@
 import createWithStyles from 'src/views/utils/style'
 
+import color from 'color'
+
 import {
   DIMMED_BLACK_COLOR,
   SANS_FONT,
   LATO_WITH_SANS_FONT,
   GRAY_COLOR,
+  BORDER_COLOR,
+  PRIMARY_COLOR,
 
   EASE_STANDARD,
 
@@ -24,7 +28,7 @@ const CommentWrapper = {
   },
 
   '&.is-hovered': {
-    background: GRAY_COLOR
+    background: color(GRAY_COLOR).fade(0.6).string()
   }
 }
 
@@ -71,9 +75,43 @@ const CommentedAt = {
   color: DIMMED_BLACK_COLOR
 }
 
+const Actions = {
+  position: 'absolute',
+  top: 0,
+  right: 16,
+  borderRadius: 4,
+  border: `1px solid ${BORDER_COLOR}`,
+  background: PRIMARY_COLOR,
+  transform: 'translate3d(0, -50%, 0)',
+
+  '& > span': {
+    borderRight: `1px solid ${BORDER_COLOR}`,
+    '&:last-of-type': {
+      borderRight: 'none',
+    }
+  }
+}
+
+const Action = {
+  display: 'inline-flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: 24,
+  width: 32,
+  lineHeight: 1,
+  color: DIMMED_BLACK_COLOR,
+
+  '& > svg': {
+    height: 'auto',
+    width: 16
+  }
+}
+
 export default createWithStyles({
   CommentWrapper,
   Comment,
   Nickname,
-  CommentedAt
+  CommentedAt,
+  Actions,
+  Action
 })

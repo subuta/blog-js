@@ -35,4 +35,10 @@ exports.seed = async (knex) => {
       authorId: 25425
     }
   ])
+
+  /* mat After seed [start] */
+  /* mat After seed [end] */
 }
+
+/* mat Custom exports [start] */
+/* mat Custom exports [end] */

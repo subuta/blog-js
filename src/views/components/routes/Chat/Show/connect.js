@@ -62,6 +62,8 @@ const mapDispatchToProps = {
   showMenu,
   hideMenu,
   createComment,
+  updateComment,
+  deleteComment,
   createAttachment,
   uploadAttachment,
   signAttachment,

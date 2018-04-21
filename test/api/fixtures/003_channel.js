@@ -12,4 +12,10 @@ exports.seed = async (knex) => {
       description: 'Awesome Fresh Pizza focus group optimize'
     }
   ])
+
+  /* mat After seed [start] */
+  /* mat After seed [end] */
 }
+
+/* mat Custom exports [start] */
+/* mat Custom exports [end] */

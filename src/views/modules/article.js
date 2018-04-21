@@ -85,10 +85,10 @@ export const updateArticle = (id, params) => {
   }
 }
 
-export const deleteArticle = (id) => {
+export const deleteArticle = (id, params) => {
   return (dispatch, getState) => {
     dispatch({type: REQUEST_ARTICLES})
-    return api.article.destroy(id).then(() => {
+    return api.article.destroy(id, params).then(() => {
       const state = getState()
       const nextIds = _.without(getIds(state), id)
       dispatch(setArticleIds(nextIds))

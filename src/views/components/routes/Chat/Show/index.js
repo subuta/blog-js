@@ -71,6 +71,18 @@ const enhance = compose(
     }
   }),
   withHandlers({
+    onEditComment: ({updateComment}) => (comment) => {
+      updateComment(comment.id, {text: 'updated!'})
+    },
+
+    // onUpdateComment: ({updateComment}) => (comment) => {
+    //   console.log('edit!', comment)
+    // },
+
+    onDeleteComment: ({deleteComment}) => (comment) => {
+      deleteComment(comment.id, comment)
+    },
+
     onKeyPress: ({createComment, channel, draftText, setDraftText, scrollComments}) => (e) => {
       const key = keycode(e)
 
@@ -127,6 +139,8 @@ const Show = enhanceChatContent((props) => {
   const {
     channelComments,
     onKeyPress,
+    onEditComment,
+    onDeleteComment,
     setCommentsRef,
     setDraftText,
     draftText,
@@ -173,7 +187,12 @@ const Show = enhanceChatContent((props) => {
           <div className={styles.Comments} ref={setCommentsRef}>
             {_.map(channelComments, (comment) => {
               return (
-                <Comment key={comment.id} comment={comment}/>
+                <Comment
+                  key={comment.id}
+                  comment={comment}
+                  onEdit={() => onEditComment(comment)}
+                  onDelete={() => onDeleteComment(comment)}
+                />
               )
             })}
           </div>

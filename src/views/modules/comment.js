@@ -70,10 +70,10 @@ export const updateComment = (id, params) => {
   }
 }
 
-export const deleteComment = (id) => {
+export const deleteComment = (id, params) => {
   return (dispatch, getState) => {
     dispatch({type: REQUEST_COMMENTS})
-    return api.comment.destroy(id).then(() => {
+    return api.comment.destroy(id, params).then(() => {
       const state = getState()
       const nextIds = _.without(getIds(state), id)
       dispatch(setCommentIds(nextIds))

@@ -8,4 +8,10 @@ exports.seed = async (knex) => {
     {id: 52023, articleId: 60920, tagId: 43149},
     {id: 37083, articleId: 66239, tagId: 3838}
   ])
+
+  /* mat After seed [start] */
+  /* mat After seed [end] */
 }
+
+/* mat Custom exports [start] */
+/* mat Custom exports [end] */

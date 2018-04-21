@@ -29,4 +29,10 @@ exports.seed = async (knex) => {
       attachmentId: '62fc4caf-224d-4658-949e-b68307f974d2'
     }
   ])
+
+  /* mat After seed [start] */
+  /* mat After seed [end] */
 }
+
+/* mat Custom exports [start] */
+/* mat Custom exports [end] */

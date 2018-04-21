@@ -2,6 +2,9 @@ import React from 'react'
 import moment from 'src/views/utils/moment'
 import _ from 'lodash'
 
+import MdCreateIcon from 'react-icons/lib/md/create'
+import MdDeleteIcon from 'react-icons/lib/md/delete'
+
 import withStyles from './style'
 
 import {
@@ -10,6 +13,7 @@ import {
 } from 'recompose'
 
 import Avatar from 'src/views/components/common/Avatar'
+import Tooltip from 'src/views/components/common/Tooltip'
 
 const enhance = compose(
   withStyles,
@@ -21,7 +25,9 @@ export default enhance((props) => {
     comment,
     styles,
     isHover,
-    setIsHover
+    setIsHover,
+    onEdit = _.noop,
+    onDelete = _.noop,
   } = props
 
   const {
@@ -46,7 +52,7 @@ export default enhance((props) => {
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      <Avatar avatar={avatar} nickname={nickname} size={40} />
+      <Avatar avatar={avatar} nickname={nickname} size={40}/>
 
       <div className={styles.Comment}>
         <div className={styles.Nickname}>
@@ -56,10 +62,40 @@ export default enhance((props) => {
         </div>
 
         {attachment && (
-          <img src={attachment.imageUrl} alt={attachment.name} />
+          <img src={attachment.imageUrl} alt={attachment.name}/>
         )}
         <p>{text}</p>
       </div>
+
+      {isHover && (
+        <span className={styles.Actions}>
+          <Tooltip
+            title="Edit this comment"
+            placement="top"
+            size="small"
+          >
+            <span
+              className={styles.Action}
+              onClick={onEdit}
+            >
+              <MdCreateIcon/>
+            </span>
+          </Tooltip>
+
+          <Tooltip
+            title="Delete this comment"
+            placement="top"
+            size="small"
+          >
+            <span
+              className={styles.Action}
+              onClick={onDelete}
+            >
+            <MdDeleteIcon/>
+          </span>
+          </Tooltip>
+        </span>
+      )}
     </div>
   )
 })

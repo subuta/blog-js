@@ -23,4 +23,10 @@ exports.seed = async (knex) => {
       imageUrl: 'http://lorempixel.com/640/480/abstract'
     }
   ])
+
+  /* mat After seed [start] */
+  /* mat After seed [end] */
 }
+
+/* mat Custom exports [start] */
+/* mat Custom exports [end] */
