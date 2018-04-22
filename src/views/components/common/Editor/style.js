@@ -27,7 +27,8 @@ const GrayFont = {
 }
 
 const EditorWrapper = {
-  position: 'relative'
+  position: 'relative',
+  overflow: 'scroll',
 }
 
 const Editor = {

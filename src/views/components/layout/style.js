@@ -152,7 +152,8 @@ export const hr = {
 
 export const code = {
   padding: 8,
-  backgroundColor: '#F4F4F4'
+  backgroundColor: '#F4F4F4',
+  overflowX: 'scroll'
 }
 
 export const inlineCode = {
