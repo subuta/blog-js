@@ -8,6 +8,8 @@ exports.up = function (knex) {
     table.string('status').notNullable().defaultTo('')
     table.string('avatar').notNullable().defaultTo('')
     table.timestamps(true, true)
+
+    table.unique('nickname')
   })
 }
 

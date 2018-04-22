@@ -21,6 +21,8 @@ comment.get('/', async (ctx) => {
       '[channel.[comments(last30).[attachment, commentedBy]], attachment, commentedBy, reactions.reactedBy]'
     )
     .where(params)
+    .orderBy('created_at', 'desc')
+    .orderBy('id', 'desc')
 })
 
 comment.post('/', auth, async (ctx) => {

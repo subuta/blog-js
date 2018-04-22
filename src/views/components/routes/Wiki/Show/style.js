@@ -29,9 +29,14 @@ const Paper = {
   },
 
   '.published': {
-    margin: '-2px 0 0 4px',
+    margin: '-1px 0 0 4px',
     display: 'inline-block',
     textDecoration: 'underline'
+  },
+
+  '.author': {
+    margin: '0 0 0 4px',
+    display: 'inline-block'
   },
 
   '.editor, .content': {

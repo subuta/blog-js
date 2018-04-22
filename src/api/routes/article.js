@@ -17,9 +17,11 @@ article.get('/', async (ctx) => {
   /* mat Before index [end] */
 
   ctx.body = await Article.query()
-    .eager('[tags.articles, reactions.reactedBy]')
+    .eager('[tags.articles, reactions.reactedBy, author]')
     .joinRelation('[tags]')
     .where(params)
+    .orderBy('created_at', 'desc')
+    .orderBy('id', 'desc')
 })
 
 article.get('/:id', async (ctx) => {
@@ -30,7 +32,7 @@ article.get('/:id', async (ctx) => {
   /* mat Before show [end] */
 
   ctx.body = await Article.query()
-    .eager('[tags.articles, reactions.reactedBy]')
+    .eager('[tags.articles, reactions.reactedBy, author]')
     .findFirst({...params, id: ctx.params.id})
 })
 
@@ -48,7 +50,7 @@ article.post('/', auth, async (ctx) => {
       ...article,
       ...params
     })
-    .eager('[tags.articles, reactions.reactedBy]')
+    .eager('[tags.articles, reactions.reactedBy, author]')
 
   /* mat After create [start] */
   /* mat After create [end] */
@@ -81,7 +83,7 @@ article.put('/:id', auth, async (ctx) => {
       ...article,
       ...params
     })
-    .eager('[tags.articles, reactions.reactedBy]')
+    .eager('[tags.articles, reactions.reactedBy, author]')
 })
 
 article.delete('/:id', auth, async (ctx) => {
@@ -112,7 +114,7 @@ article.get('/slug/:slug', async (ctx) => {
   /* mat Before show [end] */
 
   ctx.body = await Article.query()
-    .eager('[tags.articles, reactions.reactedBy]')
+    .eager('[tags.articles, reactions.reactedBy, author]')
     .findFirst({...params, slug: ctx.params.slug})
 })
 
@@ -122,7 +124,7 @@ article.put('/:id/reaction', auth, async (ctx) => {
 
   const article = await Article.query()
     .findById(ctx.params.id)
-    .eager('[tags.articles, reactions.reactedBy]')
+    .eager('[tags.articles, reactions.reactedBy, author]')
 
   const currentUser = await ctx.state.getCurrentUser()
   reaction['reactedById'] = currentUser.id
@@ -132,7 +134,7 @@ article.put('/:id/reaction', auth, async (ctx) => {
     .insert(reaction)
 
   ctx.body = await article.$query()
-    .eager('[tags.articles, reactions.reactedBy]')
+    .eager('[tags.articles, reactions.reactedBy, author]')
 })
 
 article.delete('/:id/reaction', auth, async (ctx) => {
@@ -141,7 +143,7 @@ article.delete('/:id/reaction', auth, async (ctx) => {
 
   const article = await Article.query()
     .findById(ctx.params.id)
-    .eager('[tags.articles, reactions.reactedBy]')
+    .eager('[tags.articles, reactions.reactedBy, author]')
 
   const currentUser = await ctx.state.getCurrentUser()
   query['reactedById'] = currentUser.id
@@ -152,7 +154,7 @@ article.delete('/:id/reaction', auth, async (ctx) => {
     .where(query)
 
   ctx.body = await article.$query()
-    .eager('[tags.articles, reactions.reactedBy]')
+    .eager('[tags.articles, reactions.reactedBy, author]')
 })
 /* mat Custom actions [end] */
 

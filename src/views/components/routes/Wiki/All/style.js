@@ -47,12 +47,17 @@ const Articles = {
     },
 
     'h4': {
-      margin: 0
+      margin: `0 ${80 + 16}px 0 0`
     },
 
     '& p': {
       margin: 0,
       color: DIMMED_BLACK_COLOR
+    },
+
+    '.author': {
+      display: 'inline-block',
+      margin: '0 0 0 4px'
     },
 
     '.created-at': {
@@ -65,6 +70,10 @@ const Articles = {
   },
 
   [TABLET_MEDIA_QUERY]: {
+    'h4': {
+      margin: 0
+    },
+
     'li': {
       margin: '0 0 24px 0',
 

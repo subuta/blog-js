@@ -294,7 +294,8 @@ export default enhance((props) => {
 
   if (!article) return null
 
-  const {title, isPublished, content, id} = article
+  const {title, isPublished, content, author, id} = article
+  const {nickname} = author
   const createdAt = moment(article.createdAt).format('MMMM Do YYYY')
 
   return (
@@ -411,6 +412,7 @@ export default enhance((props) => {
 
             <div className={styles.SubTitle}>
               <small className="created-at">{createdAt}</small>
+              <small className="author">by {nickname}</small>
               <small className="published">{isPublished ? '' : 'draft'}</small>
             </div>
 

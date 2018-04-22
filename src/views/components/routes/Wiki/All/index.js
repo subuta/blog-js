@@ -123,7 +123,8 @@ export default enhance((props) => {
 
             <ul className={styles.Articles}>
               {_.map(articles, (article) => {
-                const {id, slug, title, summary} = article
+                const {id, slug, title, summary, author} = article
+                const {nickname} = author
                 const createdAt = moment(props.createdAt).format('MMMM Do YYYY')
                 return (
                   <li key={id}>
@@ -134,7 +135,10 @@ export default enhance((props) => {
                       <h4>{title}</h4>
                     </ActiveLink>
 
-                    <p>{summary}</p>
+                    <p>
+                      <span>{summary}</span>
+                      <span className="author">by <b>{nickname}</b></span>
+                    </p>
 
                     <small className="created-at">{createdAt}</small>
                   </li>

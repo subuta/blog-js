@@ -11,9 +11,10 @@ import {absolutePath} from '../../../config'
 import {currentUser, createPayload} from 'test/api/helper/user'
 import runSeed, {runMigration} from 'test/api/helper/fixtures'
 import proxyquire from 'proxyquire'
+
+/* mat Custom imports [start] */
 import { ids as userIds } from '../fixtures/006_user'
-
-
+/* mat Custom imports [end] */
 
 const sandbox = sinon.sandbox.create()
 

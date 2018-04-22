@@ -16,6 +16,8 @@ channel.get('/', async (ctx) => {
   ctx.body = await Channel.query()
     .eager('[comments(last30).[attachment, commentedBy]]')
     .where(params)
+    .orderBy('created_at', 'desc')
+    .orderBy('id', 'desc')
 })
 
 channel.get('/:id', async (ctx) => {
