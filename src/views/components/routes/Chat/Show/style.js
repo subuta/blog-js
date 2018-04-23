@@ -210,15 +210,15 @@ const TextAreaWrapper = {
 
 const TextArea = {
   minHeight: MIN_TEXT_AREA_HEIGHT,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
   padding: '8px',
-  height: '100%',
-  width: '100%',
-  border: 'none',
-  resize: 'none',
-  outline: 'none',
   lineHeight: 1.4,
-  fontFamily: SANS_FONT,
-  fontSize: 14
+
+  '& .editor': {
+    flex: '1 1 auto'
+  }
 }
 
 const AddIcon = {

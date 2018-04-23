@@ -212,7 +212,7 @@ export default enhance((props) => {
 
       <Editor
         placeholder='Paste in some HTML...'
-        className={styles.Editor}
+        className={`${styles.Editor} editor`}
         value={editorState}
         plugins={plugins}
         spellCheck={false}
