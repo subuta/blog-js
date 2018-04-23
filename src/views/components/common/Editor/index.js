@@ -57,7 +57,7 @@ const enhance = compose(
 
     let draftEmoji = ''
 
-    const ignoredKeys = ['up', 'down', 'enter', 'esc']
+    const ignoredKeys = ['up', 'down', 'enter', 'esc', 'shift']
 
     const resetDraftEmoji = () => {
       draftEmoji = ''
@@ -211,7 +211,7 @@ export default enhance((props) => {
       />
 
       <Editor
-        placeholder='Paste in some HTML...'
+        placeholder='Message'
         className={`${styles.Editor} editor`}
         value={editorState}
         plugins={plugins}
