@@ -89,6 +89,10 @@ const enhance = compose(
       // if enter pressed(without shift-key)
       if (key === 'enter' && !e.shiftKey) {
         e.preventDefault()
+
+        // ignore empty.
+        if (!draftText) return
+
         setDraftText('')
         createComment({channelId: channel.id, text: draftText}).then(() => {
           scrollComments()
