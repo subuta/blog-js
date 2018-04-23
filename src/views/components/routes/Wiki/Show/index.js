@@ -56,7 +56,7 @@ const enhanceContent = compose(
           <Editor
             className="editor"
             onSave={setDraftContent}
-            value={draftContent}
+            initialValue={draftContent}
           />
 
           <MarkdownContent

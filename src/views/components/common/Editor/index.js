@@ -24,7 +24,7 @@ const enhance = compose(
   withState('anchorNode', 'setAnchorNode', null),
   withState('emojiFilter', 'setEmojiFilter', ''),
   withState('isShowEmojiPicker', 'setIsShowEmojiPicker', false),
-  withState('editorState', 'setEditorState', ({value}) => createInitialState(value)),
+  withState('editorState', 'setEditorState', ({initialValue = ''}) => createInitialState(initialValue)),
   withStyles,
   withHandlers(function () {
     const findAnchorNode = (selection) => {
@@ -46,7 +46,15 @@ const enhance = compose(
       }
     }
   }),
-  withHandlers(function ({ setEmojiFilter }) {
+  withHandlers(function (props) {
+    const {
+      setEmojiFilter,
+      setEditorState,
+      editorState,
+      onChange,
+      instance = _.noop
+    } = props
+
     let draftEmoji = ''
 
     const ignoredKeys = ['up', 'down', 'enter', 'esc']
@@ -56,12 +64,37 @@ const enhance = compose(
       setEmojiFilter('')
     }
 
+    // focus on editor
+    const focus = () => {
+      const change = editorState.change()
+
+      const nextState = change
+        .focus()
+
+      onChange(nextState)
+    }
+
+    // reset internal editorState.
+    const reset = (initialValue = '') => {
+      setEditorState(createInitialState(initialValue))
+    }
+
+    // FIXME: More better way to expose editor api.
+    instance({
+      focus,
+      reset
+    })
+
     return {
       onKeyDown: (props) => (e) => {
         const {
           setEmojiFilter,
-          setIsShowEmojiPicker
+          setIsShowEmojiPicker,
+          onKeyDown = _.noop
         } = props
+
+        const parentResult = onKeyDown(e)
+        if (parentResult !== undefined) return parentResult
 
         // Show EmojiPicker on mac like emoji-shortcut.
         if (keycode(e) === 'space' && e.ctrlKey && e.metaKey) {
@@ -133,7 +166,9 @@ const enhance = compose(
         onChange(nextState)
 
         return resetDraftEmoji()
-      }
+      },
+
+      focus: () => focus
     }
   })
 )

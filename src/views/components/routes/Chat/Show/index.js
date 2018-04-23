@@ -23,7 +23,7 @@ import Sidebar from '../_Sidebar'
 import Content from '../_Content'
 
 import Comment from 'src/views/components/common/Comment'
-
+import Editor from 'src/views/components/common/Editor'
 import SvgIcon from 'src/views/components/common/SvgIcon'
 
 import {
@@ -55,11 +55,28 @@ const enhance = compose(
   withStyles,
   connect,
   withState('draftText', 'setDraftText', ''),
+  withState('initialText', 'setInitialText', ''),
   withHandlers(() => {
     let $comments
+    let editorInstance
+
     return {
       setCommentsRef: () => (ref) => {
         $comments = findDOMNode(ref)
+      },
+
+      setEditorInstance: () => (instance) => {
+        editorInstance = instance
+      },
+
+      resetEditor: () => (initialValue) => {
+        if (!editorInstance) return
+        editorInstance.reset(initialValue)
+      },
+
+      focusEditor: () => () => {
+        if (!editorInstance) return
+        editorInstance.focus()
       },
 
       scrollComments: () => () => {
@@ -83,7 +100,17 @@ const enhance = compose(
       deleteComment(comment.id, comment)
     },
 
-    onKeyPress: ({createComment, channel, draftText, setDraftText, scrollComments}) => (e) => {
+    onKeyDown: (props) => (e) => {
+      const {
+        createComment,
+        channel,
+        draftText,
+        setDraftText,
+        scrollComments,
+        resetEditor,
+        focusEditor
+      } = props
+
       const key = keycode(e)
 
       // if enter pressed(without shift-key)
@@ -91,12 +118,17 @@ const enhance = compose(
         e.preventDefault()
 
         // ignore empty.
-        if (!draftText) return
+        if (!draftText) return false
 
         setDraftText('')
+        resetEditor('')
+
         createComment({channelId: channel.id, text: draftText}).then(() => {
           scrollComments()
+          focusEditor()
         })
+
+        return false
       }
     },
 
@@ -142,14 +174,16 @@ const enhanceChatContent = compose(
 const Show = enhanceChatContent((props) => {
   const {
     channelComments,
-    onKeyPress,
+    onKeyDown,
     onEditComment,
     onDeleteComment,
     setCommentsRef,
+    setEditorInstance,
     setDraftText,
     draftText,
     channel,
     isOver,
+    initialText,
     canDrop,
     connectDropTargetToRef,
     styles,
@@ -205,11 +239,12 @@ const Show = enhanceChatContent((props) => {
             <div className={styles.TextAreaWrapper}>
               <button><MdAddIcon className={styles.AddIcon}/></button>
               <div className="textarea">
-              <Textarea
+
+              <Editor
                 className={styles.TextArea}
-                onKeyPress={onKeyPress}
-                onChange={(e) => setDraftText(e.target.value)}
-                value={draftText}
+                onKeyDown={onKeyDown}
+                onSave={(value) => setDraftText(value)}
+                instance={setEditorInstance}
               />
               </div>
             </div>
