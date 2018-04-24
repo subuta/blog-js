@@ -147,7 +147,7 @@
     "objection-visibility": "^0.2.0",
     "pg": "^7.4.0",
     "pluralize": "^7.0.0",
-    "popper.js": "^1.14.1",
+    "popper.js": "^1.14.3",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-addons-transition-group": "^15.6.2",

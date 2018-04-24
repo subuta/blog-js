@@ -70,6 +70,14 @@ const enhance = compose(
               offset: '0, 16px'
             },
 
+            flip: {
+              behavior: ['right', 'bottom', 'right']
+            },
+
+            preventOverflow: {
+              boundariesElement: 'window'
+            },
+
             applyStyle: {enabled: false},
 
             applyReactStyle: {
@@ -90,10 +98,13 @@ const enhance = compose(
         pickerNode = findDOMNode(ref)
       },
 
-      update: () => (_referenceNode) => {
+      update: ({ isShow }) => (_referenceNode) => {
         if (!_referenceNode) return
         if (!popper) return initialize(_referenceNode)
         if (!portal) portal = appendPortalNode(PORTAL_CLASS)
+
+        // ignore changes while element is invisible
+        if (!isShow) return
 
         // if node reference changed
         if (referenceNode !== _referenceNode) {
@@ -102,7 +113,7 @@ const enhance = compose(
           // Update reference node after popper instantiated, means re-use popper instance always :)
           // SEE: https://github.com/FezVrasta/popper.js/issues/538
           popper.reference = _referenceNode
-          popper.scheduleUpdate()
+          popper.popper = pickerNode
 
           observer.observe(_referenceNode, {
             childList: true,
@@ -112,6 +123,8 @@ const enhance = compose(
 
           referenceNode = _referenceNode
         }
+
+        popper.scheduleUpdate()
       },
 
       getPortal: () => () => portal,
