@@ -88,6 +88,20 @@ const enhance = compose(
     }
   }),
   withHandlers({
+    onAddReaction: ({addReaction}) => (comment, emoji) => {
+      addReaction(comment.id, {
+        channelId: comment.channelId,
+        emoji
+      })
+    },
+
+    onRemoveReaction: ({removeReaction}) => (comment, emoji) => {
+      removeReaction(comment.id, {
+        channelId: comment.channelId,
+        emoji
+      })
+    },
+
     onEditComment: ({updateComment}) => (comment) => {
       updateComment(comment.id, {text: 'updated!'})
     },
@@ -175,12 +189,16 @@ const Show = enhanceChatContent((props) => {
   const {
     channelComments,
     onKeyDown,
+    onAddReaction,
+    onRemoveReaction,
     onEditComment,
     onDeleteComment,
     setCommentsRef,
     setEditorInstance,
     setDraftText,
     draftText,
+    currentUser,
+    isAuthenticated,
     channel,
     isOver,
     initialText,
@@ -230,6 +248,10 @@ const Show = enhanceChatContent((props) => {
                   comment={comment}
                   onEdit={() => onEditComment(comment)}
                   onDelete={() => onDeleteComment(comment)}
+                  onAddReaction={onAddReaction}
+                  onRemoveReaction={onRemoveReaction}
+                  isAuthenticated={isAuthenticated}
+                  currentUser={currentUser}
                 />
               )
             })}
@@ -238,14 +260,14 @@ const Show = enhanceChatContent((props) => {
           <div className={styles.Footer}>
             <div className={styles.TextAreaWrapper}>
               <button><MdAddIcon className={styles.AddIcon}/></button>
-              <div className="textarea">
 
-              <Editor
-                className={styles.TextArea}
-                onKeyDown={onKeyDown}
-                onSave={(value) => setDraftText(value)}
-                instance={setEditorInstance}
-              />
+              <div className="textarea">
+                <Editor
+                  className={styles.TextArea}
+                  onKeyDown={onKeyDown}
+                  onSave={(value) => setDraftText(value)}
+                  instance={setEditorInstance}
+                />
               </div>
             </div>
           </div>

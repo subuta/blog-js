@@ -15,7 +15,7 @@ export const Routes = {
       'destroy'
     ],
     skipAuth: true,
-    eager: '[comments(last30).[attachment, commentedBy]]',
+    eager: '[comments(last30).[attachment, commentedBy, reactions.reactedBy]]',
     joinRelation: ''
   },
   article: {
@@ -38,7 +38,7 @@ export const Routes = {
       'show'
     ],
 
-    eager: '[channel.[comments(last30).[attachment, commentedBy]], attachment, commentedBy, reactions.reactedBy]',
+    eager: '[attachment, commentedBy, reactions.reactedBy]',
     joinRelation: ''
   },
   attachment: {

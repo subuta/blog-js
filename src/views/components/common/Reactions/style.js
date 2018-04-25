@@ -8,6 +8,13 @@ import {
 } from 'src/views/constants/style'
 
 const Reactions = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+
+  '& > *': {
+    lineHeight: '1 !important'
+  }
 }
 
 const ReactionButton = {
@@ -19,9 +26,24 @@ const ReactionButton = {
   alignItems: 'center',
   borderRadius: 2,
   cursor: 'pointer',
-  transition: `all 0.3s ${EASE_STANDARD}`,
+  transition: `all 0.1s ${EASE_STANDARD}`,
   color: DIMMED_BLACK_COLOR,
   outline: 'none',
+
+  '.is-mini &': {
+    minHeight: 'auto',
+    fontSize: 12
+  },
+
+  '.is-embedded &': {
+    minHeight: 'auto',
+    border: 'none',
+
+    '&:hover': {
+      boxShadow: 'none',
+      color: 'inherit'
+    },
+  },
 
   '&.add-reaction': {
     margin: 0
@@ -29,7 +51,15 @@ const ReactionButton = {
 
   '& svg': {
     height: 20,
-    width: 'auto'
+    width: 'auto',
+
+    '.is-mini &': {
+      height: 16
+    },
+
+    '.is-embedded &': {
+      height: 16
+    }
   },
 
   '& > .counter': {

@@ -226,7 +226,7 @@ const enhance = compose(
 
       onAddReaction: ({article, addReaction}) => (emoji) => {
         // toggle published state.
-        addReaction(article.id, {emoji: emoji.colons})
+        addReaction(article.id, {emoji})
       },
 
       onRemoveReaction: ({article, removeReaction}) => (emoji) => {

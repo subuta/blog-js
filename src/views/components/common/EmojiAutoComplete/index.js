@@ -96,7 +96,7 @@ const enhance = compose(
     let autoCompleteNode = null
     let popper = null
     let referenceNode = null
-    let portal = null
+    let portal = appendPortalNode(PORTAL_CLASS)
     let unlisten = _.noop
 
     // enable text change handler of referenceNode.
@@ -167,7 +167,6 @@ const enhance = compose(
       update: ({isShow}) => (_referenceNode) => {
         if (!_referenceNode) return
         if (!popper) return initialize(_referenceNode)
-        if (!portal) portal = appendPortalNode(PORTAL_CLASS)
 
         // ignore changes while element is invisible
         if (!isShow) return
@@ -205,7 +204,6 @@ const enhance = compose(
         popper && popper.disableEventListeners()
         popper && popper.destroy()
         observer.disconnect()
-        removePortalNode(PORTAL_CLASS)
 
         portal = null
         popper = null

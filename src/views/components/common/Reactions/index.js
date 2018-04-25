@@ -38,22 +38,42 @@ export default enhance((props) => {
   let {
     styles,
     isHover,
+    className,
     isShowEmojiPicker,
+    mini,
+    embedded,
     disabled,
     setIsHover,
     setIsShowEmojiPicker,
     setButtonRef,
     getButtonRef,
     currentUser,
+    onClose = _.noop,
     onAddReaction = _.noop,
     onRemoveReaction = _.noop
   } = props
 
   let tooltipForAddReaction = 'Add reaction'
 
-  let reactionsClass = styles.Reactions
+  let reactionsClass = `${styles.Reactions} reactions`
+  if (className) {
+    reactionsClass += ` ${className}`
+  }
+
   if (isHover) {
     reactionsClass += ' is-hovered'
+  }
+
+  if (mini) {
+    reactionsClass += ' is-mini'
+  }
+
+  if (embedded) {
+    reactionsClass += ' is-embedded'
+  }
+
+  if (_.get(props, 'reactions', []).length > 0) {
+    reactionsClass += ' has-reaction'
   }
 
   if (disabled) {
@@ -97,13 +117,13 @@ export default enhance((props) => {
           offset="0, 0"
         >
           <button
-            className={styles.ReactionButton}
+            className={`${styles.ReactionButton} reaction-button`}
             onClick={() => onRemoveReaction(emoji)}
           >
             <Emoji
               emoji={emoji}
               backgroundImageFn={() => SHEET_URL}
-              size={20}
+              size={mini ? 16 : 20}
             />
 
             <span className='counter'>{count}</span>
@@ -119,18 +139,24 @@ export default enhance((props) => {
         <button
           className={`${styles.ReactionButton} add-reaction`}
           ref={setButtonRef}
-          onClick={() => setIsShowEmojiPicker(true)}
+          onClick={(e) => setIsShowEmojiPicker(true)}
         >
           <MdInsertEmoticonIcon/>
         </button>
       </Tooltip>
 
-      <EmojiPicker
-        referenceNode={getButtonRef()}
-        onSelect={onAddReaction}
-        onClose={() => setIsShowEmojiPicker(false)}
-        isShow={isShowEmojiPicker}
-      />
+      {!disabled && isHover && (
+        <EmojiPicker
+          key={`t${new Date()}`}
+          referenceNode={getButtonRef()}
+          onSelect={onAddReaction}
+          onClose={() => {
+            onClose()
+            setIsShowEmojiPicker(false)
+          }}
+          isShow={isShowEmojiPicker}
+        />
+      )}
     </div>
   )
 })

@@ -43,7 +43,7 @@ const enhance = compose(
   }),
   withHandlers({
     onClickEmoji: ({onSelect, onClose = _.noop}) => (emoji, e) => {
-      onSelect(emoji, e)
+      onSelect(emoji.colons, e)
       onClose()
     }
   }),
@@ -51,7 +51,7 @@ const enhance = compose(
     let pickerNode = null
     let popper = null
     let referenceNode = null
-    let portal = null
+    let portal = appendPortalNode(PORTAL_CLASS)
 
     // enable text change handler of referenceNode.
     let observer = isBrowser ? new MutationObserver((_mutations) => {
@@ -101,7 +101,6 @@ const enhance = compose(
       update: ({ isShow }) => (_referenceNode) => {
         if (!_referenceNode) return
         if (!popper) return initialize(_referenceNode)
-        if (!portal) portal = appendPortalNode(PORTAL_CLASS)
 
         // ignore changes while element is invisible
         if (!isShow) return
@@ -133,8 +132,8 @@ const enhance = compose(
         popper && popper.disableEventListeners()
         popper && popper.destroy()
         observer.disconnect()
-        removePortalNode(PORTAL_CLASS)
 
+        portal = null
         popper = null
         observer = null
       }

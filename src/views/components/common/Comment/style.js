@@ -33,6 +33,7 @@ const CommentWrapper = {
 }
 
 const Comment = {
+  flex: '1 1 auto',
   margin: '0 0 0 8px',
 
   '& > p': {
@@ -58,6 +59,31 @@ const Comment = {
     [TABLET_MEDIA_QUERY]: {
       maxWidth: '100%'
     }
+  },
+
+  '& .text': {
+    '& p': {
+      margin: 0
+    }
+  },
+
+  '& .reactions': {
+    display: 'none',
+    margin: '4px 0 0 0',
+
+    '&.has-reaction': {
+      display: 'flex',
+
+      '.add-reaction': {
+        opacity: 0,
+      }
+    },
+
+    '.is-hovered &.has-reaction': {
+      '.add-reaction': {
+        opacity: 1
+      }
+    },
   }
 }
 
@@ -83,10 +109,20 @@ const Actions = {
   border: `1px solid ${BORDER_COLOR}`,
   background: PRIMARY_COLOR,
   transform: 'translate3d(0, -50%, 0)',
+  display: 'none',
 
-  '& > span': {
+  '.is-hovered &': {
+    display: 'block'
+  },
+
+  '& .reactions': {
+    display: 'inline-flex',
+    justifyContent: 'center'
+  },
+
+  '& > *': {
     borderRight: `1px solid ${BORDER_COLOR}`,
-    '&:last-of-type': {
+    '&:last-child': {
       borderRight: 'none',
     }
   }

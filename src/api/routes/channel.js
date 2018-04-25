@@ -14,7 +14,7 @@ channel.get('/', async (ctx) => {
   /* mat Before index [end] */
 
   ctx.body = await Channel.query()
-    .eager('[comments(last30).[attachment, commentedBy]]')
+    .eager('[comments(last30).[attachment, commentedBy, reactions.reactedBy]]')
     .where(params)
     .orderBy('created_at', 'desc')
     .orderBy('id', 'desc')
@@ -28,7 +28,7 @@ channel.get('/:id', async (ctx) => {
   /* mat Before show [end] */
 
   ctx.body = await Channel.query()
-    .eager('[comments(last30).[attachment, commentedBy]]')
+    .eager('[comments(last30).[attachment, commentedBy, reactions.reactedBy]]')
     .findFirst({...params, id: ctx.params.id})
 })
 
@@ -46,7 +46,7 @@ channel.post('/', async (ctx) => {
       ...channel,
       ...params
     })
-    .eager('[comments(last30).[attachment, commentedBy]]')
+    .eager('[comments(last30).[attachment, commentedBy, reactions.reactedBy]]')
 
   /* mat After create [start] */
   /* mat After create [end] */
@@ -63,7 +63,7 @@ channel.get('/name/:name', async (ctx) => {
   /* mat Before show [end] */
 
   ctx.body = await Channel.query()
-    .eager('[comments(last30).[attachment, commentedBy]]')
+    .eager('[comments(last30).[attachment, commentedBy, reactions.reactedBy]]')
     .findFirst({...params, name: ctx.params.name})
 })
 /* mat Custom actions [end] */

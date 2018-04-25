@@ -17,9 +17,7 @@ comment.get('/', async (ctx) => {
   /* mat Before index [end] */
 
   ctx.body = await Comment.query()
-    .eager(
-      '[channel.[comments(last30).[attachment, commentedBy]], attachment, commentedBy, reactions.reactedBy]'
-    )
+    .eager('[attachment, commentedBy, reactions.reactedBy]')
     .where(params)
     .orderBy('created_at', 'desc')
     .orderBy('id', 'desc')
@@ -47,9 +45,7 @@ comment.post('/', auth, async (ctx) => {
       ...comment,
       ...params
     })
-    .eager(
-      '[channel.[comments(last30).[attachment, commentedBy]], attachment, commentedBy, reactions.reactedBy]'
-    )
+    .eager('[attachment, commentedBy, reactions.reactedBy]')
 
   /* mat After create [start] */
   /* mat After create [end] */
@@ -82,9 +78,7 @@ comment.put('/:id', auth, async (ctx) => {
       ...comment,
       ...params
     })
-    .eager(
-      '[channel.[comments(last30).[attachment, commentedBy]], attachment, commentedBy, reactions.reactedBy]'
-    )
+    .eager('[attachment, commentedBy, reactions.reactedBy]')
 })
 
 comment.delete('/:id', auth, async (ctx) => {
@@ -109,33 +103,39 @@ comment.delete('/:id', auth, async (ctx) => {
 /* mat Custom actions [start] */
 comment.put('/:id/reaction', auth, async (ctx) => {
   const {Comment} = ctx.state.models
-  const {reaction} = ctx.request.body
+  let {reaction} = ctx.request.body
 
   const comment = await Comment.query()
     .findById(ctx.params.id)
-    .eager('[channel.[comments.[attachment, commentedBy]], attachment, commentedBy, reactions.reactedBy]')
+    .eager('[attachment, commentedBy, reactions.reactedBy]')
 
   const currentUser = await ctx.state.getCurrentUser()
   reaction['reactedById'] = currentUser.id
+
+  // ignore invalid column
+  reaction = _.pick(reaction, ['emoji', 'reactedById'])
 
   await comment
     .$relatedQuery('reactions')
     .insert(reaction)
 
   ctx.body = await comment.$query()
-    .eager('[channel.[comments.[attachment, commentedBy]], attachment, commentedBy, reactions.reactedBy]')
+    .eager('[attachment, commentedBy, reactions.reactedBy]')
 })
 
 comment.delete('/:id/reaction', auth, async (ctx) => {
   const {Comment} = ctx.state.models
-  const query = ctx.request.query
+  let query = ctx.request.query
 
   const comment = await Comment.query()
     .findById(ctx.params.id)
-    .eager('[channel.[comments.[attachment, commentedBy]], attachment, commentedBy, reactions.reactedBy]')
+    .eager('[attachment, commentedBy, reactions.reactedBy]')
 
   const currentUser = await ctx.state.getCurrentUser()
   query['reactedById'] = currentUser.id
+
+  // ignore invalid column
+  query = _.pick(query, ['emoji', 'reactedById'])
 
   await comment
     .$relatedQuery('reactions')
@@ -143,7 +143,7 @@ comment.delete('/:id/reaction', auth, async (ctx) => {
     .where(query)
 
   ctx.body = await comment.$query()
-    .eager('[channel.[comments.[attachment, commentedBy]], attachment, commentedBy, reactions.reactedBy]')
+    .eager('[attachment, commentedBy, reactions.reactedBy]')
 })
 /* mat Custom actions [end] */
 

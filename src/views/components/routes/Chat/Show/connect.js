@@ -25,6 +25,8 @@ import {
 import {
   createComment,
   updateComment,
+  addReaction,
+  removeReaction,
   deleteComment as requestDeleteComment,
   getEntities as getCommentEntities
 } from 'src/views/modules/comment'
@@ -91,6 +93,8 @@ const mapDispatchToProps = {
   deleteComment,
   createAttachment,
   uploadAttachment,
+  addReaction,
+  removeReaction,
   signAttachment,
   requestChannels
 }
