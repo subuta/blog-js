@@ -5,6 +5,8 @@ import _ from 'lodash'
 import MdCreateIcon from 'react-icons/lib/md/create'
 import MdDeleteIcon from 'react-icons/lib/md/delete'
 
+import MarkdownContent from 'src/views/components/common/MarkdownContent'
+
 import withStyles from './style'
 
 import {
@@ -14,6 +16,8 @@ import {
 
 import Avatar from 'src/views/components/common/Avatar'
 import Tooltip from 'src/views/components/common/Tooltip'
+
+import { toHtml } from 'src/views/utils/markdown'
 
 const enhance = compose(
   withStyles,
@@ -64,7 +68,11 @@ export default enhance((props) => {
         {attachment && (
           <img src={attachment.imageUrl} alt={attachment.name}/>
         )}
-        <p>{text}</p>
+
+        <MarkdownContent
+          className="text"
+          html={toHtml(text)}
+        />
       </div>
 
       {isHover && (
