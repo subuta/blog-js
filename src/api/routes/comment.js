@@ -115,9 +115,16 @@ comment.put('/:id/reaction', auth, async (ctx) => {
   // ignore invalid column
   reaction = _.pick(reaction, ['emoji', 'reactedById'])
 
-  await comment
+  const found = await comment
     .$relatedQuery('reactions')
-    .insert(reaction)
+    .findFirst(reaction)
+
+  // create if not exists.
+  if (!found) {
+    await comment
+      .$relatedQuery('reactions')
+      .insert(reaction)
+  }
 
   ctx.body = await comment.$query()
     .eager('[attachment, commentedBy, reactions.reactedBy]')

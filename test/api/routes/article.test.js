@@ -248,6 +248,46 @@ test('put reaction should add reaction to article', async (t) => {
   t.deepEqual(_.get(response.body.reactions, [0, 'emoji']), ':+1:')
 })
 
+test('put reaction should not add reaction to article if duplicated', async (t) => {
+  const {request} = t.context
+
+  // mock jwks
+  const token = createToken(privateKey, '123', currentUser)
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  let response = await request
+    .put('/api/articles/35666/reaction')
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      reaction: {
+        emoji: ':+1:'
+      }
+    })
+
+  response = await request
+    .put('/api/articles/35666/reaction')
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      reaction: {
+        emoji: ':+1:'
+      }
+    })
+
+  t.is(response.status, 200)
+
+  t.deepEqual(response.body.id, 35666)
+  t.deepEqual(response.body.title, 'Refined Rubber Tuna user-centric expedite')
+  t.deepEqual(response.body.summary, 'monitor Armenian Dram enhance')
+  t.deepEqual(response.body.slug, 'velit-voluptatibus-incidunt')
+  t.deepEqual(response.body.isPublished, false)
+  t.deepEqual(
+    response.body.content,
+    'Beatae voluptatem voluptatem ut temporibus quia. Id perferendis aperiam et mollitia debitis et nihil et. Explicabo eligendi mollitia cumque eius quas illo rerum accusamus veritatis. Rerum sed nesciunt. Maxime assumenda molestiae enim est perspiciatis aperiam amet quas. Maxime veritatis vitae maxime rerum beatae laborum cupiditate.'
+  )
+  t.deepEqual(response.body.reactions.length, 1)
+  t.deepEqual(_.get(response.body.reactions, [0, 'emoji']), ':+1:')
+})
+
 test('delete reaction should delete reaction from article', async (t) => {
   const {request, Article, User} = t.context
 

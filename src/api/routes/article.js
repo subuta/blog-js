@@ -129,9 +129,16 @@ article.put('/:id/reaction', auth, async (ctx) => {
   const currentUser = await ctx.state.getCurrentUser()
   reaction['reactedById'] = currentUser.id
 
-  await article
+  const found = await article
     .$relatedQuery('reactions')
-    .insert(reaction)
+    .findFirst(reaction)
+
+  // create if not exists.
+  if (!found) {
+    await article
+      .$relatedQuery('reactions')
+      .insert(reaction)
+  }
 
   ctx.body = await article.$query()
     .eager('[tags.articles, reactions.reactedBy, author]')
