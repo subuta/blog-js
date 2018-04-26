@@ -226,6 +226,29 @@ const AddIcon = {
   width: 24
 }
 
+const DateLine = {
+  margin: '24px 0',
+  position: 'relative',
+
+  '&:before': {
+    display: 'block',
+    content: '\'\'',
+    width: '100%',
+    borderTop: `1px solid ${BORDER_COLOR}`
+  },
+
+  '& > b': {
+    padding: '4px 16px',
+    position: 'absolute',
+    top: 0,
+    left: '50%',
+    transform: 'translate3d(-50%, -50%, 0)',
+    borderRadius: 4,
+    backgroundColor: PRIMARY_COLOR,
+    fontSize: 14
+  }
+}
+
 export default createWithStyles({
   Channels,
   DropTarget,
@@ -238,5 +261,6 @@ export default createWithStyles({
   Footer,
   TextAreaWrapper,
   TextArea,
-  AddIcon
+  AddIcon,
+  DateLine
 })

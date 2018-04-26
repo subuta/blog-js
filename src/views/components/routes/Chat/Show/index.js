@@ -8,6 +8,7 @@ const {FILE} = NativeTypes
 
 import _ from 'lodash'
 import keycode from 'keycode'
+import moment from 'moment'
 
 import Textarea from 'react-textarea-autosize'
 import MdAddIcon from 'react-icons/lib/md/add'
@@ -185,6 +186,34 @@ const enhanceChatContent = compose(
   })
 )
 
+const DateLine = withStyles(({ styles, daysAgo = 1 }) => {
+  if (daysAgo === 1) {
+    return (
+      <div className={styles.DateLine}>
+        <b>Today</b>
+      </div>
+    )
+  } else if (daysAgo === 2) {
+    return (
+      <div className={styles.DateLine}>
+        <b>Yesterday</b>
+      </div>
+    )
+  }
+
+  let format = 'dddd, MMMM Do'
+  // if years ago.
+  if (daysAgo >= 365) {
+    format = 'MMMM Do, YYYY'
+  }
+
+  return (
+    <div className={styles.DateLine}>
+      <b>{moment().startOf('day').subtract(daysAgo).format(format)}</b>
+    </div>
+  )
+})
+
 const Show = enhanceChatContent((props) => {
   const {
     channelComments,
@@ -218,6 +247,8 @@ const Show = enhanceChatContent((props) => {
     channelsClass += ' can-drop'
   }
 
+  let lastDay = null
+
   return (
     <Content ref={connectDropTargetToRef}>
       <div className={channelsClass}>
@@ -241,19 +272,34 @@ const Show = enhanceChatContent((props) => {
         </div>
         <div className={styles.Content}>
           <div className={styles.Comments} ref={setCommentsRef}>
-            {_.map(channelComments, (comment) => {
-              return (
-                <Comment
+            {_.map(channelComments, (comment, i) => {
+              const isFirst = i === 0
+              const today = moment(comment.created_at).startOf('day')
+
+              const component = (
+                <React.Fragment
                   key={comment.id}
-                  comment={comment}
-                  onEdit={() => onEditComment(comment)}
-                  onDelete={() => onDeleteComment(comment)}
-                  onAddReaction={onAddReaction}
-                  onRemoveReaction={onRemoveReaction}
-                  isAuthenticated={isAuthenticated}
-                  currentUser={currentUser}
-                />
+                >
+                  {(isFirst || today.diff(lastDay, 'days') > 0) && (
+                    // Show date line if firstRecord or dateChanged.
+                    <DateLine daysAgo={moment().diff(today, 'days')} />
+                  )}
+
+                  <Comment
+                    comment={comment}
+                    onEdit={() => onEditComment(comment)}
+                    onDelete={() => onDeleteComment(comment)}
+                    onAddReaction={onAddReaction}
+                    onRemoveReaction={onRemoveReaction}
+                    isAuthenticated={isAuthenticated}
+                    currentUser={currentUser}
+                  />
+                </React.Fragment>
               )
+
+              // set last created_at for next iteration.
+              lastDay = today
+              return component
             })}
           </div>
 

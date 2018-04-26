@@ -51,7 +51,7 @@ export default enhance((props) => {
     reactions
   } = comment
 
-  const createdAt = moment(comment.createdAt).format('A HH:mm')
+  const createdAt = moment(comment.created_at).format('A HH:mm')
   const avatar = _.get(commentedBy, 'avatar')
   const nickname = _.get(commentedBy, 'nickname')
 
