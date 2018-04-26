@@ -12,6 +12,7 @@ import moment from 'moment'
 
 import Textarea from 'react-textarea-autosize'
 import MdAddIcon from 'react-icons/lib/md/add'
+import Waypoint from 'react-waypoint';
 
 import FaHashTagIcon from 'react-icons/lib/fa/hashtag'
 
@@ -177,25 +178,43 @@ const enhance = compose(
   })
 )
 
-const enhanceChatContent = compose(
-  withFileDropHandler,
-  withHandlers({
-    connectDropTargetToRef: ({connectDropTarget}) => (ref) => {
-      return connectDropTarget(findDOMNode(ref))
-    }
-  })
-)
+// Date-Line separator
+const DateLine = withStyles((props) => {
+  const {
+    styles,
+    daysAgo,
+    onEnter = _.noop,
+    onLeave = _.noop
+  } = props
 
-const DateLine = withStyles(({ styles, daysAgo = 1 }) => {
+  const day = moment().startOf('day').subtract(daysAgo - 1, 'days')
+  const dateLineClass = `${styles.DateLine} date-line`
+
+  const Trigger = (
+    <Waypoint
+      key={`d${daysAgo}`}
+      onEnter={() => onEnter(day)}
+      onLeave={() => onLeave(day)}
+    />
+  )
+
+  if (daysAgo === undefined) {
+    return (
+      <div className={dateLineClass} />
+    )
+  }
+
   if (daysAgo === 1) {
     return (
-      <div className={styles.DateLine}>
+      <div className={dateLineClass}>
+        {Trigger}
         <b>Today</b>
       </div>
     )
   } else if (daysAgo === 2) {
     return (
-      <div className={styles.DateLine}>
+      <div className={dateLineClass}>
+        {Trigger}
         <b>Yesterday</b>
       </div>
     )
@@ -208,11 +227,22 @@ const DateLine = withStyles(({ styles, daysAgo = 1 }) => {
   }
 
   return (
-    <div className={styles.DateLine}>
+    <div className={dateLineClass}>
+      {Trigger}
       <b>{moment().startOf('day').subtract(daysAgo).format(format)}</b>
     </div>
   )
 })
+
+const enhanceChatContent = compose(
+  withFileDropHandler,
+  withState('stickyDate', 'setStickyDate', null),
+  withHandlers({
+    connectDropTargetToRef: ({connectDropTarget}) => (ref) => {
+      return connectDropTarget(findDOMNode(ref))
+    }
+  })
+)
 
 const Show = enhanceChatContent((props) => {
   const {
@@ -225,6 +255,8 @@ const Show = enhanceChatContent((props) => {
     setCommentsRef,
     setEditorInstance,
     setDraftText,
+    setStickyDate,
+    stickyDate,
     draftText,
     currentUser,
     isAuthenticated,
@@ -259,7 +291,7 @@ const Show = enhanceChatContent((props) => {
         <div className={styles.Header}>
           <i onClick={() => showMenu()}><SvgIcon name="logo-small"/></i>
 
-          <div>
+          <div className={styles.HeaderContent}>
             <h4 className={styles.Title}>
               <span className="icon"><FaHashTagIcon/></span>
               <span className="name">{name}</span>
@@ -268,6 +300,9 @@ const Show = enhanceChatContent((props) => {
             <div className={styles.Description}>
               <p>{description}</p>
             </div>
+
+            {/* FIXME: adjust onLeave & onEnter hook */}
+            <DateLine daysAgo={stickyDate + 1} />
           </div>
         </div>
         <div className={styles.Content}>
@@ -282,7 +317,10 @@ const Show = enhanceChatContent((props) => {
                 >
                   {(isFirst || today.diff(lastDay, 'days') > 0) && (
                     // Show date line if firstRecord or dateChanged.
-                    <DateLine daysAgo={moment().diff(today, 'days')} />
+                    <DateLine
+                      onEnter={(day) => requestAnimationFrame(() => setStickyDate(moment().diff(today, 'days')))}
+                      daysAgo={moment().diff(today, 'days')}
+                    />
                   )}
 
                   <Comment

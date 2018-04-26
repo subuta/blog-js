@@ -54,7 +54,7 @@ const Header = {
   justifyContent: 'flex-start',
   alignItems: 'center',
   padding: '8px 16px',
-  borderBottom: `1px solid ${BORDER_COLOR}`,
+  // borderBottom: `1px solid ${BORDER_COLOR}`,
   fontFamily: SANS_FONT,
 
   '& > i': {
@@ -66,11 +66,24 @@ const Header = {
     }
   },
 
+  '.date-line': {
+    margin: '8px -16px 0',
+    width: 'calc(100% + 32px)'
+  },
+
   [TABLET_MEDIA_QUERY]: {
     '& > i': {
       display: 'block'
     }
   }
+}
+
+const HeaderContent = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'flex-start',
+  flexDirection: 'column',
+  flex: '0 0 100%'
 }
 
 const Title = {
@@ -253,6 +266,7 @@ export default createWithStyles({
   Channels,
   DropTarget,
   Header,
+  HeaderContent,
   Title,
   Description,
   Content,
