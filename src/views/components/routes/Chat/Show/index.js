@@ -31,7 +31,7 @@ import SvgIcon from 'src/views/components/common/SvgIcon'
 import {
   compose,
   withState,
-  withProps,
+  lifecycle,
   withHandlers
 } from 'recompose'
 
@@ -175,6 +175,11 @@ const enhance = compose(
         scrollComments()
       })
     }
+  }),
+  lifecycle({
+    componentDidMount () {
+      this.props.scrollComments()
+    }
   })
 )
 
@@ -187,7 +192,7 @@ const DateLine = withStyles((props) => {
     onLeave = _.noop
   } = props
 
-  const day = moment().startOf('day').subtract(daysAgo - 1, 'days')
+  const day = moment().startOf('day').subtract(daysAgo, 'days')
   const dateLineClass = `${styles.DateLine} date-line`
 
   const Trigger = (
@@ -195,6 +200,7 @@ const DateLine = withStyles((props) => {
       key={`d${daysAgo}`}
       onEnter={() => onEnter(day)}
       onLeave={() => onLeave(day)}
+      topOffset={0}
     />
   )
 
@@ -229,7 +235,7 @@ const DateLine = withStyles((props) => {
   return (
     <div className={dateLineClass}>
       {Trigger}
-      <b>{moment().startOf('day').subtract(daysAgo).format(format)}</b>
+      <b>{day.format(format)}</b>
     </div>
   )
 })
@@ -280,6 +286,7 @@ const Show = enhanceChatContent((props) => {
   }
 
   let lastDay = null
+  // TODO: comment.idと日付のgroupを持つ必要がありそう。
 
   return (
     <Content ref={connectDropTargetToRef}>
@@ -310,7 +317,6 @@ const Show = enhanceChatContent((props) => {
             {_.map(channelComments, (comment, i) => {
               const isFirst = i === 0
               const today = moment(comment.created_at).startOf('day')
-
               const component = (
                 <React.Fragment
                   key={comment.id}
@@ -318,7 +324,14 @@ const Show = enhanceChatContent((props) => {
                   {(isFirst || today.diff(lastDay, 'days') > 0) && (
                     // Show date line if firstRecord or dateChanged.
                     <DateLine
-                      onEnter={(day) => requestAnimationFrame(() => setStickyDate(moment().diff(today, 'days')))}
+                      onEnter={(day) => {
+                        console.log('enter day = ', day.format('YYYY/MM/DD'));
+                        requestAnimationFrame(() => setStickyDate(moment().diff(day, 'days')))
+                      }}
+                      onLeave={(day) => {
+                        console.log('leave day = ', day.format('YYYY/MM/DD'));
+                        requestAnimationFrame(() => setStickyDate(moment().diff(day, 'days')))
+                      }}
                       daysAgo={moment().diff(today, 'days')}
                     />
                   )}
