@@ -31,6 +31,7 @@ const enhance = compose(
 
 export default enhance((props) => {
   const {
+    className,
     comment,
     styles,
     isHover,
@@ -58,6 +59,10 @@ export default enhance((props) => {
   let commentWrapperClass = styles.CommentWrapper
   if (isHover) {
     commentWrapperClass += ' is-hovered'
+  }
+
+  if (className) {
+    commentWrapperClass += ` ${className}`
   }
 
   return (

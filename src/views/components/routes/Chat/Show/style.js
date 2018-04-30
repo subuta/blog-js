@@ -49,11 +49,14 @@ const DropTarget = {
 }
 
 const Header = {
-  height: CHAT_HEADER_HEIGHT,
+  // height: CHAT_HEADER_HEIGHT
+}
+
+const HeaderRow = {
   display: 'flex',
   justifyContent: 'flex-start',
   alignItems: 'center',
-  padding: '8px 16px',
+  padding: '8px 16px 4px',
   // borderBottom: `1px solid ${BORDER_COLOR}`,
   fontFamily: SANS_FONT,
 
@@ -62,6 +65,7 @@ const Header = {
     flex: '0 0 auto',
     display: 'none',
     '& svg': {
+      height: 32,
       width: 40,
     }
   },
@@ -134,30 +138,26 @@ const Content = {
 const Comments = {
   height: `calc(100% - ${MIN_TEXT_AREA_HEIGHT}px)`,
   padding: `12px 0 26px`,
-  overflowY: 'scroll',
-
-  [`@media screen and (max-height: ${PAGE_MIN_HEIGHT}px)`]: {
-    padding: 16,
-  }
+  overflowY: 'scroll'
 }
 
 const Comment = {
   position: 'relative',
 
-  '& > p': {
-    whiteSpace: 'pre',
-    '&:first-of-type': {
-      margin: '0 !important'
-    },
-    '&:last-of-type': {
-      margin: '16px 0 0'
-    }
+  '& table': {
+    maxWidth: '40vw'
   },
 
   '& > img': {
     display: 'block',
     height: 'auto',
     maxWidth: '100%'
+  },
+
+  [TABLET_MEDIA_QUERY]: {
+    '& table': {
+      maxWidth: '100%'
+    },
   }
 }
 
@@ -240,7 +240,7 @@ const AddIcon = {
 }
 
 const DateLine = {
-  margin: '24px 0',
+  margin: '8px 0',
   position: 'relative',
 
   '&:before': {
@@ -259,6 +259,13 @@ const DateLine = {
     borderRadius: 4,
     backgroundColor: PRIMARY_COLOR,
     fontSize: 14
+  },
+
+  [TABLET_MEDIA_QUERY]: {
+    '& > b': {
+      padding: '0 16px',
+      fontSize: 12
+    }
   }
 }
 
@@ -266,6 +273,7 @@ export default createWithStyles({
   Channels,
   DropTarget,
   Header,
+  HeaderRow,
   HeaderContent,
   Title,
   Description,

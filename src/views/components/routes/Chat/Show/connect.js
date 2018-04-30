@@ -23,10 +23,10 @@ import {
 } from 'src/views/modules/channel'
 
 import {
-  createComment,
   updateComment,
   addReaction,
   removeReaction,
+  createComment as requestCreateComment,
   deleteComment as requestDeleteComment,
   getEntities as getCommentEntities
 } from 'src/views/modules/comment'
@@ -53,6 +53,21 @@ const deleteComment = (id, params) => {
     // then try actual deletion for the server
     dispatch(requestDeleteComment(id, params)).catch(() => {
       // rollback changes if failed.
+      dispatch(setChannels(normalize(channel, channelSchema)))
+    })
+  }
+}
+
+// create comment.
+const createComment = (params) => {
+  return (dispatch, getState) => {
+    const state = getState()
+    const entities = getChannelEntities(state)
+    const channel = _.clone(entities[params.channelId])
+
+    return dispatch(requestCreateComment(params)).then((comment) => {
+      // update channel comment.
+      channel.comments = _.uniq([comment.id, ...channel.comments]);
       dispatch(setChannels(normalize(channel, channelSchema)))
     })
   }

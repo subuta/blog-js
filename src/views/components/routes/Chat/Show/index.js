@@ -178,7 +178,7 @@ const enhance = compose(
   }),
   lifecycle({
     componentDidMount () {
-      this.props.scrollComments()
+      requestAnimationFrame(() => this.props.scrollComments());
     }
   })
 )
@@ -303,21 +303,24 @@ const Show = enhanceChatContent((props) => {
         </div>
 
         <div className={styles.Header}>
-          <i onClick={() => showMenu()}><SvgIcon name="logo-small"/></i>
+          <div className={styles.HeaderRow}>
+            <i onClick={() => showMenu()}><SvgIcon name="logo-small"/></i>
 
-          <div className={styles.HeaderContent}>
-            <h4 className={styles.Title}>
-              <span className="icon"><FaHashTagIcon/></span>
-              <span className="name">{name}</span>
-            </h4>
+            <div className={styles.HeaderContent}>
+              <h4 className={styles.Title}>
+                <span className="icon"><FaHashTagIcon/></span>
+                <span className="name">{name}</span>
+              </h4>
 
-            <div className={styles.Description}>
-              <p>{description}</p>
+              <div className={styles.Description}>
+                <p>{description}</p>
+              </div>
             </div>
-
-            <DateLine date={stickyDate}/>
           </div>
+
+          <DateLine date={stickyDate}/>
         </div>
+
         <div className={styles.Content}>
           <div className={styles.Comments} ref={setCommentsRef}>
             {_.map(channelComments, (comment, i) => {
@@ -347,6 +350,7 @@ const Show = enhanceChatContent((props) => {
                   )}
 
                   <Comment
+                    className={styles.Comment}
                     comment={comment}
                     onEdit={() => onEditComment(comment)}
                     onDelete={() => onDeleteComment(comment)}

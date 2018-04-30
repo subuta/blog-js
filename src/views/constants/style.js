@@ -22,7 +22,7 @@ export const WIKI_APP_COLOR = '#7CC09E'
 export const PAGE_MIN_HEIGHT = 456
 
 // header(description area)
-export const CHAT_HEADER_HEIGHT = 56
+export const CHAT_HEADER_HEIGHT = 64
 export const WIKI_HEADER_HEIGHT = 128
 
 // sidebar
