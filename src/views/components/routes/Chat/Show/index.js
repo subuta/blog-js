@@ -12,7 +12,7 @@ import moment from 'moment'
 
 import Textarea from 'react-textarea-autosize'
 import MdAddIcon from 'react-icons/lib/md/add'
-import Waypoint from 'react-waypoint';
+import Waypoint from 'react-waypoint'
 
 import FaHashTagIcon from 'react-icons/lib/fa/hashtag'
 
@@ -183,41 +183,49 @@ const enhance = compose(
   })
 )
 
+// FIXME: More better sticky behavior.
 // Date-Line separator
 const DateLine = withStyles((props) => {
   const {
     styles,
-    daysAgo,
+    date,
     onEnter = _.noop,
     onLeave = _.noop
   } = props
 
-  const day = moment().startOf('day').subtract(daysAgo, 'days')
   const dateLineClass = `${styles.DateLine} date-line`
+  const diff = moment().diff(date, 'days')
 
   const Trigger = (
     <Waypoint
-      key={`d${daysAgo}`}
-      onEnter={() => onEnter(day)}
-      onLeave={() => onLeave(day)}
+      onEnter={({previousPosition}) => {
+        // only handle header collision events
+        if (previousPosition === 'below') return
+        onEnter(date)
+      }}
+      onLeave={({currentPosition}) => {
+        // only handle header collision events
+        if (currentPosition === 'below') return
+        onLeave(date)
+      }}
       topOffset={0}
     />
   )
 
-  if (daysAgo === undefined) {
+  if (!date || diff === undefined) {
     return (
-      <div className={dateLineClass} />
+      <div className={dateLineClass}/>
     )
   }
 
-  if (daysAgo === 1) {
+  if (diff === 1) {
     return (
       <div className={dateLineClass}>
         {Trigger}
         <b>Today</b>
       </div>
     )
-  } else if (daysAgo === 2) {
+  } else if (diff === 2) {
     return (
       <div className={dateLineClass}>
         {Trigger}
@@ -228,14 +236,14 @@ const DateLine = withStyles((props) => {
 
   let format = 'dddd, MMMM Do'
   // if years ago.
-  if (daysAgo >= 365) {
+  if (diff >= 365) {
     format = 'MMMM Do, YYYY'
   }
 
   return (
     <div className={dateLineClass}>
       {Trigger}
-      <b>{day.format(format)}</b>
+      <b>{date.format(format)}</b>
     </div>
   )
 })
@@ -286,7 +294,6 @@ const Show = enhanceChatContent((props) => {
   }
 
   let lastDay = null
-  // TODO: comment.idと日付のgroupを持つ必要がありそう。
 
   return (
     <Content ref={connectDropTargetToRef}>
@@ -308,8 +315,7 @@ const Show = enhanceChatContent((props) => {
               <p>{description}</p>
             </div>
 
-            {/* FIXME: adjust onLeave & onEnter hook */}
-            <DateLine daysAgo={stickyDate + 1} />
+            <DateLine date={stickyDate}/>
           </div>
         </div>
         <div className={styles.Content}>
@@ -317,22 +323,26 @@ const Show = enhanceChatContent((props) => {
             {_.map(channelComments, (comment, i) => {
               const isFirst = i === 0
               const today = moment(comment.created_at).startOf('day')
+              const hasChanged = today.diff(lastDay, 'days') > 0
+              let previousDay = null
+
+              if (hasChanged) {
+                previousDay = lastDay
+              }
+
+              // set last created_at for next iteration.
+              lastDay = today
+
               const component = (
                 <React.Fragment
                   key={comment.id}
                 >
-                  {(isFirst || today.diff(lastDay, 'days') > 0) && (
+                  {(isFirst || hasChanged) && (
                     // Show date line if firstRecord or dateChanged.
                     <DateLine
-                      onEnter={(day) => {
-                        console.log('enter day = ', day.format('YYYY/MM/DD'));
-                        requestAnimationFrame(() => setStickyDate(moment().diff(day, 'days')))
-                      }}
-                      onLeave={(day) => {
-                        console.log('leave day = ', day.format('YYYY/MM/DD'));
-                        requestAnimationFrame(() => setStickyDate(moment().diff(day, 'days')))
-                      }}
-                      daysAgo={moment().diff(today, 'days')}
+                      onEnter={() => setStickyDate(previousDay)}
+                      onLeave={() => setStickyDate(today)}
+                      date={lastDay}
                     />
                   )}
 
@@ -347,9 +357,6 @@ const Show = enhanceChatContent((props) => {
                   />
                 </React.Fragment>
               )
-
-              // set last created_at for next iteration.
-              lastDay = today
               return component
             })}
           </div>
