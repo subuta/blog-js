@@ -171,27 +171,33 @@ const Footer = {
   background: PRIMARY_COLOR
 }
 
+const FileInput = {
+  display: 'none'
+}
+
 const TextAreaWrapper = {
   position: 'relative',
   display: 'flex',
   justifyContent: 'center',
-  alignItems: 'flex-start',
-  '& > button': {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
+  alignItems: 'stretch',
+
+  '& > .upload-button': {
     border: `2px solid ${DIMMED_BLACK_COLOR}`,
     borderRight: 0,
     borderRadius: '4px 0 0 4px',
-    padding: '8px',
-    outline: 'none',
     color: DIMMED_BLACK_COLOR,
     width: 40,
-    flex: '0 0 auto',
-    lineHeight: 0,
     transition: `all 0.2s ${EASE_STANDARD}`,
     cursor: 'pointer',
+
+    '& button': {
+      padding: 8,
+      height: '100%',
+      outline: 'none',
+      appearance: 'none',
+      border: 'none'
+    },
+
     '&:hover': {
       border: `2px solid ${ACCENT4_COLOR}`,
       backgroundColor: ACCENT4_COLOR,
@@ -200,7 +206,7 @@ const TextAreaWrapper = {
   },
 
   '& > .textarea': {
-    margin: '0 0 0 40px',
+    margin: 0,
     position: 'relative',
     flex: '1 1 auto',
     minHeight: MIN_TEXT_AREA_HEIGHT,
@@ -281,6 +287,7 @@ export default createWithStyles({
   Comments,
   Comment,
   Footer,
+  FileInput,
   TextAreaWrapper,
   TextArea,
   AddIcon,

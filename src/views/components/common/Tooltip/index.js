@@ -141,7 +141,7 @@ export default enhance((props) => {
 
   let title = props.title || ''
 
-  let tooltipClass = styles.Tooltip
+  let tooltipClass = `${styles.Tooltip} tooltip`
   if (className) {
     tooltipClass += ` ${className}`
   }

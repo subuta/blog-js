@@ -24,6 +24,7 @@ import Layout from 'src/views/components/layout/Layout'
 import Sidebar from '../_Sidebar'
 import Content from '../_Content'
 
+import Tooltip from 'src/views/components/common/Tooltip'
 import Comment from 'src/views/components/common/Comment'
 import Editor from 'src/views/components/common/Editor'
 import SvgIcon from 'src/views/components/common/SvgIcon'
@@ -32,7 +33,8 @@ import {
   compose,
   withState,
   lifecycle,
-  withHandlers
+  withHandlers,
+  withPropsOnChange
 } from 'recompose'
 
 const dropTarget = {
@@ -61,10 +63,19 @@ const enhance = compose(
   withHandlers(() => {
     let $comments
     let editorInstance
+    let $fileInput
 
     return {
       setCommentsRef: () => (ref) => {
         $comments = findDOMNode(ref)
+      },
+
+      setFileInputRef: () => (ref) => {
+        $fileInput = findDOMNode(ref)
+      },
+
+      showFileSelection: () => () => {
+        $fileInput.click()
       },
 
       setEditorInstance: () => (instance) => {
@@ -89,6 +100,11 @@ const enhance = compose(
       }
     }
   }),
+  // focusEditor on channel change.
+  withPropsOnChange(
+    ['channel'],
+    ({focusEditor}) => focusEditor()
+  ),
   withHandlers({
     onAddReaction: ({addReaction}) => (comment, emoji) => {
       addReaction(comment.id, {
@@ -148,19 +164,17 @@ const enhance = compose(
       }
     },
 
-    handleFileDrop: (props) => async (item, monitor) => {
+    handleFileUpload: (props) => async (file) => {
       const {
         channel,
         signAttachment,
         createAttachment,
         uploadAttachment,
         createComment,
-        scrollComments
+        scrollComments,
+        focusEditor
       } = props
 
-      if (!monitor) return
-      const droppedFiles = monitor.getItem().files
-      const file = _.first(droppedFiles)
       const {name, type} = file
 
       // create attachment from file
@@ -173,12 +187,42 @@ const enhance = compose(
       // finally relate attachment to blank comment.
       createComment({channelId: channel.id, text: '', attachmentId: attachment.id}).then(() => {
         scrollComments()
+        focusEditor()
       })
     }
   }),
+  withHandlers({
+    // Upload file via DnD
+    handleFileDrop: (props) => async (item, monitor) => {
+      const {
+        handleFileUpload
+      } = props
+
+      if (!monitor) return
+
+      const droppedFiles = monitor.getItem().files
+      const file = _.first(droppedFiles)
+      if (!file) return
+
+      handleFileUpload(file)
+    },
+
+    // Upload file via Button
+    onSelectFile: (props) => (e) => {
+      const {
+        handleFileUpload
+      } = props
+
+      const file = _.first(e.target.files)
+      if (!file) return
+
+      handleFileUpload(file)
+    },
+  }),
   lifecycle({
     componentDidMount () {
-      requestAnimationFrame(() => this.props.scrollComments());
+      const {scrollComments} = this.props
+      requestAnimationFrame(() => scrollComments())
     }
   })
 )
@@ -266,11 +310,14 @@ const Show = enhanceChatContent((props) => {
     onRemoveReaction,
     onEditComment,
     onDeleteComment,
+    onSelectFile,
     setCommentsRef,
     setEditorInstance,
     setDraftText,
     setStickyDate,
+    setFileInputRef,
     stickyDate,
+    showFileSelection,
     draftText,
     currentUser,
     isAuthenticated,
@@ -367,7 +414,24 @@ const Show = enhanceChatContent((props) => {
 
           <div className={styles.Footer}>
             <div className={styles.TextAreaWrapper}>
-              <button><MdAddIcon className={styles.AddIcon}/></button>
+              <Tooltip
+                className="upload-button"
+                title="Upload image"
+                placement="top"
+                size="small"
+              >
+                {/* Hidden input for file upload */}
+                <input type="file"
+                       ref={setFileInputRef}
+                       className={styles.FileInput}
+                       onChange={onSelectFile}
+                       accept=".jpg, .jpeg, .png, .gif"
+                />
+
+                <button onClick={showFileSelection}>
+                  <MdAddIcon className={styles.AddIcon}/>
+                </button>
+              </Tooltip>
 
               <div className="textarea">
                 <Editor
