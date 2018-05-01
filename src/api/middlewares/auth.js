@@ -5,8 +5,11 @@ import env from 'src/api/utils/env'
 // add getCurrentUser method.
 export const getCurrentUser = (ctx, next) => {
   const {User} = ctx.state.models
-  ctx.state.getCurrentUser = () =>
-    User.query().findFirst({auth0Id: ctx.state.user.sub})
+  ctx.state.getCurrentUser = () => {
+    // return null if user not loggedIn.
+    if (!ctx.state.user) return Promise.resolve(null)
+    return User.query().findFirst({auth0Id: ctx.state.user.sub})
+  }
   return next()
 }
 

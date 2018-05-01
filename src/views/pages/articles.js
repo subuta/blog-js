@@ -7,7 +7,8 @@ import _ from 'lodash'
 
 import {
   requestArticles,
-  requestArticlesByTagId
+  requestArticlesByTagId,
+  requestIndexDraft
 } from 'src/views/modules/article'
 
 import {
@@ -32,6 +33,7 @@ AllWiki.getInitialProps = async function (ctx) {
   let promises = []
 
   promises.push(ctx.dispatch(requestTags()))
+  promises.push(ctx.dispatch(requestIndexDraft()))
 
   // find tag by label(tag param).
   const label = _.get(ctx, 'query.tag', '')

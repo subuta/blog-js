@@ -32,6 +32,10 @@ export const filterByTagId = (tagId) => {
   return request.get(`/articles?tagId=${tagId}`)
 }
 
+export const indexDraft = () => {
+  return request.get(`/articles?draft`)
+}
+
 export const showBySlug = (slug) => {
   return request.get(`/articles/slug/${slug}`)
 }
@@ -60,8 +64,9 @@ let actions = {
 /* mat Custom exports [start] */
 actions = {
   ...actions,
-  showBySlug,
   filterByTagId,
+  indexDraft,
+  showBySlug,
   addReaction,
   removeReaction
 }

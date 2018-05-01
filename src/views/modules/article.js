@@ -121,6 +121,18 @@ export const requestArticleBySlug = (slug) => {
   }
 }
 
+export const requestIndexDraft = () => {
+  return (dispatch) => {
+    dispatch({type: REQUEST_ARTICLES})
+    return api.article.indexDraft().then((data) => {
+      /* mat Index data transform [start] */
+      /* mat Index data transform [end] */
+      dispatch(setArticles(normalize(data, articleList)))
+      return data
+    })
+  }
+}
+
 export const addReaction = (id, params) => {
   return (dispatch) => {
     dispatch({type: REQUEST_ARTICLES})
