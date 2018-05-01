@@ -41,22 +41,27 @@ import MdMoreVertIcon from 'react-icons/lib/md/more-vert'
 
 import withStyles from './style'
 import connect from './connect'
+import storage from 'src/views/utils/storage'
+
+const isBrowser = typeof window !== 'undefined'
 
 const enhanceContent = compose(
   branch(
     ({isEditing}) => isEditing,
     renderComponent((props) => {
       const {
-        setDraftContent,
+        setEditorInstance,
+        onSetDraftContent,
         draftContent,
         styles
       } = props
       return (
         <div className={styles.EditorArea}>
           <Editor
-            className="editor"
-            onSave={setDraftContent}
+            className="editor-wrapper"
+            onSave={onSetDraftContent}
             initialValue={draftContent}
+            instance={setEditorInstance}
           />
 
           <MarkdownContent
@@ -170,17 +175,37 @@ const enhance = compose(
   withState('isShowMenu', 'setIsShowMenu', false),
   withHandlers(() => {
     let targetRef = null
+    let editorInstance
 
     return {
       setTargetRef: () => (ref) => {
         targetRef = ref
       },
 
+      setEditorInstance: () => (instance) => {
+        editorInstance = instance
+      },
+
+      resetEditor: () => (initialValue) => {
+        if (!editorInstance) return
+        editorInstance.reset(initialValue)
+      },
+
+      focusEditor: () => () => {
+        if (!editorInstance) return
+        editorInstance.focus()
+      },
+
+      getIsFocused: () => () => {
+        if (!editorInstance) return false
+        return editorInstance.getIsFocused()
+      },
+
       getTargetRef: () => () => targetRef
     }
   }),
   withPropsOnChange(
-    ['url', 'article'],
+    ['url', 'articleId'],
     (props) => {
       const {
         url,
@@ -197,7 +222,31 @@ const enhance = compose(
       return {
         isEditing: _.get(url, 'query.edit')
       }
-    }),
+    }
+  ),
+  withPropsOnChange(
+    ['articleId'],
+    (props) => {
+      const {
+        article,
+        setDraftContent,
+        resetEditor,
+        focusEditor
+      } = props
+
+      if (!isBrowser) return
+
+      const previousValue = storage.getItem(`articles.${article.id}.draft`)
+      if (!previousValue) return
+
+      setDraftContent(previousValue)
+
+      requestAnimationFrame(() => {
+        resetEditor(previousValue || '')
+        focusEditor()
+      });
+    }
+  ),
   withHandlers(() => {
     const sanitizeArticleProps = (article) => _.pick(article, [
       'title',
@@ -232,6 +281,28 @@ const enhance = compose(
       onRemoveReaction: ({article, removeReaction}) => (emoji) => {
         // toggle published state.
         removeReaction(article.id, {emoji})
+      },
+
+      onSetDraftContent: (props) => (value) => {
+        const {
+          article,
+          setDraftContent,
+          getIsFocused
+        } = props
+
+        setDraftContent(value)
+
+        // backup current text to localStorage
+        requestAnimationFrame(() => {
+          if (!getIsFocused()) return
+
+          if (!value) {
+            // clear item if value is empty.
+            storage.removeItem(`articles.${article.id}.draft`)
+          } else {
+            storage.setItem(`articles.${article.id}.draft`, value)
+          }
+        })
       },
 
       onSave: (props) => () => {

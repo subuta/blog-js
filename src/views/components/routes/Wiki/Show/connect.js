@@ -17,8 +17,10 @@ import {
 const mapStateToProps = (state, oldProps) => {
   const entities = getArticleEntities(state)
   const slug = _.get(oldProps, 'url.query.slug', '')
+  const article = denormalize(_.find(entities, {slug}), 'article', state)
   return {
-    article: denormalize(_.find(entities, {slug}), 'article', state),
+    article,
+    articleId: article.id,
     currentUser: getCurrentUser(state)
   }
 }

@@ -124,6 +124,8 @@ const enhance = compose(
       if (!isBrowser) return
 
       const previousValue = storage.getItem(`comments.${channelId}.draft`)
+      if (!previousValue) return
+
       setDraftText(previousValue)
 
       requestAnimationFrame(() => {

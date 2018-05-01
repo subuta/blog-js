@@ -45,7 +45,7 @@ const Paper = {
     overflowWrap: 'break-word',
     cursor: 'text',
 
-    '& > *:first-of-type': {
+    '&:first-child': {
       marginTop: 0
     }
   }
@@ -87,7 +87,7 @@ const ScrollContainer = {
 const EditorArea = {
   display: 'flex',
 
-  '& > .editor': {
+  '& > .editor-wrapper': {
     paddingRight: 8,
     flex: '0 0 auto',
     width: '50%',
