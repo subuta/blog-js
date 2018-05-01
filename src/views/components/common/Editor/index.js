@@ -15,7 +15,8 @@ import EmojiPicker from 'src/views/components/common/EmojiPicker'
 import {
   compose,
   withState,
-  withHandlers
+  withHandlers,
+  lifecycle
 } from 'recompose'
 
 import createInitialState from './initialState'
@@ -26,6 +27,7 @@ const enhance = compose(
   withState('anchorNode', 'setAnchorNode', null),
   withState('emojiFilter', 'setEmojiFilter', ''),
   withState('isShowEmojiPicker', 'setIsShowEmojiPicker', false),
+  withState('uniqueId', 'setUniqueId', null),
   withState('editorState', 'setEditorState', ({initialValue = ''}) => createInitialState(initialValue)),
   withStyles,
   withHandlers(function () {
@@ -71,12 +73,11 @@ const enhance = compose(
     const focus = () => {
       const change = editorState.change()
 
-      // get full text length of editor content
-      const text = editorState.document.text
-
+      // focus and move cursor to last position.
       const nextState = change
         .focus()
-        .move(text.length)
+        .selectAll()
+        .collapseToEnd()
 
       onChange(nextState)
     }
@@ -88,7 +89,7 @@ const enhance = compose(
     }
 
     const getIsFocused = () => {
-      return editorState.isFocused
+      return editorRef.id === _.get(document, 'activeElement.id')
     }
 
     // FIXME: More better way to expose editor api.
@@ -189,6 +190,14 @@ const enhance = compose(
 
       focus: () => focus
     }
+  }),
+  lifecycle({
+    componentDidMount () {
+      const {
+        setUniqueId
+      } = this.props
+      setUniqueId(_.uniqueId('editor'))
+    }
   })
 )
 
@@ -208,6 +217,7 @@ export default enhance((props) => {
     setEditorRef,
     setIsShowEmojiPicker,
     setIsFocused,
+    uniqueId,
     styles
   } = props
 
@@ -234,6 +244,7 @@ export default enhance((props) => {
       <Editor
         ref={setEditorRef}
         placeholder='Message'
+        id={uniqueId}
         className={`${styles.Editor} editor`}
         value={editorState}
         plugins={plugins}

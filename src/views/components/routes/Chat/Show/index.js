@@ -485,6 +485,7 @@ const Show = enhanceChatContent((props) => {
 
               <div className="textarea">
                 <Editor
+                  key="editor"
                   className={styles.TextArea}
                   onKeyDown={onKeyDown}
                   onSave={onSetDraftText}
