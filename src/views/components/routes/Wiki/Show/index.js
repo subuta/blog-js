@@ -18,6 +18,7 @@ import MaterialButton from 'src/views/components/common/MaterialButton'
 import Modal from 'src/views/components/common/Modal'
 import Confirm from 'src/views/components/common/Confirm'
 import Reactions from 'src/views/components/common/Reactions'
+import Notifications from 'src/views/components/common/Notifications'
 
 import Sidebar from '../_Sidebar'
 import Header from '../_Header'
@@ -176,6 +177,7 @@ const enhance = compose(
   withHandlers(() => {
     let targetRef = null
     let editorInstance
+    let notificationInstance
 
     return {
       setTargetRef: () => (ref) => {
@@ -184,6 +186,18 @@ const enhance = compose(
 
       setEditorInstance: () => (instance) => {
         editorInstance = instance
+      },
+
+      setNotificationInstance: () => (instance) => {
+        notificationInstance = instance
+      },
+
+      notify: () => (message, timeout) => {
+        notificationInstance.notify(message, timeout)
+      },
+
+      ask: () => (message, handlers) => {
+        notificationInstance.ask(message, handlers)
       },
 
       resetEditor: () => (initialValue) => {
@@ -231,20 +245,37 @@ const enhance = compose(
         article,
         setDraftContent,
         resetEditor,
-        focusEditor
+        focusEditor,
+        isEditing,
+        ask,
+        notify
       } = props
 
-      if (!isBrowser) return
+      if (!isBrowser || !isEditing) return
 
+      // Check draft content from localStorage at article shown.
       const previousValue = storage.getItem(`articles.${article.id}.draft`)
       if (!previousValue) return
 
-      setDraftContent(previousValue)
-
+      // Prompt restore changes.
       requestAnimationFrame(() => {
-        resetEditor(previousValue || '')
         focusEditor()
-      });
+
+        ask('Found your previous edit, Want to restore that?', {
+          onConfirm: () => {
+            setDraftContent(previousValue)
+
+            resetEditor(previousValue)
+            focusEditor()
+
+            notify('Your changes restored successsfully :)')
+          },
+
+          onClose: () => {
+            storage.removeItem(`articles.${article.id}.draft`)
+          }
+        })
+      })
     }
   ),
   withHandlers(() => {
@@ -290,9 +321,12 @@ const enhance = compose(
           getIsFocused
         } = props
 
+        // Ignore if content & draft is same.
+        if (article.content === value) return
+
         setDraftContent(value)
 
-        // backup current text to localStorage
+        // Backup current text to localStorage
         requestAnimationFrame(() => {
           if (!getIsFocused()) return
 
@@ -329,6 +363,7 @@ const enhance = compose(
         }
 
         updateArticle(article.id, nextArticle).then(() => {
+
           Router.replace(`/article?slug=${slug}`, `/w/${slug}`)
         })
       }
@@ -351,6 +386,7 @@ export default enhance((props) => {
     draftSlug,
     draftTitle,
     draftSummary,
+    setNotificationInstance,
     setIsShowMenu,
     setIsShowUpdateArticleModal,
     setIsShowConfirmArticleDeleteModal,
@@ -422,6 +458,10 @@ export default enhance((props) => {
             setIsShowConfirmArticleDeleteModal(false)
             onDelete()
           }}
+        />
+
+        <Notifications
+          instance={setNotificationInstance}
         />
 
         <Content>

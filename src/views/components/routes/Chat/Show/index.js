@@ -36,7 +36,6 @@ import {
   withState,
   lifecycle,
   withHandlers,
-  withProps,
   withPropsOnChange
 } from 'recompose'
 
@@ -129,7 +128,7 @@ const enhance = compose(
       setDraftText(previousValue)
 
       requestAnimationFrame(() => {
-        resetEditor(previousValue || '')
+        resetEditor(previousValue)
         focusEditor()
       });
     }

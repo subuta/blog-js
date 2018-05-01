@@ -109,7 +109,7 @@ article.put('/:id', auth, async (ctx) => {
   /* mat Before update [start] */
   const currentUser = await ctx.state.getCurrentUser()
 
-  // ignore deleting other users comment(if not admin).
+  // ignore updating other users comment(if not admin).
   const oldArticle = await Article.query()
     .findFirst({id: ctx.params.id})
 

@@ -8,6 +8,7 @@ export const PRIMARY_COLOR = '#FFFFFF'
 export const PRIMARY2_COLOR = '#FEFAEA'
 export const DIMMED_PRIMARY_COLOR = color(PRIMARY_COLOR).fade(0.2).string()
 export const NEGATIVE_COLOR = '#D73434'
+export const SUCCESS_COLOR = '#65C294'
 export const WARNING_COLOR = '#FFC107'
 export const GRAY_COLOR = '#EEEEEE'
 export const DIMMED_BLACK_COLOR = color(BLACK_COLOR).fade(0.4).string()

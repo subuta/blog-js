@@ -40,7 +40,7 @@ const Body = {
   '.modal-exit &': {
     transform: 'translate3d(0, -24px, 0)',
     opacity: 0,
-    transition: `all 0.3s ${EASE_DECELERATION}`,
+    transition: `all 0.3s ${EASE_ACCELERATION}`,
   },
 
   '.modal-content': {
