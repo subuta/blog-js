@@ -9,7 +9,11 @@ import {
   requestArticles,
   requestArticlesByTagId
 } from 'src/views/modules/article'
-import { requestTags } from 'src/views/modules/tag'
+
+import {
+  requestTags,
+  requestTagByLabel
+} from 'src/views/modules/tag'
 
 const mapDispatchToProps = {
   requestArticlesByTagId,
@@ -28,7 +32,16 @@ AllWiki.getInitialProps = async function (ctx) {
   let promises = []
 
   promises.push(ctx.dispatch(requestTags()))
-  promises.push(ctx.dispatch(requestArticles()))
+
+  // find tag by label(tag param).
+  const label = _.get(ctx, 'query.tag', '')
+  if (label) {
+    // if label passed then retrieve articles from tag.
+    promises.push(ctx.dispatch(requestTagByLabel(label)))
+  } else {
+    // fetch all articles otherwise.
+    promises.push(ctx.dispatch(requestArticles()))
+  }
 
   await Promise.all(promises)
 

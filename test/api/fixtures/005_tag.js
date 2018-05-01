@@ -4,9 +4,9 @@ exports.seed = async (knex) => {
 
   // https://github.com/tgriesser/knex/issues/54
   await knex('tags').insert([
-    {id: 82337, label: 'Handcrafted Granite Salad'},
-    {id: 43149, label: 'upward-trending RAM SMTP'},
-    {id: 3838, label: 'Liaison Pants'}
+    {id: 82337, label: 'eos-veritatis-soluta'},
+    {id: 43149, label: 'voluptatibus-nostrum-molestiae'},
+    {id: 3838, label: 'et-maiores-qui'}
   ])
 
   /* mat After seed [start] */

@@ -22,6 +22,18 @@ tag.get('/', async (ctx) => {
 })
 
 /* mat Custom actions [start] */
+tag.get('/:label', async (ctx) => {
+  const {Tag} = ctx.state.models
+  let params = {}
+
+  /* mat Before show [start] */
+  /* mat Before show [end] */
+
+  ctx.body = await Tag.query()
+    .eager('[articles.[reactions.reactedBy, tags, author]]')
+    .joinRelation('[articles]')
+    .findFirst({...params, label: ctx.params.label})
+})
 /* mat Custom actions [end] */
 
 export default {

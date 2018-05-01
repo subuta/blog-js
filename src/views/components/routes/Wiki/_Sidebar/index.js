@@ -38,8 +38,8 @@ export default enhance((props) => {
             return (
               <li key={id}>
                 <ActiveLink
-                  href={`/articles?tag_id=${id}`}
-                  as={`/w?tag_id=${id}`}
+                  href={`/articles?tag=${label}`}
+                  as={`/w?tag=${label}`}
                 >
                   <span className="list-icon"><FaTagIcon /></span>
                   <span className="name">{label}</span>

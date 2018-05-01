@@ -2,12 +2,16 @@ import _ from 'lodash'
 import request from 'src/views/utils/request'
 import {normalize} from 'normalizr'
 import {tag, tagList} from 'src/views/utils/schema'
+import { addReaction, filterByTagId, removeReaction, showBySlug } from './article'
 
 export const index = () => {
   return request.get(`/tags`)
 }
 
 /* mat Custom action [start] */
+export const showByLabel = (label) => {
+  return request.get(`/tags/${label}`)
+}
 /* mat Custom action [end] */
 
 let actions = {
@@ -15,6 +19,10 @@ let actions = {
 }
 
 /* mat Custom exports [start] */
+actions = {
+  ...actions,
+  showByLabel
+}
 /* mat Custom exports [end] */
 
 export default actions

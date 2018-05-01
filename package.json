@@ -90,7 +90,7 @@
     "jest": "^21.2.1",
     "jsonwebtoken": "^8.1.0",
     "knex-migrate": "1.5.3",
-    "matryoshka.js": "^0.2.4",
+    "matryoshka.js": "^0.2.5",
     "nock": "^9.1.4",
     "nyc": "^11.3.0",
     "power-assert": "^1.4.4",
