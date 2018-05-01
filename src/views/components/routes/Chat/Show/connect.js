@@ -96,7 +96,8 @@ const mapStateToProps = (state, oldProps) => {
     channels: getChannels(state),
     channelComments: getChannelComments(name)(state),
     isChannelProgress: getIsChannelProgress(state),
-    channel
+    channel,
+    channelId: channel.id
   }
 }
 

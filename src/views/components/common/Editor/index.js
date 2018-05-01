@@ -1,3 +1,5 @@
+import { findDOMNode } from 'react-dom'
+
 import { Editor, getEventTransfer } from 'slate-react'
 import _ from 'lodash'
 import keycode from 'keycode'
@@ -50,12 +52,13 @@ const enhance = compose(
     const {
       setEmojiFilter,
       setEditorState,
-      editorState,
       onChange,
       instance = _.noop
     } = props
 
     let draftEmoji = ''
+    let editorRef
+    let editorState = props.editorState
 
     const ignoredKeys = ['up', 'down', 'enter', 'esc', 'shift']
 
@@ -68,24 +71,38 @@ const enhance = compose(
     const focus = () => {
       const change = editorState.change()
 
+      // get full text length of editor content
+      const text = editorState.document.text
+
       const nextState = change
         .focus()
+        .move(text.length)
 
       onChange(nextState)
     }
 
     // reset internal editorState.
     const reset = (initialValue = '') => {
-      setEditorState(createInitialState(initialValue))
+      editorState = createInitialState(initialValue)
+      setEditorState(editorState)
+    }
+
+    const getIsFocused = () => {
+      return editorState.isFocused
     }
 
     // FIXME: More better way to expose editor api.
     instance({
       focus,
-      reset
+      reset,
+      getIsFocused
     })
 
     return {
+      setEditorRef: () => (ref) => {
+        editorRef = findDOMNode(ref)
+      },
+
       onKeyDown: (props) => (e) => {
         const {
           setEmojiFilter,
@@ -168,6 +185,8 @@ const enhance = compose(
         return resetDraftEmoji()
       },
 
+      getIsFocused: () => getIsFocused,
+
       focus: () => focus
     }
   })
@@ -186,7 +205,9 @@ export default enhance((props) => {
     onSelectEmojiPicker,
     onSelectEmojiAutoComplete,
     emojiFilter,
+    setEditorRef,
     setIsShowEmojiPicker,
+    setIsFocused,
     styles
   } = props
 
@@ -211,6 +232,7 @@ export default enhance((props) => {
       />
 
       <Editor
+        ref={setEditorRef}
         placeholder='Message'
         className={`${styles.Editor} editor`}
         value={editorState}

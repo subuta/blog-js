@@ -29,13 +29,18 @@ import Comment from 'src/views/components/common/Comment'
 import Editor from 'src/views/components/common/Editor'
 import SvgIcon from 'src/views/components/common/SvgIcon'
 
+import storage from 'src/views/utils/storage'
+
 import {
   compose,
   withState,
   lifecycle,
   withHandlers,
+  withProps,
   withPropsOnChange
 } from 'recompose'
+
+const isBrowser = typeof window !== 'undefined'
 
 const dropTarget = {
   drop (props, monitor) {
@@ -92,6 +97,11 @@ const enhance = compose(
         editorInstance.focus()
       },
 
+      getIsFocused: () => () => {
+        if (!editorInstance) return false
+        return editorInstance.getIsFocused()
+      },
+
       scrollComments: () => () => {
         requestAnimationFrame(() => {
           if (!$comments) return
@@ -102,9 +112,49 @@ const enhance = compose(
   }),
   // focusEditor on channel change.
   withPropsOnChange(
-    ['channel'],
-    ({focusEditor}) => focusEditor()
+    ['channelId'],
+    (props) => {
+      const {
+        channelId,
+        resetEditor,
+        focusEditor,
+        setDraftText
+      } = props
+
+      if (!isBrowser) return
+
+      const previousValue = storage.getItem(`comments.${channelId}.draft`)
+      setDraftText(previousValue)
+
+      requestAnimationFrame(() => {
+        resetEditor(previousValue || '')
+        focusEditor()
+      });
+    }
   ),
+  withHandlers({
+    onSetDraftText: (props) => (value) => {
+      const {
+        channelId,
+        setDraftText,
+        getIsFocused
+      } = props
+
+      setDraftText(value)
+
+      // backup current text to localStorage
+      requestAnimationFrame(() => {
+        if (!getIsFocused()) return
+
+        if (!value) {
+          // clear item if value is empty.
+          storage.removeItem(`comments.${channelId}.draft`)
+        } else {
+          storage.setItem(`comments.${channelId}.draft`, value)
+        }
+      });
+    },
+  }),
   withHandlers({
     onAddReaction: ({addReaction}) => (comment, emoji) => {
       addReaction(comment.id, {
@@ -134,10 +184,10 @@ const enhance = compose(
 
     onKeyDown: (props) => (e) => {
       const {
+        onSetDraftText,
         createComment,
         channel,
         draftText,
-        setDraftText,
         scrollComments,
         resetEditor,
         focusEditor
@@ -152,7 +202,7 @@ const enhance = compose(
         // ignore empty.
         if (!draftText) return false
 
-        setDraftText('')
+        onSetDraftText('')
         resetEditor('')
 
         createComment({channelId: channel.id, text: draftText}).then(() => {
@@ -311,9 +361,9 @@ const Show = enhanceChatContent((props) => {
     onEditComment,
     onDeleteComment,
     onSelectFile,
+    onSetDraftText,
     setCommentsRef,
     setEditorInstance,
-    setDraftText,
     setStickyDate,
     setFileInputRef,
     stickyDate,
@@ -437,7 +487,7 @@ const Show = enhanceChatContent((props) => {
                 <Editor
                   className={styles.TextArea}
                   onKeyDown={onKeyDown}
-                  onSave={(value) => setDraftText(value)}
+                  onSave={onSetDraftText}
                   instance={setEditorInstance}
                 />
               </div>
