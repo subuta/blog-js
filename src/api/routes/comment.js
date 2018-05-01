@@ -17,10 +17,9 @@ comment.get('/', async (ctx) => {
   /* mat Before index [end] */
 
   ctx.body = await Comment.query()
+    .applyFilter('default')
     .eager('[attachment, commentedBy, reactions.reactedBy]')
     .where(params)
-    .orderBy('created_at', 'desc')
-    .orderBy('id', 'desc')
 })
 
 comment.post('/', auth, async (ctx) => {

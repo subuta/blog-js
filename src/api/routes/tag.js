@@ -14,11 +14,10 @@ tag.get('/', async (ctx) => {
   /* mat Before index [end] */
 
   ctx.body = await Tag.query()
-    .eager('[articles.[reactions.reactedBy, tags, author]]')
+    .applyFilter('default')
+    .eager('[articles(last30).[reactions.reactedBy, tags, author]]')
     .joinRelation('[articles]')
     .where(params)
-    .orderBy('created_at', 'desc')
-    .orderBy('id', 'desc')
 })
 
 /* mat Custom actions [start] */
@@ -30,7 +29,7 @@ tag.get('/:label', async (ctx) => {
   /* mat Before show [end] */
 
   ctx.body = await Tag.query()
-    .eager('[articles.[reactions.reactedBy, tags, author]]')
+    .eager('[articles(last30).[reactions.reactedBy, tags, author]]')
     .joinRelation('[articles]')
     .findFirst({...params, label: ctx.params.label})
 })

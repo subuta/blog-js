@@ -75,7 +75,7 @@ test('show should return article', async (t) => {
   t.deepEqual(response.body.title, 'Refined Rubber Tuna user-centric expedite')
   t.deepEqual(response.body.summary, 'monitor Armenian Dram enhance')
   t.deepEqual(response.body.slug, 'velit-voluptatibus-incidunt')
-  t.deepEqual(response.body.isPublished, false)
+  t.deepEqual(response.body.isPublished, true)
   t.deepEqual(
     response.body.content,
     'Beatae voluptatem voluptatem ut temporibus quia. Id perferendis aperiam et mollitia debitis et nihil et. Explicabo eligendi mollitia cumque eius quas illo rerum accusamus veritatis. Rerum sed nesciunt. Maxime assumenda molestiae enim est perspiciatis aperiam amet quas. Maxime veritatis vitae maxime rerum beatae laborum cupiditate.'
@@ -211,7 +211,7 @@ test('get should return article by slug', async (t) => {
   t.deepEqual(response.body.title, 'Refined Rubber Tuna user-centric expedite')
   t.deepEqual(response.body.summary, 'monitor Armenian Dram enhance')
   t.deepEqual(response.body.slug, 'velit-voluptatibus-incidunt')
-  t.deepEqual(response.body.isPublished, false)
+  t.deepEqual(response.body.isPublished, true)
   t.deepEqual(
     response.body.content,
     'Beatae voluptatem voluptatem ut temporibus quia. Id perferendis aperiam et mollitia debitis et nihil et. Explicabo eligendi mollitia cumque eius quas illo rerum accusamus veritatis. Rerum sed nesciunt. Maxime assumenda molestiae enim est perspiciatis aperiam amet quas. Maxime veritatis vitae maxime rerum beatae laborum cupiditate.'
@@ -240,7 +240,7 @@ test('put reaction should add reaction to article', async (t) => {
   t.deepEqual(response.body.title, 'Refined Rubber Tuna user-centric expedite')
   t.deepEqual(response.body.summary, 'monitor Armenian Dram enhance')
   t.deepEqual(response.body.slug, 'velit-voluptatibus-incidunt')
-  t.deepEqual(response.body.isPublished, false)
+  t.deepEqual(response.body.isPublished, true)
   t.deepEqual(
     response.body.content,
     'Beatae voluptatem voluptatem ut temporibus quia. Id perferendis aperiam et mollitia debitis et nihil et. Explicabo eligendi mollitia cumque eius quas illo rerum accusamus veritatis. Rerum sed nesciunt. Maxime assumenda molestiae enim est perspiciatis aperiam amet quas. Maxime veritatis vitae maxime rerum beatae laborum cupiditate.'
@@ -279,7 +279,7 @@ test('put reaction should not add reaction to article if duplicated', async (t) 
   t.deepEqual(response.body.title, 'Refined Rubber Tuna user-centric expedite')
   t.deepEqual(response.body.summary, 'monitor Armenian Dram enhance')
   t.deepEqual(response.body.slug, 'velit-voluptatibus-incidunt')
-  t.deepEqual(response.body.isPublished, false)
+  t.deepEqual(response.body.isPublished, true)
   t.deepEqual(
     response.body.content,
     'Beatae voluptatem voluptatem ut temporibus quia. Id perferendis aperiam et mollitia debitis et nihil et. Explicabo eligendi mollitia cumque eius quas illo rerum accusamus veritatis. Rerum sed nesciunt. Maxime assumenda molestiae enim est perspiciatis aperiam amet quas. Maxime veritatis vitae maxime rerum beatae laborum cupiditate.'
@@ -324,7 +324,7 @@ test('delete reaction should delete reaction from article', async (t) => {
   t.deepEqual(response.body.title, 'Refined Rubber Tuna user-centric expedite')
   t.deepEqual(response.body.summary, 'monitor Armenian Dram enhance')
   t.deepEqual(response.body.slug, 'velit-voluptatibus-incidunt')
-  t.deepEqual(response.body.isPublished, false)
+  t.deepEqual(response.body.isPublished, true)
   t.deepEqual(
     response.body.content,
     'Beatae voluptatem voluptatem ut temporibus quia. Id perferendis aperiam et mollitia debitis et nihil et. Explicabo eligendi mollitia cumque eius quas illo rerum accusamus veritatis. Rerum sed nesciunt. Maxime assumenda molestiae enim est perspiciatis aperiam amet quas. Maxime veritatis vitae maxime rerum beatae laborum cupiditate.'

@@ -23,7 +23,7 @@ export const Routes = {
       'index',
       'show'
     ],
-    eager: '[tags.articles, reactions.reactedBy, author]',
+    eager: '[tags.articles(last30), reactions.reactedBy, author]',
     joinRelation: '[tags]'
   },
   comment: {
@@ -60,7 +60,7 @@ export const Routes = {
       'index'
     ],
     skipAuth: true,
-    eager: '[articles.[reactions.reactedBy, tags, author]]',
+    eager: '[articles(last30).[reactions.reactedBy, tags, author]]',
     joinRelation: '[articles]'
   },
   reaction: {
@@ -82,7 +82,12 @@ export const Models = {
   },
   article: {
     schema: Article,
-    seeds: 3
+    seeds: 3,
+    transformSeed: (seed) => {
+      // isPublishedをtrueに固定する。
+      seed['isPublished'] = true
+      return seed
+    }
   },
   articleTag: {
     schema: ArticleTag,

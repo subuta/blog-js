@@ -67,5 +67,20 @@ export default class Article extends Model {
   }
 
   /* mat Custom methods [start] */
+  static namedFilters = {
+    default: (builder) => builder
+      .applyFilter('last30'),
+
+    last30: (builder) => builder
+      .orderBy('created_at', 'desc')
+      .orderBy('id', 'desc')
+      .where('isPublished', true)
+      .limit(30),
+
+    draft: (builder) => builder
+      .orderBy('created_at', 'desc')
+      .orderBy('id', 'desc')
+      .where('isPublished', false)
+  }
   /* mat Custom methods [end] */
 }

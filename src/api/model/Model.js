@@ -33,6 +33,10 @@ export default class extends compose(Model) {
     return ajvValidator
   }
 
+  static namedFilters = {
+    default: (builder) => builder
+  }
+
   $beforeInsert() {
     this.created_at = new Date().toISOString()
   }

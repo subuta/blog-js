@@ -2,7 +2,6 @@ import _ from 'lodash'
 import request from 'src/views/utils/request'
 import {normalize} from 'normalizr'
 import {tag, tagList} from 'src/views/utils/schema'
-import { addReaction, filterByTagId, removeReaction, showBySlug } from './article'
 
 export const index = () => {
   return request.get(`/tags`)

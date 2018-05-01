@@ -5,7 +5,7 @@ import {normalize} from 'normalizr'
 import {tag, tagList, denormalize} from 'src/views/utils/schema'
 import api from 'src/views/utils/api'
 
-import { REQUEST_ARTICLES, SET_ARTICLES, setArticles } from './article'
+import {SET_ARTICLES} from './article'
 
 // -------------
 // Constants
@@ -50,7 +50,7 @@ export const requestTags = () => {
 /* mat Custom actionCreators [start] */
 export const requestTagByLabel = (label) => {
   return (dispatch) => {
-    dispatch({type: REQUEST_ARTICLES})
+    dispatch({type: REQUEST_TAGS})
     return api.tag.showByLabel(label).then((data) => {
       /* mat Index data transform [start] */
       /* mat Index data transform [end] */

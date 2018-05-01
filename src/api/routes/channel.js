@@ -14,10 +14,9 @@ channel.get('/', async (ctx) => {
   /* mat Before index [end] */
 
   ctx.body = await Channel.query()
+    .applyFilter('default')
     .eager('[comments(last30).[attachment, commentedBy, reactions.reactedBy]]')
     .where(params)
-    .orderBy('created_at', 'desc')
-    .orderBy('id', 'desc')
 })
 
 channel.get('/:id', async (ctx) => {
@@ -28,6 +27,7 @@ channel.get('/:id', async (ctx) => {
   /* mat Before show [end] */
 
   ctx.body = await Channel.query()
+    .applyFilter('default')
     .eager('[comments(last30).[attachment, commentedBy, reactions.reactedBy]]')
     .findFirst({...params, id: ctx.params.id})
 })

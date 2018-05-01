@@ -9,7 +9,7 @@ exports.seed = async (knex) => {
       title: 'Refined Rubber Tuna user-centric expedite',
       summary: 'monitor Armenian Dram enhance',
       slug: 'velit-voluptatibus-incidunt',
-      isPublished: false,
+      isPublished: true,
       content:
         'Beatae voluptatem voluptatem ut temporibus quia. Id perferendis aperiam et mollitia debitis et nihil et. Explicabo eligendi mollitia cumque eius quas illo rerum accusamus veritatis. Rerum sed nesciunt. Maxime assumenda molestiae enim est perspiciatis aperiam amet quas. Maxime veritatis vitae maxime rerum beatae laborum cupiditate.',
       authorId: 75900
@@ -29,7 +29,7 @@ exports.seed = async (knex) => {
       title: 'Ergonomic Wooden Sausages 1080p Sleek Plastic Mouse',
       summary: 'Gibraltar Sleek Cotton Tuna portal',
       slug: 'illo-sequi-dolores',
-      isPublished: false,
+      isPublished: true,
       content:
         'Deleniti et non quaerat explicabo. Mollitia est cumque fugit consequatur debitis itaque nihil sit. Voluptatem animi laudantium sit quis tempore cumque voluptatum consequuntur. Aut sed quia sit.',
       authorId: 25425
