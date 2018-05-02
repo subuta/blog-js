@@ -37,10 +37,10 @@ export const setCommentIds = (ids) => {
   }
 }
 
-export const requestComments = () => {
+export const requestComments = (params) => {
   return (dispatch) => {
     dispatch({type: REQUEST_COMMENTS})
-    return api.comment.index().then((data) => {
+    return api.comment.index(params).then((data) => {
 
       dispatch(setComments(normalize(data, commentList)))
       return data

@@ -3,8 +3,8 @@ import request from 'src/views/utils/request'
 import {normalize} from 'normalizr'
 import {tag, tagList} from 'src/views/utils/schema'
 
-export const index = () => {
-  return request.get(`/tags`)
+export const index = (params) => {
+  return request.get(`/tags`, {params})
 }
 
 /* mat Custom action [start] */

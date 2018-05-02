@@ -3,8 +3,8 @@ import request from 'src/views/utils/request'
 import {normalize} from 'normalizr'
 import {article, articleList} from 'src/views/utils/schema'
 
-export const index = () => {
-  return request.get(`/articles`)
+export const index = (params) => {
+  return request.get(`/articles`, {params})
 }
 
 export const show = (id) => {

@@ -34,10 +34,10 @@ export const setChannelIds = (ids) => {
   }
 }
 
-export const requestChannels = () => {
+export const requestChannels = (params) => {
   return (dispatch) => {
     dispatch({type: REQUEST_CHANNELS})
-    return api.channel.index().then((data) => {
+    return api.channel.index(params).then((data) => {
 
       dispatch(setChannels(normalize(data, channelList)))
       return data

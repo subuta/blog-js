@@ -35,10 +35,10 @@ export const setTagIds = (ids) => {
   }
 }
 
-export const requestTags = () => {
+export const requestTags = (params) => {
   return (dispatch) => {
     dispatch({type: REQUEST_TAGS})
-    return api.tag.index().then((data) => {
+    return api.tag.index(params).then((data) => {
       /* mat Index data transform [start] */
       /* mat Index data transform [end] */
       dispatch(setTags(normalize(data, tagList)))

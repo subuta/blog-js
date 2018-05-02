@@ -3,8 +3,8 @@ import request from 'src/views/utils/request'
 import {normalize} from 'normalizr'
 import {channel, channelList} from 'src/views/utils/schema'
 
-export const index = () => {
-  return request.get(`/channels`)
+export const index = (params) => {
+  return request.get(`/channels`, {params})
 }
 
 export const show = (id) => {

@@ -62,6 +62,7 @@ const withFileDropHandler = DropTarget(
 const enhance = compose(
   withStyles,
   connect,
+  withState('paging', 'setPaging', { next: 1 }),
   withState('draftText', 'setDraftText', ''),
   withState('initialText', 'setInitialText', ''),
   withHandlers(() => {
@@ -101,10 +102,16 @@ const enhance = compose(
         return editorInstance.getIsFocused()
       },
 
-      scrollComments: () => () => {
+      scrollComments: () => (position = -1) => {
         requestAnimationFrame(() => {
           if (!$comments) return
-          $comments.scrollTop = $comments.scrollHeight
+
+          let scrollTo = 0
+          if (position === -1) {
+            scrollTo = $comments.scrollHeight
+          }
+
+          $comments.scrollTop = scrollTo
         })
       }
     }
@@ -130,7 +137,7 @@ const enhance = compose(
       requestAnimationFrame(() => {
         resetEditor(previousValue)
         focusEditor()
-      });
+      })
     }
   ),
   withHandlers({
@@ -153,7 +160,7 @@ const enhance = compose(
         } else {
           storage.setItem(`comments.${channelId}.draft`, value)
         }
-      });
+      })
     },
   }),
   withHandlers({
@@ -183,6 +190,30 @@ const enhance = compose(
       deleteComment(comment.id, comment)
     },
 
+    onPullToFetch: (props) => () => {
+      const {
+        requestComments,
+        channelId,
+        setPaging,
+        paging
+      } = props
+
+      const {
+        next,
+        isLast
+      } = paging
+
+      if (isLast) return
+
+      // Retrieve next page and save latest paging into state.
+      requestComments({
+        channelId,
+        page: next
+      }).then(data => {
+        setPaging(_.omit(data, ['results']))
+      })
+    },
+
     onKeyDown: (props) => (e) => {
       const {
         onSetDraftText,
@@ -205,10 +236,10 @@ const enhance = compose(
 
         onSetDraftText('')
         resetEditor('')
+        focusEditor()
 
         createComment({channelId: channel.id, text: draftText}).then(() => {
           scrollComments()
-          focusEditor()
         })
 
         return false
@@ -363,6 +394,7 @@ const Show = enhanceChatContent((props) => {
     onDeleteComment,
     onSelectFile,
     onSetDraftText,
+    onPullToFetch,
     setCommentsRef,
     setEditorInstance,
     setStickyDate,
@@ -374,6 +406,7 @@ const Show = enhanceChatContent((props) => {
     isAuthenticated,
     channel,
     isOver,
+    paging,
     initialText,
     canDrop,
     connectDropTargetToRef,
@@ -385,6 +418,10 @@ const Show = enhanceChatContent((props) => {
     name,
     description
   } = channel
+
+  const {
+    isLast = false
+  } = paging
 
   let channelsClass = styles.Channels
   if (isOver && canDrop) {
@@ -445,6 +482,13 @@ const Show = enhanceChatContent((props) => {
                       onLeave={() => setStickyDate(today)}
                       date={lastDay}
                     />
+                  )}
+
+                  {!isLast && isFirst && (
+                    <div>
+                      <Waypoint onEnter={onPullToFetch}/>
+                      <b>Loading....</b>
+                    </div>
                   )}
 
                   <Comment

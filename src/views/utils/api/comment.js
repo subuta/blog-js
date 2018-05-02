@@ -5,7 +5,7 @@ import {comment, commentList} from 'src/views/utils/schema'
 
 export const index = (params) => {
   const {channelId} = params
-  return request.get(`/channels/${channelId}/comments`)
+  return request.get(`/channels/${channelId}/comments`, {params})
 }
 
 export const create = (params) => {

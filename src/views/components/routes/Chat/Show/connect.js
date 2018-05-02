@@ -8,7 +8,10 @@ import { denormalize } from 'src/views/utils/schema'
 
 import { throw404 } from 'src/views/utils/next'
 
-import { channel as channelSchema } from 'src/views/utils/schema'
+import {
+  channel as channelSchema,
+  commentList as commentListSchema
+} from 'src/views/utils/schema'
 
 import {
   showMenu,
@@ -26,6 +29,8 @@ import {
   updateComment,
   addReaction,
   removeReaction,
+  setComments,
+  requestComments as _requestComments,
   createComment as requestCreateComment,
   deleteComment as requestDeleteComment,
   getEntities as getCommentEntities
@@ -73,6 +78,24 @@ const createComment = (params) => {
   }
 }
 
+const requestComments = (params) => {
+  return (dispatch, getState) => {
+    const state = getState()
+    const entities = getChannelEntities(state)
+    const channel = _.clone(entities[params.channelId])
+
+    return dispatch(_requestComments(params)).then((data) => {
+      // update channel comment.
+      const normalized = normalize(data.results, commentListSchema)
+      // prepend commentIds to channel.comments
+      channel.comments = _.uniq([...channel.comments, ...normalized.result]);
+      dispatch(setComments(normalized))
+      dispatch(setChannels(normalize(channel, channelSchema)))
+      return data;
+    })
+  }
+}
+
 const getChannelComments = (name) => createSelector(
   getCommentEntities,
   getChannelEntities,
@@ -112,6 +135,7 @@ const mapDispatchToProps = {
   addReaction,
   removeReaction,
   signAttachment,
+  requestComments,
   requestChannels
 }
 

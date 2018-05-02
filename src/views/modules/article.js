@@ -37,10 +37,10 @@ export const setArticleIds = (ids) => {
   }
 }
 
-export const requestArticles = () => {
+export const requestArticles = (params) => {
   return (dispatch) => {
     dispatch({type: REQUEST_ARTICLES})
-    return api.article.index().then((data) => {
+    return api.article.index(params).then((data) => {
       /* mat Index data transform [start] */
       /* mat Index data transform [end] */
       dispatch(setArticles(normalize(data, articleList)))

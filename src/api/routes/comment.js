@@ -14,6 +14,32 @@ comment.get('/', async (ctx) => {
   if (_.get(ctx, 'params.channelId')) {
     params['channelId'] = Number(_.get(ctx, 'params.channelId'))
   }
+
+  // Fetch records with paging.
+  const pageSize = 30
+  let page = _.get(ctx, 'request.query.page') !== undefined && Number(_.get(ctx, 'request.query.page'))
+  if (page !== undefined) {
+    const result = await Comment.query()
+      .orderBy('created_at', 'desc')
+      .orderBy('id', 'desc')
+      .eager('[attachment, commentedBy, reactions.reactedBy]')
+      .where(params)
+      .page(page, pageSize);
+
+    const hasNext = result.total > (page + 1) * pageSize
+    if (hasNext) {
+      page++
+    }
+
+    ctx.body = {
+      ...result,
+      current: page,
+      next: page,
+      isLast: !hasNext
+    }
+    return
+  }
+
   /* mat Before index [end] */
 
   ctx.body = await Comment.query()
