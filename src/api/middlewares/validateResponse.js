@@ -106,6 +106,9 @@ const errorHandler = (err, ctx) => {
       data: {}
     })
   } else {
+    // Pass-through other error if status code is already defined.
+    if (_.get(ctx, 'response.status')) throw err
+    // If status code is not undefined.
     ctx.throw(500, {
       message: err.message,
       type: 'UnknownError',
