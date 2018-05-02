@@ -14,6 +14,8 @@ import {
   lifecycle
 } from 'recompose'
 
+const isBrowser = typeof window !== 'undefined'
+
 const enhance = compose(
   withRouter,
   lifecycle({
@@ -21,7 +23,7 @@ const enhance = compose(
       const {router} = this.props
       auth0.revokeSession()
       // force reload browser
-      if (location) {
+      if (isBrowser && location) {
         location.href = '/'
       }
     }

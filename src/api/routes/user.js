@@ -24,7 +24,7 @@ user.put('/me', auth, async (ctx) => {
 
   // findOrCreate specified user.
   // update id with current user in params if specified
-  const params = _.omit(
+  let params = _.omit(
     _.pickBy(
       {
         ...user,
@@ -34,6 +34,10 @@ user.put('/me', auth, async (ctx) => {
     ),
     protectedFields
   )
+
+  if (_.get(currentUser, 'isAdmin', false)) {
+    params['isAdmin'] = true
+  }
 
   const opts = {
     relate: true,
