@@ -275,6 +275,22 @@ const DateLine = {
   }
 }
 
+const PullToFetch = {
+  position: 'relative',
+}
+
+const Loader = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  bottom: 0,
+  right: 0,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: 'rgba(255, 255, 255, 0.5)'
+}
+
 export default createWithStyles({
   Channels,
   DropTarget,
@@ -291,5 +307,7 @@ export default createWithStyles({
   TextAreaWrapper,
   TextArea,
   AddIcon,
-  DateLine
+  DateLine,
+  PullToFetch,
+  Loader
 })

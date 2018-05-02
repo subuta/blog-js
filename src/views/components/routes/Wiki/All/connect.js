@@ -2,7 +2,9 @@ import _ from 'lodash'
 import { connect } from 'react-redux'
 
 import {
-  createArticle
+  createArticle,
+  requestArticles,
+  getIsRequestProgress,
 } from 'src/views/modules/article'
 
 import { getAll as getArticles } from 'src/views/modules/article'
@@ -22,12 +24,14 @@ const mapStateToProps = (state, oldProps) => {
   }
 
   return {
-    articles
+    articles,
+    isRequestProgress: getIsRequestProgress(state)
   }
 }
 
 const mapDispatchToProps = {
-  createArticle
+  createArticle,
+  requestArticles
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)

@@ -26,8 +26,10 @@ import Content from '../_Content'
 
 import Tooltip from 'src/views/components/common/Tooltip'
 import Comment from 'src/views/components/common/Comment'
+import DummyComment from 'src/views/components/common/Comment/Placeholder'
 import Editor from 'src/views/components/common/Editor'
 import SvgIcon from 'src/views/components/common/SvgIcon'
+import CustomLoader from 'src/views/components/common/CustomLoader'
 
 import storage from 'src/views/utils/storage'
 
@@ -62,7 +64,7 @@ const withFileDropHandler = DropTarget(
 const enhance = compose(
   withStyles,
   connect,
-  withState('paging', 'setPaging', { next: 1 }),
+  withState('paging', 'setPaging', {next: 1}),
   withState('draftText', 'setDraftText', ''),
   withState('initialText', 'setInitialText', ''),
   withHandlers(() => {
@@ -124,13 +126,22 @@ const enhance = compose(
         channelId,
         resetEditor,
         focusEditor,
-        setDraftText
+        setDraftText,
+        setPaging,
+        scrollComments
       } = props
 
       if (!isBrowser) return
 
+      // init paging.
+      scrollComments()
+      setPaging({next: 1})
+
       const previousValue = storage.getItem(`comments.${channelId}.draft`)
-      if (!previousValue) return
+      if (!previousValue) {
+        focusEditor()
+        return
+      }
 
       setDraftText(previousValue)
 
@@ -303,8 +314,12 @@ const enhance = compose(
   }),
   lifecycle({
     componentDidMount () {
-      const {scrollComments} = this.props
-      requestAnimationFrame(() => scrollComments())
+      // FIXME: Do I need to call these at componentDidMount?(It should be called on channeldId changes...)
+      const {scrollComments, focusEditor} = this.props
+      requestAnimationFrame(() => {
+        scrollComments()
+        focusEditor()
+      })
     }
   })
 )
@@ -406,6 +421,7 @@ const Show = enhanceChatContent((props) => {
     isAuthenticated,
     channel,
     isOver,
+    isCommentProgress,
     paging,
     initialText,
     canDrop,
@@ -485,9 +501,23 @@ const Show = enhanceChatContent((props) => {
                   )}
 
                   {!isLast && isFirst && (
-                    <div>
+                    // Placeholder content.
+                    <div className={styles.PullToFetch}>
+                      <DummyComment width={320}/>
+                      <DummyComment width={260}/>
+                      <DummyComment variation="attachment"/>
+                      <DummyComment width={160}/>
+                      <DummyComment width={300}/>
+
                       <Waypoint onEnter={onPullToFetch}/>
-                      <b>Loading....</b>
+
+                      <div className={styles.Loader}>
+                        <CustomLoader
+                          label="Loading..."
+                          isShow={isCommentProgress}
+                          size={40}
+                        />
+                      </div>
                     </div>
                   )}
 

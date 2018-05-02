@@ -10,6 +10,7 @@ import TextField from 'src/views/components/common/TextField'
 import TextArea from 'src/views/components/common/TextArea'
 import Modal from 'src/views/components/common/Modal'
 import Paper from 'src/views/components/common/Paper'
+import CustomLoader from 'src/views/components/common/CustomLoader'
 
 import {
   compose,
@@ -18,6 +19,7 @@ import {
 } from 'recompose'
 
 import MdAddIcon from 'react-icons/lib/md/add'
+import Waypoint from 'react-waypoint'
 
 import withStyles from './style'
 import connect from './connect'
@@ -29,11 +31,36 @@ import Content from '../_Content'
 const enhance = compose(
   withStyles,
   connect,
+  withState('paging', 'setPaging', { next: 1 }),
   withState('draftSlug', 'setDraftSlug', ({article}) => article ? article.slug : ''),
   withState('draftSummary', 'setDraftSummary', ({article}) => article ? article.summary : ''),
   withState('draftTitle', 'setDraftTitle', ({article}) => article ? article.title : ''),
   withState('isShowCreateArticleModal', 'setIsShowCreateArticleModal', false),
   withHandlers({
+    onPullToFetch: (props) => () => {
+      const {
+        requestArticles,
+        setPaging,
+        paging
+      } = props
+
+      const {
+        next,
+        isLast
+      } = paging
+
+      if (isLast) return
+
+      console.log('pull!', next);
+
+      // Retrieve next page and save latest paging into state.
+      requestArticles({
+        page: next
+      }).then(data => {
+        setPaging(_.omit(data, ['results']))
+      })
+    },
+
     onCreateArticle: (props) => () => {
       const {
         draftSlug,
@@ -64,14 +91,21 @@ export default enhance((props) => {
     draftSlug,
     draftTitle,
     draftSummary,
+    onPullToFetch,
+    isRequestProgress,
     isShowCreateArticleModal,
     setDraftSlug,
     setDraftTitle,
     setDraftSummary,
     setIsShowCreateArticleModal,
     isAuthenticated,
+    paging,
     onCreateArticle,
   } = props
+
+  const {
+    isLast = false
+  } = paging
 
   return (
     <Layout>
@@ -145,6 +179,17 @@ export default enhance((props) => {
                 )
               })}
             </ul>
+
+            {!isLast && (
+              <div className={styles.PullToFetch}>
+                <Waypoint
+                  scrollableAncestor="window"
+                  onEnter={onPullToFetch}
+                />
+
+                <CustomLoader isShow={isRequestProgress} />
+              </div>
+            )}
 
             {isAuthenticated && (
               <FloatingActionButton className='button-fab'>

@@ -35,6 +35,33 @@ article.get('/', async (ctx) => {
   if (_.get(ctx, 'query.tagId')) {
     params['tags.id'] = Number(_.get(ctx, 'query.tagId'))
   }
+
+  // Fetch records with paging.
+  const pageSize = 30
+  let page = _.get(ctx, 'request.query.page') !== undefined && Number(_.get(ctx, 'request.query.page'))
+  if (page !== undefined) {
+    const result = await Article.query()
+      .eager('[tags.articles(last30), reactions.reactedBy, author]')
+      .joinRelation('[tags]')
+      .orderBy('created_at', 'desc')
+      .orderBy('id', 'desc')
+      .where('isPublished', true)
+      .where(params)
+      .page(page, pageSize);
+
+    const hasNext = result.total > (page + 1) * pageSize
+    if (hasNext) {
+      page++
+    }
+
+    ctx.body = {
+      ...result,
+      current: page,
+      next: page,
+      isLast: !hasNext
+    }
+    return
+  }
   /* mat Before index [end] */
 
   ctx.body = await Article.query()

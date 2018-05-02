@@ -87,6 +87,43 @@ const Comment = {
   }
 }
 
+const Placeholder = {
+  display: 'inline-block',
+  height: '0.6rem',
+  width: 40,
+  backgroundColor: GRAY_COLOR,
+  borderRadius: 20
+}
+
+const CommentPlaceholder = {
+  ...Comment,
+
+  '.nickname': {
+    ...Placeholder,
+    width: 80
+  },
+
+  '.commentedAt': {
+    ...Placeholder,
+    margin: '0 0 0 4px',
+    width: 40
+  },
+
+  '.comment': {
+    ...Placeholder,
+    margin: '4px 0 0',
+    width: 200
+  },
+
+  '.attachment': {
+    ...Placeholder,
+    margin: '4px 0 0',
+    borderRadius: 8,
+    height: 400,
+    width: 400
+  }
+}
+
 const Nickname = {
   fontSize: 13,
   fontWeight: 'bold',
@@ -146,6 +183,7 @@ const Action = {
 export default createWithStyles({
   CommentWrapper,
   Comment,
+  CommentPlaceholder,
   Nickname,
   CommentedAt,
   Actions,

@@ -42,6 +42,11 @@ export const requestArticles = (params) => {
     dispatch({type: REQUEST_ARTICLES})
     return api.article.index(params).then((data) => {
       /* mat Index data transform [start] */
+      // FIXME: more better way to handle paging.
+      if (data.results) {
+        dispatch(setArticles(normalize(data.results, articleList)))
+        return data
+      }
       /* mat Index data transform [end] */
       dispatch(setArticles(normalize(data, articleList)))
       return data

@@ -10,7 +10,7 @@ import { throw404 } from 'src/views/utils/next'
 
 import {
   channel as channelSchema,
-  commentList as commentListSchema
+  commentList as commentListSchema,
 } from 'src/views/utils/schema'
 
 import {
@@ -30,6 +30,7 @@ import {
   addReaction,
   removeReaction,
   setComments,
+  getIsRequestProgress as getIsCommentProgress,
   requestComments as _requestComments,
   createComment as requestCreateComment,
   deleteComment as requestDeleteComment,
@@ -119,6 +120,7 @@ const mapStateToProps = (state, oldProps) => {
     channels: getChannels(state),
     channelComments: getChannelComments(name)(state),
     isChannelProgress: getIsChannelProgress(state),
+    isCommentProgress: getIsCommentProgress(state),
     channel,
     channelId: channel.id
   }

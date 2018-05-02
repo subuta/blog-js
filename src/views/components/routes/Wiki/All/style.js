@@ -109,9 +109,13 @@ const ScrollContainer = {
   color: `${BLACK_COLOR} !important`
 }
 
+const PullToFetch = {
+}
+
 export default createWithStyles({
   Paper,
   CreateArticleModal,
   ScrollContainer,
-  Articles
+  Articles,
+  PullToFetch
 })
