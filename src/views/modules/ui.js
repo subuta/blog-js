@@ -26,6 +26,7 @@ export const hideMenu = () => {
 // -------------
 // Reducers
 // -------------
+// Menu state for mobile.
 export const isShowMenu = (state = false, action) => {
   if (action.type === SHOW_MENU) {
     return true

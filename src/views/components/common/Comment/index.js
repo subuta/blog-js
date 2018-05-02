@@ -71,7 +71,7 @@ export default enhance((props) => {
       onMouseEnter={() => requestAnimationFrame(() => setIsHover(true))}
       onMouseLeave={() => requestAnimationFrame(() => setIsHover(false))}
     >
-      <Avatar avatar={avatar} nickname={nickname} size={40}/>
+      <Avatar avatar={avatar} nickname={nickname}/>
 
       <div className={styles.Comment}>
         <div className={styles.Nickname}>

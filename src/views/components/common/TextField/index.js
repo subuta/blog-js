@@ -1,3 +1,6 @@
+import React from 'react'
+import _ from 'lodash'
+
 import {
   compose
 } from 'recompose'
@@ -18,9 +21,15 @@ export default enhance((props) => {
     placeholder = 'Put text here'
   } = props
 
+  const error = _.get(props, 'error.message', null)
+
   let textFieldClass = `${styles.TextField} input`
+  if (error) {
+    textFieldClass += ' has-error'
+  }
+
   if (className) {
-    textFieldClass += ` ${textAreaClass}`
+    textFieldClass += ` ${className}`
   }
 
   return (
@@ -30,13 +39,19 @@ export default enhance((props) => {
           <span>{label}:</span>
         )}
 
-        <input
-          type="text"
-          onChange={(e) => onChange(e.target.value)}
-          value={value}
-          placeholder={placeholder}
-          spellCheck={false}
-        />
+        <div>
+          <input
+            type="text"
+            onChange={(e) => onChange(e.target.value)}
+            value={value}
+            placeholder={placeholder}
+            spellCheck={false}
+          />
+
+          {error && (
+            <div className="error">{error}</div>
+          )}
+        </div>
       </label>
     </div>
   )

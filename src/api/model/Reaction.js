@@ -34,7 +34,7 @@ export default class Reaction extends Model {
     required: ['emoji'],
     properties: {
       id: {type: 'integer'},
-      emoji: {type: 'string', minLength: 1},
+      emoji: {type: 'string', minLength: 1, maxLength: 255},
       reactableId: {type: 'integer'},
       reactableType: {type: 'string'}
     }

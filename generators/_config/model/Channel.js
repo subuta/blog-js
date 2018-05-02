@@ -9,10 +9,13 @@ export default {
       type: 'integer'
     },
     name: {
-      type: 'string'
+      type: 'string',
+      minLength: 1,
+      maxLength: 255
     },
     description: {
-      type: 'string'
+      type: 'string',
+      maxLength: 255
     }
   },
 

@@ -19,11 +19,11 @@ import Modal from 'src/views/components/common/Modal'
 import Confirm from 'src/views/components/common/Confirm'
 import Reactions from 'src/views/components/common/Reactions'
 import Notifications from 'src/views/components/common/Notifications'
+import Paper from 'src/views/components/common/Paper'
 
 import Sidebar from '../_Sidebar'
 import Header from '../_Header'
 import Content from '../_Content'
-import Paper from '../_Paper'
 
 import {
   compose,

@@ -51,14 +51,14 @@ test('get me should return user', async (t) => {
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 75900)
-  t.deepEqual(response.body.locale, 'sk')
-  t.deepEqual(response.body.nickname, 'Ransom_Harris')
-  t.deepEqual(response.body.status, 'Avon')
+  t.deepEqual(response.body.id, 61127)
+  t.deepEqual(response.body.locale, 'sv')
+  t.deepEqual(response.body.nickname, 'Marcelino80')
+  t.deepEqual(response.body.status, 'white Cayman Islands Dollar')
   t.deepEqual(response.body.isAdmin, true)
   t.deepEqual(
     response.body.avatar,
-    'https://s3.amazonaws.com/uifaces/faces/twitter/robbschiller/128.jpg'
+    'https://s3.amazonaws.com/uifaces/faces/twitter/low_res/128.jpg'
   )
 })
 
@@ -66,7 +66,7 @@ test('put me should update user if exists', async (t) => {
   const {request, User} = t.context
 
   const user = await User.query().findOne({
-    auth0Id: 'e57308da-b81c-4e24-af84-6b963ccb8375'
+    auth0Id: 'ecc04041-8e1d-4a05-8078-eea261323182'
   })
   t.not(user, undefined)
 
@@ -79,35 +79,35 @@ test('put me should update user if exists', async (t) => {
     .set('Authorization', `Bearer ${token}`)
     .send({
       user: {
-        id: 75900,
-        auth0Id: 'e57308da-b81c-4e24-af84-6b963ccb8375',
-        locale: 'az',
-        nickname: 'Loren27',
-        status: 'UAE Dirham Wyoming Berkshire',
-        isAdmin: false,
+        id: 61127,
+        auth0Id: 'ecc04041-8e1d-4a05-8078-eea261323182',
+        locale: 'de_CH',
+        nickname: 'Alexane16',
+        status: 'Reverse-engineered lavender',
+        isAdmin: true,
         avatar:
-          'https://s3.amazonaws.com/uifaces/faces/twitter/miguelmendes/128.jpg'
+          'https://s3.amazonaws.com/uifaces/faces/twitter/benoitboucart/128.jpg'
       }
     })
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 75900)
-  t.deepEqual(response.body.locale, 'az')
-  t.deepEqual(response.body.nickname, 'Loren27')
-  t.deepEqual(response.body.status, 'UAE Dirham Wyoming Berkshire')
-  t.deepEqual(response.body.isAdmin, false)
+  t.deepEqual(response.body.id, 61127)
+  t.deepEqual(response.body.locale, 'de_CH')
+  t.deepEqual(response.body.nickname, 'Alexane16')
+  t.deepEqual(response.body.status, 'Reverse-engineered lavender')
+  t.deepEqual(response.body.isAdmin, true)
   t.deepEqual(
     response.body.avatar,
-    'https://s3.amazonaws.com/uifaces/faces/twitter/miguelmendes/128.jpg'
+    'https://s3.amazonaws.com/uifaces/faces/twitter/benoitboucart/128.jpg'
   )
 })
 
-test('put me should create user if not exists', async (t) => {
+test('post me should create user if not exists', async (t) => {
   const {request, User} = t.context
 
   const user = await User.query().findOne({
-    auth0Id: '0a4a4c5f-eb77-4819-8da8-6e5b8bdd06f9'
+    auth0Id: '4ed007fa-6ec1-4744-9205-db0bb81ab1bd'
   })
   t.is(user, undefined)
 
@@ -115,8 +115,111 @@ test('put me should create user if not exists', async (t) => {
   const token = createToken(
     privateKey,
     '123',
-    createPayload('0a4a4c5f-eb77-4819-8da8-6e5b8bdd06f9')
+    createPayload('4ed007fa-6ec1-4744-9205-db0bb81ab1bd')
   )
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .post('/api/users/me')
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      user: {
+        id: 64548,
+        auth0Id: '4ed007fa-6ec1-4744-9205-db0bb81ab1bd',
+        locale: 'de_CH',
+        nickname: 'Alexane16',
+        status: 'Reverse-engineered lavender',
+        isAdmin: false,
+        avatar:
+          'https://s3.amazonaws.com/uifaces/faces/twitter/benoitboucart/128.jpg'
+      }
+    })
+
+  t.is(response.status, 200)
+
+  // should ignore invalid id param
+  t.not(response.body.id, 64548)
+
+  // other props should persisted.
+  t.deepEqual(response.body.locale, 'de_CH')
+  t.deepEqual(response.body.nickname, 'Alexane16')
+  t.deepEqual(response.body.status, 'Reverse-engineered lavender')
+  t.deepEqual(response.body.isAdmin, false)
+  t.deepEqual(
+    response.body.avatar,
+    'https://s3.amazonaws.com/uifaces/faces/twitter/benoitboucart/128.jpg'
+  )
+})
+
+test('post me should not create new user if already exists', async (t) => {
+  const {request, User} = t.context
+
+  await User.query()
+    .insert({
+      id: 64548,
+      auth0Id: '4ed007fa-6ec1-4744-9205-db0bb81ab1bd',
+      locale: 'de_CH',
+      nickname: 'Alexane16',
+      status: 'Reverse-engineered lavender',
+      isAdmin: false,
+      avatar:
+        'https://s3.amazonaws.com/uifaces/faces/twitter/benoitboucart/128.jpg'
+    })
+    .eager('')
+
+  const user = await User.query().findOne({
+    auth0Id: '4ed007fa-6ec1-4744-9205-db0bb81ab1bd'
+  })
+
+  // mock jwks
+  const token = createToken(
+    privateKey,
+    '123',
+    createPayload('4ed007fa-6ec1-4744-9205-db0bb81ab1bd')
+  )
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .post('/api/users/me')
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      user: {
+        id: 64548,
+        auth0Id: '4ed007fa-6ec1-4744-9205-db0bb81ab1bd',
+        locale: 'de_CH',
+        nickname: 'Alexane16',
+        status: 'Reverse-engineered lavender',
+        isAdmin: false,
+        avatar:
+          'https://s3.amazonaws.com/uifaces/faces/twitter/benoitboucart/128.jpg'
+      }
+    })
+
+  t.is(response.status, 200)
+
+  // All props should persisted.
+  t.deepEqual(response.body.id, 64548)
+  t.deepEqual(response.body.locale, 'de_CH')
+  t.deepEqual(response.body.nickname, 'Alexane16')
+  t.deepEqual(response.body.status, 'Reverse-engineered lavender')
+  t.deepEqual(response.body.isAdmin, false)
+  t.deepEqual(
+    response.body.avatar,
+    'https://s3.amazonaws.com/uifaces/faces/twitter/benoitboucart/128.jpg'
+  )
+})
+
+/* mat Custom test [start] */
+test('put me should throw 422 if date is invalid', async (t) => {
+  const {request, User} = t.context
+
+  const user = await User.query().findOne({
+    auth0Id: 'ecc04041-8e1d-4a05-8078-eea261323182'
+  })
+  t.not(user, undefined)
+
+  // mock jwks
+  const token = createToken(privateKey, '123', createPayload(user.auth0Id))
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
@@ -124,29 +227,10 @@ test('put me should create user if not exists', async (t) => {
     .set('Authorization', `Bearer ${token}`)
     .send({
       user: {
-        id: 40843,
-        auth0Id: '0a4a4c5f-eb77-4819-8da8-6e5b8bdd06f9',
-        locale: 'az',
-        nickname: 'Loren27',
-        status: 'UAE Dirham Wyoming Berkshire',
-        isAdmin: false,
-        avatar:
-          'https://s3.amazonaws.com/uifaces/faces/twitter/miguelmendes/128.jpg'
+        nickname: '',
       }
     })
 
-  t.is(response.status, 200)
-
-  // should ignore invalid id param
-  t.not(response.body.id, 40843)
-
-  // other props should persisted.
-  t.deepEqual(response.body.locale, 'az')
-  t.deepEqual(response.body.nickname, 'Loren27')
-  t.deepEqual(response.body.status, 'UAE Dirham Wyoming Berkshire')
-  t.deepEqual(response.body.isAdmin, false)
-  t.deepEqual(
-    response.body.avatar,
-    'https://s3.amazonaws.com/uifaces/faces/twitter/miguelmendes/128.jpg'
-  )
+  t.is(response.status, 422)
 })
+/* mat Custom test [end] */

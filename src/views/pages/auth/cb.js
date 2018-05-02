@@ -6,7 +6,7 @@ import connext from 'src/views/hoc/connext'
 import auth0 from 'src/views/utils/auth0'
 
 import {
-  requestUpdateUser
+  requestCreateUser
 } from 'src/views/modules/user'
 
 import {
@@ -18,11 +18,11 @@ const enhance = compose(
   withRouter,
   lifecycle({
     componentWillMount () {
-      const {requestUpdateUser, router} = this.props
+      const {requestCreateUser, router} = this.props
       auth0.parseHash().then((result) => {
-        const {locale, nickname, picture, sub} = result.idTokenPayload
         auth0.setSession(result)
-        requestUpdateUser({locale, nickname, auth0Id: sub, avatar: picture})
+        const {locale, nickname, picture, sub} = result.idTokenPayload
+        requestCreateUser({locale, nickname, auth0Id: sub, avatar: picture})
           .then(() => router.push('/'))
       })
     }
@@ -41,7 +41,7 @@ const mapStateToProps = () => {
   return {}
 }
 const mapDispatchToProps = {
-  requestUpdateUser
+  requestCreateUser
 }
 
 export default connext(mapStateToProps, mapDispatchToProps)(Login)

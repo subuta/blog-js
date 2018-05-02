@@ -5,27 +5,27 @@ exports.seed = async (knex) => {
   // https://github.com/tgriesser/knex/issues/54
   await knex('comments').insert([
     {
-      id: 2826,
+      id: 14526,
       text:
-        'Aut repellendus rerum. Ut dolores est libero provident. Explicabo repellendus dolor similique velit qui ut asperiores. Et nihil quis omnis iusto. Inventore impedit doloremque excepturi ut explicabo recusandae eos odio. Accusantium quae quibusdam aliquid adipisci consequatur et.',
-      channelId: 82160,
-      commentedById: 75900,
+        'Hic nesciunt beatae ab. Voluptatem laboriosam nostrum dolor. Ipsam vero qui saepe sit facilis a fuga ut.',
+      channelId: 93290,
+      commentedById: 61127,
       attachmentId: '28d15c5a-a70c-48e4-9772-bc910f421907'
     },
     {
-      id: 85551,
+      id: 82249,
       text:
-        'Ad numquam laborum nihil. Impedit sed dolor voluptas tempora dolorem odit voluptas nemo modi. Molestiae consectetur molestias et. Velit et facilis repellat nisi eum laboriosam. Libero ut aliquid est consequatur assumenda non. Voluptatum architecto reiciendis sint dolorum dolorum.',
-      channelId: 93680,
-      commentedById: 1796,
+        'Sed fugit cumque sit. Sed fuga sed ut aut. Alias quis ipsa animi in alias aspernatur corrupti. Vel laudantium amet debitis neque dolores nobis. Suscipit error odit quidem atque odit veniam voluptatibus qui. Sit officiis molestiae ducimus qui libero vel nostrum dolore explicabo.',
+      channelId: 76939,
+      commentedById: 41841,
       attachmentId: 'abfbc020-04b2-4d70-a1ed-aa85e702e181'
     },
     {
-      id: 13285,
+      id: 1452,
       text:
-        'Aliquid error recusandae deleniti sint corporis. Qui dolorem voluptatem eaque officiis asperiores amet nobis. Officiis rem quis nemo in est dolores nobis. Vel quod mollitia id occaecati eveniet veritatis earum delectus dicta. Architecto reprehenderit officia et sit enim assumenda nisi sint. Minima aliquam dolor iste.',
-      channelId: 58071,
-      commentedById: 25425,
+        'Officiis odio enim autem eum laudantium doloremque. Modi corrupti rerum aut sint illum placeat. Ipsum incidunt eaque sed repellendus quidem quisquam non sint.',
+      channelId: 17648,
+      commentedById: 46540,
       attachmentId: '62fc4caf-224d-4658-949e-b68307f974d2'
     }
   ])

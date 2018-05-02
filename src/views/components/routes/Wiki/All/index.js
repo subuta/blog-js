@@ -9,6 +9,7 @@ import Tooltip from 'src/views/components/common/Tooltip'
 import TextField from 'src/views/components/common/TextField'
 import TextArea from 'src/views/components/common/TextArea'
 import Modal from 'src/views/components/common/Modal'
+import Paper from 'src/views/components/common/Paper'
 
 import {
   compose,
@@ -24,7 +25,6 @@ import connect from './connect'
 import Sidebar from '../_Sidebar'
 import Header from '../_Header'
 import Content from '../_Content'
-import Paper from '../_Paper'
 
 const enhance = compose(
   withStyles,

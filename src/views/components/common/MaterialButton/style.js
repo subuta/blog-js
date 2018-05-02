@@ -4,6 +4,8 @@ import {
   PRIMARY_COLOR,
   EASE_STANDARD,
   GRAY_COLOR,
+  BORDER_COLOR,
+
   Z_INDEX_1
 } from 'src/views/constants/style'
 
@@ -16,6 +18,7 @@ const MaterialButton = {
   outline: 'none',
   transition: `all 0.3s ${EASE_STANDARD}`,
   fontWeight: 'bold',
+  cursor: 'pointer',
 
   '&.is-ghost': {
     boxShadow: 'none',

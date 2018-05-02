@@ -5,12 +5,20 @@ import {user, userList} from 'src/views/utils/schema'
 
 /* mat Custom action [start] */
 export const update = (params) => {
-  return request.put(`/users/me`, {user: params}).then(data => normalize(data, user)).catch(e => console.log('err!!!', e))
+  return request.put(`/users/me`, {user: params}).then(data => {
+    return normalize(data, user)
+  })
 }
 
 export const me = () => {
   return request.get(`/users/me`).then(data => {
     if (!data) return
+    return normalize(data, user)
+  })
+}
+
+export const create = (params) => {
+  return request.post(`/users/me`, {user: params}).then(data => {
     return normalize(data, user)
   })
 }
@@ -22,7 +30,8 @@ let actions = {}
 actions = {
   ...actions,
   update,
-  me
+  me,
+  create
 }
 /* mat Custom exports [end] */
 

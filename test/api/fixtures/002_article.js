@@ -5,34 +5,34 @@ exports.seed = async (knex) => {
   // https://github.com/tgriesser/knex/issues/54
   await knex('articles').insert([
     {
-      id: 35666,
-      title: 'Refined Rubber Tuna user-centric expedite',
-      summary: 'monitor Armenian Dram enhance',
-      slug: 'velit-voluptatibus-incidunt',
+      id: 24271,
+      title: 'Burkina Faso Distributed redundant',
+      summary: 'orchestrate',
+      slug: 'ab-qui-repellat',
       isPublished: true,
       content:
-        'Beatae voluptatem voluptatem ut temporibus quia. Id perferendis aperiam et mollitia debitis et nihil et. Explicabo eligendi mollitia cumque eius quas illo rerum accusamus veritatis. Rerum sed nesciunt. Maxime assumenda molestiae enim est perspiciatis aperiam amet quas. Maxime veritatis vitae maxime rerum beatae laborum cupiditate.',
-      authorId: 75900
+        'Ipsa incidunt sed quia expedita. Voluptas accusantium alias dolorem voluptas nostrum. Ipsum recusandae esse aperiam eum vero sunt dolores impedit. Et dignissimos provident incidunt. Corporis est est assumenda possimus quas natus praesentium.',
+      authorId: 61127
     },
     {
-      id: 60920,
-      title: 'Tanzania',
-      summary: 'copy',
-      slug: 'ea-voluptatem-voluptatem',
+      id: 48587,
+      title: 'Street e-tailers',
+      summary: 'Cove',
+      slug: 'et-qui-modi',
       isPublished: true,
       content:
-        'Fuga molestiae totam eveniet. Cum est veritatis facilis qui rem voluptate omnis molestiae possimus. Sit sapiente quaerat non aperiam sed rerum. Repellendus quas et laborum alias assumenda laboriosam eligendi.',
-      authorId: 1796
+        'Neque consequatur aspernatur porro. Dolorem quasi doloribus tempora quidem reiciendis. Illo quidem nemo blanditiis sunt amet ullam suscipit.',
+      authorId: 41841
     },
     {
-      id: 66239,
-      title: 'Ergonomic Wooden Sausages 1080p Sleek Plastic Mouse',
-      summary: 'Gibraltar Sleek Cotton Tuna portal',
-      slug: 'illo-sequi-dolores',
+      id: 67738,
+      title: 'Architect Program',
+      summary: 'Minnesota recontextualize River',
+      slug: 'ipsam-animi-rerum',
       isPublished: true,
       content:
-        'Deleniti et non quaerat explicabo. Mollitia est cumque fugit consequatur debitis itaque nihil sit. Voluptatem animi laudantium sit quis tempore cumque voluptatum consequuntur. Aut sed quia sit.',
-      authorId: 25425
+        'Iste et in perspiciatis ut eum quae magni. Impedit placeat minus veniam modi eius et odit voluptates facere. Sequi a esse. Occaecati eos aut dignissimos suscipit sed voluptates quia. Et numquam officia quaerat accusamus quisquam doloremque. Doloremque quibusdam at illo ullam.',
+      authorId: 46540
     }
   ])
 

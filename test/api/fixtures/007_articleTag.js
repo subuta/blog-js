@@ -4,9 +4,9 @@ exports.seed = async (knex) => {
 
   // https://github.com/tgriesser/knex/issues/54
   await knex('articles_tags').insert([
-    {id: 48239, articleId: 35666, tagId: 82337},
-    {id: 52023, articleId: 60920, tagId: 43149},
-    {id: 37083, articleId: 66239, tagId: 3838}
+    {id: 48239, articleId: 24271, tagId: 71041},
+    {id: 52023, articleId: 48587, tagId: 58582},
+    {id: 37083, articleId: 67738, tagId: 25050}
   ])
 
   /* mat After seed [start] */

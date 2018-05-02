@@ -53,7 +53,7 @@ export default class Comment extends Model {
     $id: 'http://sub-labo.com/schemas/comment.json',
     type: 'object',
     required: ['text'],
-    properties: {id: {type: 'integer'}, text: {type: 'string'}}
+    properties: {id: {type: 'integer'}, text: {type: 'string', minLength: 1}}
   }
 
   /* mat Custom methods [start] */

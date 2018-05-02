@@ -5,50 +5,41 @@ exports.seed = async (knex) => {
   // https://github.com/tgriesser/knex/issues/54
   await knex('users').insert([
     {
-      id: 75900,
-      auth0Id: 'e57308da-b81c-4e24-af84-6b963ccb8375',
-      locale: 'sk',
-      nickname: 'Ransom_Harris',
-      status: 'Avon',
-      isAdmin: true,
-      avatar:
-        'https://s3.amazonaws.com/uifaces/faces/twitter/robbschiller/128.jpg'
-    },
-    {
-      id: 1796,
-      auth0Id: 'd1819c9a-0cef-4fa1-bf9b-0384bcb26ee6',
+      id: 61127,
+      auth0Id: 'ecc04041-8e1d-4a05-8078-eea261323182',
       locale: 'sv',
-      nickname: 'Alexandro.Feeney41',
-      status: 'online Uganda',
-      isAdmin: false,
-      avatar:
-        'https://s3.amazonaws.com/uifaces/faces/twitter/jonsgotwood/128.jpg'
+      nickname: 'Marcelino80',
+      status: 'white Cayman Islands Dollar',
+      isAdmin: true,
+      avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/low_res/128.jpg'
     },
     {
-      id: 25425,
-      auth0Id: '3ce45e46-5489-4159-aea5-ed46e284339c',
-      locale: 'nep',
-      nickname: 'Fernando97',
-      status: 'interfaces transmitting Vision-oriented',
+      id: 41841,
+      auth0Id: '4c275aa7-2103-487d-a33c-f6a2b9ffdae2',
+      locale: 'ge',
+      nickname: 'Etha46',
+      status: 'Handmade quantifying',
       isAdmin: false,
-      avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/jm_denis/128.jpg'
+      avatar:
+        'https://s3.amazonaws.com/uifaces/faces/twitter/mtolokonnikov/128.jpg'
+    },
+    {
+      id: 46540,
+      auth0Id: '18a3458d-7b67-4db5-8652-72a271f4a410',
+      locale: 'fa',
+      nickname: 'Elva99',
+      status: 'benchmark',
+      isAdmin: false,
+      avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/mizko/128.jpg'
     }
   ])
 
-  /* mat After seed [start] */
-  await knex('users')
-    .where({ id: 75900 })
-    .update({ isAdmin: true })
 
-  await knex('users')
-    .where({ id: 1796 })
-    .update({ isAdmin: false })
-  /* mat After seed [end] */
 }
 
 /* mat Custom exports [start] */
 exports.ids = {
-  'admin': 75900,
-  'user': 1796
+  'admin': 61127,
+  'user': 41841
 }
 /* mat Custom exports [end] */

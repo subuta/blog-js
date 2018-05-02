@@ -36,7 +36,10 @@ export default class Tag extends Model {
     $id: 'http://sub-labo.com/schemas/tag.json',
     type: 'object',
     required: ['label'],
-    properties: {id: {type: 'integer'}, label: {type: 'string'}}
+    properties: {
+      id: {type: 'integer'},
+      label: {type: 'string', minLength: 1, maxLength: 255}
+    }
   }
 
   /* mat Custom methods [start] */

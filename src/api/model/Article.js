@@ -58,9 +58,9 @@ export default class Article extends Model {
     required: ['title', 'slug'],
     properties: {
       id: {type: 'integer'},
-      title: {type: 'string'},
+      title: {type: 'string', minLength: 1, maxLength: 255},
       summary: {type: 'string', default: '', maxLength: 300},
-      slug: {type: 'string'},
+      slug: {type: 'string', minLength: 1, maxLength: 255},
       isPublished: {type: 'boolean', default: false},
       content: {type: 'string', default: ''}
     }

@@ -34,8 +34,8 @@ export default class Channel extends Model {
     required: ['name'],
     properties: {
       id: {type: 'integer'},
-      name: {type: 'string'},
-      description: {type: 'string'}
+      name: {type: 'string', minLength: 1, maxLength: 255},
+      description: {type: 'string', maxLength: 255}
     }
   }
 

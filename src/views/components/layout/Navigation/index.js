@@ -132,8 +132,8 @@ export default enhance((props) => {
           <ul>
             <li>
               <ActiveLink
-                href='/auth/profile'
-                as='/auth/profile'
+                href='/user/profile'
+                as='/user/profile'
               >
                 Update your profile
               </ActiveLink>

@@ -9,7 +9,9 @@ export default {
       type: 'integer'
     },
     label: {
-      'type': 'string'
+      type: 'string',
+      minLength: 1,
+      maxLength: 255
     }
   },
 

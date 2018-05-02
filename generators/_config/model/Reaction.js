@@ -9,8 +9,9 @@ export default {
       type: 'integer'
     },
     emoji: {
-      'type': 'string',
-      'minLength': 1
+      type: 'string',
+      minLength: 1,
+      maxLength: 255
     },
     reactableId: {
       type: 'integer'

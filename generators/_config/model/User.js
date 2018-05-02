@@ -13,20 +13,24 @@ export default {
       type: 'string'
     },
     locale: {
-      'type': 'string'
+      type: 'string',
+      maxLength: 255
     },
     nickname: {
-      'type': 'string'
+      type: 'string',
+      minLength: 1,
+      maxLength: 255
     },
     status: {
-      'type': 'string'
+      type: 'string',
+      maxLength: 255
     },
     isAdmin: {
-      'type': 'boolean',
-      'default': false
+      type: 'boolean',
+      default: false
     },
     avatar: {
-      'type': 'string'
+      type: 'string'
     }
   },
 

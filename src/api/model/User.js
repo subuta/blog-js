@@ -39,9 +39,9 @@ export default class User extends Model {
     properties: {
       id: {type: 'integer'},
       auth0Id: {type: 'string'},
-      locale: {type: 'string'},
-      nickname: {type: 'string'},
-      status: {type: 'string'},
+      locale: {type: 'string', maxLength: 255},
+      nickname: {type: 'string', minLength: 1, maxLength: 255},
+      status: {type: 'string', maxLength: 255},
       isAdmin: {type: 'boolean', default: false},
       avatar: {type: 'string'}
     }

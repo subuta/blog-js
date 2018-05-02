@@ -10,24 +10,28 @@ export default {
       type: 'integer'
     },
     title: {
-      'type': 'string'
+      type: 'string',
+      minLength: 1,
+      maxLength: 255
     },
     summary: {
-      'type': 'string',
-      'default': '',
+      type: 'string',
+      default: '',
       // for og:content
-      'maxLength': 300
+      maxLength: 300
     },
     slug: {
-      'type': 'string'
+      type: 'string',
+      minLength: 1,
+      maxLength: 255
     },
     isPublished: {
-      'type': 'boolean',
-      'default': false
+      type: 'boolean',
+      default: false
     },
     content: {
-      'type': 'string',
-      'default': ''
+      type: 'string',
+      default: ''
     }
   },
 

@@ -15,38 +15,60 @@ user.put('/me', auth, async (ctx) => {
   const {User} = ctx.state.models
   const {user} = ctx.request.body
   const {sub} = ctx.state.user
-  const protectedFields = ['isAdmin']
+  const protectedFields = ['id', 'isAdmin', 'auth0Id']
 
   const currentUser = await ctx.state.getCurrentUser()
 
-  // check for malicious request.
-  user.id = _.get(currentUser, 'id', null)
-
   // findOrCreate specified user.
   // update id with current user in params if specified
-  let params = _.omit(
-    _.pickBy(
-      {
-        ...user,
-        auth0Id: sub
-      },
-      _.identity
-    ),
-    protectedFields
-  )
+  let params = {
+    ..._.omit(user, protectedFields),
+    auth0Id: sub
+  }
 
   if (_.get(currentUser, 'isAdmin', false)) {
     params['isAdmin'] = true
   }
 
-  const opts = {
-    relate: true,
-    unrelate: true
-  }
-
   ctx.body = await User.query()
     .eager('')
-    .upsertGraphAndFetch(params, opts)
+    .patchAndFetchById(currentUser.id, params)
+})
+
+user.post('/me', auth, async (ctx) => {
+  const {User} = ctx.state.models
+  const {user} = ctx.request.body
+  const {sub} = ctx.state.user
+  const protectedFields = ['id', 'isAdmin']
+
+  let params = {}
+
+  let found = await User.query()
+    .eager('')
+    .findFirst({auth0Id: sub})
+
+  // create if not exists.
+  if (!found) {
+    // findOrCreate specified user.
+    // update id with current user in params if specified
+    let params = _.omit(
+      {
+        ...user,
+        auth0Id: sub
+      },
+      protectedFields
+    )
+
+
+
+    found = await User.query()
+      .insert(params)
+      .eager('')
+
+
+  }
+
+  ctx.body = found
 })
 
 export default {

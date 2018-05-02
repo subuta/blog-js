@@ -53,7 +53,7 @@ test('index should list tag', async (t) => {
 
   t.is(response.status, 200)
   t.deepEqual(response.body.length, 3)
-  t.deepEqual(_.map(response.body, 'id').sort(), [3838, 43149, 82337])
+  t.deepEqual(_.map(response.body, 'id').sort(), [25050, 58582, 71041])
 })
 
 /* mat Custom tests [start] */

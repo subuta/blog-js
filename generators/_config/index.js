@@ -113,6 +113,15 @@ export const Models = {
   },
   user: {
     schema: User,
-    seeds: 3
+    seeds: 3,
+    transformSeed: (seed, i) => {
+      // Mark first entry as admin.
+      if (i === 1) {
+        seed['isAdmin'] = true
+      } else {
+        seed['isAdmin'] = false
+      }
+      return seed
+    }
   }
 }

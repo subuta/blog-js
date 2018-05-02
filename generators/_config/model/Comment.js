@@ -9,7 +9,8 @@ export default {
       type: 'integer'
     },
     text: {
-      'type': 'string'
+      type: 'string',
+      minLength: 1
     }
   },
 

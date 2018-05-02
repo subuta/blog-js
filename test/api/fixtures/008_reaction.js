@@ -5,25 +5,25 @@ exports.seed = async (knex) => {
   // https://github.com/tgriesser/knex/issues/54
   await knex('reactions').insert([
     {
-      id: 19824,
-      emoji: 'synergize Small Ouguiya',
-      reactableId: 78552,
-      reactableType: 'plum calculating SCSI',
-      reactedById: 75900
+      id: 99729,
+      emoji: 'open-source parsing',
+      reactableId: 77184,
+      reactableType: 'Brunei Darussalam capacitor synthesizing',
+      reactedById: 61127
     },
     {
-      id: 24671,
-      emoji: 'transmit SQL',
-      reactableId: 17443,
-      reactableType: 'Mouse back up',
-      reactedById: 1796
+      id: 73507,
+      emoji: 'International Berkshire',
+      reactableId: 59536,
+      reactableType: 'Optimization Square Refined',
+      reactedById: 41841
     },
     {
-      id: 42224,
-      emoji: 'Comoro Franc',
-      reactableId: 77999,
-      reactableType: 'Rand Loti Pants Steel',
-      reactedById: 25425
+      id: 61852,
+      emoji: 'Senior Summit',
+      reactableId: 61329,
+      reactableType: 'Enterprise-wide',
+      reactedById: 46540
     }
   ])
 

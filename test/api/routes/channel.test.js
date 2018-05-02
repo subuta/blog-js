@@ -55,7 +55,7 @@ test('index should list channel', async (t) => {
 
   t.is(response.status, 200)
   t.deepEqual(response.body.length, 3)
-  t.deepEqual(_.map(response.body, 'id').sort(), [58071, 82160, 93680])
+  t.deepEqual(_.map(response.body, 'id').sort(), [17648, 76939, 93290])
 })
 
 test('show should return channel', async (t) => {
@@ -66,14 +66,14 @@ test('show should return channel', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .get('/api/channels/82160')
+    .get('/api/channels/93290')
     .set('Authorization', `Bearer ${token}`)
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 82160)
-  t.deepEqual(response.body.name, 'ball')
-  t.deepEqual(response.body.description, 'Customer')
+  t.deepEqual(response.body.id, 93290)
+  t.deepEqual(response.body.name, 'holistic')
+  t.deepEqual(response.body.description, 'Central')
 })
 
 test('post should create channel', async (t) => {
@@ -87,14 +87,14 @@ test('post should create channel', async (t) => {
     .post('/api/channels')
     .set('Authorization', `Bearer ${token}`)
     .send({
-      channel: {id: 7983, name: 'capacitor', description: 'front-end'}
+      channel: {id: 53932, name: 'sql', description: 'digital'}
     })
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 7983)
-  t.deepEqual(response.body.name, 'capacitor')
-  t.deepEqual(response.body.description, 'front-end')
+  t.deepEqual(response.body.id, 53932)
+  t.deepEqual(response.body.name, 'sql')
+  t.deepEqual(response.body.description, 'digital')
 })
 
 /* mat Custom tests [start] */
@@ -111,7 +111,7 @@ test('show should return channel with correct comments order', async (t) => {
   await Promise.each(comments, async (comment) => {
     await Comment.query()
       .insert({
-        channelId: 82160,
+        channelId: 93290,
         commentedById: adminUser.id,
         text: comment
       })
@@ -122,14 +122,14 @@ test('show should return channel with correct comments order', async (t) => {
   jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
   const response = await request
-    .get('/api/channels/82160')
+    .get('/api/channels/93290')
     .set('Authorization', `Bearer ${token}`)
 
   t.is(response.status, 200)
 
-  t.deepEqual(response.body.id, 82160)
-  t.deepEqual(response.body.name, 'ball')
-  t.deepEqual(response.body.description, 'Customer')
+  t.deepEqual(response.body.id, 93290)
+  t.deepEqual(response.body.name, 'holistic')
+  t.deepEqual(response.body.description, 'Central')
 
   // should return `latest 30 comments`
   t.deepEqual(_.map(response.body.comments, 'text'), _.reverse(_.takeRight(comments, 30)))

@@ -16,6 +16,8 @@ import {
 } from 'src/views/constants/style'
 
 const Paper = {
+  margin: '-32px 32px 32px 0',
+
   '& .button-fab': {
     backgroundColor: WIKI_APP_COLOR,
     color: PRIMARY_COLOR,

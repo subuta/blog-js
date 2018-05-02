@@ -53,6 +53,15 @@ export const requestUpdateUser = (user) => {
   }
 }
 
+export const requestCreateUser = (user) => {
+  return (dispatch) => {
+    dispatch({type: REQUEST_USERS})
+    return api.user.create(user).then((data) => {
+      dispatch(setUsers(data))
+    })
+  }
+}
+
 export const requestMe = () => {
   return (dispatch) => {
     dispatch({type: REQUEST_USERS})
