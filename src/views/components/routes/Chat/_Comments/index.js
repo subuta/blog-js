@@ -156,8 +156,10 @@ const enhance = compose(
   ),
   withHandlers({
     // Every row is loaded except for our loading indicator row.
+    // FIXME: loadMoreRows called at initail render.
     isRowLoaded: ({hasNext, comments}) => ({index}) => {
-      return !hasNext || !!comments[index]
+      const comment = comments[index]
+      return !hasNext || !!comment
     },
 
     onAddReaction: ({addReaction, comments, refresh}) => (comment, emoji) => {
@@ -246,9 +248,9 @@ export default enhance((props) => {
 
     const isFirst = index === 0
     const itemIndex = hasNext ? index + 1 : index
-    const comment = comments[itemIndex]
+    const comment = comments[index]
 
-    if ((hasNext && isFirst) || !isRowLoaded({index: itemIndex})) {
+    if ((hasNext && isFirst) || !isRowLoaded({index})) {
       return (
         <CellMeasurer
           cache={cache}
@@ -354,6 +356,7 @@ export default enhance((props) => {
         isRowLoaded={isRowLoaded}
         loadMoreRows={loadMoreRows}
         rowCount={rowCount}
+        threshold={10}
       >
         {({onRowsRendered, registerChild}) => (
           <List
