@@ -32,7 +32,6 @@ import storage from 'src/views/utils/storage'
 import {
   compose,
   withState,
-  lifecycle,
   withHandlers,
   withPropsOnChange
 } from 'recompose'
@@ -61,12 +60,13 @@ const enhance = compose(
   withStyles,
   connect,
   withState('stickyDate', 'setStickyDate', null),
-  withState('paging', 'setPaging', {next: 1}),
+  withState('paging', 'setPaging', {next: 1, isLast: false}),
   withState('draftText', 'setDraftText', ''),
   withState('initialText', 'setInitialText', ''),
   withHandlers(() => {
     let editorInstance
     let $fileInput
+    let onSetEditorInstances = []
 
     return {
       setFileInputRef: () => (ref) => {
@@ -79,15 +79,28 @@ const enhance = compose(
 
       setEditorInstance: () => (instance) => {
         editorInstance = instance
+        isBrowser && requestAnimationFrame(() => {
+          // Call listeners.
+          _.each(onSetEditorInstances, fn => fn(editorInstance))
+          onSetEditorInstances = []
+        })
       },
 
       resetEditor: () => (initialValue) => {
-        if (!editorInstance) return
+        if (!editorInstance) {
+          // Delay execution
+          onSetEditorInstances.push(() => editorInstance.reset(initialValue))
+          return
+        }
         editorInstance.reset(initialValue)
       },
 
       focusEditor: () => () => {
-        if (!editorInstance) return
+        if (!editorInstance) {
+          // Delay execution
+          onSetEditorInstances.push((editorInstance) => editorInstance.focus())
+          return
+        }
         editorInstance.focus()
       },
 
@@ -97,7 +110,7 @@ const enhance = compose(
       },
 
       scrollComments: () => (position = -1) => {
-        console.log('scroll!');
+        console.log('scroll!')
         // requestAnimationFrame(() => {
         //   if (!$comments) return
         //
@@ -126,9 +139,9 @@ const enhance = compose(
 
       if (!isBrowser) return
 
-      // init paging.
+      setPaging({next: 1, isLast: false})
+
       scrollComments()
-      setPaging({next: 1})
 
       const previousValue = storage.getItem(`comments.${channelId}.draft`)
       if (!previousValue) {
@@ -169,28 +182,27 @@ const enhance = compose(
   }),
   withHandlers({
     onPullToFetch: (props) => (...args) => {
-      console.log('pull!', args);
-      // const {
-      //   requestComments,
-      //   channelId,
-      //   setPaging,
-      //   paging
-      // } = props
-      //
-      // const {
-      //   next,
-      //   isLast
-      // } = paging
-      //
-      // if (isLast) return
-      //
-      // // Retrieve next page and save latest paging into state.
-      // requestComments({
-      //   channelId,
-      //   page: next
-      // }).then(data => {
-      //   setPaging(_.omit(data, ['results']))
-      // })
+      const {
+        requestComments,
+        channelId,
+        setPaging,
+        paging
+      } = props
+
+      const {
+        next,
+        isLast
+      } = paging
+
+      if (isLast) return
+
+      // Retrieve next page and save latest paging into state.
+      requestComments({
+        channelId,
+        page: next
+      }).then(data => {
+        setPaging(_.omit(data, ['results']))
+      })
     },
 
     // onUpdateComment: ({updateComment}) => (comment) => {
@@ -287,16 +299,6 @@ const enhance = compose(
 
       handleFileUpload(file)
     },
-  }),
-  lifecycle({
-    componentDidMount () {
-      // FIXME: Do I need to call these at componentDidMount?(It should be called on channeldId changes...)
-      const {scrollComments, focusEditor} = this.props
-      requestAnimationFrame(() => {
-        scrollComments()
-        focusEditor()
-      })
-    }
   })
 )
 
@@ -340,7 +342,7 @@ const Show = enhanceChatContent((props) => {
   } = channel
 
   const {
-    isLast = false
+    isLast
   } = paging
 
   let channelsClass = styles.Channels

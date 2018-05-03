@@ -3,6 +3,8 @@ import {
   compose,
   withHandlers,
   withState,
+  withProps,
+  withPropsOnChange,
   lifecycle
 } from 'recompose'
 
@@ -37,6 +39,18 @@ const enhance = compose(
     width: defaultWidth
   }),
   withState('isInitialized', 'setIsInitialized', false),
+  withProps(({comments, hasNext}) => {
+    return {
+      rowCount: hasNext ? comments.length + 1 : comments.length
+    }
+  }),
+  withState('lastRowCount', 'setLastRowCount', ({rowCount}) => rowCount),
+  withPropsOnChange(
+    ['rowCount'],
+    ({rowCount, setLastRowCount}) => {
+      setLastRowCount(rowCount)
+    }
+  ),
   withHandlers((props) => {
     const {
       setIsInitialized,
@@ -51,6 +65,7 @@ const enhance = compose(
       fixedWidth: true
     })
 
+    // Get container size at DOM.
     const fetchContainerStyle = () => {
       if (!containerRef) return
 
@@ -68,6 +83,7 @@ const enhance = compose(
       })
     }
 
+    // Listen for window resize.
     const listenResize = () => {
       const onResize = (e) => {
         fetchContainerStyle()
@@ -87,17 +103,22 @@ const enhance = compose(
 
       initialize: () => () => {
         listenResize()
-        requestAnimationFrame(() => setIsInitialized(true));
+        requestAnimationFrame(() => setIsInitialized(true))
       },
 
       destroy: () => () => {
-        unlistenResize();
+        unlistenResize()
       },
 
       getCache: () => () => cache
     }
   }),
   withHandlers({
+    // Every row is loaded except for our loading indicator row.
+    isRowLoaded: ({hasNext, comments}) => ({index}) => {
+      return !hasNext || !!comments[index]
+    },
+
     onAddReaction: ({addReaction}) => (comment, emoji) => {
       addReaction(comment.id, {
         channelId: comment.channelId,
@@ -134,7 +155,7 @@ export default enhance((props) => {
     isProgress = false,
     isInitialized,
     comments = [],
-    setListRef,
+    rowCount,
     scrollToIndex,
     containerStyle,
     onDateChange,
@@ -145,20 +166,17 @@ export default enhance((props) => {
     onRemoveReaction,
     setContainerRef,
     getCache,
+    lastRowCount,
     loadNext,
     styles,
     className,
     isAuthenticated,
+    isRowLoaded,
     currentUser,
     ...rest
   } = props
 
   const cache = getCache()
-
-  // If there are more items to be loaded then add an extra row to hold a loading indicator.
-  const rowCount = hasNext
-    ? comments.length + 1
-    : comments.length
 
   // Only load 1 page of items at a time.
   // Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
@@ -166,30 +184,36 @@ export default enhance((props) => {
     ? () => {}
     : loadNext
 
-  // Every row is loaded except for our loading indicator row.
-  const isRowLoaded = ({index}) => !hasNext || index < comments.length
-
   let lastDay = null
 
   // Render a list item or a loading indicator.
   const rowRenderer = (props) => {
     const {
-      index,
       key,
       parent,
-      isScrolling,
       style
     } = props
 
-    let content
+    const isFirst = props.index === 0
+    const itemIndex = hasNext ? props.index + 1 : props.index
+    const comment = comments[itemIndex]
 
-    const isFirst = index === 0
-    const comment = comments[index]
-
-    if (!isRowLoaded({index})) {
-      content = 'Loading...'
-    } else {
-      content = _.get(comments, [index, 'text'])
+    if ((hasNext && isFirst) || !isRowLoaded({index: itemIndex})) {
+      return (
+        <CellMeasurer
+          cache={cache}
+          columnIndex={0}
+          key={key}
+          parent={parent}
+          rowIndex={itemIndex}
+        >
+          <DummyComment
+            key={key}
+            style={style}
+            width={320}
+          />
+        </CellMeasurer>
+      )
     }
 
     const today = moment(comment.created_at).startOf('day')
@@ -204,13 +228,13 @@ export default enhance((props) => {
       <CellMeasurer
         cache={cache}
         columnIndex={0}
-        key={comment.id}
+        key={key}
         parent={parent}
-        rowIndex={index}
+        rowIndex={itemIndex}
       >
         {({measure}) => (
           <div
-            key={comment.id}
+            key={key}
             style={style}
           >
             {(isFirst || hasChanged) && (
@@ -223,7 +247,7 @@ export default enhance((props) => {
             )}
 
             <Comment
-              key={comment.id}
+              key={key}
               className={styles.Comment}
               comment={comment}
               onAddReaction={onAddReaction}
@@ -287,11 +311,11 @@ export default enhance((props) => {
             onRowsRendered={onRowsRendered}
             height={containerStyle.height}
             width={containerStyle.width}
-            rowCount={comments.length}
+            rowCount={rowCount}
             deferredMeasurementCache={cache}
             rowHeight={cache.rowHeight}
             rowRenderer={rowRenderer}
-            // scrollToIndex={scrollToIndex}
+            scrollToIndex={rowCount - 1}
             {...rest}
           />
         )}
