@@ -138,27 +138,6 @@ const Content = {
 const Comments = {
   height: `calc(100% - ${MIN_TEXT_AREA_HEIGHT}px)`,
   padding: `12px 0 26px`,
-  overflowY: 'scroll'
-}
-
-const Comment = {
-  position: 'relative',
-
-  '& table': {
-    maxWidth: '40vw'
-  },
-
-  '& > img': {
-    display: 'block',
-    height: 'auto',
-    maxWidth: '100%'
-  },
-
-  [TABLET_MEDIA_QUERY]: {
-    '& table': {
-      maxWidth: '100%'
-    },
-  }
 }
 
 const Footer = {
@@ -245,36 +224,6 @@ const AddIcon = {
   width: 24
 }
 
-const DateLine = {
-  margin: '8px 0',
-  position: 'relative',
-
-  '&:before': {
-    display: 'block',
-    content: '\'\'',
-    width: '100%',
-    borderTop: `1px solid ${BORDER_COLOR}`
-  },
-
-  '& > b': {
-    padding: '4px 16px',
-    position: 'absolute',
-    top: 0,
-    left: '50%',
-    transform: 'translate3d(-50%, -50%, 0)',
-    borderRadius: 4,
-    backgroundColor: PRIMARY_COLOR,
-    fontSize: 14
-  },
-
-  [TABLET_MEDIA_QUERY]: {
-    '& > b': {
-      padding: '0 16px',
-      fontSize: 12
-    }
-  }
-}
-
 const PullToFetch = {
   position: 'relative',
 }
@@ -301,13 +250,11 @@ export default createWithStyles({
   Description,
   Content,
   Comments,
-  Comment,
   Footer,
   FileInput,
   TextAreaWrapper,
   TextArea,
   AddIcon,
-  DateLine,
   PullToFetch,
   Loader
 })

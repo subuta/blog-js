@@ -8,11 +8,8 @@ const {FILE} = NativeTypes
 
 import _ from 'lodash'
 import keycode from 'keycode'
-import moment from 'moment'
 
-import Textarea from 'react-textarea-autosize'
 import MdAddIcon from 'react-icons/lib/md/add'
-import Waypoint from 'react-waypoint'
 
 import FaHashTagIcon from 'react-icons/lib/fa/hashtag'
 
@@ -23,13 +20,12 @@ import Layout from 'src/views/components/layout/Layout'
 
 import Sidebar from '../_Sidebar'
 import Content from '../_Content'
+import Comments from '../_Comments'
 
+import DateLine from 'src/views/components/common/DateLine'
 import Tooltip from 'src/views/components/common/Tooltip'
-import Comment from 'src/views/components/common/Comment'
-import DummyComment from 'src/views/components/common/Comment/Placeholder'
 import Editor from 'src/views/components/common/Editor'
 import SvgIcon from 'src/views/components/common/SvgIcon'
-import CustomLoader from 'src/views/components/common/CustomLoader'
 
 import storage from 'src/views/utils/storage'
 
@@ -64,19 +60,15 @@ const withFileDropHandler = DropTarget(
 const enhance = compose(
   withStyles,
   connect,
+  withState('stickyDate', 'setStickyDate', null),
   withState('paging', 'setPaging', {next: 1}),
   withState('draftText', 'setDraftText', ''),
   withState('initialText', 'setInitialText', ''),
   withHandlers(() => {
-    let $comments
     let editorInstance
     let $fileInput
 
     return {
-      setCommentsRef: () => (ref) => {
-        $comments = findDOMNode(ref)
-      },
-
       setFileInputRef: () => (ref) => {
         $fileInput = findDOMNode(ref)
       },
@@ -105,16 +97,17 @@ const enhance = compose(
       },
 
       scrollComments: () => (position = -1) => {
-        requestAnimationFrame(() => {
-          if (!$comments) return
-
-          let scrollTo = 0
-          if (position === -1) {
-            scrollTo = $comments.scrollHeight
-          }
-
-          $comments.scrollTop = scrollTo
-        })
+        console.log('scroll!');
+        // requestAnimationFrame(() => {
+        //   if (!$comments) return
+        //
+        //   let scrollTo = 0
+        //   if (position === -1) {
+        //     scrollTo = $comments.scrollHeight
+        //   }
+        //
+        //   $comments.scrollTop = scrollTo
+        // })
       }
     }
   }),
@@ -175,22 +168,29 @@ const enhance = compose(
     },
   }),
   withHandlers({
-    onAddReaction: ({addReaction}) => (comment, emoji) => {
-      addReaction(comment.id, {
-        channelId: comment.channelId,
-        emoji
-      })
-    },
-
-    onRemoveReaction: ({removeReaction}) => (comment, emoji) => {
-      removeReaction(comment.id, {
-        channelId: comment.channelId,
-        emoji
-      })
-    },
-
-    onEditComment: ({updateComment}) => (comment) => {
-      updateComment(comment.id, {text: 'updated!'})
+    onPullToFetch: (props) => (...args) => {
+      console.log('pull!', args);
+      // const {
+      //   requestComments,
+      //   channelId,
+      //   setPaging,
+      //   paging
+      // } = props
+      //
+      // const {
+      //   next,
+      //   isLast
+      // } = paging
+      //
+      // if (isLast) return
+      //
+      // // Retrieve next page and save latest paging into state.
+      // requestComments({
+      //   channelId,
+      //   page: next
+      // }).then(data => {
+      //   setPaging(_.omit(data, ['results']))
+      // })
     },
 
     // onUpdateComment: ({updateComment}) => (comment) => {
@@ -199,30 +199,6 @@ const enhance = compose(
 
     onDeleteComment: ({deleteComment}) => (comment) => {
       deleteComment(comment.id, comment)
-    },
-
-    onPullToFetch: (props) => () => {
-      const {
-        requestComments,
-        channelId,
-        setPaging,
-        paging
-      } = props
-
-      const {
-        next,
-        isLast
-      } = paging
-
-      if (isLast) return
-
-      // Retrieve next page and save latest paging into state.
-      requestComments({
-        channelId,
-        page: next
-      }).then(data => {
-        setPaging(_.omit(data, ['results']))
-      })
     },
 
     onKeyDown: (props) => (e) => {
@@ -324,74 +300,8 @@ const enhance = compose(
   })
 )
 
-// FIXME: More better sticky behavior.
-// Date-Line separator
-const DateLine = withStyles((props) => {
-  const {
-    styles,
-    date,
-    onEnter = _.noop,
-    onLeave = _.noop
-  } = props
-
-  const dateLineClass = `${styles.DateLine} date-line`
-  const diff = moment().diff(date, 'days')
-
-  const Trigger = (
-    <Waypoint
-      onEnter={({previousPosition}) => {
-        // only handle header collision events
-        if (previousPosition === 'below') return
-        onEnter(date)
-      }}
-      onLeave={({currentPosition}) => {
-        // only handle header collision events
-        if (currentPosition === 'below') return
-        onLeave(date)
-      }}
-      topOffset={0}
-    />
-  )
-
-  if (!date || diff === undefined) {
-    return (
-      <div className={dateLineClass}/>
-    )
-  }
-
-  if (diff === 1) {
-    return (
-      <div className={dateLineClass}>
-        {Trigger}
-        <b>Today</b>
-      </div>
-    )
-  } else if (diff === 2) {
-    return (
-      <div className={dateLineClass}>
-        {Trigger}
-        <b>Yesterday</b>
-      </div>
-    )
-  }
-
-  let format = 'dddd, MMMM Do'
-  // if years ago.
-  if (diff >= 365) {
-    format = 'MMMM Do, YYYY'
-  }
-
-  return (
-    <div className={dateLineClass}>
-      {Trigger}
-      <b>{date.format(format)}</b>
-    </div>
-  )
-})
-
 const enhanceChatContent = compose(
   withFileDropHandler,
-  withState('stickyDate', 'setStickyDate', null),
   withHandlers({
     connectDropTargetToRef: ({connectDropTarget}) => (ref) => {
       return connectDropTarget(findDOMNode(ref))
@@ -403,27 +313,21 @@ const Show = enhanceChatContent((props) => {
   const {
     channelComments,
     onKeyDown,
-    onAddReaction,
-    onRemoveReaction,
-    onEditComment,
-    onDeleteComment,
     onSelectFile,
     onSetDraftText,
-    onPullToFetch,
-    setCommentsRef,
     setEditorInstance,
     setStickyDate,
     setFileInputRef,
     stickyDate,
     showFileSelection,
-    draftText,
+    onPullToFetch,
+    onDeleteComment,
     currentUser,
     isAuthenticated,
     channel,
     isOver,
     isCommentProgress,
     paging,
-    initialText,
     canDrop,
     connectDropTargetToRef,
     styles,
@@ -443,8 +347,6 @@ const Show = enhanceChatContent((props) => {
   if (isOver && canDrop) {
     channelsClass += ' can-drop'
   }
-
-  let lastDay = null
 
   return (
     <Content ref={connectDropTargetToRef}>
@@ -473,69 +375,18 @@ const Show = enhanceChatContent((props) => {
         </div>
 
         <div className={styles.Content}>
-          <div className={styles.Comments} ref={setCommentsRef}>
-            {_.map(channelComments, (comment, i) => {
-              const isFirst = i === 0
-              const today = moment(comment.created_at).startOf('day')
-              const hasChanged = today.diff(lastDay, 'days') > 0
-              let previousDay = null
-
-              if (hasChanged) {
-                previousDay = lastDay
-              }
-
-              // set last created_at for next iteration.
-              lastDay = today
-
-              const component = (
-                <React.Fragment
-                  key={comment.id}
-                >
-                  {(isFirst || hasChanged) && (
-                    // Show date line if firstRecord or dateChanged.
-                    <DateLine
-                      onEnter={() => setStickyDate(previousDay)}
-                      onLeave={() => setStickyDate(today)}
-                      date={lastDay}
-                    />
-                  )}
-
-                  {!isLast && isFirst && (
-                    // Placeholder content.
-                    <div className={styles.PullToFetch}>
-                      <DummyComment width={320}/>
-                      <DummyComment width={260}/>
-                      <DummyComment variation="attachment"/>
-                      <DummyComment width={160}/>
-                      <DummyComment width={300}/>
-
-                      <Waypoint onEnter={onPullToFetch}/>
-
-                      <div className={styles.Loader}>
-                        <CustomLoader
-                          label="Loading..."
-                          isShow={isCommentProgress}
-                          size={40}
-                        />
-                      </div>
-                    </div>
-                  )}
-
-                  <Comment
-                    className={styles.Comment}
-                    comment={comment}
-                    onEdit={() => onEditComment(comment)}
-                    onDelete={() => onDeleteComment(comment)}
-                    onAddReaction={onAddReaction}
-                    onRemoveReaction={onRemoveReaction}
-                    isAuthenticated={isAuthenticated}
-                    currentUser={currentUser}
-                  />
-                </React.Fragment>
-              )
-              return component
-            })}
-          </div>
+          <Comments
+            className={styles.Comments}
+            comments={channelComments}
+            hasNext={!isLast}
+            isProgress={isCommentProgress}
+            loadNext={onPullToFetch}
+            onDateChange={setStickyDate}
+            // onUpdate={() => onUpdateComment(comment)}
+            onDelete={onDeleteComment}
+            isAuthenticated={isAuthenticated}
+            currentUser={currentUser}
+          />
 
           <div className={styles.Footer}>
             <div className={styles.TextAreaWrapper}>
