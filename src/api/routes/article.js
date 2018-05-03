@@ -39,7 +39,7 @@ article.get('/', async (ctx) => {
   // Fetch records with paging.
   const pageSize = 30
   let page = _.get(ctx, 'request.query.page') !== undefined && Number(_.get(ctx, 'request.query.page'))
-  if (page !== undefined) {
+  if (page || page === 0) {
     const result = await Article.query()
       .eager('[tags.articles(last30), reactions.reactedBy, author]')
       .joinRelation('[tags]')
@@ -66,6 +66,7 @@ article.get('/', async (ctx) => {
 
   ctx.body = await Article.query()
     .applyFilter('default')
+    .eagerAlgorithm(Article.NaiveEagerAlgorithm)
     .eager('[tags.articles(last30), reactions.reactedBy, author]')
     .joinRelation('[tags]')
     .where(params)

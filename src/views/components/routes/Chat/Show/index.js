@@ -56,11 +56,18 @@ const withFileDropHandler = DropTarget(
   })
 )
 
+const CommentPageSize = 30
+
 const enhance = compose(
   withStyles,
   connect,
   withState('stickyDate', 'setStickyDate', null),
-  withState('paging', 'setPaging', {next: 1, isLast: false}),
+  withState('paging', 'setPaging', ({channelComments}) => {
+    return {
+      next: 1,
+      isLast: channelComments.length < CommentPageSize
+    }
+  }),
   withState('draftText', 'setDraftText', ''),
   withState('initialText', 'setInitialText', ''),
   withHandlers(() => {
@@ -130,16 +137,19 @@ const enhance = compose(
     (props) => {
       const {
         channelId,
+        channelComments,
         resetEditor,
         focusEditor,
         setDraftText,
         setPaging,
+
         scrollComments
       } = props
 
-      if (!isBrowser) return
 
-      setPaging({next: 1, isLast: false})
+      setPaging({next: 1, isLast: channelComments.length < CommentPageSize})
+
+      if (!isBrowser) return
 
       scrollComments()
 

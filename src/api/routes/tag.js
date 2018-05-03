@@ -15,6 +15,7 @@ tag.get('/', async (ctx) => {
 
   ctx.body = await Tag.query()
     .applyFilter('default')
+    .eagerAlgorithm(Tag.NaiveEagerAlgorithm)
     .eager('[articles(last30).[reactions.reactedBy, tags, author]]')
     .joinRelation('[articles]')
     .where(params)

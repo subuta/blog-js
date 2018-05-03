@@ -18,7 +18,7 @@ comment.get('/', async (ctx) => {
   // Fetch records with paging.
   const pageSize = 30
   let page = _.get(ctx, 'request.query.page') !== undefined && Number(_.get(ctx, 'request.query.page'))
-  if (page !== undefined) {
+  if (page || page === 0) {
     const result = await Comment.query()
       .orderBy('created_at', 'desc')
       .orderBy('id', 'desc')
@@ -44,6 +44,7 @@ comment.get('/', async (ctx) => {
 
   ctx.body = await Comment.query()
     .applyFilter('default')
+    .eagerAlgorithm(Comment.NaiveEagerAlgorithm)
     .eager('[attachment, commentedBy, reactions.reactedBy]')
     .where(params)
 })

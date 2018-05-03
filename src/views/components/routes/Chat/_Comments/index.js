@@ -44,13 +44,6 @@ const enhance = compose(
       rowCount: hasNext ? comments.length + 1 : comments.length
     }
   }),
-  withState('lastRowCount', 'setLastRowCount', ({rowCount}) => rowCount),
-  withPropsOnChange(
-    ['rowCount'],
-    ({rowCount, setLastRowCount}) => {
-      setLastRowCount(rowCount)
-    }
-  ),
   withHandlers((props) => {
     const {
       setIsInitialized,
@@ -58,6 +51,7 @@ const enhance = compose(
     } = props
 
     let containerRef
+    let listRef
     let unlistenResize = _.noop
 
     const cache = new CellMeasurerCache({
@@ -101,6 +95,15 @@ const enhance = compose(
         containerRef = findDOMNode(ref)
       },
 
+      setListRef: () => (ref) => {
+        listRef = ref
+      },
+
+      recomputeRowHeights: () => () => {
+        cache.clearAll()
+        listRef.recomputeRowHeights()
+      },
+
       initialize: () => () => {
         listenResize()
         requestAnimationFrame(() => setIsInitialized(true))
@@ -119,18 +122,18 @@ const enhance = compose(
       return !hasNext || !!comments[index]
     },
 
-    onAddReaction: ({addReaction}) => (comment, emoji) => {
+    onAddReaction: ({addReaction, recomputeRowHeights}) => (comment, emoji) => {
       addReaction(comment.id, {
         channelId: comment.channelId,
         emoji
-      })
+      }).then(recomputeRowHeights)
     },
 
-    onRemoveReaction: ({removeReaction}) => (comment, emoji) => {
+    onRemoveReaction: ({removeReaction, recomputeRowHeights}) => (comment, emoji) => {
       removeReaction(comment.id, {
         channelId: comment.channelId,
         emoji
-      })
+      }).then(recomputeRowHeights)
     },
 
     onEditComment: ({updateComment}) => (comment) => {
@@ -165,6 +168,7 @@ export default enhance((props) => {
     onAddReaction,
     onRemoveReaction,
     setContainerRef,
+    setListRef,
     getCache,
     lastRowCount,
     loadNext,
@@ -176,7 +180,7 @@ export default enhance((props) => {
     ...rest
   } = props
 
-  const cache = getCache()
+  const cache = getCache();
 
   // Only load 1 page of items at a time.
   // Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
@@ -191,11 +195,12 @@ export default enhance((props) => {
     const {
       key,
       parent,
-      style
+      style,
+      index
     } = props
 
-    const isFirst = props.index === 0
-    const itemIndex = hasNext ? props.index + 1 : props.index
+    const isFirst = index === 0
+    const itemIndex = hasNext ? index + 1 : index
     const comment = comments[itemIndex]
 
     if ((hasNext && isFirst) || !isRowLoaded({index: itemIndex})) {
@@ -205,7 +210,7 @@ export default enhance((props) => {
           columnIndex={0}
           key={key}
           parent={parent}
-          rowIndex={itemIndex}
+          rowIndex={index}
         >
           <DummyComment
             key={key}
@@ -307,7 +312,10 @@ export default enhance((props) => {
       >
         {({onRowsRendered, registerChild}) => (
           <List
-            ref={registerChild}
+            ref={(_ref) => {
+              registerChild(_ref)
+              setListRef(_ref)
+            }}
             onRowsRendered={onRowsRendered}
             height={containerStyle.height}
             width={containerStyle.width}

@@ -15,6 +15,7 @@ channel.get('/', async (ctx) => {
 
   ctx.body = await Channel.query()
     .applyFilter('default')
+    .eagerAlgorithm(Channel.NaiveEagerAlgorithm)
     .eager('[comments(last30).[attachment, commentedBy, reactions.reactedBy]]')
     .where(params)
 })
