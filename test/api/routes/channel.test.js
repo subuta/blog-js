@@ -98,40 +98,4 @@ test('post should create channel', async (t) => {
 })
 
 /* mat Custom tests [start] */
-test('show should return channel with correct comments order', async (t) => {
-  const {request, Comment, User} = t.context
-  const Promise = require('bluebird')
-
-  const adminUser = await User.query().findFirst({id: userIds.user})
-
-  // insert 50 comment
-  const comments = _.times(50, (i) => `comment ${i}`);
-
-  // should preserve order.
-  await Promise.each(comments, async (comment) => {
-    await Comment.query()
-      .insert({
-        channelId: 93290,
-        commentedById: adminUser.id,
-        text: comment
-      })
-  })
-
-  // mock jwks
-  const token = createToken(privateKey, '123', currentUser)
-  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
-
-  const response = await request
-    .get('/api/channels/93290')
-    .set('Authorization', `Bearer ${token}`)
-
-  t.is(response.status, 200)
-
-  t.deepEqual(response.body.id, 93290)
-  t.deepEqual(response.body.name, 'holistic')
-  t.deepEqual(response.body.description, 'Central')
-
-  // should return `latest 30 comments`
-  t.deepEqual(_.map(response.body.comments, 'text'), _.reverse(_.takeRight(comments, 30)))
-})
 /* mat Custom tests [end] */

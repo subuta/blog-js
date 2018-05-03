@@ -15,8 +15,7 @@ tag.get('/', async (ctx) => {
 
   ctx.body = await Tag.query()
     .applyFilter('default')
-    .eagerAlgorithm(Tag.NaiveEagerAlgorithm)
-    .eager('[articles(last30).[reactions.reactedBy, tags, author]]')
+    .eager('[articles.[reactions.reactedBy, tags, author]]')
     .joinRelation('[articles]')
     .where(params)
 })
@@ -30,7 +29,7 @@ tag.get('/:label', async (ctx) => {
   /* mat Before show [end] */
 
   ctx.body = await Tag.query()
-    .eager('[articles(last30).[reactions.reactedBy, tags, author]]')
+    .eager('[articles.[reactions.reactedBy, tags, author]]')
     .joinRelation('[articles]')
     .findFirst({...params, label: ctx.params.label})
 })

@@ -24,7 +24,7 @@ article.get('/', async (ctx) => {
 
     ctx.body = await Article.query()
       .applyFilter('draft')
-      .eager('[tags.articles(last30), reactions.reactedBy, author]')
+      .eager('[tags.articles, reactions.reactedBy, author]')
       .joinRelation('[tags]')
       .where(params)
 
@@ -41,7 +41,7 @@ article.get('/', async (ctx) => {
   let page = _.get(ctx, 'request.query.page') !== undefined && Number(_.get(ctx, 'request.query.page'))
   if (page || page === 0) {
     const result = await Article.query()
-      .eager('[tags.articles(last30), reactions.reactedBy, author]')
+      .eager('[tags.articles, reactions.reactedBy, author]')
       .joinRelation('[tags]')
       .orderBy('created_at', 'desc')
       .orderBy('id', 'desc')
@@ -66,8 +66,7 @@ article.get('/', async (ctx) => {
 
   ctx.body = await Article.query()
     .applyFilter('default')
-    .eagerAlgorithm(Article.NaiveEagerAlgorithm)
-    .eager('[tags.articles(last30), reactions.reactedBy, author]')
+    .eager('[tags.articles, reactions.reactedBy, author]')
     .joinRelation('[tags]')
     .where(params)
 })
@@ -96,7 +95,7 @@ article.get('/:id', async (ctx) => {
 
   ctx.body = await Article.query()
     .applyFilter('default')
-    .eager('[tags.articles(last30), reactions.reactedBy, author]')
+    .eager('[tags.articles, reactions.reactedBy, author]')
     .findFirst({...params, id: ctx.params.id})
 })
 
@@ -118,7 +117,7 @@ article.post('/', auth, async (ctx) => {
       ...article,
       ...params
     })
-    .eager('[tags.articles(last30), reactions.reactedBy, author]')
+    .eager('[tags.articles, reactions.reactedBy, author]')
 
   /* mat After create [start] */
   /* mat After create [end] */
@@ -151,7 +150,7 @@ article.put('/:id', auth, async (ctx) => {
       ...article,
       ...params
     })
-    .eager('[tags.articles(last30), reactions.reactedBy, author]')
+    .eager('[tags.articles, reactions.reactedBy, author]')
 })
 
 article.delete('/:id', auth, async (ctx) => {

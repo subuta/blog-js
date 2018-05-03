@@ -58,7 +58,8 @@ export default class Comment extends Model {
 
   /* mat Custom methods [start] */
   static namedFilters = {
-    default: (builder) => builder,
+    default: (builder) => builder
+      .applyFilter('last30'),
 
     last30: (builder) => builder
       .orderBy('created_at', 'desc')

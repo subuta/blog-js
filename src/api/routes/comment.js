@@ -44,7 +44,6 @@ comment.get('/', async (ctx) => {
 
   ctx.body = await Comment.query()
     .applyFilter('default')
-    .eagerAlgorithm(Comment.NaiveEagerAlgorithm)
     .eager('[attachment, commentedBy, reactions.reactedBy]')
     .where(params)
 })
