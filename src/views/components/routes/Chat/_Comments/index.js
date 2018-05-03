@@ -53,6 +53,7 @@ const enhance = compose(
     let containerRef
     let listRef
     let unlistenResize = _.noop
+    let lastScrollTop = 0
 
     const cache = new CellMeasurerCache({
       defaultHeight,
@@ -95,13 +96,23 @@ const enhance = compose(
         containerRef = findDOMNode(ref)
       },
 
+      setLastScrollTop: () => (scrollTop) => {
+        lastScrollTop = scrollTop
+      },
+
       setListRef: () => (ref) => {
         listRef = ref
       },
 
-      recomputeRowHeights: () => () => {
-        cache.clearAll()
-        listRef.recomputeRowHeights()
+      refresh: () => () => {
+        if (cache) {
+          cache.clearAll()
+        }
+
+        if (listRef) {
+          listRef.recomputeRowHeights()
+          listRef.scrollToPosition(lastScrollTop)
+        }
       },
 
       initialize: () => () => {
@@ -116,24 +127,30 @@ const enhance = compose(
       getCache: () => () => cache
     }
   }),
+  withPropsOnChange(
+    ['rowCount'],
+    ({rowCount, refresh}) => {
+      refresh()
+    }
+  ),
   withHandlers({
     // Every row is loaded except for our loading indicator row.
     isRowLoaded: ({hasNext, comments}) => ({index}) => {
       return !hasNext || !!comments[index]
     },
 
-    onAddReaction: ({addReaction, recomputeRowHeights}) => (comment, emoji) => {
+    onAddReaction: ({addReaction, refresh}) => (comment, emoji) => {
       addReaction(comment.id, {
         channelId: comment.channelId,
         emoji
-      }).then(recomputeRowHeights)
+      }).then(refresh)
     },
 
-    onRemoveReaction: ({removeReaction, recomputeRowHeights}) => (comment, emoji) => {
+    onRemoveReaction: ({removeReaction, refresh}) => (comment, emoji) => {
       removeReaction(comment.id, {
         channelId: comment.channelId,
         emoji
-      }).then(recomputeRowHeights)
+      }).then(refresh)
     },
 
     onEditComment: ({updateComment}) => (comment) => {
@@ -170,6 +187,7 @@ export default enhance((props) => {
     setContainerRef,
     setListRef,
     getCache,
+    setLastScrollTop,
     lastRowCount,
     loadNext,
     styles,
@@ -180,7 +198,7 @@ export default enhance((props) => {
     ...rest
   } = props
 
-  const cache = getCache();
+  const cache = getCache()
 
   // Only load 1 page of items at a time.
   // Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
@@ -316,6 +334,7 @@ export default enhance((props) => {
               registerChild(_ref)
               setListRef(_ref)
             }}
+            onScroll={(props) => setLastScrollTop(props.scrollTop)}
             onRowsRendered={onRowsRendered}
             height={containerStyle.height}
             width={containerStyle.width}
@@ -323,7 +342,6 @@ export default enhance((props) => {
             deferredMeasurementCache={cache}
             rowHeight={cache.rowHeight}
             rowRenderer={rowRenderer}
-            scrollToIndex={rowCount - 1}
             {...rest}
           />
         )}
