@@ -43,6 +43,7 @@ export const appendPortalNode = (portalClass) => {
   if (!document.querySelector(`.${portalClass}`)) {
     let portal = document.createElement('div')
     portal.className = portalClass
+    portal.style.cssText = 'z-index: 1;'
     body.appendChild(portal)
   }
 

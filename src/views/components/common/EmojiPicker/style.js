@@ -11,7 +11,7 @@ const PickerRoot = {
 
 const PickerWrapper = {
   position: 'inherit',
-  zIndex: 10,
+  zIndex: 11,
   display: 'none',
   '&.is-show': {
     display: 'block'

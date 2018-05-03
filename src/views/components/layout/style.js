@@ -43,7 +43,12 @@ const body = {
   lineHeight: 1.45,
   color: BLACK_COLOR,
   '-webkit-font-smoothing': 'antialiased',
-  'text-rendering': 'optimizeLegibility'
+  'text-rendering': 'optimizeLegibility',
+
+  // nextjs entrypoint
+  '#__next': {
+    zIndex: 0
+  }
 }
 
 const p = {
@@ -256,7 +261,8 @@ const Container = {
   display: 'flex',
   alignItems: 'flex-start',
   justifyContent: 'flex-start',
-  overflow: 'scroll'
+  overflow: 'scroll',
+  zIndex: 1
 }
 
 export default createWithStyles({

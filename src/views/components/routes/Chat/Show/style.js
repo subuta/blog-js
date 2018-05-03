@@ -148,7 +148,7 @@ const Footer = {
   left: 0,
   minHeight: MIN_TEXT_AREA_HEIGHT,
   backgroundColor: PRIMARY_COLOR,
-  zIndex: 100
+  zIndex: 10
 }
 
 const FileInput = {

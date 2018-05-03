@@ -75,7 +75,7 @@ const enhance = compose(
             },
 
             preventOverflow: {
-              boundariesElement: 'window'
+              boundariesElement: 'viewport'
             },
 
             applyStyle: {enabled: false},
