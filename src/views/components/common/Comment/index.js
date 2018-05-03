@@ -34,10 +34,12 @@ export default enhance((props) => {
     className,
     comment,
     styles,
+    style,
     isHover,
     setIsHover,
     isAuthenticated,
     currentUser,
+    onLoad = _.noop, // Will be called on content loaded.
     onEdit = _.noop,
     onDelete = _.noop,
     onAddReaction = _.noop,
@@ -68,8 +70,9 @@ export default enhance((props) => {
   return (
     <div
       className={commentWrapperClass}
-      onMouseEnter={() => requestAnimationFrame(() => setIsHover(true))}
-      onMouseLeave={() => requestAnimationFrame(() => setIsHover(false))}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+      style={style}
     >
       <Avatar avatar={avatar} nickname={nickname}/>
 
@@ -81,12 +84,17 @@ export default enhance((props) => {
         </div>
 
         {attachment && (
-          <img src={attachment.imageUrl} alt={attachment.name}/>
+          <img
+            src={attachment.imageUrl}
+            alt={attachment.name}
+            onLoad={onLoad}
+          />
         )}
 
         <MarkdownContent
           className="text"
           html={toHtml(text)}
+          onLoad={onLoad}
         />
 
         <Reactions

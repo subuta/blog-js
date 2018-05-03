@@ -2,12 +2,12 @@ import React from 'react'
 import {
   compose,
   withHandlers,
-  withState
+  withState,
+  lifecycle
 } from 'recompose'
 
 import _ from 'lodash'
 import moment from 'moment'
-import Waypoint from 'react-waypoint'
 
 import DateLine from 'src/views/components/common/DateLine'
 import Comment from 'src/views/components/common/Comment'
@@ -26,25 +26,72 @@ import connect from './connect'
 
 import { findDOMNode } from 'react-dom'
 
+const defaultHeight = 300
+const defaultWidth = 300
+
 const enhance = compose(
   withStyles,
   connect,
-  withHandlers(() => {
-    let listRef
+  withState('containerStyle', 'setContainerStyle', {
+    height: defaultHeight,
+    width: defaultWidth
+  }),
+  withState('isInitialized', 'setIsInitialized', false),
+  withHandlers((props) => {
+    const {
+      setIsInitialized,
+      setContainerStyle
+    } = props
+
+    let containerRef
+    let unlistenResize = _.noop
 
     const cache = new CellMeasurerCache({
-      defaultHeight: 300,
+      defaultHeight,
       fixedWidth: true
-    });
+    })
+
+    const fetchContainerStyle = () => {
+      if (!containerRef) return
+
+      const computedStyle = getComputedStyle(containerRef)
+
+      let height = containerRef.clientHeight
+      let width = containerRef.clientWidth
+
+      height -= parseFloat(computedStyle.paddingTop) + parseFloat(computedStyle.paddingBottom)
+      width -= parseFloat(computedStyle.paddingLeft) + parseFloat(computedStyle.paddingRight)
+
+      setContainerStyle({
+        height,
+        width
+      })
+    }
+
+    const listenResize = () => {
+      const onResize = (e) => {
+        fetchContainerStyle()
+      }
+
+      window.addEventListener('resize', onResize, true)
+      unlistenResize = () => window.removeEventListener('resize', onResize)
+
+      // Call once
+      onResize()
+    }
 
     return {
-      setListRef: () => (ref) => {
-        listRef = ref
+      setContainerRef: () => (ref) => {
+        containerRef = findDOMNode(ref)
       },
 
-      recomputeRowHeights: () => () => {
-        if (!listRef) return
-        listRef.recomputeRowHeights()
+      initialize: () => () => {
+        listenResize()
+        requestAnimationFrame(() => setIsInitialized(true));
+      },
+
+      destroy: () => () => {
+        unlistenResize();
       },
 
       getCache: () => () => cache
@@ -66,7 +113,16 @@ const enhance = compose(
     },
 
     onEditComment: ({updateComment}) => (comment) => {
-      console.log('edit this!');
+      console.log('edit this!')
+    }
+  }),
+  lifecycle({
+    componentDidMount () {
+      this.props.initialize()
+    },
+
+    componentWillUnmount () {
+      this.props.destroy()
     }
   })
 )
@@ -76,15 +132,18 @@ export default enhance((props) => {
   const {
     hasNext = true,
     isProgress = false,
+    isInitialized,
     comments = [],
     setListRef,
     scrollToIndex,
+    containerStyle,
     onDateChange,
     onEditComment,
     onUpdate,
     onDelete,
     onAddReaction,
     onRemoveReaction,
+    setContainerRef,
     getCache,
     loadNext,
     styles,
@@ -113,7 +172,15 @@ export default enhance((props) => {
   let lastDay = null
 
   // Render a list item or a loading indicator.
-  const rowRenderer = ({index, key, parent, style}) => {
+  const rowRenderer = (props) => {
+    const {
+      index,
+      key,
+      parent,
+      isScrolling,
+      style
+    } = props
+
     let content
 
     const isFirst = index === 0
@@ -134,60 +201,43 @@ export default enhance((props) => {
     }
 
     const component = (
-      <React.Fragment
+      <CellMeasurer
+        cache={cache}
+        columnIndex={0}
         key={comment.id}
+        parent={parent}
+        rowIndex={index}
       >
-        {(isFirst || hasChanged) && (
-          // Show date line if firstRecord or dateChanged.
-          <DateLine
-            onEnter={() => onDateChange(previousDay)}
-            onLeave={() => onDateChange(today)}
-            date={lastDay}
-          />
-        )}
-
-        {!hasNext && isFirst && (
-          // Placeholder content.
-          <div className={styles.PullToFetch}>
-            <DummyComment width={320}/>
-            <DummyComment width={260}/>
-            <DummyComment variation="attachment"/>
-            <DummyComment width={160}/>
-            <DummyComment width={300}/>
-
-            {/*<Waypoint onEnter={onPullToFetch}/>*/}
-
-            <div className={styles.Loader}>
-              <CustomLoader
-                label="Loading..."
-                isShow={isProgress}
-                size={40}
+        {({measure}) => (
+          <div
+            key={comment.id}
+            style={style}
+          >
+            {(isFirst || hasChanged) && (
+              // Show date line if firstRecord or dateChanged.
+              <DateLine
+                onEnter={() => onDateChange(previousDay)}
+                onLeave={() => onDateChange(today)}
+                date={lastDay}
               />
-            </div>
+            )}
+
+            <Comment
+              key={comment.id}
+              className={styles.Comment}
+              comment={comment}
+              onAddReaction={onAddReaction}
+              onRemoveReaction={onRemoveReaction}
+              onEdit={() => onEditComment(comment)}
+              onUpdate={() => onUpdate(comment)}
+              onDelete={() => onDelete(comment)}
+              onLoad={measure}
+              isAuthenticated={isAuthenticated}
+              currentUser={currentUser}
+            />
           </div>
         )}
-
-        <CellMeasurer
-          cache={cache}
-          columnIndex={0}
-          key={key}
-          parent={parent}
-          rowIndex={index}
-        >
-          <Comment
-            className={styles.Comment}
-            comment={comment}
-            onAddReaction={onAddReaction}
-            onRemoveReaction={onRemoveReaction}
-            onEdit={() => onEditComment(comment)}
-            onUpdate={() => onUpdate(comment)}
-            onDelete={() => onDelete(comment)}
-            isAuthenticated={isAuthenticated}
-            currentUser={currentUser}
-            style={style}
-          />
-        </CellMeasurer>
-      </React.Fragment>
+      </CellMeasurer>
     )
 
     // set last created_at for next iteration.
@@ -197,29 +247,55 @@ export default enhance((props) => {
   }
 
   return (
-    <InfiniteLoader
-      isRowLoaded={isRowLoaded}
-      loadMoreRows={loadMoreRows}
-      rowCount={rowCount}
+    <div
+      className={`${styles.Comments} ${className}`}
+      ref={setContainerRef}
     >
-      {({onRowsRendered, registerChild}) => (
-        <List
-          ref={(ref) => {
-            registerChild(ref)
-            setListRef(ref)
-          }}
-          onRowsRendered={onRowsRendered}
-          width={300}
-          height={300}
-          rowCount={comments.length}
-          deferredMeasurementCache={cache}
-          rowHeight={cache.rowHeight}
-          rowRenderer={rowRenderer}
-          scrollToIndex={scrollToIndex}
-          className={`${styles.Comment} ${className}`}
-          {...rest}
-        />
+      {!isInitialized && (
+        // Placeholder content.
+        <div className={styles.PullToFetch}>
+          <DummyComment width={320}/>
+          <DummyComment width={260}/>
+          <DummyComment variation="attachment"/>
+          <DummyComment width={160}/>
+          <DummyComment width={300}/>
+
+          <DummyComment width={320}/>
+          <DummyComment width={260}/>
+          <DummyComment variation="attachment"/>
+          <DummyComment width={160}/>
+          <DummyComment width={300}/>
+
+          <div className={styles.Loader}>
+            <CustomLoader
+              label="Loading..."
+              isShow={true}
+              size={40}
+            />
+          </div>
+        </div>
       )}
-    </InfiniteLoader>
+
+      <InfiniteLoader
+        isRowLoaded={isRowLoaded}
+        loadMoreRows={loadMoreRows}
+        rowCount={rowCount}
+      >
+        {({onRowsRendered, registerChild}) => (
+          <List
+            ref={registerChild}
+            onRowsRendered={onRowsRendered}
+            height={containerStyle.height}
+            width={containerStyle.width}
+            rowCount={comments.length}
+            deferredMeasurementCache={cache}
+            rowHeight={cache.rowHeight}
+            rowRenderer={rowRenderer}
+            // scrollToIndex={scrollToIndex}
+            {...rest}
+          />
+        )}
+      </InfiniteLoader>
+    </div>
   )
 })

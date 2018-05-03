@@ -8,6 +8,7 @@ import Avatar from 'src/views/components/common/Avatar'
 export default withStyles((props) => {
   const {
     styles,
+    style,
     width,
     variation = 'comment'
   } = props
@@ -15,7 +16,10 @@ export default withStyles((props) => {
   let commentWrapperClass = styles.CommentWrapper
 
   return (
-    <div className={commentWrapperClass}>
+    <div
+      className={commentWrapperClass}
+      style={style}
+    >
       <Avatar avatar={null} nickname={null}/>
 
       <div className={styles.CommentPlaceholder}>

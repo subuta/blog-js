@@ -87,7 +87,7 @@ const HeaderContent = {
   justifyContent: 'center',
   alignItems: 'flex-start',
   flexDirection: 'column',
-  flex: '0 0 100%'
+  flex: '0 1 100%' // Allow shrink
 }
 
 const Title = {
@@ -147,7 +147,8 @@ const Footer = {
   bottom: 0,
   left: 0,
   minHeight: MIN_TEXT_AREA_HEIGHT,
-  background: PRIMARY_COLOR
+  backgroundColor: PRIMARY_COLOR,
+  zIndex: 100
 }
 
 const FileInput = {
@@ -224,22 +225,6 @@ const AddIcon = {
   width: 24
 }
 
-const PullToFetch = {
-  position: 'relative',
-}
-
-const Loader = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  bottom: 0,
-  right: 0,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  backgroundColor: 'rgba(255, 255, 255, 0.5)'
-}
-
 export default createWithStyles({
   Channels,
   DropTarget,
@@ -254,7 +239,5 @@ export default createWithStyles({
   FileInput,
   TextAreaWrapper,
   TextArea,
-  AddIcon,
-  PullToFetch,
-  Loader
+  AddIcon
 })

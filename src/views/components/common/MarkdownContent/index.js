@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {
   compose,
   withPropsOnChange,
@@ -7,13 +9,6 @@ import {
 import { sanitizeHtml } from 'src/views/utils/markdown'
 
 import withStyles from './style'
-
-import {
-  PRIMARY_COLOR,
-  ACCENT4_COLOR,
-  TABLET_MEDIA_QUERY,
-  BORDER_COLOR
-} from 'src/views/constants/style'
 
 const enhance = compose(
   withStyles,
