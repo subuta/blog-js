@@ -387,18 +387,20 @@ const Show = enhanceChatContent((props) => {
         </div>
 
         <div className={styles.Content}>
-          <Comments
-            className={styles.Comments}
-            comments={channelComments}
-            hasNext={!isLast}
-            isProgress={isCommentProgress}
-            loadNext={onPullToFetch}
-            onDateChange={setStickyDate}
-            // onUpdate={() => onUpdateComment(comment)}
-            onDelete={onDeleteComment}
-            isAuthenticated={isAuthenticated}
-            currentUser={currentUser}
-          />
+          {channelComments.length > 0 && (
+            <Comments
+              className={styles.Comments}
+              comments={channelComments}
+              hasNext={!isLast}
+              isProgress={isCommentProgress}
+              loadNext={onPullToFetch}
+              onDateChange={setStickyDate}
+              // onUpdate={() => onUpdateComment(comment)}
+              onDelete={onDeleteComment}
+              isAuthenticated={isAuthenticated}
+              currentUser={currentUser}
+            />
+          )}
 
           <div className={styles.Footer}>
             <div className={styles.TextAreaWrapper}>

@@ -28,7 +28,9 @@ import connect from './connect'
 
 import { findDOMNode } from 'react-dom'
 
-const defaultHeight = 300
+const isBrowser = typeof window !== 'undefined'
+
+const defaultHeight = 50
 const defaultWidth = 300
 
 const enhance = compose(
@@ -53,11 +55,16 @@ const enhance = compose(
     let containerRef
     let listRef
     let unlistenResize = _.noop
-    let lastScrollTop = 0
+    let lastScrollTop = -1
+    let comments = []
 
     const cache = new CellMeasurerCache({
       defaultHeight,
-      fixedWidth: true
+      fixedWidth: true,
+      keyMapper: (rowIndex, columnIndex) => {
+        // Fallback to default keyMapper.
+        return _.get(comments, [rowIndex, 'id']) || `${rowIndex}-${columnIndex}`
+      }
     })
 
     // Get container size at DOM.
@@ -104,9 +111,17 @@ const enhance = compose(
         listRef = ref
       },
 
-      refresh: () => () => {
+      syncComments: (props) => () => {
+        comments = props.comments
+      },
+
+      refresh: () => (rowIndex) => {
         if (cache) {
-          cache.clearAll()
+          if (rowIndex) {
+            cache.clear(rowIndex, 0)
+          } else {
+            cache.clearAll()
+          }
         }
 
         if (listRef) {
@@ -115,9 +130,15 @@ const enhance = compose(
         }
       },
 
-      initialize: () => () => {
+      scrollToBottom: ({comments}) => () => {
+        if (listRef) {
+          listRef.scrollToRow(comments.length)
+        }
+      },
+
+      initialize: ({comments}) => () => {
         listenResize()
-        requestAnimationFrame(() => setIsInitialized(true))
+        setIsInitialized(true)
       },
 
       destroy: () => () => {
@@ -139,18 +160,22 @@ const enhance = compose(
       return !hasNext || !!comments[index]
     },
 
-    onAddReaction: ({addReaction, refresh}) => (comment, emoji) => {
+    onAddReaction: ({addReaction, comments, refresh}) => (comment, emoji) => {
+      const rowIndex = _.findIndex(comments, ['id', comment.id])
+
       addReaction(comment.id, {
         channelId: comment.channelId,
         emoji
-      }).then(refresh)
+      }).then(() => refresh(rowIndex))
     },
 
-    onRemoveReaction: ({removeReaction, refresh}) => (comment, emoji) => {
+    onRemoveReaction: ({removeReaction, comments, refresh}) => (comment, emoji) => {
+      const rowIndex = _.findIndex(comments, ['id', comment.id])
+
       removeReaction(comment.id, {
         channelId: comment.channelId,
         emoji
-      }).then(refresh)
+      }).then(() => refresh(rowIndex))
     },
 
     onEditComment: ({updateComment}) => (comment) => {
@@ -160,6 +185,8 @@ const enhance = compose(
   lifecycle({
     componentDidMount () {
       this.props.initialize()
+      this.props.refresh()
+      this.props.scrollToBottom()
     },
 
     componentWillUnmount () {
@@ -340,6 +367,7 @@ export default enhance((props) => {
             width={containerStyle.width}
             rowCount={rowCount}
             deferredMeasurementCache={cache}
+            estimatedRowSize={defaultHeight}
             rowHeight={cache.rowHeight}
             rowRenderer={rowRenderer}
             {...rest}

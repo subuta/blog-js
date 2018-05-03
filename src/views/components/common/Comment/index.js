@@ -14,6 +14,7 @@ import withStyles from './style'
 import {
   compose,
   withState,
+  lifecycle,
   withPropsOnChange
 } from 'recompose'
 
@@ -26,7 +27,20 @@ const isBrowser = typeof window !== 'undefined'
 
 const enhance = compose(
   withStyles,
-  withState('isHover', 'setIsHover', false)
+  withState('isHover', 'setIsHover', false),
+  lifecycle({
+    componentDidMount () {
+      const {
+        attachment,
+        onLoad = _.noop
+      } = this.props
+
+      // Call onLoad at this hook for no-attachment comment.
+      if (!attachment) {
+        onLoad()
+      }
+    }
+  })
 )
 
 export default enhance((props) => {
@@ -94,7 +108,6 @@ export default enhance((props) => {
         <MarkdownContent
           className="text"
           html={toHtml(text)}
-          onLoad={onLoad}
         />
 
         <Reactions
