@@ -17,7 +17,6 @@ export default withStyles((props) => {
   } = props
 
   const dateLineClass = `${styles.DateLine} date-line`
-  const diff = moment().diff(date, 'days')
 
   const Trigger = (
     <Waypoint
@@ -35,20 +34,22 @@ export default withStyles((props) => {
     />
   )
 
-  if (!date || diff === undefined) {
+  if (!date) {
     return (
       <div className={dateLineClass}/>
     )
   }
 
-  if (diff === 1) {
+  const diff = moment().diff(date, 'days')
+
+  if (diff === 0) {
     return (
       <div className={dateLineClass}>
         {Trigger}
         <b>Today</b>
       </div>
     )
-  } else if (diff === 2) {
+  } else if (diff === 1) {
     return (
       <div className={dateLineClass}>
         {Trigger}

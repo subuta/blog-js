@@ -72,6 +72,7 @@ const enhance = compose(
   withState('initialText', 'setInitialText', ''),
   withHandlers(() => {
     let editorInstance
+    let commentsInstance
     let $fileInput
     let onSetEditorInstances = []
 
@@ -91,6 +92,10 @@ const enhance = compose(
           _.each(onSetEditorInstances, fn => fn(editorInstance))
           onSetEditorInstances = []
         })
+      },
+
+      setCommentsInstance: () => (instance) => {
+        commentsInstance = instance
       },
 
       resetEditor: () => (initialValue) => {
@@ -116,18 +121,9 @@ const enhance = compose(
         return editorInstance.getIsFocused()
       },
 
-      scrollComments: () => (position = -1) => {
-        console.log('scroll!')
-        // requestAnimationFrame(() => {
-        //   if (!$comments) return
-        //
-        //   let scrollTo = 0
-        //   if (position === -1) {
-        //     scrollTo = $comments.scrollHeight
-        //   }
-        //
-        //   $comments.scrollTop = scrollTo
-        // })
+      scrollComments: ({channelComments}) => () => {
+        if (!commentsInstance) return
+        commentsInstance.scrollToRow(channelComments.length)
       }
     }
   }),
@@ -151,7 +147,7 @@ const enhance = compose(
 
       if (!isBrowser) return
 
-      scrollComments()
+      requestAnimationFrame(() => scrollComments());
 
       const previousValue = storage.getItem(`comments.${channelId}.draft`)
       if (!previousValue) {
@@ -330,6 +326,7 @@ const Show = enhanceChatContent((props) => {
     setEditorInstance,
     setStickyDate,
     setFileInputRef,
+    setCommentsInstance,
     stickyDate,
     showFileSelection,
     onPullToFetch,
@@ -383,6 +380,7 @@ const Show = enhanceChatContent((props) => {
             </div>
           </div>
 
+          {/* FIXME: stickyDate not works correctly for some conditions. */}
           <DateLine date={stickyDate}/>
         </div>
 
@@ -399,6 +397,7 @@ const Show = enhanceChatContent((props) => {
               onDelete={onDeleteComment}
               isAuthenticated={isAuthenticated}
               currentUser={currentUser}
+              instance={setCommentsInstance}
             />
           )}
 

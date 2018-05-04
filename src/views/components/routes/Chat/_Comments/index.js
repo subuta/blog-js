@@ -49,7 +49,8 @@ const enhance = compose(
   withHandlers((props) => {
     const {
       setIsInitialized,
-      setContainerStyle
+      setContainerStyle,
+      instance = _.noop
     } = props
 
     let containerRef
@@ -98,6 +99,17 @@ const enhance = compose(
       onResize()
     }
 
+    const scrollToRow = (rowIndex) => {
+      if (listRef) {
+        listRef.scrollToRow(rowIndex)
+      }
+    }
+
+    // FIXME: More better way to expose editor api.
+    instance({
+      scrollToRow
+    })
+
     return {
       setContainerRef: () => (ref) => {
         containerRef = findDOMNode(ref)
@@ -130,11 +142,7 @@ const enhance = compose(
         }
       },
 
-      scrollToBottom: ({comments}) => () => {
-        if (listRef) {
-          listRef.scrollToRow(comments.length)
-        }
-      },
+      scrollToRow: () => scrollToRow,
 
       initialize: ({comments}) => () => {
         listenResize()
@@ -156,7 +164,7 @@ const enhance = compose(
   ),
   withHandlers({
     // Every row is loaded except for our loading indicator row.
-    // FIXME: loadMoreRows called at initail render.
+    // FIXME: loadMoreRows called at initial render.
     isRowLoaded: ({hasNext, comments}) => ({index}) => {
       const comment = comments[index]
       return !hasNext || !!comment
@@ -186,9 +194,17 @@ const enhance = compose(
   }),
   lifecycle({
     componentDidMount () {
-      this.props.initialize()
-      this.props.refresh()
-      this.props.scrollToBottom()
+      const {
+        comments,
+        initialize,
+        refresh,
+        scrollToRow
+      } = this.props
+
+      initialize()
+      refresh()
+
+      isBrowser && requestAnimationFrame(() => scrollToRow(comments.length));
     },
 
     componentWillUnmount () {
@@ -205,7 +221,6 @@ export default enhance((props) => {
     isInitialized,
     comments = [],
     rowCount,
-    scrollToIndex,
     containerStyle,
     onDateChange,
     onEditComment,
@@ -217,7 +232,6 @@ export default enhance((props) => {
     setListRef,
     getCache,
     setLastScrollTop,
-    lastRowCount,
     loadNext,
     styles,
     className,
@@ -234,8 +248,6 @@ export default enhance((props) => {
   const loadMoreRows = isProgress
     ? () => {}
     : loadNext
-
-  let lastDay = null
 
   // Render a list item or a loading indicator.
   const rowRenderer = (props) => {
@@ -268,13 +280,11 @@ export default enhance((props) => {
       )
     }
 
-    const today = moment(comment.created_at).startOf('day')
-    const hasChanged = today.diff(lastDay, 'days') > 0
-    let previousDay = null
+    const previousComment = comments[index - 1]
 
-    if (hasChanged) {
-      previousDay = lastDay
-    }
+    const today = moment(comment.created_at).startOf('day')
+    const lastDay = previousComment ? moment(previousComment.created_at).startOf('day') : today
+    const hasChanged = today.diff(lastDay, 'days') > 0
 
     const component = (
       <CellMeasurer
@@ -289,12 +299,21 @@ export default enhance((props) => {
             key={key}
             style={style}
           >
-            {(isFirst || hasChanged) && (
-              // Show date line if firstRecord or dateChanged.
+            {isFirst && (
+              // Show date line if firstRecord
               <DateLine
-                onEnter={() => onDateChange(previousDay)}
+                onEnter={() => onDateChange(null)}
                 onLeave={() => onDateChange(today)}
-                date={lastDay}
+                date={today}
+              />
+            )}
+
+            {(!isFirst && hasChanged) && (
+              // Show date line if dateChanged.
+              <DateLine
+                onEnter={() => onDateChange(lastDay)}
+                onLeave={() => onDateChange(today)}
+                date={today}
               />
             )}
 
@@ -315,9 +334,6 @@ export default enhance((props) => {
         )}
       </CellMeasurer>
     )
-
-    // set last created_at for next iteration.
-    lastDay = today
 
     return component
   }
