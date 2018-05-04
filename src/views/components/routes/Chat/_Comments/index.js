@@ -43,12 +43,11 @@ const enhance = compose(
   withState('isInitialized', 'setIsInitialized', false),
   withProps(({comments, hasNext}) => {
     return {
-      rowCount: hasNext ? comments.length + 1 : comments.length
+      rowCount: (hasNext ? comments.length + 1 : comments.length) || 0
     }
   }),
   withHandlers((props) => {
     const {
-      setIsInitialized,
       setContainerStyle,
       instance = _.noop
     } = props
@@ -146,7 +145,6 @@ const enhance = compose(
 
       initialize: ({comments}) => () => {
         listenResize()
-        setIsInitialized(true)
       },
 
       destroy: () => () => {
@@ -164,10 +162,15 @@ const enhance = compose(
   ),
   withHandlers({
     // Every row is loaded except for our loading indicator row.
-    // FIXME: loadMoreRows called at initial render.
     isRowLoaded: ({hasNext, comments}) => ({index}) => {
-      const comment = comments[index]
-      return !hasNext || !!comment
+      const commentIndex = hasNext ? index - 1 : index
+      const comment = comments[commentIndex]
+
+      if (hasNext) {
+        return index > 0 && !!comment
+      }
+
+      return !!comment
     },
 
     onAddReaction: ({addReaction, comments, refresh}) => (comment, emoji) => {
@@ -186,10 +189,109 @@ const enhance = compose(
         channelId: comment.channelId,
         emoji
       }).then(() => refresh(rowIndex))
-    },
+    }
+  }),
+  withHandlers({
+    rowRenderer: (props) => (rowProps) => {
+      const {
+        hasNext = true,
+        comments = [],
+        onDateChange,
+        onUpdate,
+        onDelete,
+        onAddReaction,
+        onRemoveReaction,
+        getCache,
+        styles,
+        isAuthenticated,
+        isRowLoaded,
+        currentUser
+      } = props
 
-    onEditComment: ({updateComment}) => (comment) => {
-      console.log('edit this!')
+      const cache = getCache()
+
+      const {
+        key,
+        parent,
+        style,
+        index
+      } = rowProps
+
+      const isFirst = index === 0
+
+      if (!isRowLoaded({index})) {
+        return (
+          <CellMeasurer
+            cache={cache}
+            columnIndex={0}
+            key={key}
+            parent={parent}
+            rowIndex={index}
+          >
+            <DummyComment
+              key={key}
+              style={style}
+              width={320}
+            />
+          </CellMeasurer>
+        )
+      }
+
+      const commentIndex = hasNext ? index - 1 : index
+      const comment = comments[commentIndex]
+      const previousComment = comments[commentIndex - 1]
+
+      const today = moment(comment.created_at).startOf('day')
+      const lastDay = previousComment ? moment(previousComment.created_at).startOf('day') : today
+      const hasChanged = today.diff(lastDay, 'days') > 0
+
+      return (
+        <CellMeasurer
+          cache={cache}
+          columnIndex={0}
+          key={key}
+          parent={parent}
+          rowIndex={index}
+        >
+          {({measure}) => (
+            <div
+              key={key}
+              style={style}
+            >
+              {isFirst && (
+                // Show date line if firstRecord
+                <DateLine
+                  onEnter={() => onDateChange(null)}
+                  onLeave={() => onDateChange(today)}
+                  date={today}
+                />
+              )}
+
+              {(!isFirst && hasChanged) && (
+                // Show date line if dateChanged.
+                <DateLine
+                  onEnter={() => onDateChange(lastDay)}
+                  onLeave={() => onDateChange(today)}
+                  date={today}
+                />
+              )}
+
+              <Comment
+                key={key}
+                className={styles.Comment}
+                comment={comment}
+                onAddReaction={onAddReaction}
+                onRemoveReaction={onRemoveReaction}
+                onUpdate={() => onUpdate(comment)}
+                onDelete={() => onDelete(comment)}
+                onLoad={measure}
+                isAuthenticated={isAuthenticated}
+                currentUser={currentUser}
+              />
+            </div>
+          )}
+        </CellMeasurer>
+      )
     }
   }),
   lifecycle({
@@ -198,13 +300,18 @@ const enhance = compose(
         comments,
         initialize,
         refresh,
-        scrollToRow
+        scrollToRow,
+        setIsInitialized,
+        rowCount
       } = this.props
 
       initialize()
-      refresh()
 
-      isBrowser && requestAnimationFrame(() => scrollToRow(comments.length));
+      isBrowser && requestAnimationFrame(() => {
+        refresh()
+        scrollToRow(rowCount);
+        setIsInitialized(true)
+      });
     },
 
     componentWillUnmount () {
@@ -216,127 +323,32 @@ const enhance = compose(
 // FROM: https://github.com/bvaughn/react-virtualized/blob/master/docs/creatingAnInfiniteLoadingList.md
 export default enhance((props) => {
   const {
-    hasNext = true,
     isProgress = false,
     isInitialized,
-    comments = [],
     rowCount,
     containerStyle,
-    onDateChange,
-    onEditComment,
-    onUpdate,
-    onDelete,
-    onAddReaction,
-    onRemoveReaction,
     setContainerRef,
     setListRef,
     getCache,
+    lastScrollTop,
     setLastScrollTop,
     loadNext,
     styles,
+    comments,
     className,
-    isAuthenticated,
-    isRowLoaded,
-    currentUser,
+    rowRenderer,
     ...rest
   } = props
 
   const cache = getCache()
+
+  const isRowLoaded = isInitialized ? props.isRowLoaded : () => true
 
   // Only load 1 page of items at a time.
   // Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
   const loadMoreRows = isProgress
     ? () => {}
     : loadNext
-
-  // Render a list item or a loading indicator.
-  const rowRenderer = (props) => {
-    const {
-      key,
-      parent,
-      style,
-      index
-    } = props
-
-    const isFirst = index === 0
-    const itemIndex = hasNext ? index + 1 : index
-    const comment = comments[index]
-
-    if ((hasNext && isFirst) || !isRowLoaded({index})) {
-      return (
-        <CellMeasurer
-          cache={cache}
-          columnIndex={0}
-          key={key}
-          parent={parent}
-          rowIndex={index}
-        >
-          <DummyComment
-            key={key}
-            style={style}
-            width={320}
-          />
-        </CellMeasurer>
-      )
-    }
-
-    const previousComment = comments[index - 1]
-
-    const today = moment(comment.created_at).startOf('day')
-    const lastDay = previousComment ? moment(previousComment.created_at).startOf('day') : today
-    const hasChanged = today.diff(lastDay, 'days') > 0
-
-    const component = (
-      <CellMeasurer
-        cache={cache}
-        columnIndex={0}
-        key={key}
-        parent={parent}
-        rowIndex={itemIndex}
-      >
-        {({measure}) => (
-          <div
-            key={key}
-            style={style}
-          >
-            {isFirst && (
-              // Show date line if firstRecord
-              <DateLine
-                onEnter={() => onDateChange(null)}
-                onLeave={() => onDateChange(today)}
-                date={today}
-              />
-            )}
-
-            {(!isFirst && hasChanged) && (
-              // Show date line if dateChanged.
-              <DateLine
-                onEnter={() => onDateChange(lastDay)}
-                onLeave={() => onDateChange(today)}
-                date={today}
-              />
-            )}
-
-            <Comment
-              key={key}
-              className={styles.Comment}
-              comment={comment}
-              onAddReaction={onAddReaction}
-              onRemoveReaction={onRemoveReaction}
-              onEdit={() => onEditComment(comment)}
-              onUpdate={() => onUpdate(comment)}
-              onDelete={() => onDelete(comment)}
-              onLoad={measure}
-              isAuthenticated={isAuthenticated}
-              currentUser={currentUser}
-            />
-          </div>
-        )}
-      </CellMeasurer>
-    )
-
-    return component
-  }
 
   return (
     <div
@@ -370,9 +382,8 @@ export default enhance((props) => {
 
       <InfiniteLoader
         isRowLoaded={isRowLoaded}
-        loadMoreRows={loadMoreRows}
+        loadMoreRows={() => loadMoreRows()}
         rowCount={rowCount}
-        threshold={10}
       >
         {({onRowsRendered, registerChild}) => (
           <List
@@ -389,6 +400,7 @@ export default enhance((props) => {
             estimatedRowSize={defaultHeight}
             rowHeight={cache.rowHeight}
             rowRenderer={rowRenderer}
+            scrollToAlignment="start"
             {...rest}
           />
         )}

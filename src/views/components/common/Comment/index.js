@@ -4,6 +4,7 @@ import _ from 'lodash'
 
 import MdCreateIcon from 'react-icons/lib/md/create'
 import MdDeleteIcon from 'react-icons/lib/md/delete'
+import Editor from 'src/views/components/common/Editor'
 
 import MdInsertEmoticonIcon from 'react-icons/lib/md/insert-emoticon'
 import MarkdownContent from 'src/views/components/common/MarkdownContent'
@@ -15,19 +16,92 @@ import {
   compose,
   withState,
   lifecycle,
-  withPropsOnChange
+  branch,
+  renderComponent,
+  withPropsOnChange, withHandlers
 } from 'recompose'
 
 import Avatar from 'src/views/components/common/Avatar'
 import Tooltip from 'src/views/components/common/Tooltip'
 
 import { toHtml } from 'src/views/utils/markdown'
+import { findDOMNode } from 'react-dom'
+import keycode from 'keycode/index'
 
 const isBrowser = typeof window !== 'undefined'
 
 const enhance = compose(
   withStyles,
   withState('isHover', 'setIsHover', false),
+  withState('isEditing', 'setIsEditing', false),
+  withState('draftText', 'setDraftText', ({comment}) => comment.text),
+  withHandlers(() => {
+    let editorInstance
+    let onSetEditorInstances = []
+
+    return {
+      setEditorInstance: () => (instance) => {
+        editorInstance = instance
+        isBrowser && requestAnimationFrame(() => {
+          // Call listeners.
+          _.each(onSetEditorInstances, fn => fn(editorInstance))
+          onSetEditorInstances = []
+        })
+      },
+
+      resetEditor: () => (initialValue) => {
+        if (!editorInstance) {
+          // Delay execution
+          onSetEditorInstances.push(() => editorInstance.reset(initialValue))
+          return
+        }
+        editorInstance.reset(initialValue)
+      },
+
+      focusEditor: () => () => {
+        if (!editorInstance) {
+          // Delay execution
+          onSetEditorInstances.push((editorInstance) => editorInstance.focus())
+          return
+        }
+        editorInstance.focus()
+      },
+
+      getIsFocused: () => () => {
+        if (!editorInstance) return false
+        return editorInstance.getIsFocused()
+      },
+
+      onKeyDown: (props) => (e) => {
+        const {
+          onSetDraftText,
+          draftText,
+          resetEditor,
+          focusEditor,
+          setIsEditing
+        } = props
+
+        const key = keycode(e)
+
+        // if enter pressed(without shift-key)
+        if (key === 'enter' && !e.shiftKey) {
+          e.preventDefault()
+
+          // ignore empty.
+          if (!draftText) return false
+
+          onSetDraftText('')
+          resetEditor('')
+          focusEditor()
+
+          setIsEditing(false)
+
+          console.log('draftText = ', draftText)
+          return false
+        }
+      }
+    }
+  }),
   lifecycle({
     componentDidMount () {
       const {
@@ -39,8 +113,63 @@ const enhance = compose(
       if (!attachment) {
         onLoad()
       }
+    },
+
+    componentDidUpdate (prevProps) {
+      const props = this.props
+      if (prevProps.isEditing !== props.isEditing) {
+        props.onLoad()
+      }
     }
-  })
+  }),
+  branch(
+    ({isEditing}) => isEditing,
+    renderComponent((props) => {
+      const {
+        onKeyDown,
+        onSetDraftText,
+        setEditorInstance,
+        styles,
+        style,
+        className,
+        comment
+      } = props
+
+      const {
+        id,
+        text,
+        commentedBy,
+      } = comment
+
+      let commentWrapperClass = styles.CommentWrapper
+
+      if (className) {
+        commentWrapperClass += ` ${className}`
+      }
+
+      const avatar = _.get(commentedBy, 'avatar')
+      const nickname = _.get(commentedBy, 'nickname')
+
+      return (
+        <div
+          className={commentWrapperClass}
+          style={style}
+        >
+          <Avatar avatar={avatar} nickname={nickname}/>
+
+          <div className={styles.Comment}>
+            <Editor
+              key="editor"
+              onKeyDown={onKeyDown}
+              onSave={onSetDraftText}
+              instance={setEditorInstance}
+            />
+          </div>
+        </div>
+      )
+    }),
+    _.identity
+  )
 )
 
 export default enhance((props) => {
@@ -50,6 +179,8 @@ export default enhance((props) => {
     styles,
     style,
     isHover,
+    setIsEditing,
+    isEditing,
     setIsHover,
     isAuthenticated,
     currentUser,
@@ -72,7 +203,7 @@ export default enhance((props) => {
   const avatar = _.get(commentedBy, 'avatar')
   const nickname = _.get(commentedBy, 'nickname')
 
-  let commentWrapperClass = styles.CommentWrapper
+  let commentWrapperClass = `${styles.CommentWrapper}`
   if (isHover) {
     commentWrapperClass += ' is-hovered'
   }
@@ -140,7 +271,7 @@ export default enhance((props) => {
           >
             <span
               className={styles.Action}
-              onClick={onEdit}
+              onClick={() => setIsEditing(true)}
             >
               <MdCreateIcon/>
             </span>
