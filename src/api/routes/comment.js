@@ -42,10 +42,14 @@ comment.get('/', async (ctx) => {
 
   /* mat Before index [end] */
 
-  ctx.body = await Comment.query()
+  let response = await Comment.query()
     .applyFilter('default')
     .eager('[attachment, commentedBy, reactions.reactedBy]')
     .where(params)
+
+
+
+  ctx.body = response
 })
 
 comment.post('/', auth, async (ctx) => {
@@ -98,12 +102,16 @@ comment.put('/:id', auth, async (ctx) => {
   }
   /* mat Before update [end] */
 
-  ctx.body = await Comment.query()
+  let response = await Comment.query()
     .patchAndFetchById(ctx.params.id, {
       ...comment,
       ...params
     })
     .eager('[attachment, commentedBy, reactions.reactedBy]')
+
+
+
+  ctx.body = response
 })
 
 comment.delete('/:id', auth, async (ctx) => {

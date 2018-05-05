@@ -13,9 +13,13 @@ channel.get('/', async (ctx) => {
   /* mat Before index [start] */
   /* mat Before index [end] */
 
-  ctx.body = await Channel.query()
+  let response = await Channel.query()
     .applyFilter('default')
     .where(params)
+
+
+
+  ctx.body = response
 })
 
 channel.get('/:id', async (ctx) => {

@@ -63,11 +63,15 @@ article.get('/', async (ctx) => {
   }
   /* mat Before index [end] */
 
-  ctx.body = await Article.query()
+  let response = await Article.query()
     .applyFilter('default')
     .eager('[tags.articles, reactions.reactedBy, author]')
     .leftOuterJoinRelation('[tags]')
     .where(params)
+
+
+
+  ctx.body = response
 })
 
 article.get('/:id', async (ctx) => {
@@ -105,9 +109,9 @@ article.post('/', auth, async (ctx) => {
   let params = {}
 
   /* mat Before create [start] */
+  // ignore deleting other users comment(if not admin).
   const currentUser = await ctx.state.getCurrentUser()
 
-  // ignore deleting other users comment(if not admin).
   params['authorId'] = currentUser.id
   /* mat Before create [end] */
 
@@ -139,17 +143,54 @@ article.put('/:id', auth, async (ctx) => {
   const oldArticle = await Article.query()
     .findFirst({id: ctx.params.id})
 
-  if (!currentUser.isAdmin && oldArticle.authorId !== currentUser.id) {
+  if (!currentUser || (!currentUser.isAdmin && oldArticle.authorId !== currentUser.id)) {
     return
   }
   /* mat Before update [end] */
 
-  ctx.body = await Article.query()
+  let response = await Article.query()
     .patchAndFetchById(ctx.params.id, {
       ...article,
       ...params
     })
     .eager('[tags.articles, reactions.reactedBy, author]')
+
+  /* mat After update [start] */
+  const Promise = require('bluebird')
+  const {Tag} = ctx.state.models
+
+  const TAG_REGEX = /#([\w+!@\-1-:]+)/g
+  const tags = []
+
+  let match
+  while (match = TAG_REGEX.exec(article.content)) {
+    tags.push(match[1])
+  }
+
+  // retrieve created article.
+  const found = await Article.query()
+    .eager('[tags.articles, reactions.reactedBy, author]')
+    .findFirst({id: ctx.params.id})
+
+  const tagsToDelete = _.differenceBy(_.map(found.tags, 'label'), tags)
+
+  // create each tags.
+  const createTagPromise = Promise.map(tags, async (tag) => {
+    return await found.$relatedQuery('tags')
+      .findOrCreate({where: {label: tag}, defaults: {label: tag}})
+  })
+
+  const deleteTagPromise = found.$relatedQuery('tags')
+    .whereIn('label', tagsToDelete)
+    .unrelate()
+
+  await Promise.all([deleteTagPromise, createTagPromise])
+
+  response = await found.$query()
+    .eager('[tags.articles, reactions.reactedBy, author]')
+  /* mat After update [end] */
+
+  ctx.body = response
 })
 
 article.delete('/:id', auth, async (ctx) => {

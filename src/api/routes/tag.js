@@ -13,11 +13,20 @@ tag.get('/', async (ctx) => {
   /* mat Before index [start] */
   /* mat Before index [end] */
 
-  ctx.body = await Tag.query()
+  let response = await Tag.query()
     .applyFilter('default')
     .eager('[articles.[reactions.reactedBy, tags, author]]')
     .leftOuterJoinRelation('[articles]')
     .where(params)
+
+  /* mat After index [start] */
+  // exclude tag that not has article(simulate rightOuterJoin behavior.)
+  response = _.filter(response, (tag) => {
+    return tag.articles.length > 0
+  })
+  /* mat After index [end] */
+
+  ctx.body = response
 })
 
 /* mat Custom actions [start] */
@@ -30,7 +39,7 @@ tag.get('/:label', async (ctx) => {
 
   ctx.body = await Tag.query()
     .eager('[articles.[reactions.reactedBy, tags, author]]')
-    .joinRelation('[articles]')
+    .leftOuterJoinRelation('[articles]')
     .findFirst({...params, label: ctx.params.label})
 })
 /* mat Custom actions [end] */

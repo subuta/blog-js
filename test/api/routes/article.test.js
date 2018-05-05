@@ -440,4 +440,50 @@ test('update should not update article of other user if currentUser is not admin
 
   t.is(response.status, 404)
 })
+
+test('put should create tag for article', async (t) => {
+  const {request, Article} = t.context
+
+  // mock jwks
+  const token = createToken(privateKey, '123', currentUser)
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const content = `
+    ### HOGE
+    - hoge
+    - #fuga
+    - #piyo
+    
+    and some #hoge tag.
+  `
+
+  const response = await request
+    .put('/api/articles/24271')
+    .set('Authorization', `Bearer ${token}`)
+    .send({
+      article: {
+        id: 24271,
+        title: 'Some article',
+        summary: 'summary',
+        slug: 'some-article',
+        isPublished: true,
+        content: content
+      }
+    })
+
+  t.is(response.status, 200)
+
+  t.deepEqual(response.body.id, 24271)
+  t.deepEqual(response.body.title, 'Some article')
+  t.deepEqual(response.body.summary, 'summary')
+  t.deepEqual(response.body.slug, 'some-article')
+  t.deepEqual(response.body.isPublished, true)
+  t.deepEqual(
+    response.body.content,
+    content
+  )
+
+  t.deepEqual(response.body.tags.length, 3)
+  t.deepEqual(_.map(response.body.tags, 'label'), ['fuga', 'piyo', 'hoge'])
+})
 /* mat Custom tests [end] */

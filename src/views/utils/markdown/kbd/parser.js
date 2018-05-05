@@ -5,8 +5,7 @@ const C_PIPE = '|'
 const DOUBLE = '||'
 
 function locator (value, fromIndex) {
-  const index = value.indexOf(DOUBLE, fromIndex)
-  return index
+  return value.indexOf(DOUBLE, fromIndex)
 }
 
 function plugin () {
