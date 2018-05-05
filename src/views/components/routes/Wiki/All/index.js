@@ -11,10 +11,12 @@ import TextArea from 'src/views/components/common/TextArea'
 import Modal from 'src/views/components/common/Modal'
 import Paper from 'src/views/components/common/Paper'
 import CustomLoader from 'src/views/components/common/CustomLoader'
+import Badge from 'src/views/components/common/Badge'
 
 import {
   compose,
   withState,
+  withProps,
   withHandlers
 } from 'recompose'
 
@@ -36,6 +38,12 @@ const enhance = compose(
   withState('draftSummary', 'setDraftSummary', ({article}) => article ? article.summary : ''),
   withState('draftTitle', 'setDraftTitle', ({article}) => article ? article.title : ''),
   withState('isShowCreateArticleModal', 'setIsShowCreateArticleModal', false),
+  withProps(({articles}) => {
+    return {
+      articles: _.filter(articles, ['isPublished', true]),
+      draftArticles: _.filter(articles, ['isPublished', false])
+    }
+  }),
   withHandlers({
     onPullToFetch: (props) => () => {
       const {
@@ -86,6 +94,7 @@ export default enhance((props) => {
   const {
     styles,
     articles,
+    draftArticles,
     draftSlug,
     draftTitle,
     draftSummary,
@@ -154,10 +163,10 @@ export default enhance((props) => {
             <h4>Articles</h4>
 
             <ul className={styles.Articles}>
-              {_.map(articles, (article) => {
-                const {id, slug, title, summary, author} = article
+              {_.map([...draftArticles, ...articles], (article) => {
+                const {id, slug, title, summary, author, created_at} = article
                 const {nickname} = author
-                const createdAt = moment(props.createdAt).format('MMMM Do YYYY')
+                const createdAt = moment(created_at).format('MMMM Do YYYY')
                 return (
                   <li key={id}>
                     <ActiveLink
@@ -167,9 +176,12 @@ export default enhance((props) => {
                       <h4>{title}</h4>
                     </ActiveLink>
 
-                    <p>
+                    <p className="description">
                       <span>{summary}</span>
                       <span className="author">by <b>{nickname}</b></span>
+                      {!article.isPublished && (
+                        <Badge className="draft">draft</Badge>
+                      )}
                     </p>
 
                     <small className="created-at">{createdAt}</small>

@@ -12,6 +12,7 @@ import MarkdownContent from 'src/views/components/common/MarkdownContent'
 import TextField from 'src/views/components/common/TextField'
 import TextArea from 'src/views/components/common/TextArea'
 import Tooltip from 'src/views/components/common/Tooltip'
+import Badge from 'src/views/components/common/Badge'
 
 import Menu from 'src/views/components/common/Menu'
 import MaterialButton from 'src/views/components/common/MaterialButton'
@@ -362,7 +363,6 @@ const enhance = compose(
         }
 
         updateArticle(article.id, nextArticle).then(() => {
-
           Router.replace(`/article?slug=${slug}`, `/w/${slug}`)
         })
       }
@@ -402,7 +402,7 @@ export default enhance((props) => {
 
   const {title, isPublished, content, author, id} = article
   const {nickname} = author
-  const createdAt = moment(article.createdAt).format('MMMM Do YYYY')
+  const createdAt = moment(article.created_at).format('MMMM Do YYYY')
 
   return (
     <Layout>
@@ -523,7 +523,9 @@ export default enhance((props) => {
             <div className={styles.SubTitle}>
               <small className="created-at">{createdAt}</small>
               <small className="author">by {nickname}</small>
-              <small className="published">{isPublished ? '' : 'draft'}</small>
+              {!isPublished && (
+                <Badge className="draft">draft</Badge>
+              )}
             </div>
 
             <ArticleContent {...props}/>

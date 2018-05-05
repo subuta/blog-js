@@ -25,7 +25,6 @@ article.get('/', async (ctx) => {
     ctx.body = await Article.query()
       .applyFilter('draft')
       .eager('[tags.articles, reactions.reactedBy, author]')
-      .joinRelation('[tags]')
       .where(params)
 
     return
@@ -67,7 +66,7 @@ article.get('/', async (ctx) => {
   ctx.body = await Article.query()
     .applyFilter('default')
     .eager('[tags.articles, reactions.reactedBy, author]')
-    .joinRelation('[tags]')
+    .leftOuterJoinRelation('[tags]')
     .where(params)
 })
 

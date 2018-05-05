@@ -2,6 +2,7 @@ import createWithStyles from 'src/views/utils/style'
 
 import {
   BLACK_COLOR,
+  DIMMED_BLACK_COLOR,
   GRAY_COLOR,
   BORDER_COLOR,
   PRIMARY_COLOR,
@@ -30,10 +31,8 @@ const Paper = {
     cursor: 'text'
   },
 
-  '.published': {
-    margin: '-1px 0 0 4px',
-    display: 'inline-block',
-    textDecoration: 'underline'
+  '.draft': {
+    margin: '-1px 0 0 4px'
   },
 
   '.author': {

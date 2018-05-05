@@ -52,8 +52,11 @@ const Articles = {
       margin: `0 ${80 + 16}px 0 0`
     },
 
-    '& p': {
+    '& .description': {
       margin: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
       color: DIMMED_BLACK_COLOR
     },
 
@@ -85,6 +88,10 @@ const Articles = {
       }
     }
   }
+}
+
+const DraftArticles = {
+  ...Articles
 }
 
 const CreateArticleModal = {
@@ -121,5 +128,6 @@ export default createWithStyles({
   CreateArticleModal,
   ScrollContainer,
   Articles,
+  DraftArticles,
   PullToFetch
 })

@@ -16,7 +16,7 @@ tag.get('/', async (ctx) => {
   ctx.body = await Tag.query()
     .applyFilter('default')
     .eager('[articles.[reactions.reactedBy, tags, author]]')
-    .joinRelation('[articles]')
+    .leftOuterJoinRelation('[articles]')
     .where(params)
 })
 
