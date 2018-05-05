@@ -4,6 +4,8 @@ exports.up = function(knex, Promise) {
     table.integer('articleId').references('articles.id').onDelete('CASCADE')
     table.integer('tagId').references('tags.id').onDelete('CASCADE')
     table.timestamps(true, true)
+
+    table.unique('tagId', 'articleId')
   })
 };
 

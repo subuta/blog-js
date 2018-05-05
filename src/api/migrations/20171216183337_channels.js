@@ -4,6 +4,8 @@ exports.up = function (knex) {
     table.string('name').notNullable()
     table.string('description').defaultTo('Channel description goes here')
     table.timestamps(true, true)
+
+    table.unique('name')
   })
 }
 

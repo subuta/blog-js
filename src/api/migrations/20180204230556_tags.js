@@ -3,6 +3,8 @@ exports.up = function(knex, Promise) {
     table.increments()
     table.text('label')
     table.timestamps(true, true)
+
+    table.unique('label')
   })
 };
 

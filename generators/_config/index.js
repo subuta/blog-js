@@ -23,7 +23,7 @@ export const Routes = {
       'index',
       'show'
     ],
-    eager: '[tags.articles, reactions.reactedBy, author]',
+    eager: '[tags, reactions.reactedBy, author]',
     joinRelation: '[tags]'
   },
   comment: {
@@ -60,7 +60,7 @@ export const Routes = {
       'index'
     ],
     skipAuth: true,
-    eager: '[articles.[reactions.reactedBy, tags, author]]',
+    eager: '[articles.[reactions.reactedBy, author]]',
     joinRelation: '[articles]'
   },
   reaction: {

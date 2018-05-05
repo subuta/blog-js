@@ -100,6 +100,10 @@ const renderMark = (props) => {
       return (
         <span className='kbd'>{children}</span>
       )
+    case 'tag':
+      return (
+        <span className='tag'>{children}</span>
+      )
     // via https://github.com/zestedesavoir/zmarkdown/tree/master/packages/remark-kbd
     case 'math':
       return (

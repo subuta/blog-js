@@ -93,12 +93,11 @@ const enhance = compose(
 export default enhance((props) => {
   const {
     styles,
-    articles,
-    draftArticles,
     draftSlug,
     draftTitle,
     draftSummary,
     onPullToFetch,
+    tagParam,
     isRequestProgress,
     isShowCreateArticleModal,
     setDraftSlug,
@@ -113,6 +112,12 @@ export default enhance((props) => {
   const {
     isLast = false
   } = paging
+
+  let articles = props.articles
+  // if tag not specified.
+  if (!tagParam) {
+    articles = [...props.draftArticles, ...props.articles]
+  }
 
   return (
     <Layout>
@@ -163,12 +168,12 @@ export default enhance((props) => {
             <h4>Articles</h4>
 
             <ul className={styles.Articles}>
-              {_.map([...draftArticles, ...articles], (article) => {
+              {_.map(articles, (article, i) => {
                 const {id, slug, title, summary, author, created_at} = article
                 const {nickname} = author
                 const createdAt = moment(created_at).format('MMMM Do YYYY')
                 return (
-                  <li key={id}>
+                  <li key={`${id}-${i}`}>
                     <ActiveLink
                       href={`/article?slug=${slug}`}
                       as={`/w/${slug}`}

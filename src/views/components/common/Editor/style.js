@@ -62,6 +62,16 @@ const Editor = {
     }
   },
 
+  '& .tag': {
+    margin: 0,
+    color: ACCENT4_COLOR,
+    fontWeight: 'bold',
+    wordBreak: 'break-all',
+    '&:hover': {
+      textDecoration: 'underline'
+    }
+  },
+
   '& .blockquote': {
     ...GrayFont,
     ...blockquote

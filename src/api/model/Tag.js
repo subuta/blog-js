@@ -43,5 +43,13 @@ export default class Tag extends Model {
   }
 
   /* mat Custom methods [start] */
+  static namedFilters = {
+    default: (builder) => builder
+      .applyFilter('sortByCreatedAt'),
+
+    sortByCreatedAt: (builder) => builder
+      .orderBy('created_at', 'asc')
+      .orderBy('id', 'asc')
+  }
   /* mat Custom methods [end] */
 }

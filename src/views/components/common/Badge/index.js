@@ -9,8 +9,8 @@ export default withStyles(({styles, children, className}) => {
   }
 
   return (
-    <div className={badgeClass}>
+    <span className={badgeClass}>
       {children}
-    </div>
+    </span>
   )
 })

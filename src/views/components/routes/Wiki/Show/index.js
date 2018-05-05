@@ -401,7 +401,7 @@ export default enhance((props) => {
   if (!article) return null
 
   const {title, isPublished, content, author, id} = article
-  const {nickname} = author
+  const nickname = _.get(author, 'nickname')
   const createdAt = moment(article.created_at).format('MMMM Do YYYY')
 
   return (

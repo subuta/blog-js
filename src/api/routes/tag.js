@@ -15,15 +15,15 @@ tag.get('/', async (ctx) => {
 
   let response = await Tag.query()
     .applyFilter('default')
-    .eager('[articles.[reactions.reactedBy, tags, author]]')
+    .eager('[articles.[reactions.reactedBy, author]]')
     .leftOuterJoinRelation('[articles]')
     .where(params)
 
   /* mat After index [start] */
   // exclude tag that not has article(simulate rightOuterJoin behavior.)
-  response = _.filter(response, (tag) => {
+  response = _.uniqBy(_.filter(response, (tag) => {
     return tag.articles.length > 0
-  })
+  }), 'id')
   /* mat After index [end] */
 
   ctx.body = response
@@ -38,7 +38,7 @@ tag.get('/:label', async (ctx) => {
   /* mat Before show [end] */
 
   ctx.body = await Tag.query()
-    .eager('[articles.[reactions.reactedBy, tags, author]]')
+    .eager('[articles.[reactions.reactedBy, author]]')
     .leftOuterJoinRelation('[articles]')
     .findFirst({...params, label: ctx.params.label})
 })

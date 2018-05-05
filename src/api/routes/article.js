@@ -24,7 +24,7 @@ article.get('/', async (ctx) => {
 
     ctx.body = await Article.query()
       .applyFilter('draft')
-      .eager('[tags.articles, reactions.reactedBy, author]')
+      .eager('[tags, reactions.reactedBy, author]')
       .where(params)
 
     return
@@ -40,7 +40,7 @@ article.get('/', async (ctx) => {
   let page = _.get(ctx, 'request.query.page') !== undefined && Number(_.get(ctx, 'request.query.page'))
   if (page || page === 0) {
     const result = await Article.query()
-      .eager('[tags.articles, reactions.reactedBy, author]')
+      .eager('[tags, reactions.reactedBy, author]')
       .joinRelation('[tags]')
       .orderBy('created_at', 'desc')
       .orderBy('id', 'desc')
@@ -65,7 +65,7 @@ article.get('/', async (ctx) => {
 
   let response = await Article.query()
     .applyFilter('default')
-    .eager('[tags.articles, reactions.reactedBy, author]')
+    .eager('[tags, reactions.reactedBy, author]')
     .leftOuterJoinRelation('[tags]')
     .where(params)
 
@@ -83,7 +83,7 @@ article.get('/:id', async (ctx) => {
 
   if (currentUser) {
     const found = await Article.query()
-      .eager('[tags.articles(last30), reactions.reactedBy, author]')
+      .eager('[tags, reactions.reactedBy, author]')
       .findFirst({...params,
         id: ctx.params.id
       })
@@ -98,7 +98,7 @@ article.get('/:id', async (ctx) => {
 
   ctx.body = await Article.query()
     .applyFilter('default')
-    .eager('[tags.articles, reactions.reactedBy, author]')
+    .eager('[tags, reactions.reactedBy, author]')
     .findFirst({...params, id: ctx.params.id})
 })
 
@@ -120,7 +120,7 @@ article.post('/', auth, async (ctx) => {
       ...article,
       ...params
     })
-    .eager('[tags.articles, reactions.reactedBy, author]')
+    .eager('[tags, reactions.reactedBy, author]')
 
   /* mat After create [start] */
   /* mat After create [end] */
@@ -153,7 +153,7 @@ article.put('/:id', auth, async (ctx) => {
       ...article,
       ...params
     })
-    .eager('[tags.articles, reactions.reactedBy, author]')
+    .eager('[tags, reactions.reactedBy, author]')
 
   /* mat After update [start] */
   const Promise = require('bluebird')
@@ -169,25 +169,26 @@ article.put('/:id', auth, async (ctx) => {
 
   // retrieve created article.
   const found = await Article.query()
-    .eager('[tags.articles, reactions.reactedBy, author]')
+    .eager('[tags, reactions.reactedBy, author]')
     .findFirst({id: ctx.params.id})
 
-  const tagsToDelete = _.differenceBy(_.map(found.tags, 'label'), tags)
-
-  // create each tags.
-  const createTagPromise = Promise.map(tags, async (tag) => {
-    return await found.$relatedQuery('tags')
+  // relate tags.
+  await Promise.map(tags, async (tag) => {
+    const _tag = await Tag.query()
       .findOrCreate({where: {label: tag}, defaults: {label: tag}})
+
+    return await _tag.$relatedQuery('articles')
+      .relate(found.id)
   })
 
-  const deleteTagPromise = found.$relatedQuery('tags')
+  // remove un-used tags.
+  const tagsToDelete = _.differenceBy(_.map(found.tags, 'label'), tags)
+  await found.$relatedQuery('tags')
     .whereIn('label', tagsToDelete)
     .unrelate()
 
-  await Promise.all([deleteTagPromise, createTagPromise])
-
   response = await found.$query()
-    .eager('[tags.articles, reactions.reactedBy, author]')
+    .eager('[tags, reactions.reactedBy, author]')
   /* mat After update [end] */
 
   ctx.body = response
@@ -222,7 +223,7 @@ article.get('/slug/:slug', async (ctx) => {
 
   if (currentUser) {
     const found = await Article.query()
-      .eager('[tags.articles(last30), reactions.reactedBy, author]')
+      .eager('[tags, reactions.reactedBy, author]')
       .findFirst({...params,
         slug: ctx.params.slug
       })
@@ -237,7 +238,7 @@ article.get('/slug/:slug', async (ctx) => {
 
   ctx.body = await Article.query()
     .applyFilter('default')
-    .eager('[tags.articles(last30), reactions.reactedBy, author]')
+    .eager('[tags, reactions.reactedBy, author]')
     .findFirst({...params, slug: ctx.params.slug})
 })
 
@@ -248,7 +249,7 @@ article.put('/:id/reaction', auth, async (ctx) => {
   const article = await Article.query()
     .applyFilter('default')
     .findById(ctx.params.id)
-    .eager('[tags.articles(last30), reactions.reactedBy, author]')
+    .eager('[tags, reactions.reactedBy, author]')
 
   if (!article) return
 
@@ -267,7 +268,7 @@ article.put('/:id/reaction', auth, async (ctx) => {
   }
 
   ctx.body = await article.$query()
-    .eager('[tags.articles(last30), reactions.reactedBy, author]')
+    .eager('[tags, reactions.reactedBy, author]')
 })
 
 article.delete('/:id/reaction', auth, async (ctx) => {
@@ -277,7 +278,7 @@ article.delete('/:id/reaction', auth, async (ctx) => {
   const article = await Article.query()
     .applyFilter('default')
     .findById(ctx.params.id)
-    .eager('[tags.articles(last30), reactions.reactedBy, author]')
+    .eager('[tags, reactions.reactedBy, author]')
 
   if (!article) return
 
@@ -290,7 +291,7 @@ article.delete('/:id/reaction', auth, async (ctx) => {
     .where(query)
 
   ctx.body = await article.$query()
-    .eager('[tags.articles(last30), reactions.reactedBy, author]')
+    .eager('[tags, reactions.reactedBy, author]')
 })
 /* mat Custom actions [end] */
 

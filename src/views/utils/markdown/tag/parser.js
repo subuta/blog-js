@@ -27,15 +27,19 @@ function tokenize (eat, value, silent) {
   }
 
   // ignore the value contains line feed or blank space.
-  let subvalue = value.match(RE_TAG)[0]
-  if (!subvalue) return
+  let match = RE_TAG.exec(value)
+  if (!match) return
 
   if (silent) {
     return true
   }
 
   /* Eat a text-node. */
-  return eat(subvalue)({type: 'tag', value: subvalue})
+  return eat(match[0])({
+    type: 'tag',
+    label: match[1],
+    value: match[0]
+  })
 }
 
 function locate (value, fromIndex) {

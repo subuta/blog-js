@@ -25,6 +25,7 @@ const mapStateToProps = (state, oldProps) => {
 
   return {
     articles,
+    tagParam,
     isRequestProgress: getIsRequestProgress(state)
   }
 }
