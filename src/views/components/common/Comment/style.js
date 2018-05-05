@@ -69,10 +69,46 @@ const Comment = {
     }
   },
 
+  '& > button': {
+    display: 'inline-flex',
+    margin: '4px 4px 0 0',
+    padding: '2px 4px',
+    backgroundColor: 'transparent',
+    borderRadius: 4,
+    border: `1px solid transparent`,
+    justifyContent: 'center',
+    alignItems: 'center',
+    transition: `all 0.1s ${EASE_STANDARD}`,
+    outline: 'none',
+    fontSize: 13,
+
+    '& > kbd': {
+      marginLeft: '0'
+    },
+
+    '&:hover': {
+      border: `1px solid ${DIMMED_BLACK_COLOR}`,
+    },
+
+    '&:last-of-type': {
+      margin: '4px 0 0'
+    }
+  },
+
   '& .text': {
+    display: 'inline-block',
+
     '& p': {
       margin: 0
     }
+  },
+
+  '& .edited': {
+    margin: '0 0 0 4px',
+    display: 'inline-block',
+    color: '#A1A1A3',
+    fontSize: 13,
+    fontWeight: 600
   },
 
   '& .editor': {
@@ -81,7 +117,7 @@ const Comment = {
     height: '100%',
     backgroundColor: PRIMARY_COLOR,
     minHeight: MIN_TEXT_AREA_HEIGHT,
-    border: `1px solid ${BLACK_COLOR}`,
+    border: `1px solid ${DIMMED_BLACK_COLOR}`,
     borderRadius: 4
   },
 

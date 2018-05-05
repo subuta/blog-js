@@ -143,7 +143,9 @@ export const kbd = {
   margin: '0 4px',
   textShadow: '0 1px 0 #fff',
   lineHeight: 1.4,
-  whiteSpace: 'nowrap'
+  whiteSpace: 'nowrap',
+  textTransform: 'capitalize',
+  fontWeight: 'bold'
 }
 
 export const hr = {

@@ -208,12 +208,15 @@ const enhance = compose(
       })
     },
 
-    // onUpdateComment: ({updateComment}) => (comment) => {
-    //   console.log('edit!', comment)
-    // },
+    onUpdateComment: ({updateComment}) => (comment, params) => {
+      return updateComment(comment.id, {
+        ...comment,
+        ...params
+      })
+    },
 
     onDeleteComment: ({deleteComment}) => (comment) => {
-      deleteComment(comment.id, comment)
+      return deleteComment(comment.id, comment)
     },
 
     onKeyDown: (props) => (e) => {
@@ -330,6 +333,7 @@ const Show = enhanceChatContent((props) => {
     stickyDate,
     showFileSelection,
     onPullToFetch,
+    onUpdateComment,
     onDeleteComment,
     currentUser,
     isAuthenticated,
@@ -396,7 +400,7 @@ const Show = enhanceChatContent((props) => {
               onDateChange={setStickyDate}
               editingRowIndex={editingRowIndex}
               onEdit={setEditingRowIndex}
-              // onUpdate={() => onUpdateComment(comment)}
+              onUpdate={onUpdateComment}
               onDelete={onDeleteComment}
               isAuthenticated={isAuthenticated}
               currentUser={currentUser}

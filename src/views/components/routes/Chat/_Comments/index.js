@@ -173,24 +173,38 @@ const enhance = compose(
       return !!comment
     },
 
-    onAddReaction: ({hasNext, addReaction, comments, refresh}) => (comment, emoji) => {
+    onAddReaction: ({hasNext, addReaction, comments, refresh}) => async (comment, emoji) => {
       let rowIndex = _.findIndex(comments, ['id', comment.id])
       rowIndex = hasNext ? rowIndex + 1 : rowIndex
 
-      addReaction(comment.id, {
+      await addReaction(comment.id, {
         channelId: comment.channelId,
         emoji
-      }).then(() => refresh(rowIndex))
+      })
+
+      refresh(rowIndex)
     },
 
-    onRemoveReaction: ({hasNext, removeReaction, comments, refresh}) => (comment, emoji) => {
+    onRemoveReaction: ({hasNext, removeReaction, comments, refresh}) => async (comment, emoji) => {
       let rowIndex = _.findIndex(comments, ['id', comment.id])
       rowIndex = hasNext ? rowIndex + 1 : rowIndex
 
-      removeReaction(comment.id, {
+      await removeReaction(comment.id, {
         channelId: comment.channelId,
         emoji
-      }).then(() => refresh(rowIndex))
+      })
+
+      refresh(rowIndex)
+    },
+
+    onUpdateComment: ({onUpdate, comments, hasNext, refresh}) => async (comment, params) => {
+      let rowIndex = _.findIndex(comments, ['id', comment.id])
+      rowIndex = hasNext ? rowIndex + 1 : rowIndex
+
+      // wait for done update
+      await onUpdate(comment, params)
+
+      refresh(rowIndex)
     }
   }),
   withHandlers({
@@ -199,7 +213,7 @@ const enhance = compose(
         hasNext = true,
         comments = [],
         onDateChange,
-        onUpdate,
+        onUpdateComment,
         onDelete,
         onAddReaction,
         onRemoveReaction,
@@ -286,10 +300,11 @@ const enhance = compose(
                 comment={comment}
                 onAddReaction={onAddReaction}
                 onRemoveReaction={onRemoveReaction}
-                onUpdate={() => onUpdate(comment)}
+                onUpdate={onUpdateComment}
                 onDelete={() => onDelete(comment)}
                 onLoad={measure}
                 onEdit={() => onEdit(index)}
+                onEndEdit={() => onEdit(null)}
                 isEditing={editingRowIndex === index}
                 isAuthenticated={isAuthenticated}
                 currentUser={currentUser}

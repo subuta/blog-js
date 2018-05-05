@@ -6,9 +6,11 @@ import MdCreateIcon from 'react-icons/lib/md/create'
 import MdDeleteIcon from 'react-icons/lib/md/delete'
 import Editor from 'src/views/components/common/Editor'
 
-import MdInsertEmoticonIcon from 'react-icons/lib/md/insert-emoticon'
+import MdKeyboardReturnIcon from 'react-icons/lib/md/keyboard-return'
 import MarkdownContent from 'src/views/components/common/MarkdownContent'
 import Reactions from 'src/views/components/common/Reactions'
+
+import storage from 'src/views/utils/storage'
 
 import withStyles from './style'
 
@@ -66,17 +68,13 @@ const enhance = compose(
         editorInstance.focus()
       },
 
-      getIsFocused: () => () => {
-        if (!editorInstance) return false
-        return editorInstance.getIsFocused()
-      },
-
       onKeyDown: (props) => (e) => {
         const {
-          onSetDraftText,
+          comment,
           draftText,
-          resetEditor,
-          focusEditor
+          onLoad,
+          onEndEdit = _.noop,
+          onUpdate = _.noop,
         } = props
 
         const key = keycode(e)
@@ -88,13 +86,19 @@ const enhance = compose(
           // ignore empty.
           if (!draftText) return false
 
-          onSetDraftText('')
-          resetEditor('')
-          focusEditor()
+          onUpdate(comment, {
+            text: draftText
+          })
 
-          console.log('draftText = ', draftText)
+          onEndEdit()
+
+          return false
+        } else if (key === 'esc') {
+          onEndEdit()
           return false
         }
+
+        requestAnimationFrame(() => onLoad())
       }
     }
   }),
@@ -102,7 +106,7 @@ const enhance = compose(
     componentDidMount () {
       const {
         attachment,
-        onLoad = _.noop
+        onLoad = _.noop,
       } = this.props
 
       // Call onLoad at this hook for no-attachment comment.
@@ -112,9 +116,21 @@ const enhance = compose(
     },
 
     componentDidUpdate (prevProps) {
-      const props = this.props
-      if (prevProps.isEditing !== props.isEditing) {
-        props.onLoad()
+      const {
+        resetEditor,
+        isEditing,
+        focusEditor,
+        onLoad,
+        draftText
+      } = this.props
+
+      if (prevProps.isEditing !== isEditing) {
+        if (isEditing === true) {
+          resetEditor(draftText)
+          focusEditor()
+        }
+
+        requestAnimationFrame(() => onLoad())
       }
     }
   }),
@@ -122,11 +138,14 @@ const enhance = compose(
     ({isEditing}) => isEditing,
     renderComponent((props) => {
       const {
+        onEndEdit = _.noop,
+        onUpdate = _.noop,
         onKeyDown,
-        onSetDraftText,
+        setDraftText,
         setEditorInstance,
         styles,
         style,
+        draftText,
         className,
         comment
       } = props
@@ -157,9 +176,21 @@ const enhance = compose(
             <Editor
               key="editor"
               onKeyDown={onKeyDown}
-              onSave={onSetDraftText}
+              onSave={setDraftText}
               instance={setEditorInstance}
             />
+
+            <button
+              onClick={onEndEdit}
+            >
+              <kbd>esc</kbd><span>for Cancel editing</span>
+            </button>
+
+            <button
+              onClick={() => onUpdate(comment, {text: draftText})}
+            >
+              <kbd><MdKeyboardReturnIcon/></kbd><span>for Save</span>
+            </button>
           </div>
         </div>
       )
@@ -190,10 +221,16 @@ export default enhance((props) => {
     text,
     attachment,
     commentedBy,
-    reactions
+    reactions,
+    created_at,
+    updated_at
   } = comment
 
-  const createdAt = moment(comment.created_at).format('A HH:mm')
+  const createdAt = moment(created_at).startOf('minute')
+  const updatedAt = moment(updated_at).startOf('minute')
+
+  const isEdited = !createdAt.isSame(updatedAt)
+
   const avatar = _.get(commentedBy, 'avatar')
   const nickname = _.get(commentedBy, 'nickname')
 
@@ -219,7 +256,7 @@ export default enhance((props) => {
         <div className={styles.Nickname}>
           <span>{nickname || 'Anonymous'}</span>
 
-          <small className={styles.CommentedAt}>{createdAt}</small>
+          <small className={styles.CommentedAt}>{createdAt.format('A HH:mm')}</small>
         </div>
 
         {attachment && (
@@ -234,6 +271,10 @@ export default enhance((props) => {
           className="text"
           html={toHtml(text)}
         />
+
+        {isEdited && (
+          <span className="edited">(edited)</span>
+        )}
 
         <Reactions
           reactions={comment.reactions}
