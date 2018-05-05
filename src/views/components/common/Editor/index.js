@@ -24,7 +24,6 @@ import createInitialState from './initialState'
 const RE_EMOJI_LIKE = /^:[\w+\-1-:]+/
 
 const enhance = compose(
-  withState('anchorNode', 'setAnchorNode', null),
   withState('emojiFilter', 'setEmojiFilter', ''),
   withState('isShowEmojiPicker', 'setIsShowEmojiPicker', false),
   withState('uniqueId', 'setUniqueId', null),
@@ -39,15 +38,21 @@ const enhance = compose(
       return anchorNode
     }
 
+    let anchorNode = null
+
     return {
       onChange: ({setEditorState, setAnchorNode, onSave = _.noop}) => ({value}) => {
         // get and set current cursor Node to state.
         const selection = window.getSelection()
-        selection.anchorNode && setAnchorNode(findAnchorNode(selection))
+        if (selection && selection.anchorNode) {
+          anchorNode = findAnchorNode(selection)
+        }
 
         setEditorState(value)
         onSave(Plain.serialize(value))
-      }
+      },
+
+      getAnchorNode: () => () => anchorNode
     }
   }),
   withHandlers(function (props) {
@@ -88,15 +93,10 @@ const enhance = compose(
       setEditorState(editorState)
     }
 
-    const getIsFocused = () => {
-      return editorRef.id === _.get(document, 'activeElement.id')
-    }
-
     // FIXME: More better way to expose editor api.
     instance({
       focus,
-      reset,
-      getIsFocused
+      reset
     })
 
     return {
@@ -153,6 +153,7 @@ const enhance = compose(
         const nextState = change
           .collapseToEnd()
           .insertText(emoji.colons)
+          .focus()
 
         onChange(nextState)
       },
@@ -206,7 +207,6 @@ const enhance = compose(
 export default enhance((props) => {
   const {
     className,
-    anchorNode,
     editorState,
     isShowEmojiPicker,
     onChange,
@@ -214,17 +214,23 @@ export default enhance((props) => {
     onSelectEmojiPicker,
     onSelectEmojiAutoComplete,
     emojiFilter,
+    getAnchorNode,
     setEditorRef,
-    setIsShowEmojiPicker,
+    setEditorState,
     setIsFocused,
+    setIsShowEmojiPicker,
     uniqueId,
-    styles
+    styles,
+    onFocus = _.noop,
+    onBlur = _.noop
   } = props
 
   let editorWrapperClass = styles.EditorWrapper
   if (className) {
     editorWrapperClass += ` ${className}`
   }
+
+  const anchorNode = getAnchorNode()
 
   return (
     <div className={editorWrapperClass}>
@@ -251,6 +257,8 @@ export default enhance((props) => {
         spellCheck={false}
         onChange={onChange}
         onKeyDown={onKeyDown}
+        onFocus={onFocus}
+        onBlur={onBlur}
       />
     </div>
   )

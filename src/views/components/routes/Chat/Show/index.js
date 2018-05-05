@@ -62,6 +62,8 @@ const enhance = compose(
   withStyles,
   connect,
   withState('stickyDate', 'setStickyDate', null),
+  withState('editingRowIndex', 'setEditingRowIndex', null),
+  withState('isEditorFocused', 'setIsEditorFocused', false),
   withState('paging', 'setPaging', ({channelComments}) => {
     return {
       next: 1,
@@ -116,11 +118,6 @@ const enhance = compose(
         editorInstance.focus()
       },
 
-      getIsFocused: () => () => {
-        if (!editorInstance) return false
-        return editorInstance.getIsFocused()
-      },
-
       scrollComments: ({channelComments}) => () => {
         if (!commentsInstance) return
         commentsInstance.scrollToRow(channelComments.length)
@@ -168,14 +165,14 @@ const enhance = compose(
       const {
         channelId,
         setDraftText,
-        getIsFocused
+        isEditorFocused,
       } = props
 
       setDraftText(value)
 
       // backup current text to localStorage
       requestAnimationFrame(() => {
-        if (!getIsFocused()) return
+        if (!isEditorFocused) return
 
         if (!value) {
           // clear item if value is empty.
@@ -327,6 +324,9 @@ const Show = enhanceChatContent((props) => {
     setStickyDate,
     setFileInputRef,
     setCommentsInstance,
+    setEditingRowIndex,
+    setIsEditorFocused,
+    editingRowIndex,
     stickyDate,
     showFileSelection,
     onPullToFetch,
@@ -336,6 +336,7 @@ const Show = enhanceChatContent((props) => {
     channel,
     isOver,
     isCommentProgress,
+    isEditorFocused,
     paging,
     canDrop,
     connectDropTargetToRef,
@@ -393,6 +394,8 @@ const Show = enhanceChatContent((props) => {
               isProgress={isCommentProgress}
               loadNext={onPullToFetch}
               onDateChange={setStickyDate}
+              editingRowIndex={editingRowIndex}
+              onEdit={setEditingRowIndex}
               // onUpdate={() => onUpdateComment(comment)}
               onDelete={onDeleteComment}
               isAuthenticated={isAuthenticated}
@@ -401,7 +404,7 @@ const Show = enhanceChatContent((props) => {
             />
           )}
 
-          <div className={styles.Footer}>
+          <div className={`${styles.Footer} ${isEditorFocused ? 'is-focused' : ''}`}>
             <div className={styles.TextAreaWrapper}>
               <Tooltip
                 className="upload-button"
@@ -429,6 +432,8 @@ const Show = enhanceChatContent((props) => {
                   onKeyDown={onKeyDown}
                   onSave={onSetDraftText}
                   instance={setEditorInstance}
+                  onFocus={() => setIsEditorFocused(true)}
+                  onBlur={() => setIsEditorFocused(false)}
                 />
               </div>
             </div>

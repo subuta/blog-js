@@ -43,7 +43,7 @@ const enhance = compose(
   }),
   withHandlers({
     onClickEmoji: ({onSelect, onClose = _.noop}) => (emoji, e) => {
-      onSelect(emoji.colons, e)
+      onSelect(emoji, e)
       onClose()
     }
   }),

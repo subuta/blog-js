@@ -173,8 +173,9 @@ const enhance = compose(
       return !!comment
     },
 
-    onAddReaction: ({addReaction, comments, refresh}) => (comment, emoji) => {
-      const rowIndex = _.findIndex(comments, ['id', comment.id])
+    onAddReaction: ({hasNext, addReaction, comments, refresh}) => (comment, emoji) => {
+      let rowIndex = _.findIndex(comments, ['id', comment.id])
+      rowIndex = hasNext ? rowIndex + 1 : rowIndex
 
       addReaction(comment.id, {
         channelId: comment.channelId,
@@ -182,8 +183,9 @@ const enhance = compose(
       }).then(() => refresh(rowIndex))
     },
 
-    onRemoveReaction: ({removeReaction, comments, refresh}) => (comment, emoji) => {
-      const rowIndex = _.findIndex(comments, ['id', comment.id])
+    onRemoveReaction: ({hasNext, removeReaction, comments, refresh}) => (comment, emoji) => {
+      let rowIndex = _.findIndex(comments, ['id', comment.id])
+      rowIndex = hasNext ? rowIndex + 1 : rowIndex
 
       removeReaction(comment.id, {
         channelId: comment.channelId,
@@ -203,6 +205,8 @@ const enhance = compose(
         onRemoveReaction,
         getCache,
         styles,
+        onEdit,
+        editingRowIndex,
         isAuthenticated,
         isRowLoaded,
         currentUser
@@ -285,6 +289,8 @@ const enhance = compose(
                 onUpdate={() => onUpdate(comment)}
                 onDelete={() => onDelete(comment)}
                 onLoad={measure}
+                onEdit={() => onEdit(index)}
+                isEditing={editingRowIndex === index}
                 isAuthenticated={isAuthenticated}
                 currentUser={currentUser}
               />

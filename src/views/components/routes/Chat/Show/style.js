@@ -167,8 +167,14 @@ const TextAreaWrapper = {
     borderRadius: '4px 0 0 4px',
     color: DIMMED_BLACK_COLOR,
     width: 40,
-    transition: `all 0.2s ${EASE_STANDARD}`,
+    transition: `all 0.1s ${EASE_STANDARD}`,
     cursor: 'pointer',
+
+    '.is-focused &': {
+      border: `2px solid ${BLACK_COLOR}`,
+      borderRight: 0,
+      color: BLACK_COLOR,
+    },
 
     '& button': {
       padding: 8,
@@ -190,10 +196,11 @@ const TextAreaWrapper = {
     position: 'relative',
     flex: '1 1 auto',
     minHeight: MIN_TEXT_AREA_HEIGHT,
-    lineHeight: 0,
     border: `2px solid ${DIMMED_BLACK_COLOR}`,
     borderLeft: 0,
     borderRadius: '0 4px 4px 0',
+    transition: `all 0.1s ${EASE_STANDARD}`,
+
     '&:before': {
       content: '\"\"',
       position: 'absolute',
@@ -203,21 +210,22 @@ const TextAreaWrapper = {
       width: 1,
       display: 'block',
       borderLeft: `2px solid ${DIMMED_BLACK_COLOR}`,
-    }
+    },
+
+    '.is-focused &': {
+      border: `2px solid ${BLACK_COLOR}`,
+      borderLeft: 0,
+
+      '&:before': {
+        borderLeft: `2px solid ${BLACK_COLOR}`,
+      }
+    },
   }
 }
 
 const TextArea = {
   minHeight: MIN_TEXT_AREA_HEIGHT,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-start',
-  padding: '8px',
-  lineHeight: 1.4,
-
-  '& .editor': {
-    flex: '1 1 auto'
-  }
+  padding: 8
 }
 
 const AddIcon = {

@@ -149,7 +149,7 @@ export default enhance((props) => {
         <EmojiPicker
           key={`t${new Date()}`}
           referenceNode={getButtonRef()}
-          onSelect={onAddReaction}
+          onSelect={(emoji) => onAddReaction(emoji.colons)}
           onClose={() => {
             onClose()
             setIsShowEmojiPicker(false)

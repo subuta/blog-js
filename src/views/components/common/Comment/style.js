@@ -8,12 +8,15 @@ import {
   LATO_WITH_SANS_FONT,
   GRAY_COLOR,
   BORDER_COLOR,
+  BLACK_COLOR,
   PRIMARY_COLOR,
 
   EASE_STANDARD,
 
   TABLET_MEDIA_QUERY
 } from 'src/views/constants/style'
+
+const MIN_TEXT_AREA_HEIGHT = 40
 
 const CommentWrapper = {
   padding: '4px 16px',
@@ -28,7 +31,12 @@ const CommentWrapper = {
   },
 
   '&.is-hovered': {
-    background: color(GRAY_COLOR).fade(0.6).string()
+    backgroundColor: color(GRAY_COLOR).fade(0.6).string()
+  },
+
+  '&.is-editing': {
+    backgroundColor: '#FFF5CC',
+    alignItems: 'stretch'
   }
 }
 
@@ -65,6 +73,16 @@ const Comment = {
     '& p': {
       margin: 0
     }
+  },
+
+  '& .editor': {
+    padding: 8,
+    position: 'relative',
+    height: '100%',
+    backgroundColor: PRIMARY_COLOR,
+    minHeight: MIN_TEXT_AREA_HEIGHT,
+    border: `1px solid ${BLACK_COLOR}`,
+    borderRadius: 4
   },
 
   '& .reactions': {

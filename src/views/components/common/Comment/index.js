@@ -33,7 +33,6 @@ const isBrowser = typeof window !== 'undefined'
 const enhance = compose(
   withStyles,
   withState('isHover', 'setIsHover', false),
-  withState('isEditing', 'setIsEditing', false),
   withState('draftText', 'setDraftText', ({comment}) => comment.text),
   withHandlers(() => {
     let editorInstance
@@ -77,8 +76,7 @@ const enhance = compose(
           onSetDraftText,
           draftText,
           resetEditor,
-          focusEditor,
-          setIsEditing
+          focusEditor
         } = props
 
         const key = keycode(e)
@@ -93,8 +91,6 @@ const enhance = compose(
           onSetDraftText('')
           resetEditor('')
           focusEditor()
-
-          setIsEditing(false)
 
           console.log('draftText = ', draftText)
           return false
@@ -141,7 +137,7 @@ const enhance = compose(
         commentedBy,
       } = comment
 
-      let commentWrapperClass = styles.CommentWrapper
+      let commentWrapperClass = `${styles.CommentWrapper} is-editing`
 
       if (className) {
         commentWrapperClass += ` ${className}`
@@ -179,8 +175,6 @@ export default enhance((props) => {
     styles,
     style,
     isHover,
-    setIsEditing,
-    isEditing,
     setIsHover,
     isAuthenticated,
     currentUser,
@@ -271,7 +265,7 @@ export default enhance((props) => {
           >
             <span
               className={styles.Action}
-              onClick={() => setIsEditing(true)}
+              onClick={onEdit}
             >
               <MdCreateIcon/>
             </span>

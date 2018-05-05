@@ -52,6 +52,7 @@ const enhanceContent = compose(
     renderComponent((props) => {
       const {
         setEditorInstance,
+        setIsEditorFocused,
         onSetDraftContent,
         draftContent,
         styles
@@ -63,6 +64,8 @@ const enhanceContent = compose(
             onSave={onSetDraftContent}
             initialValue={draftContent}
             instance={setEditorInstance}
+            onFocus={() => setIsEditorFocused(true)}
+            onBlur={() => setIsEditorFocused(false)}
           />
 
           <MarkdownContent
@@ -174,6 +177,7 @@ const enhance = compose(
   withState('isShowUpdateArticleModal', 'setIsShowUpdateArticleModal', false),
   withState('isShowConfirmArticleDeleteModal', 'setIsShowConfirmArticleDeleteModal', false),
   withState('isShowMenu', 'setIsShowMenu', false),
+  withState('isEditorFocused', 'setIsEditorFocused', false),
   withHandlers(() => {
     let targetRef = null
     let editorInstance
@@ -208,11 +212,6 @@ const enhance = compose(
       focusEditor: () => () => {
         if (!editorInstance) return
         editorInstance.focus()
-      },
-
-      getIsFocused: () => () => {
-        if (!editorInstance) return false
-        return editorInstance.getIsFocused()
       },
 
       getTargetRef: () => () => targetRef
@@ -318,7 +317,7 @@ const enhance = compose(
         const {
           article,
           setDraftContent,
-          getIsFocused
+          isEditorFocused
         } = props
 
         // Ignore if content & draft is same.
@@ -328,7 +327,7 @@ const enhance = compose(
 
         // Backup current text to localStorage
         requestAnimationFrame(() => {
-          if (!getIsFocused()) return
+          if (!isEditorFocused) return
 
           if (!value) {
             // clear item if value is empty.
