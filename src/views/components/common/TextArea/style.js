@@ -12,21 +12,24 @@ import {
 const TextArea = {
   '& label': {
     display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'baseline',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
 
     '& > span': {
-      flex: '0 0 80px',
+      flex: '0 0 120px',
       margin: '0 8px 0 0',
       fontWeight: 'bold',
       textAlign: 'right'
     },
 
-    '& textarea': {
+    '& > .input': {
       flex: '1 1 100%',
+    },
+
+    '& textarea': {
       padding: '4px 0',
+      width: '100%',
       minHeight: 120,
-      minWidth: 200,
       appearance: 'none',
       border: 'none',
       borderBottom: `2px solid ${BORDER_COLOR}`,

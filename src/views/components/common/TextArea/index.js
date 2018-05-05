@@ -38,17 +38,19 @@ export default enhance((props) => {
           <span>{label}:</span>
         )}
 
-        <textarea
-          onChange={(e) => onChange(e.target.value)}
-          value={value}
-          placeholder={placeholder}
-          spellCheck={false}
-        />
-      </label>
+        <div className="input">
+          <textarea
+            onChange={(e) => onChange(e.target.value)}
+            value={value}
+            placeholder={placeholder}
+            spellCheck={false}
+          />
 
-      {maxLength && (
-        <small>{value.length} / {maxLength}</small>
-      )}
+          {maxLength && (
+            <small>{value.length} / {maxLength}</small>
+          )}
+        </div>
+      </label>
     </div>
   )
 })

@@ -51,8 +51,6 @@ const enhance = compose(
 
       if (isLast) return
 
-      console.log('pull!', next);
-
       // Retrieve next page and save latest paging into state.
       requestArticles({
         page: next

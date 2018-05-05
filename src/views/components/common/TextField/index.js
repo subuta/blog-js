@@ -39,7 +39,7 @@ export default enhance((props) => {
           <span>{label}:</span>
         )}
 
-        <div>
+        <div className="input">
           <input
             type="text"
             onChange={(e) => onChange(e.target.value)}

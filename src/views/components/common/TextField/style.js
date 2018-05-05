@@ -21,10 +21,13 @@ const TextField = {
       textAlign: 'right'
     },
 
-    'input': {
+    '& > .input': {
       flex: '1 1 100%',
+    },
+
+    'input': {
       padding: '4px 0',
-      minWidth: 200,
+      width: '100%',
       appearance: 'none',
       border: 'none',
       borderBottom: `2px solid ${BORDER_COLOR}`,

@@ -93,6 +93,10 @@ const CreateArticleModal = {
     '&:last-of-type': {
       margin: 0
     }
+  },
+
+  '& .modal-content': {
+    width: '40vw'
   }
 }
 
