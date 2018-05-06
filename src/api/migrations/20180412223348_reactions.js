@@ -7,7 +7,7 @@ exports.up = function(knex, Promise) {
     table.integer('reactedById').references('users.id').onDelete('CASCADE')
     table.timestamps(true, true)
 
-    table.unique('emoji', 'reactableType', 'reactableId', 'reactedById')
+    table.unique(['emoji', 'reactableType', 'reactableId', 'reactedById'])
   })
 };
 

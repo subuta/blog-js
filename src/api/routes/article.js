@@ -172,8 +172,11 @@ article.put('/:id', auth, async (ctx) => {
     .eager('[tags, reactions.reactedBy, author]')
     .findFirst({id: ctx.params.id})
 
+  const oldTags = _.map(found.tags, 'label')
+
   // relate tags.
-  await Promise.map(tags, async (tag) => {
+  const tagsToRelate = _.differenceBy(tags, oldTags)
+  await Promise.map(tagsToRelate, async (tag) => {
     const _tag = await Tag.query()
       .findOrCreate({where: {label: tag}, defaults: {label: tag}})
 
@@ -182,9 +185,9 @@ article.put('/:id', auth, async (ctx) => {
   })
 
   // remove un-used tags.
-  const tagsToDelete = _.differenceBy(_.map(found.tags, 'label'), tags)
+  const tagsToUnRelate = _.differenceBy(oldTags, tags)
   await found.$relatedQuery('tags')
-    .whereIn('label', tagsToDelete)
+    .whereIn('label', tagsToUnRelate)
     .unrelate()
 
   response = await found.$query()

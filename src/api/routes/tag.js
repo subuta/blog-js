@@ -24,6 +24,8 @@ tag.get('/', async (ctx) => {
   response = _.uniqBy(_.filter(response, (tag) => {
     return tag.articles.length > 0
   }), 'id')
+
+  response = _.reverse(_.sortBy(response, (tag) => tag.articles.length))
   /* mat After index [end] */
 
   ctx.body = response

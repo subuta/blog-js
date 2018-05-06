@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
     table.integer('tagId').references('tags.id').onDelete('CASCADE')
     table.timestamps(true, true)
 
-    table.unique('tagId', 'articleId')
+    table.unique(['tagId', 'articleId'])
   })
 };
 
