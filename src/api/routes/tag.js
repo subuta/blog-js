@@ -40,7 +40,7 @@ tag.get('/:label', async (ctx) => {
   /* mat Before show [end] */
 
   ctx.body = await Tag.query()
-    .eager('[articles.[reactions.reactedBy, author]]')
+    .eager('[articles.[reactions.reactedBy, author, tags]]')
     .leftOuterJoinRelation('[articles]')
     .findFirst({...params, label: ctx.params.label})
 })

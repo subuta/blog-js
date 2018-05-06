@@ -32,7 +32,10 @@ const AllWiki = (props) => <AllWikiRoute {...props}/>
 AllWiki.getInitialProps = async function (ctx) {
   let promises = []
 
-  promises.push(ctx.dispatch(requestTags()))
+  // request tag first.
+  await ctx.dispatch(requestTags())
+
+  // then retrieve others.
   promises.push(ctx.dispatch(requestIndexDraft()))
 
   // find tag by label(tag param).

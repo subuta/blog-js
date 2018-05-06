@@ -17,9 +17,8 @@ const mapStateToProps = (state, oldProps) => {
   // filter articles by tag if specified.
   const tagParam = _.get(oldProps, 'url.query.tag')
   if (tagParam) {
-    const tag = _.find(getTags(state), { label: tagParam })
-    articles = _.map(tag.articles, (article) => {
-      return denormalize(article, 'article', state)
+    articles = _.filter(articles, (article) => {
+      return !!_.find(article.tags, ['label', tagParam])
     })
   }
 
