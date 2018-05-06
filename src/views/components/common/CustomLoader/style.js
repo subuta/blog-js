@@ -1,5 +1,9 @@
 import createWithStyles, { Style } from 'src/views/utils/style'
 
+import {
+  DIMMED_BLACK_COLOR
+} from 'src/views/constants/style'
+
 const loaderAnimation = {
   from: {
     transform: 'rotate(0deg)',
@@ -51,7 +55,10 @@ const Container = {
 }
 
 const Label = {
-  marginTop: 8
+  marginTop: 8,
+  fontWeight: 'bold',
+  color: DIMMED_BLACK_COLOR,
+  textAlign: 'center'
 }
 
 export default createWithStyles({

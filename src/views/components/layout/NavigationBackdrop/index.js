@@ -1,25 +1,39 @@
 import React from 'react'
+import _ from 'lodash'
+
 import {
   compose,
+  withHandlers,
   lifecycle
 } from 'recompose'
 
 import connect from './connect'
 import withStyles from './style'
-import Router from 'next/router'
+
+import { onRouteChangeStart } from 'src/views/utils/router'
 
 const enhance = compose(
   withStyles,
   connect,
+  withHandlers(({hideMenu}) => {
+    let unlisten = _.noop
+
+    return {
+      initialize: () => () => {
+        // hideMenu on routeChange.
+        unlisten = onRouteChangeStart(() => hideMenu())
+      },
+
+      destroy: () => () => unlisten()
+    }
+  }),
   lifecycle({
     componentDidMount () {
-      // hideMenu on routeChange.
-      const {hideMenu} = this.props
-      Router.onRouteChangeStart = () => hideMenu()
+      this.props.initialize()
     },
 
     componentWillUnmount () {
-      Router.onRouteChangeStart = null
+      this.props.destroy()
     }
   })
 )

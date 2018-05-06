@@ -1,39 +1,44 @@
 import React from 'react'
 import _ from 'lodash'
-import Cookie from 'js-cookie'
 
 import auth0 from 'src/views/utils/auth0'
+import storage from 'src/views/utils/storage'
+
+import CustomLoader from 'src/views/components/common/CustomLoader'
+import withStyles from 'src/views/components/layout/otherStyle'
 
 import {
   compose,
-  lifecycle,
-  branch,
-  renderComponent
+  lifecycle
 } from 'recompose'
 
-const withLoader = branch(
-  () => !auth0.isAuthenticated(),
-  renderComponent(() => (
-    <span>loading...</span>
-  )),
-  _.identity
-)
+import { withRouter } from 'next/router'
 
 const enhance = compose(
+  withStyles,
+  withRouter,
   lifecycle({
     componentWillMount () {
+      const {router} = this.props
+
       if (!auth0.isAuthenticated()) {
-        auth0.authorize()
+        return auth0.authorize()
       }
+
+      const prevPath = storage.getItem('prev-path')
+      router.push(prevPath ? prevPath : '/')
     }
-  }),
-  withLoader
+  })
 )
 
-const Login = enhance(() => {
+const Login = enhance(({styles}) => {
   return (
-    <div>
-      login!
+    <div className={styles.Container}>
+      <CustomLoader
+        label="Log in to sub-labo.com ..."
+        isShow={true}
+        size={80}
+      />
     </div>
   )
 })

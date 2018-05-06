@@ -267,9 +267,7 @@ const Container = {
   zIndex: 1
 }
 
-export default createWithStyles({
-  Container
-}, {
+export const commonCss = {
   css: {
     html,
     body,
@@ -295,4 +293,8 @@ export default createWithStyles({
     ['@font-face', FontFaceNotoSansJapanese],
     ['@font-face', FontFaceNotoSansJapaneseBold]
   ]
-})
+}
+
+export default createWithStyles({
+  Container
+}, commonCss)

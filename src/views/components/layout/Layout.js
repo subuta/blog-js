@@ -1,12 +1,15 @@
 import React from 'react'
 import {
   compose,
-  withHandlers
+  withHandlers,
+  lifecycle
 } from 'recompose'
 
 import Navigation from './Navigation'
 import withStyles from './style'
 import connect from './connect'
+
+import { onRouteChangeStart } from 'src/views/utils/router'
 
 import withDragDropContext from 'src/views/utils/withDragDropContext'
 
@@ -14,6 +17,9 @@ import {
   isMobile,
   isTablet
 } from 'src/views/utils/browser'
+
+import storage from 'src/views/utils/storage'
+import _ from 'lodash'
 
 const isBrowser = typeof window !== 'undefined'
 
@@ -26,6 +32,23 @@ const enhance = compose(
   withStyles,
   connect,
   withDragDropContext,
+  withHandlers(() => {
+    let unlisten = _.noop
+
+    return {
+      initialize: () => () => {
+        unlisten = onRouteChangeStart(() => {
+          // persist current pathname
+          const currentPath = location.pathname
+          storage.setItem('prev-path', currentPath)
+        })
+      },
+
+      destroy: () => () => {
+        unlisten()
+      }
+    }
+  }),
   withHandlers(() => {
     let ref = null
     let _Hammer = null
@@ -59,6 +82,15 @@ const enhance = compose(
           hideMenu()
         })
       }
+    }
+  }),
+  lifecycle({
+    componentWillMount () {
+      this.props.initialize()
+    },
+
+    componentWillUnmount () {
+      this.props.destroy()
     }
   })
 )

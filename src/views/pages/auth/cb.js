@@ -4,6 +4,10 @@ import { withRouter } from 'next/router'
 
 import connext from 'src/views/hoc/connext'
 import auth0 from 'src/views/utils/auth0'
+import storage from 'src/views/utils/storage'
+
+import CustomLoader from 'src/views/components/common/CustomLoader'
+import withStyles from 'src/views/components/layout/otherStyle'
 
 import {
   requestCreateUser
@@ -15,24 +19,33 @@ import {
 } from 'recompose'
 
 const enhance = compose(
+  withStyles,
   withRouter,
   lifecycle({
     componentWillMount () {
       const {requestCreateUser, router} = this.props
+      const prevPath = storage.getItem('prev-path')
       auth0.parseHash().then((result) => {
         auth0.setSession(result)
         const {locale, nickname, picture, sub} = result.idTokenPayload
         requestCreateUser({locale, nickname, auth0Id: sub, avatar: picture})
-          .then(() => router.push('/'))
+          .then(() => {
+            router.push(prevPath ? prevPath : '/')
+            storage.removeItem('prev-path')
+          })
       })
     }
   })
 )
 
-const Login = enhance(() => {
+const LoginCallback = enhance(({styles}) => {
   return (
-    <div>
-      cb!
+    <div className={styles.Container}>
+      <CustomLoader
+        label="Auth0 login succeeded :) Redirect back to sub-labo.com ..."
+        isShow={true}
+        size={80}
+      />
     </div>
   )
 })
@@ -44,4 +57,4 @@ const mapDispatchToProps = {
   requestCreateUser
 }
 
-export default connext(mapStateToProps, mapDispatchToProps)(Login)
+export default connext(mapStateToProps, mapDispatchToProps)(LoginCallback)

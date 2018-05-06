@@ -11,29 +11,43 @@ import {
 
 import {
   compose,
-  lifecycle
+  lifecycle,
+  withHandlers
 } from 'recompose'
+
+import CustomLoader from 'src/views/components/common/CustomLoader'
+import withStyles from 'src/views/components/layout/otherStyle'
+
+import storage from 'src/views/utils/storage'
 
 const isBrowser = typeof window !== 'undefined'
 
 const enhance = compose(
+  withStyles,
   withRouter,
   lifecycle({
     componentWillMount () {
-      const {router} = this.props
+      const prevPath = storage.getItem('prev-path')
+
       auth0.revokeSession()
       // force reload browser
       if (isBrowser && location) {
-        location.href = '/'
+        location.href = prevPath ? prevPath : '/'
       }
+
+      storage.removeItem('prev-path')
     }
   })
 )
 
-const Logout = enhance(() => {
+const Logout = enhance(({styles}) => {
   return (
-    <div>
-      logout...
+    <div className={styles.Container}>
+      <CustomLoader
+        label="Log out from sub-labo.com ;)"
+        isShow={true}
+        size={80}
+      />
     </div>
   )
 })
