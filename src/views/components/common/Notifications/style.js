@@ -15,7 +15,8 @@ import {
 const Notifications = {
   position: 'fixed',
   right: 32,
-  top: 16
+  top: 16,
+  zIndex: 20
 }
 
 const Notification = {

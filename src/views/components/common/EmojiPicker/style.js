@@ -21,6 +21,7 @@ const PickerWrapper = {
     ...Z_INDEX_2,
     transition: `all 0.1s ${EASE_SHARP}`,
     zIndex: 20,
+    maxWidth: '80vw'
   }
 }
 

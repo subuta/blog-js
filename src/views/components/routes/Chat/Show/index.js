@@ -22,6 +22,7 @@ import Sidebar from '../_Sidebar'
 import Content from '../_Content'
 import Comments from '../_Comments'
 
+import Notifications from 'src/views/components/common/Notifications'
 import DateLine from 'src/views/components/common/DateLine'
 import Tooltip from 'src/views/components/common/Tooltip'
 import Editor from 'src/views/components/common/Editor'
@@ -73,6 +74,19 @@ const enhance = compose(
   withState('draftText', 'setDraftText', ''),
   withState('initialText', 'setInitialText', ''),
   withHandlers(() => {
+    let notificationInstance
+
+    return {
+      setNotificationInstance: () => (instance) => {
+        notificationInstance = instance
+      },
+
+      notify: () => (message, timeout) => {
+        notificationInstance.notify(message, timeout)
+      }
+    }
+  }),
+  withHandlers(() => {
     let editorInstance
     let commentsInstance
     let $fileInput
@@ -118,6 +132,15 @@ const enhance = compose(
         editorInstance.focus()
       },
 
+      blurEditor: () => () => {
+        if (!editorInstance) {
+          // Delay execution
+          onSetEditorInstances.push((editorInstance) => editorInstance.blur())
+          return
+        }
+        editorInstance.blur()
+      },
+
       scrollComments: ({channelComments}) => () => {
         if (!commentsInstance) return
         commentsInstance.scrollToRow(channelComments.length)
@@ -133,31 +156,28 @@ const enhance = compose(
         channelComments,
         resetEditor,
         focusEditor,
+        blurEditor,
         setDraftText,
-        setPaging,
-
-        scrollComments
+        setPaging
       } = props
-
 
       setPaging({next: 1, isLast: channelComments.length < CommentPageSize})
 
       if (!isBrowser) return
 
-      requestAnimationFrame(() => scrollComments());
+      const initEditor = (value = '') => {
+        setDraftText(value)
+        resetEditor(value)
+        focusEditor()
+      }
 
       const previousValue = storage.getItem(`comments.${channelId}.draft`)
       if (!previousValue) {
-        focusEditor()
+        initEditor()
         return
       }
 
-      setDraftText(previousValue)
-
-      requestAnimationFrame(() => {
-        resetEditor(previousValue)
-        focusEditor()
-      })
+      initEditor(previousValue)
     }
   ),
   withHandlers({
@@ -227,7 +247,8 @@ const enhance = compose(
         draftText,
         scrollComments,
         resetEditor,
-        focusEditor
+        focusEditor,
+        notify
       } = props
 
       const key = keycode(e)
@@ -245,6 +266,15 @@ const enhance = compose(
 
         createComment({channelId: channel.id, text: draftText}).then(() => {
           scrollComments()
+        }).catch((err) => {
+          if (err.status === 401) {
+            notify('Log in to send comment, sorry ;)', 3000)
+          }
+
+          // Restore old comments if failed to post.
+          onSetDraftText(draftText)
+          resetEditor(draftText)
+          focusEditor()
         })
 
         return false
@@ -259,23 +289,30 @@ const enhance = compose(
         uploadAttachment,
         createComment,
         scrollComments,
-        focusEditor
+        focusEditor,
+        notify
       } = props
 
       const {name, type} = file
 
-      // create attachment from file
-      const {id, signedRequest, url} = await signAttachment({name, type})
-      const attachment = await createAttachment({id, name, type, imageUrl: url})
+      try {
+        // create attachment from file
+        const {id, signedRequest, url} = await signAttachment({name, type})
+        const attachment = await createAttachment({id, name, type, imageUrl: url})
 
-      // then upload it to s3
-      await uploadAttachment(file, signedRequest, url)
+        // then upload it to s3
+        await uploadAttachment(file, signedRequest, url)
 
-      // finally relate attachment to blank comment.
-      createComment({channelId: channel.id, text: '', attachmentId: attachment.id}).then(() => {
-        scrollComments()
-        focusEditor()
-      })
+        // finally relate attachment to blank comment.
+        await createComment({channelId: channel.id, text: '', attachmentId: attachment.id}).then(() => {
+          scrollComments()
+          focusEditor()
+        })
+      } catch (err) {
+        if (err.status === 401) {
+          notify('Log in to upload file, sorry ;)', 3000)
+        }
+      }
     }
   }),
   withHandlers({
@@ -329,6 +366,7 @@ const Show = enhanceChatContent((props) => {
     setCommentsInstance,
     setEditingRowIndex,
     setIsEditorFocused,
+    setNotificationInstance,
     editingRowIndex,
     stickyDate,
     showFileSelection,
@@ -368,6 +406,10 @@ const Show = enhanceChatContent((props) => {
         <div className={styles.DropTarget}>
           <h1>Drop file for upload.</h1>
         </div>
+
+        <Notifications
+          instance={setNotificationInstance}
+        />
 
         <div className={styles.Header}>
           <div className={styles.HeaderRow}>

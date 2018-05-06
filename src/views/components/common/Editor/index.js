@@ -60,6 +60,8 @@ const enhance = compose(
       setEmojiFilter,
       setEditorState,
       onChange,
+      onFocus = _.noop,
+      onBlur = _.noop,
       instance = _.noop
     } = props
 
@@ -85,6 +87,22 @@ const enhance = compose(
         .collapseToEnd()
 
       onChange(nextState)
+
+      // Call onFocus handler manually
+      onFocus(false)
+    }
+
+    // blur from editor
+    const blur = () => {
+      const change = editorState.change()
+
+      const nextState = change
+        .blur()
+
+      onChange(nextState)
+
+      // Call onBlur handler manually
+      onBlur(false)
     }
 
     // reset internal editorState.
@@ -96,6 +114,7 @@ const enhance = compose(
     // FIXME: More better way to expose editor api.
     instance({
       focus,
+      blur,
       reset
     })
 
@@ -187,9 +206,8 @@ const enhance = compose(
         return resetDraftEmoji()
       },
 
-      getIsFocused: () => getIsFocused,
-
-      focus: () => focus
+      focus: () => focus,
+      blur: () => blur
     }
   }),
   lifecycle({

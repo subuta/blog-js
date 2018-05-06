@@ -118,6 +118,7 @@ const mapStateToProps = (state, oldProps) => {
   const channelEntities = getChannelEntities(state)
   const name = _.get(oldProps, 'url.query.name', '')
   const channel = _.find(channelEntities, {name})
+
   return {
     channels: getChannels(state),
     channelComments: getChannelComments(name)(state),

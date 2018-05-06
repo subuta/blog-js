@@ -4,16 +4,27 @@ import { hasRegistered, highlight } from 'src/views/utils/highlight'
 import { tokenize } from 'src/views/utils/markdown'
 
 const renderMark = (props) => {
-  const {children, mark} = props
+  const {children, mark, attributes} = props
+
+  console.log('props = ', props)
 
   switch (mark.type) {
     case 'strong':
-      return <strong>{children}</strong>
+      return (
+        <strong {...attributes}>
+          {children}
+        </strong>
+      )
     case 'emphasis':
-      return <em>{children}</em>
+      return (
+        <em {...attributes}>
+          {children}
+        </em>
+      )
     case 'heading':
       return (
         <span
+          {...attributes}
           className={`heading d-${mark.data.get('depth')}`}
         >
           {children}
@@ -25,26 +36,38 @@ const renderMark = (props) => {
       // const position = mark.data.get('position')
       // console.log('position.indent = ', position.indent)
       return (
-        <span className='list'>
+        <span
+          {...attributes}
+          className='list'
+        >
           {children}
         </span>
       )
     case 'listItem':
       return (
-        <span className='list-item'>
+        <span
+          {...attributes}
+          className='list-item'
+        >
           {children}
         </span>
       )
     case 'blockquote':
       return (
-        <span className='blockquote'>
+        <span
+          {...attributes}
+          className='blockquote'
+        >
           {children}
         </span>
       )
     // code block
     case 'code':
       return (
-        <span className='code'>
+        <span
+          {...attributes}
+          className='code'
+        >
           {children}
         </span>
       )
@@ -52,7 +75,10 @@ const renderMark = (props) => {
     case 'inlineCode':
       // no lowlight style for inline code.
       return (
-        <span className='inline-code'>
+        <span
+          {...attributes}
+          className='inline-code'
+        >
           {children}
         </span>
       )
@@ -63,66 +89,138 @@ const renderMark = (props) => {
         elementClass += ` ${className}`
       })
       return (
-        <span className={elementClass}>
+        <span
+          {...attributes}
+          className={elementClass}
+        >
           {children}
         </span>
       )
     case 'link':
-      return <span className='link'>{children}</span>
+      return (
+        <span
+          {...attributes}
+          className='link'
+        >
+          {children}
+        </span>
+      )
     case 'image':
-      return <span className='image'>{children}</span>
+      return (
+        <span
+          {...attributes}
+          className='image'
+        >
+          {children}
+          </span>
+      )
     case 'thematicBreak':
       return (
-        <span className='hr'>
+        <span
+          {...attributes}
+          className='hr'
+        >
           <span>{children}</span>
         </span>
       )
     // html
     case 'html':
       return (
-        <span className='html'>{children}</span>
+        <span
+          {...attributes}
+          className='html'
+        >
+          {children}
+        </span>
       )
     // tables
     case 'table':
       return (
-        <span className='table'>{children}</span>
+        <span
+          {...attributes}
+          className='table'
+        >
+          {children}
+        </span>
       )
     case 'tableRow':
       return (
-        <span className='tr'>{children}</span>
+        <span
+          {...attributes}
+          className='tr'
+        >
+          {children}
+        </span>
       )
     case 'tableCell':
       return (
-        <span className='td'>{children}</span>
+        <span
+          {...attributes}
+          className='td'
+        >
+          {children}
+        </span>
       )
     // via https://github.com/zestedesavoir/zmarkdown/tree/master/packages/remark-kbd
     case 'kbd':
       return (
-        <span className='kbd'>{children}</span>
+        <span
+          {...attributes}
+          className='kbd'
+        >
+          {children}
+        </span>
       )
     case 'tag':
       return (
-        <span className='tag'>{children}</span>
+        <span
+          {...attributes}
+          className='tag'
+        >
+          {children}
+        </span>
       )
     // via https://github.com/zestedesavoir/zmarkdown/tree/master/packages/remark-kbd
     case 'math':
       return (
-        <span className='math'>{children}</span>
+        <span
+          {...attributes}
+          className='math'
+        >
+          {children}
+        </span>
       )
     case 'inlineMath':
       return (
-        <span className='inline-math'>{children}</span>
+        <span
+          {...attributes}
+          className='inline-math'
+        >
+          {children}
+        </span>
       )
     // custom decoration for type="text"
     case 'emoji':
       return (
-        <span className='emoji'>{mark.data.get('value')}</span>
+        <span
+          {...attributes}
+          className='emoji'
+        >
+          {mark.data.get('value')}
+        </span>
       )
     default:
     case 'paragraph':
       console.log('[default] mark.type = ', mark.type)
       console.log('[default] data = ', mark.data.toJSON())
-      return <span className='paragraph'>{children}</span>
+      return (
+        <span
+          {...attributes}
+          className='paragraph'
+        >
+          {children}
+        </span>
+      )
   }
 }
 

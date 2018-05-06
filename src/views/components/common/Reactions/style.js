@@ -4,7 +4,8 @@ import {
   EASE_STANDARD,
   DIMMED_BLACK_COLOR,
   BLACK_COLOR,
-  GRAY_COLOR
+  GRAY_COLOR,
+  BORDER_COLOR
 } from 'src/views/constants/style'
 
 const Reactions = {
@@ -25,9 +26,13 @@ const ReactionButton = {
   justifyContent: 'space-between',
   alignItems: 'center',
   borderRadius: 2,
+  border: `1px solid ${BORDER_COLOR}`,
   cursor: 'pointer',
   transition: `all 0.1s ${EASE_STANDARD}`,
   color: DIMMED_BLACK_COLOR,
+  '-webkit-appearance': 'none !important',
+  '-moz-appearance': 'none !important',
+  appearance: 'none !important',
   outline: 'none',
 
   '.is-mini &': {
