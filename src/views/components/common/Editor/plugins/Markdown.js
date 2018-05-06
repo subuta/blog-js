@@ -6,8 +6,6 @@ import { tokenize } from 'src/views/utils/markdown'
 const renderMark = (props) => {
   const {children, mark, attributes} = props
 
-  console.log('props = ', props)
-
   switch (mark.type) {
     case 'strong':
       return (
