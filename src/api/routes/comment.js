@@ -2,6 +2,14 @@ import Router from 'koa-router'
 import _ from 'lodash'
 import {authenticate as auth} from 'src/api/middlewares/auth'
 
+/* mat Custom imports [start] */
+import {
+  EventCommentCreated,
+  ChannelAll
+} from 'src/api/constants/config'
+import { publish } from 'src/api/utils/redis'
+/* mat Custom imports [end] */
+
 const comment = new Router({
   prefix: '/channels/:channelId/comments'
 })
@@ -77,6 +85,12 @@ comment.post('/', auth, async (ctx) => {
     .eager('[attachment, commentedBy, reactions.reactedBy]')
 
   /* mat After create [start] */
+  publish(ChannelAll, {
+    event: EventCommentCreated,
+    data: {
+      comment: response
+    }
+  })
   /* mat After create [end] */
 
   ctx.body = response

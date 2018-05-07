@@ -1,5 +1,15 @@
 version: '2'
 services:
+  redis:
+    image: redis:3.2.8
+    command: >
+      --appendonly yes
+      --requirepass password
+    env_file: .env
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./db/redis:/data
   db:
     image: postgres:10-alpine
     env_file: .env

@@ -227,7 +227,8 @@ export default enhance((props) => {
   } = comment
 
   const createdAt = moment(created_at).startOf('minute')
-  const updatedAt = moment(updated_at).startOf('minute')
+  // UpdatedAt become undefined after create.
+  const updatedAt = updated_at ? moment(updated_at).startOf('minute') : createdAt
 
   const isEdited = !createdAt.isSame(updatedAt)
 

@@ -12,6 +12,10 @@ import tag from './tag'
 import reaction from './reaction'
 import user from './user'
 
+/* mat Custom imports [start] */
+import stream from './stream'
+/* mat Custom imports [end] */
+
 const api = new Router({
   prefix: '/api'
 })
@@ -54,5 +58,9 @@ registerRouters({
   reaction,
   user
 })
+
+/* mat Custom routes [start] */
+api.use(stream.routes())
+/* mat Custom routes [end] */
 
 export default api

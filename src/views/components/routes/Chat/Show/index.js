@@ -29,12 +29,14 @@ import Editor from 'src/views/components/common/Editor'
 import SvgIcon from 'src/views/components/common/SvgIcon'
 
 import storage from 'src/views/utils/storage'
+import { EventCommentCreated } from 'src/api/constants/config'
 
 import {
   compose,
   withState,
   withHandlers,
-  withPropsOnChange
+  withPropsOnChange,
+  lifecycle
 } from 'recompose'
 
 const isBrowser = typeof window !== 'undefined'
@@ -235,6 +237,11 @@ const enhance = compose(
       })
     },
 
+    onEventCommentCreated: ({appendChannelComment, scrollComments}) => ({comment}) => {
+      appendChannelComment(comment)
+      scrollComments()
+    },
+
     onDeleteComment: ({deleteComment}) => (comment) => {
       return deleteComment(comment.id, comment)
     },
@@ -342,6 +349,34 @@ const enhance = compose(
 
       handleFileUpload(file)
     },
+  }),
+  withHandlers(({onEventCommentCreated}) => {
+    let unsubscribe = _.noop
+
+    return {
+      subscribeStream: () => async () => {
+        if (!isBrowser) return
+
+        const sse = await import('src/views/utils/sse')
+        sse.subscribe(EventCommentCreated, onEventCommentCreated)
+
+        unsubscribe = () => sse.unsubscribe(EventCommentCreated, onEventCommentCreated)
+      },
+
+      unsubscribeStream: () => () => {
+        if (!isBrowser) return
+        unsubscribe()
+      }
+    }
+  }),
+  lifecycle({
+    componentWillMount () {
+      this.props.subscribeStream()
+    },
+
+    componentWillUnmount () {
+      this.props.unsubscribeStream()
+    }
   })
 )
 

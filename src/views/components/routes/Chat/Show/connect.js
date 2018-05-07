@@ -10,6 +10,7 @@ import { throw404 } from 'src/views/utils/next'
 
 import {
   channel as channelSchema,
+  comment as commentSchema,
   commentList as commentListSchema,
 } from 'src/views/utils/schema'
 
@@ -30,9 +31,9 @@ import {
   addReaction,
   removeReaction,
   setComments,
+  createComment,
   getIsRequestProgress as getIsCommentProgress,
   requestComments as _requestComments,
-  createComment as requestCreateComment,
   deleteComment as requestDeleteComment,
   getEntities as getCommentEntities
 } from 'src/views/modules/comment'
@@ -65,17 +66,16 @@ const deleteComment = (id, params) => {
 }
 
 // create comment.
-const createComment = (params) => {
+const appendChannelComment = (comment) => {
   return (dispatch, getState) => {
     const state = getState()
     const entities = getChannelEntities(state)
-    const channel = _.clone(entities[params.channelId])
+    const channel = _.clone(entities[comment.channelId])
 
-    return dispatch(requestCreateComment(params)).then((comment) => {
-      // update channel comment.
-      channel.comments = _.uniq([comment.id, ...channel.comments]);
-      dispatch(setChannels(normalize(channel, channelSchema)))
-    })
+    // update channel comment.
+    channel.comments = _.uniq([comment.id, ...channel.comments]);
+    dispatch(setComments(normalize(comment, commentSchema)))
+    dispatch(setChannels(normalize(channel, channelSchema)))
   }
 }
 
@@ -141,6 +141,7 @@ const mapDispatchToProps = {
   removeReaction,
   signAttachment,
   requestComments,
+  appendChannelComment,
   requestChannels
 }
 
