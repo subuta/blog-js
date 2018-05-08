@@ -2,7 +2,10 @@ import createWithStyles from 'src/views/utils/style'
 
 import {
   CHAT_APP_COLOR,
-  ACCENT4_COLOR
+  ACCENT4_COLOR,
+  EASE_STANDARD,
+  PRIMARY_COLOR,
+  DIMMED_PRIMARY_COLOR
 } from 'src/views/constants/style'
 
 import {
@@ -30,8 +33,19 @@ const List = {
   }
 }
 
+const ChannelLink = {
+  fontWeight: 'normal',
+  color: `${DIMMED_PRIMARY_COLOR} !important`,
+
+  '&.has-unread': {
+    fontWeight: 900,
+    color: `${PRIMARY_COLOR} !important`
+  }
+}
+
 export default createWithStyles({
   Sidebar,
   List,
+  ChannelLink,
   Menus
 })

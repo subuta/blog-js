@@ -1,7 +1,7 @@
 import React from 'react'
 
 import _ from 'lodash'
-import moment from 'moment'
+import moment from 'src/views/utils/moment'
 import withStyles from './style'
 
 import Waypoint from 'react-waypoint'

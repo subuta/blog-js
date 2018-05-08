@@ -19,7 +19,11 @@ const isLocalStorageSupported = (function _checkLocalStorageSupported() {
 const inMemoryStorage = {};
 
 export const setItem = (key, value) => {
-  key = PREFIX + key
+  // Add prefix if not specified.
+  if (!_.startsWith(key, PREFIX)) {
+    key = PREFIX + key
+  }
+
   if (!isLocalStorageSupported) {
     inMemoryStorage[key] = value;
     return;
@@ -28,7 +32,11 @@ export const setItem = (key, value) => {
 };
 
 export const getItem = (key) => {
-  key = PREFIX + key
+  // Add prefix if not specified.
+  if (!_.startsWith(key, PREFIX)) {
+    key = PREFIX + key
+  }
+
   if (!isLocalStorageSupported) {
     return inMemoryStorage[key];
   }
@@ -36,15 +44,36 @@ export const getItem = (key) => {
 };
 
 export const removeItem = (key) => {
-  key = PREFIX + key
+  // Add prefix if not specified.
+  if (!_.startsWith(key, PREFIX)) {
+    key = PREFIX + key
+  }
+
   if (!isLocalStorageSupported) {
     return inMemoryStorage[key];
   }
   return localStorage.removeItem(key);
 };
 
+export const keys = (startsWith = '') => {
+  let keys = []
+
+  if (!isLocalStorageSupported) {
+    keys = _.keys(inMemoryStorage);
+  } else {
+    keys = _.keys(localStorage);
+  }
+
+  if (startsWith) {
+    keys = _.filter(keys, (key) => _.startsWith(key, PREFIX + startsWith))
+  }
+
+  return keys
+}
+
 export default {
   setItem,
   getItem,
   removeItem,
+  keys,
 };

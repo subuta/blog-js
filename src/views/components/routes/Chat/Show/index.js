@@ -10,6 +10,8 @@ import _ from 'lodash'
 import keycode from 'keycode'
 
 import MdAddIcon from 'react-icons/lib/md/add'
+import MdCloseIcon from 'react-icons/lib/md/close'
+import MdArrowDownwardIcon from 'react-icons/lib/md/arrow-downward'
 
 import FaHashTagIcon from 'react-icons/lib/fa/hashtag'
 
@@ -28,6 +30,7 @@ import Tooltip from 'src/views/components/common/Tooltip'
 import Editor from 'src/views/components/common/Editor'
 import SvgIcon from 'src/views/components/common/SvgIcon'
 
+import moment from 'src/views/utils/moment'
 import storage from 'src/views/utils/storage'
 import { EventCommentCreated } from 'src/api/constants/config'
 
@@ -35,6 +38,7 @@ import {
   compose,
   withState,
   withHandlers,
+  withProps,
   withPropsOnChange,
   lifecycle
 } from 'recompose'
@@ -145,7 +149,7 @@ const enhance = compose(
 
       scrollComments: ({channelComments}) => (isForced = true) => {
         if (!commentsInstance) return
-        commentsInstance.scrollToRow(channelComments.length, isForced)
+        return commentsInstance.scrollToRow(channelComments.length, isForced)
       }
     }
   }),
@@ -238,13 +242,36 @@ const enhance = compose(
       })
     },
 
-    onEventCommentCreated: ({appendChannelComment, scrollComments}) => ({comment}) => {
+    onEventCommentCreated: (props) => ({comment}) => {
+      const {
+        appendChannelComment,
+        scrollComments,
+        setUnreadComment,
+        currentUser,
+        channelId
+      } = props
+
       appendChannelComment(comment)
-      scrollComments(false)
+
+      // Skip unread for own comment naturally ;)
+      if (comment.commentedById === _.get(currentUser, 'id')) {
+        return scrollComments()
+      }
+
+      // If commented to other channel of user scrolls page manually.
+      const isCommentedToThisChannel = comment.channelId === channelId
+      if (!isCommentedToThisChannel || !scrollComments(false)) {
+        setUnreadComment(comment.channelId, comment.id)
+      }
     },
 
     onDeleteComment: ({deleteComment}) => (comment) => {
       return deleteComment(comment.id, comment)
+    },
+
+    scrollToUnreadComment: ({removeUnreadComment, channelId, scrollComments}) => () => {
+      removeUnreadComment(channelId)
+      scrollComments()
     },
 
     onKeyDown: (props) => (e) => {
@@ -272,9 +299,7 @@ const enhance = compose(
         resetEditor('')
         focusEditor()
 
-        createComment({channelId: channel.id, text: draftText}).then(() => {
-          scrollComments()
-        }).catch((err) => {
+        createComment({channelId: channel.id, text: draftText}).catch((err) => {
           if (err.status === 401) {
             notify('Log in to send comment, sorry ;)', 3000)
           }
@@ -372,7 +397,17 @@ const enhance = compose(
   }),
   lifecycle({
     componentWillMount () {
-      this.props.subscribeStream()
+      const {
+        subscribeStream,
+        setUnreadComment
+      } = this.props
+
+      subscribeStream()
+
+      _.each(storage.keys('unreadCommentId'), (key) => {
+        const channelId = _.last(_.split(key, '.'))
+        setUnreadComment(channelId, Number(storage.getItem(key)))
+      })
     },
 
     componentWillUnmount () {
@@ -406,6 +441,8 @@ const Show = enhanceChatContent((props) => {
     editingRowIndex,
     stickyDate,
     showFileSelection,
+    removeUnreadComment,
+    scrollToUnreadComment,
     onPullToFetch,
     onUpdateComment,
     onDeleteComment,
@@ -413,12 +450,15 @@ const Show = enhanceChatContent((props) => {
     isAuthenticated,
     channel,
     isOver,
+    channelId,
     isCommentProgress,
     isEditorFocused,
     paging,
     canDrop,
     connectDropTargetToRef,
     styles,
+    unreadComments,
+    unreadCommentIndex,
     showMenu
   } = props
 
@@ -435,6 +475,8 @@ const Show = enhanceChatContent((props) => {
   if (isOver && canDrop) {
     channelsClass += ' can-drop'
   }
+
+  const unreadCommentFrom = _.get(_.first(unreadComments), 'created_at') && moment(_.get(_.first(unreadComments), 'created_at')).format('HH:mm on MMMM Do')
 
   return (
     <Content ref={connectDropTargetToRef}>
@@ -468,6 +510,17 @@ const Show = enhanceChatContent((props) => {
         </div>
 
         <div className={styles.Content}>
+          {unreadCommentFrom && (
+            <div className={styles.ChannelNotification}>
+              <span className="jump" onClick={scrollToUnreadComment}><MdArrowDownwardIcon/> Jump</span>
+              <span className="date" onClick={() => removeUnreadComment(channelId)}>
+                {unreadComments.length} new Message since {unreadCommentFrom}
+                {/*{unreadComments.length} new Message since 21:04 on May 8th*/}
+              </span>
+              <span className="close" onClick={() => removeUnreadComment(channelId)}><MdCloseIcon/></span>
+            </div>
+          )}
+
           {channelComments.length > 0 && (
             <Comments
               className={styles.Comments}
@@ -480,8 +533,13 @@ const Show = enhanceChatContent((props) => {
               onEdit={setEditingRowIndex}
               onUpdate={onUpdateComment}
               onDelete={onDeleteComment}
+              onScrollBottom={() => {
+                // Mark as read when reaches to page bottom.
+                removeUnreadComment(channelId)
+              }}
               isAuthenticated={isAuthenticated}
               currentUser={currentUser}
+              unreadCommentIndex={unreadCommentIndex}
               instance={setCommentsInstance}
             />
           )}

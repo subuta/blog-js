@@ -12,6 +12,7 @@ import {
   LATO_WITH_SANS_FONT,
   SANS_FONT,
   NOISE_PATTERN,
+  NEGATIVE_COLOR,
 
   TABLET_MEDIA_QUERY,
 
@@ -233,6 +234,38 @@ const AddIcon = {
   width: 24
 }
 
+const ChannelNotification = {
+  margin: '4px 8px 0',
+  padding: '4px 8px',
+  position: 'absolute',
+  top: 0,
+  left: 8,
+  right: 8,
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  fontSize: 12,
+  fontWeight: 'bold',
+  color: PRIMARY_COLOR,
+  backgroundColor: ACCENT4_COLOR,
+  borderRadius: 4,
+  zIndex: 1,
+
+  '& > *': {
+    flex: '0 1 auto',
+    cursor: 'pointer'
+  },
+
+  '& > .date': {
+    flex: '1 1 auto',
+    textAlign: 'center'
+  },
+
+  '& > .jump': {
+    cursor: 'pointer'
+  }
+}
+
 export default createWithStyles({
   Channels,
   DropTarget,
@@ -247,5 +280,6 @@ export default createWithStyles({
   FileInput,
   TextAreaWrapper,
   TextArea,
-  AddIcon
+  AddIcon,
+  ChannelNotification
 })

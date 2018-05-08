@@ -2,7 +2,9 @@ import React from 'react'
 import _ from 'lodash'
 import { withRouter } from 'next/router'
 import {
-  compose
+  compose,
+  lifecycle,
+  withState
 } from 'recompose'
 
 import Sidebar from 'src/views/components/layout/Sidebar'
@@ -14,15 +16,23 @@ import connect from './connect'
 import withStyles from './style'
 
 const enhance = compose(
+  withState('isMounted', 'setIsMounted', false),
   withRouter,
   withStyles,
-  connect
+  connect,
+  lifecycle({
+    componentDidMount () {
+      this.props.setIsMounted(true)
+    }
+  })
 )
 
 export default enhance((props) => {
   const {
     styles,
-    channels
+    channels,
+    unreadComments,
+    isMounted
   } = props
 
   return (
@@ -35,9 +45,16 @@ export default enhance((props) => {
 
         <ul className={styles.List}>
           {_.map(channels, ({id, name}) => {
+            let channelClass = styles.ChannelLink
+            // Dirty hack for Universal rendering.
+            if (isMounted && unreadComments[id]) {
+              channelClass += ' has-unread'
+            }
+
             return (
               <li key={id}>
                 <ActiveLink
+                  className={channelClass}
                   href={`/channel?name=${name}`}
                   as={`/c/${name}`}
                 >

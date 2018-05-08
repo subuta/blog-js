@@ -16,8 +16,15 @@ import {
 
 import {
   showMenu,
-  hideMenu
+  hideMenu,
+  setUnreadComment,
+  removeUnreadComment,
+  getUnreadComments
 } from 'src/views/modules/ui'
+
+import {
+  getCurrentUser
+} from 'src/views/modules/user'
 
 import {
   getAll as getChannels,
@@ -72,9 +79,12 @@ const appendChannelComment = (comment) => {
     const entities = getChannelEntities(state)
     const channel = _.clone(entities[comment.channelId])
 
+    dispatch(setComments(normalize(comment, commentSchema)))
+
+    if (!_.get(channel, 'comments')) return
+
     // update channel comment.
     channel.comments = _.uniq([comment.id, ...channel.comments]);
-    dispatch(setComments(normalize(comment, commentSchema)))
     dispatch(setChannels(normalize(channel, channelSchema)))
   }
 }
@@ -118,13 +128,21 @@ const mapStateToProps = (state, oldProps) => {
   const channelEntities = getChannelEntities(state)
   const name = _.get(oldProps, 'url.query.name', '')
   const channel = _.find(channelEntities, {name})
+  const unreadCommentIds = getUnreadComments(state)
+  const unreadCommentId = unreadCommentIds[channel.id]
+  const channelComments = getChannelComments(name)(state)
+  const unreadCommentIndex = _.findIndex(channelComments, ['id', unreadCommentId])
+  const unreadComments = unreadCommentIndex > -1 ? _.slice(channelComments, unreadCommentIndex) : []
 
   return {
+    channelComments,
+    channel,
+    unreadComments,
+    unreadCommentIndex,
     channels: getChannels(state),
-    channelComments: getChannelComments(name)(state),
+    currentUser: getCurrentUser(state),
     isChannelProgress: getIsChannelProgress(state),
     isCommentProgress: getIsCommentProgress(state),
-    channel,
     channelId: channel.id
   }
 }
@@ -140,6 +158,8 @@ const mapDispatchToProps = {
   addReaction,
   removeReaction,
   signAttachment,
+  setUnreadComment,
+  removeUnreadComment,
   requestComments,
   appendChannelComment,
   requestChannels

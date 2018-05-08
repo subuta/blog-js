@@ -5,6 +5,8 @@ import {
   SIDEBAR_WIDTH,
   SHADOW_COLOR,
   PRIMARY_COLOR,
+  NEGATIVE_COLOR,
+  BORDER_COLOR,
 
   TABLET_MEDIA_QUERY
 } from 'src/views/constants/style'
@@ -59,9 +61,30 @@ const Loader = {
   backgroundColor: 'rgba(255, 255, 255, 0.5)'
 }
 
+const NewMessagesLine = {
+  position: 'relative',
+  borderBottom: `1px solid ${NEGATIVE_COLOR}`,
+  color: NEGATIVE_COLOR,
+  fontWeight: 'bold',
+
+  '.badge': {
+    display: 'inline-block',
+    position: 'absolute',
+    padding: '4px 8px',
+    top: 0,
+    right: 16,
+    transform: 'translate3d(0, -50%, 0)',
+    backgroundColor: PRIMARY_COLOR,
+    borderRadius: 4,
+    border: `1px solid ${BORDER_COLOR}`,
+    fontSize: 12
+  }
+}
+
 export default createWithStyles({
   Comments,
   Comment,
   PullToFetch,
-  Loader
+  Loader,
+  NewMessagesLine
 })

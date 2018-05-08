@@ -34,6 +34,7 @@ const defaultHeight = 50
 const defaultWidth = 300
 const THRESHOLD = 5
 
+// For scroll event.
 const SCROLL_DOWN = 'SCROLL_DOWN'
 const SCROLL_UP = 'SCROLL_UP'
 
@@ -110,6 +111,9 @@ const enhance = compose(
       if (!isForced && isScrolled) return
 
       listRef.scrollToRow(rowIndex)
+
+      // return true if scrolled.
+      return true
     }
 
     // FIXME: More better way to expose editor api.
@@ -252,6 +256,7 @@ const enhance = compose(
         isAuthenticated,
         isRowLoaded,
         getScrollDirection,
+        unreadCommentIndex,
         currentUser
       } = props
 
@@ -339,6 +344,12 @@ const enhance = compose(
                 />
               )}
 
+              {unreadCommentIndex === commentIndex && (
+                <div className={styles.NewMessagesLine}>
+                  <span className="badge">new messages</span>
+                </div>
+              )}
+
               <Comment
                 key={key}
                 className={styles.Comment}
@@ -390,6 +401,7 @@ const enhance = compose(
 export default enhance((props) => {
   const {
     isProgress = false,
+    onScrollBottom = _.noop,
     isInitialized,
     onLoadMoreRows,
     rowCount,
@@ -456,6 +468,11 @@ export default enhance((props) => {
             onScroll={({clientHeight, scrollHeight, scrollTop}) => {
               const isScrolled = scrollTop + (clientHeight / 2) < scrollHeight - clientHeight
               setLastScrollTop(scrollTop, isScrolled)
+
+              // On scroll down to bottom of the page.
+              if (clientHeight + scrollTop >= scrollHeight) {
+                onScrollBottom()
+              }
             }}
             onRowsRendered={onRowsRendered}
             height={containerStyle.height}
