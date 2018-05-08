@@ -34,6 +34,9 @@ const defaultHeight = 50
 const defaultWidth = 300
 const THRESHOLD = 5
 
+const SCROLL_DOWN = 'SCROLL_DOWN'
+const SCROLL_UP = 'SCROLL_UP'
+
 const enhance = compose(
   withStyles,
   connect,
@@ -57,6 +60,8 @@ const enhance = compose(
     let listRef
     let unlistenResize = _.noop
     let lastScrollTop = -1
+    let scrollDirection = SCROLL_DOWN
+    let isScrolled = false
     let comments = []
 
     const cache = new CellMeasurerCache({
@@ -99,10 +104,12 @@ const enhance = compose(
       onResize()
     }
 
-    const scrollToRow = (rowIndex) => {
-      if (listRef) {
-        listRef.scrollToRow(rowIndex)
-      }
+    const scrollToRow = (rowIndex, isForced = true) => {
+      if (!listRef) return
+      // Early return if user scrolled comments and not forced to scroll.
+      if (!isForced && isScrolled) return
+
+      listRef.scrollToRow(rowIndex)
     }
 
     // FIXME: More better way to expose editor api.
@@ -115,9 +122,18 @@ const enhance = compose(
         containerRef = findDOMNode(ref)
       },
 
-      setLastScrollTop: () => (scrollTop) => {
+      setLastScrollTop: () => (scrollTop, _isScrolled) => {
+        if (scrollTop < lastScrollTop) {
+          scrollDirection = SCROLL_UP
+        } else {
+          scrollDirection = SCROLL_DOWN
+        }
+
         lastScrollTop = scrollTop
+        isScrolled = _isScrolled
       },
+
+      getScrollDirection: () => () => scrollDirection,
 
       setListRef: () => (ref) => {
         listRef = ref
@@ -235,6 +251,7 @@ const enhance = compose(
         editingRowIndex,
         isAuthenticated,
         isRowLoaded,
+        getScrollDirection,
         currentUser
       } = props
 
@@ -293,6 +310,14 @@ const enhance = compose(
                 <DateLine
                   onEnter={() => onDateChange(null)}
                   onLeave={() => onDateChange(today)}
+                  onBeforeMount={() => {
+                    if (getScrollDirection() === SCROLL_DOWN) return
+                    onDateChange(null)
+                  }}
+                  onBeforeUnmount={() => {
+                    if (getScrollDirection() === SCROLL_UP) return
+                    onDateChange(today)
+                  }}
                   date={today}
                 />
               )}
@@ -302,6 +327,14 @@ const enhance = compose(
                 <DateLine
                   onEnter={() => onDateChange(lastDay)}
                   onLeave={() => onDateChange(today)}
+                  onBeforeMount={() => {
+                    if (getScrollDirection() === SCROLL_DOWN) return
+                    onDateChange(lastDay)
+                  }}
+                  onBeforeUnmount={() => {
+                    if (getScrollDirection() === SCROLL_UP) return
+                    onDateChange(today)
+                  }}
                   date={today}
                 />
               )}
@@ -420,7 +453,10 @@ export default enhance((props) => {
               registerChild(_ref)
               setListRef(_ref)
             }}
-            onScroll={(props) => setLastScrollTop(props.scrollTop)}
+            onScroll={({clientHeight, scrollHeight, scrollTop}) => {
+              const isScrolled = scrollTop + (clientHeight / 2) < scrollHeight - clientHeight
+              setLastScrollTop(scrollTop, isScrolled)
+            }}
             onRowsRendered={onRowsRendered}
             height={containerStyle.height}
             width={containerStyle.width}

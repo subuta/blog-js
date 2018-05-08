@@ -143,9 +143,9 @@ const enhance = compose(
         editorInstance.blur()
       },
 
-      scrollComments: ({channelComments}) => () => {
+      scrollComments: ({channelComments}) => (isForced = true) => {
         if (!commentsInstance) return
-        commentsInstance.scrollToRow(channelComments.length)
+        commentsInstance.scrollToRow(channelComments.length, isForced)
       }
     }
   }),
@@ -240,7 +240,7 @@ const enhance = compose(
 
     onEventCommentCreated: ({appendChannelComment, scrollComments}) => ({comment}) => {
       appendChannelComment(comment)
-      scrollComments()
+      scrollComments(false)
     },
 
     onDeleteComment: ({deleteComment}) => (comment) => {

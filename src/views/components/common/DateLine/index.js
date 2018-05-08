@@ -6,9 +6,29 @@ import withStyles from './style'
 
 import Waypoint from 'react-waypoint'
 
+import {
+  compose,
+  lifecycle
+} from 'recompose'
+
+const enhance = compose(
+  withStyles,
+  lifecycle({
+    componentWillMount () {
+      const {onBeforeMount = _.noop} = this.props
+      onBeforeMount()
+    },
+
+    componentWillUnmount () {
+      const {onBeforeUnmount = _.noop} = this.props
+      onBeforeUnmount()
+    }
+  })
+)
+
 // FIXME: More better sticky behavior.
 // Date-Line separator
-export default withStyles((props) => {
+export default enhance((props) => {
   const {
     styles,
     date,
