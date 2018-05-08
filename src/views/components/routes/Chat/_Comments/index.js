@@ -32,6 +32,7 @@ const isBrowser = typeof window !== 'undefined'
 
 const defaultHeight = 50
 const defaultWidth = 300
+const THRESHOLD = 5
 
 const enhance = compose(
   withStyles,
@@ -205,6 +206,17 @@ const enhance = compose(
       await onUpdate(comment, params)
 
       refresh(rowIndex)
+    },
+
+    onLoadMoreRows: ({loadNext, isProgress, comments, scrollToRow}) => () => {
+      // Only load 1 page of items at a time.
+      // Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
+      const loadMoreRows = isProgress
+        ? () => Promise.resolve()
+        : loadNext
+
+      // Scroll to last row.
+      loadMoreRows().then(() => scrollToRow(THRESHOLD + 1))
     }
   }),
   withHandlers({
@@ -346,6 +358,7 @@ export default enhance((props) => {
   const {
     isProgress = false,
     isInitialized,
+    onLoadMoreRows,
     rowCount,
     containerStyle,
     setContainerRef,
@@ -364,12 +377,6 @@ export default enhance((props) => {
   const cache = getCache()
 
   const isRowLoaded = isInitialized ? props.isRowLoaded : () => true
-
-  // Only load 1 page of items at a time.
-  // Pass an empty callback to InfiniteLoader in case it asks us to load more than once.
-  const loadMoreRows = isProgress
-    ? () => {}
-    : loadNext
 
   return (
     <div
@@ -403,8 +410,9 @@ export default enhance((props) => {
 
       <InfiniteLoader
         isRowLoaded={isRowLoaded}
-        loadMoreRows={() => loadMoreRows()}
+        loadMoreRows={onLoadMoreRows}
         rowCount={rowCount}
+        threshold={THRESHOLD}
       >
         {({onRowsRendered, registerChild}) => (
           <List

@@ -219,14 +219,15 @@ const enhance = compose(
         isLast
       } = paging
 
-      if (isLast) return
+      if (isLast) return Promise.resolve()
 
       // Retrieve next page and save latest paging into state.
-      requestComments({
+      return requestComments({
         channelId,
         page: next
       }).then(data => {
         setPaging(_.omit(data, ['results']))
+        return data
       })
     },
 
