@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import request from 'src/views/utils/request'
 
 const isBrowser = typeof window !== 'undefined'
 
@@ -17,7 +18,7 @@ if (eventSource) {
   }
 
   eventSource.onmessage = function (_event) {
-    const { event, data } = JSON.parse(_event.data)
+    const {event, data} = JSON.parse(_event.data)
 
     const listeners = eventListeners[event]
     console.log(`Got ${event}`)
@@ -46,4 +47,10 @@ export const unsubscribe = (event, cb) => {
   if (!eventListeners[event]) return
   eventListeners[event] = _.without(eventListeners[event], cb)
   console.log(`UnSubscribed from '${event}', listeners = ${eventListeners[event].length}`)
+}
+
+export const broadcast = (event, data) => {
+  if (!isBrowser) return Promise.resolve()
+
+  return request.post(`/stream/broadcast`, {event, data})
 }

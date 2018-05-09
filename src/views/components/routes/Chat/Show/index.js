@@ -32,7 +32,10 @@ import SvgIcon from 'src/views/components/common/SvgIcon'
 
 import moment from 'src/views/utils/moment'
 import storage from 'src/views/utils/storage'
-import { EventCommentCreated } from 'src/api/constants/config'
+import {
+  EventCommentCreated,
+  EventCommentTyping
+} from 'src/api/constants/config'
 
 import {
   compose,
@@ -208,7 +211,91 @@ const enhance = compose(
         }
       })
     },
+
+    onEventCommentCreated: (props) => ({comment}) => {
+      const {
+        appendChannelComment,
+        scrollComments,
+        setUnreadComment,
+        currentUser,
+        channelId
+      } = props
+
+      appendChannelComment(comment)
+
+      // Skip unread for own comment naturally ;)
+      if (comment.commentedById === _.get(currentUser, 'id')) {
+        return scrollComments()
+      }
+
+      // If commented to other channel of user scrolls page manually.
+      const isCommentedToThisChannel = comment.channelId === channelId
+      if (!isCommentedToThisChannel || !scrollComments(false)) {
+        setUnreadComment(comment.channelId, comment.id)
+      }
+    },
+
+    onEventCommentTyping: ({setEditingUsers, removeEditingUser, currentUser}) => ({channelId, by}) => {
+      // Skip your typing naturally ;)
+      if (by.id === _.get(currentUser, 'id')) return
+
+      setEditingUsers(channelId, by)
+      _.delay(() => removeEditingUser(channelId, by), 1000 * 10)
+    }
   }),
+  withHandlers((props) => {
+    const {
+      onEventCommentCreated,
+      onEventCommentTyping
+    } = props
+
+    let unsubscribe = _.noop
+    let sse = null
+
+    return {
+      subscribeStream: () => async () => {
+        if (!isBrowser) return
+
+        sse = await import('src/views/utils/sse')
+
+        // Subscribe events
+        sse.subscribe(EventCommentCreated, onEventCommentCreated)
+        sse.subscribe(EventCommentTyping, onEventCommentTyping)
+
+        unsubscribe = () => {
+          // Unsubscribe events
+          sse.unsubscribe(EventCommentCreated, onEventCommentCreated)
+          sse.unsubscribe(EventCommentTyping, onEventCommentTyping)
+        }
+      },
+
+      broadcast: () => (...args) => {
+        if (!isBrowser || !sse) return Promise.resolve()
+        sse.broadcast.apply(null, args)
+      },
+
+      unsubscribeStream: () => () => {
+        if (!isBrowser || !sse) return
+        unsubscribe()
+      }
+    }
+  }),
+  withHandlers({
+    notifyTyping: ({broadcast, channelId}) => () => {
+      broadcast(EventCommentTyping, {
+        channelId
+      })
+    }
+  }),
+  withPropsOnChange(
+    ['notifyTyping'],
+    ({notifyTyping}) => {
+      return {
+        notifyTyping: _.debounce(notifyTyping, 1000 * 10, { leading: true })
+        // notifyTyping: _.debounce(notifyTyping, 1000 * 10)
+      }
+    }
+  ),
   withHandlers({
     onPullToFetch: (props) => (...args) => {
       const {
@@ -242,29 +329,6 @@ const enhance = compose(
       })
     },
 
-    onEventCommentCreated: (props) => ({comment}) => {
-      const {
-        appendChannelComment,
-        scrollComments,
-        setUnreadComment,
-        currentUser,
-        channelId
-      } = props
-
-      appendChannelComment(comment)
-
-      // Skip unread for own comment naturally ;)
-      if (comment.commentedById === _.get(currentUser, 'id')) {
-        return scrollComments()
-      }
-
-      // If commented to other channel of user scrolls page manually.
-      const isCommentedToThisChannel = comment.channelId === channelId
-      if (!isCommentedToThisChannel || !scrollComments(false)) {
-        setUnreadComment(comment.channelId, comment.id)
-      }
-    },
-
     onDeleteComment: ({deleteComment}) => (comment) => {
       return deleteComment(comment.id, comment)
     },
@@ -283,10 +347,14 @@ const enhance = compose(
         scrollComments,
         resetEditor,
         focusEditor,
+        notifyTyping,
         notify
       } = props
 
       const key = keycode(e)
+
+      // Publish typing event on type.
+      notifyTyping()
 
       // if enter pressed(without shift-key)
       if (key === 'enter' && !e.shiftKey) {
@@ -376,25 +444,6 @@ const enhance = compose(
       handleFileUpload(file)
     },
   }),
-  withHandlers(({onEventCommentCreated}) => {
-    let unsubscribe = _.noop
-
-    return {
-      subscribeStream: () => async () => {
-        if (!isBrowser) return
-
-        const sse = await import('src/views/utils/sse')
-        sse.subscribe(EventCommentCreated, onEventCommentCreated)
-
-        unsubscribe = () => sse.unsubscribe(EventCommentCreated, onEventCommentCreated)
-      },
-
-      unsubscribeStream: () => () => {
-        if (!isBrowser) return
-        unsubscribe()
-      }
-    }
-  }),
   lifecycle({
     componentWillMount () {
       const {
@@ -450,6 +499,7 @@ const Show = enhanceChatContent((props) => {
     isAuthenticated,
     channel,
     isOver,
+    editingUsers,
     channelId,
     isCommentProgress,
     isEditorFocused,
@@ -477,6 +527,13 @@ const Show = enhanceChatContent((props) => {
   }
 
   const unreadCommentFrom = _.get(_.first(unreadComments), 'created_at') && moment(_.get(_.first(unreadComments), 'created_at')).format('HH:mm on MMMM Do')
+
+  let whoIsTyping = ''
+  if (editingUsers.length === 1) {
+    whoIsTyping = _.get(editingUsers, [0, 'nickname'], '')
+  } else if (editingUsers.length > 1) {
+    whoIsTyping = 'Several people'
+  }
 
   return (
     <Content ref={connectDropTargetToRef}>
@@ -576,6 +633,12 @@ const Show = enhanceChatContent((props) => {
                   onBlur={() => setIsEditorFocused(false)}
                 />
               </div>
+            </div>
+
+            <div className={styles.ChannelSubNotification}>
+              {whoIsTyping && (
+                <span><b>{whoIsTyping}</b> typing ...</span>
+              )}
             </div>
           </div>
         </div>

@@ -8,9 +8,11 @@ import storage from 'src/views/utils/storage'
 // Constants
 // -------------
 export const SHOW_MENU = 'SHOW_MENU'
+export const HIDE_MENU = 'HIDE_MENU'
 export const SET_UNREAD_COMMENT = 'SET_UNREAD_COMMENT'
 export const REMOVE_UNREAD_COMMENT = 'REMOVE_UNREAD_COMMENT'
-export const HIDE_MENU = 'HIDE_MENU'
+export const SET_EDITING_USERS = 'SET_EDITING_USERS'
+export const REMOVE_EDITING_USER = 'REMOVE_EDITING_USER'
 
 // -------------
 // ActionCreators
@@ -54,6 +56,26 @@ export const removeUnreadComment = (channelId) => {
   }
 }
 
+export const setEditingUsers = (channelId, user) => {
+  return {
+    type: SET_EDITING_USERS,
+    payload: {
+      channelId,
+      user
+    }
+  }
+}
+
+export const removeEditingUser = (channelId, user) => {
+  return {
+    type: REMOVE_EDITING_USER,
+    payload: {
+      channelId,
+      user
+    }
+  }
+}
+
 // -------------
 // Reducers
 // -------------
@@ -82,9 +104,33 @@ export const unreadComments = (state = {}, action) => {
   return state
 }
 
+// Editing users per channel
+export const editingUsers = (state = {}, action) => {
+  if (action.type === SET_EDITING_USERS) {
+    const {channelId, user} = action.payload
+    const users = state[channelId] || []
+    return {
+      ...state,
+      [channelId]: _.uniqBy([
+        ...users,
+        user
+      ], 'id')
+    }
+  } else if (action.type === REMOVE_EDITING_USER) {
+    const {channelId, user} = action.payload
+    const users = state[channelId] || []
+    return {
+      ...state,
+      [channelId]: _.without(users, user)
+    }
+  }
+  return state
+}
+
 let reducers = {
   isShowMenu,
-  unreadComments
+  unreadComments,
+  editingUsers
 }
 
 export default combineReducers(reducers)
@@ -94,3 +140,4 @@ export default combineReducers(reducers)
 // -------------
 export const getIsShowMenu = (state) => state.ui.isShowMenu
 export const getUnreadComments = (state) => state.ui.unreadComments
+export const getEditingUsers = (state) => state.ui.editingUsers

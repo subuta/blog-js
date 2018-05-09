@@ -19,11 +19,14 @@ import {
   hideMenu,
   setUnreadComment,
   removeUnreadComment,
+  setEditingUsers,
+  removeEditingUser,
+  getEditingUsers,
   getUnreadComments
 } from 'src/views/modules/ui'
 
 import {
-  getCurrentUser
+  getCurrentUser,
 } from 'src/views/modules/user'
 
 import {
@@ -133,6 +136,7 @@ const mapStateToProps = (state, oldProps) => {
   const channelComments = getChannelComments(name)(state)
   const unreadCommentIndex = _.findIndex(channelComments, ['id', unreadCommentId])
   const unreadComments = unreadCommentIndex > -1 ? _.slice(channelComments, unreadCommentIndex) : []
+  const channelEditingUsers = getEditingUsers(state)
 
   return {
     channelComments,
@@ -141,6 +145,7 @@ const mapStateToProps = (state, oldProps) => {
     unreadCommentIndex,
     channels: getChannels(state),
     currentUser: getCurrentUser(state),
+    editingUsers: channelEditingUsers[channel.id] || [],
     isChannelProgress: getIsChannelProgress(state),
     isCommentProgress: getIsCommentProgress(state),
     channelId: channel.id
@@ -160,6 +165,8 @@ const mapDispatchToProps = {
   signAttachment,
   setUnreadComment,
   removeUnreadComment,
+  setEditingUsers,
+  removeEditingUser,
   requestComments,
   appendChannelComment,
   requestChannels

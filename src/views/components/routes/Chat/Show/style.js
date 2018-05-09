@@ -142,7 +142,7 @@ const Comments = {
 }
 
 const Footer = {
-  padding: '0 16px 16px',
+  padding: '0 16px 0',
   position: 'absolute',
   right: 0,
   bottom: 0,
@@ -266,6 +266,12 @@ const ChannelNotification = {
   }
 }
 
+const ChannelSubNotification = {
+  padding: '0 0 0 48px', // Aligned to Editor input.
+  height: 16,
+  fontSize: 11,
+}
+
 export default createWithStyles({
   Channels,
   DropTarget,
@@ -281,5 +287,6 @@ export default createWithStyles({
   TextAreaWrapper,
   TextArea,
   AddIcon,
-  ChannelNotification
+  ChannelNotification,
+  ChannelSubNotification
 })

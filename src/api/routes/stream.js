@@ -1,10 +1,12 @@
 import Router from 'koa-router'
 import { PassThrough } from 'stream'
 import _ from 'lodash'
+import {authenticate as auth} from 'src/api/middlewares/auth'
 
 import {
   subscribe,
-  unsubscribe
+  unsubscribe,
+  publish
 } from 'src/api/utils/redis'
 
 import {
@@ -41,6 +43,27 @@ stream.get('/all', async ctx => {
 
   ctx.type = 'text/event-stream'
   ctx.flushHeaders()
+})
+
+stream.post('/broadcast', auth, async ctx => {
+  const {event, data} = ctx.request.body
+
+  const currentUser = await ctx.state.getCurrentUser()
+
+  publish(ChannelAll, {
+    event,
+    data: {
+      ...data,
+      // Append currentUser's info.
+      by: _.pick(currentUser, [
+        'id',
+        'nickname'
+      ])
+    }
+  })
+
+  // Set dummy body.
+  ctx.body = {}
 })
 
 export default stream
