@@ -62,7 +62,7 @@ const deleteComment = (id, params) => {
     const channel = entities[params.channelId]
     const _channel = _.clone(channel)
 
-    _channel.comments = _.without(channel.comments, id);
+    _channel.comments = _.without(channel.comments, id)
 
     // optimistic delete comments
     dispatch(setChannels(normalize(_channel, channelSchema)))
@@ -87,8 +87,14 @@ const appendChannelComment = (comment) => {
     if (!_.get(channel, 'comments')) return
 
     // update channel comment.
-    channel.comments = _.uniq([comment.id, ...channel.comments]);
+    channel.comments = _.uniq([comment.id, ...channel.comments])
     dispatch(setChannels(normalize(channel, channelSchema)))
+  }
+}
+
+const setChannelComment = (comment) => {
+  return (dispatch) => {
+    dispatch(setComments(normalize(comment, commentSchema)))
   }
 }
 
@@ -102,10 +108,10 @@ const requestComments = (params) => {
       // update channel comment.
       const normalized = normalize(data.results, commentListSchema)
       // prepend commentIds to channel.comments
-      channel.comments = _.uniq([...channel.comments, ...normalized.result]);
+      channel.comments = _.uniq([...channel.comments, ...normalized.result])
       dispatch(setComments(normalized))
       dispatch(setChannels(normalize(channel, channelSchema)))
-      return data;
+      return data
     })
   }
 }
@@ -168,6 +174,7 @@ const mapDispatchToProps = {
   setEditingUsers,
   removeEditingUser,
   requestComments,
+  setChannelComment,
   appendChannelComment,
   requestChannels
 }

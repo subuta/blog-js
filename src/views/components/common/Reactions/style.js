@@ -12,6 +12,7 @@ const Reactions = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-start',
+  flexWrap: 'wrap',
 
   '& > *': {
     lineHeight: '1 !important'
@@ -19,7 +20,7 @@ const Reactions = {
 }
 
 const ReactionButton = {
-  margin: '0 8px 0 0',
+  margin: '4px 8px 0 0',
   minHeight: 30,
   padding: '2px 4px',
   display: 'inline-flex',
@@ -51,7 +52,7 @@ const ReactionButton = {
   },
 
   '&.add-reaction': {
-    margin: 0
+    margin: '4px 0 0 0'
   },
 
   '& svg': {

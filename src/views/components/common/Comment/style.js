@@ -123,7 +123,7 @@ const Comment = {
 
   '& .reactions': {
     display: 'none',
-    margin: '4px 0 0 0',
+    margin: '4px 0 4px 0',
 
     '&.has-reaction': {
       display: 'flex',

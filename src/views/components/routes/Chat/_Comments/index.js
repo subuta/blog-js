@@ -116,9 +116,25 @@ const enhance = compose(
       return true
     }
 
+    const refresh = (rowIndex) => {
+      if (cache) {
+        if (rowIndex) {
+          cache.clear(rowIndex, 0)
+        } else {
+          cache.clearAll()
+        }
+      }
+
+      if (listRef) {
+        listRef.recomputeRowHeights()
+        listRef.scrollToPosition(lastScrollTop)
+      }
+    }
+
     // FIXME: More better way to expose editor api.
     instance({
-      scrollToRow
+      scrollToRow,
+      refresh
     })
 
     return {
@@ -147,21 +163,7 @@ const enhance = compose(
         comments = props.comments
       },
 
-      refresh: () => (rowIndex) => {
-        if (cache) {
-          if (rowIndex) {
-            cache.clear(rowIndex, 0)
-          } else {
-            cache.clearAll()
-          }
-        }
-
-        if (listRef) {
-          listRef.recomputeRowHeights()
-          listRef.scrollToPosition(lastScrollTop)
-        }
-      },
-
+      refresh: () => refresh,
       scrollToRow: () => scrollToRow,
 
       initialize: ({comments}) => () => {

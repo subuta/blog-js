@@ -34,7 +34,9 @@ import moment from 'src/views/utils/moment'
 import storage from 'src/views/utils/storage'
 import {
   EventCommentCreated,
-  EventCommentTyping
+  EventCommentTyping,
+  EventCommentReactionCreated,
+  EventCommentReactionDeleted
 } from 'src/api/constants/config'
 
 import {
@@ -153,6 +155,11 @@ const enhance = compose(
       scrollComments: ({channelComments}) => (isForced = true) => {
         if (!commentsInstance) return
         return commentsInstance.scrollToRow(channelComments.length, isForced)
+      },
+
+      refreshComments: () => () => {
+        if (!commentsInstance) return
+        return commentsInstance.refresh()
       }
     }
   }),
@@ -241,12 +248,30 @@ const enhance = compose(
 
       setEditingUsers(channelId, by)
       _.delay(() => removeEditingUser(channelId, by), 1000 * 10)
+    },
+
+    onEventCommentReactionCreated: ({setChannelComment, refreshComments, currentUser}) => ({reaction, comment}) => {
+      // Skip your typing naturally ;)
+      if (comment.commentedById === _.get(currentUser, 'id')) return
+
+      setChannelComment(comment)
+      refreshComments()
+    },
+
+    onEventCommentReactionDeleted: ({setChannelComment, refreshComments, currentUser}) => ({reaction, comment}) => {
+      // Skip your typing naturally ;)
+      if (comment.commentedById === _.get(currentUser, 'id')) return
+
+      setChannelComment(comment)
+      refreshComments()
     }
   }),
   withHandlers((props) => {
     const {
       onEventCommentCreated,
-      onEventCommentTyping
+      onEventCommentTyping,
+      onEventCommentReactionCreated,
+      onEventCommentReactionDeleted
     } = props
 
     let unsubscribe = _.noop
@@ -261,11 +286,15 @@ const enhance = compose(
         // Subscribe events
         sse.subscribe(EventCommentCreated, onEventCommentCreated)
         sse.subscribe(EventCommentTyping, onEventCommentTyping)
+        sse.subscribe(EventCommentReactionCreated, onEventCommentReactionCreated)
+        sse.subscribe(EventCommentReactionDeleted, onEventCommentReactionDeleted)
 
         unsubscribe = () => {
           // Unsubscribe events
           sse.unsubscribe(EventCommentCreated, onEventCommentCreated)
           sse.unsubscribe(EventCommentTyping, onEventCommentTyping)
+          sse.unsubscribe(EventCommentReactionCreated, onEventCommentReactionCreated)
+          sse.unsubscribe(EventCommentReactionDeleted, onEventCommentReactionDeleted)
         }
       },
 
@@ -291,8 +320,7 @@ const enhance = compose(
     ['notifyTyping'],
     ({notifyTyping}) => {
       return {
-        notifyTyping: _.debounce(notifyTyping, 1000 * 10, { leading: true })
-        // notifyTyping: _.debounce(notifyTyping, 1000 * 10)
+        notifyTyping: _.debounce(notifyTyping, 1000 * 10, {leading: true})
       }
     }
   ),

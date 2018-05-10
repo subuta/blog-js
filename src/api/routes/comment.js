@@ -5,6 +5,8 @@ import {authenticate as auth} from 'src/api/middlewares/auth'
 /* mat Custom imports [start] */
 import {
   EventCommentCreated,
+  EventCommentReactionCreated,
+  EventCommentReactionDeleted,
   ChannelAll
 } from 'src/api/constants/config'
 import { publish } from 'src/api/utils/redis'
@@ -152,7 +154,7 @@ comment.put('/:id/reaction', auth, async (ctx) => {
   const {Comment} = ctx.state.models
   let {reaction} = ctx.request.body
 
-  const comment = await Comment.query()
+  let comment = await Comment.query()
     .findById(ctx.params.id)
     .eager('[attachment, commentedBy, reactions.reactedBy]')
 
@@ -162,26 +164,37 @@ comment.put('/:id/reaction', auth, async (ctx) => {
   // ignore invalid column
   reaction = _.pick(reaction, ['emoji', 'reactedById'])
 
-  const found = await comment
+  let found = await comment
     .$relatedQuery('reactions')
     .findFirst(reaction)
 
   // create if not exists.
   if (!found) {
-    await comment
+    found = await comment
       .$relatedQuery('reactions')
       .insert(reaction)
   }
 
-  ctx.body = await comment.$query()
+  comment = await comment.$query()
     .eager('[attachment, commentedBy, reactions.reactedBy]')
+
+  // Publish comment reaction.
+  publish(ChannelAll, {
+    event: EventCommentReactionCreated,
+    data: {
+      comment,
+      reaction: found
+    }
+  })
+
+  ctx.body = comment
 })
 
 comment.delete('/:id/reaction', auth, async (ctx) => {
   const {Comment} = ctx.state.models
   let query = ctx.request.query
 
-  const comment = await Comment.query()
+  let comment = await Comment.query()
     .findById(ctx.params.id)
     .eager('[attachment, commentedBy, reactions.reactedBy]')
 
@@ -196,8 +209,19 @@ comment.delete('/:id/reaction', auth, async (ctx) => {
     .delete()
     .where(query)
 
-  ctx.body = await comment.$query()
+  comment = await comment.$query()
     .eager('[attachment, commentedBy, reactions.reactedBy]')
+
+  // Publish comment reaction.
+  publish(ChannelAll, {
+    event: EventCommentReactionDeleted,
+    data: {
+      comment,
+      reaction: query
+    }
+  })
+
+  ctx.body = comment
 })
 /* mat Custom actions [end] */
 
