@@ -15,7 +15,12 @@ import Content from 'src/views/components/routes/Chat/_Content'
 import withStyles from './style'
 import connect from './connect'
 
-import { baseUrl, staticFolder } from 'src/views/constants/config'
+import {
+  staticFolder,
+  baseUrl,
+  fbAppId,
+  twitterSite
+} from 'src/views/constants/config'
 
 const enhance = compose(
   withStyles,
@@ -49,6 +54,9 @@ export default enhance((props) => {
         <meta property="og:image" content={`${baseUrl}${staticFolder}/assets/images/ogp.png`} />
         <meta property="og:site_name" content="sub-labo.com" />
         <meta property="og:description" content={`sub-labo chat channels`} />
+        <meta property="fb:app_id" content={fbAppId} />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content={twitterSite} />
       </Head>
 
       <Sidebar/>
