@@ -37,7 +37,8 @@ module.exports = {
   },
 
   publicRuntimeConfig: { // Will be available on both server and client
-    staticFolder: '/static'
+    staticFolder: '/static',
+    baseUrl: process.env.BASE_URL
   },
   // https://github.com/zeit/next.js/issues/706
   // the modules needs to be transpiled by babel.

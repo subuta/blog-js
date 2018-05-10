@@ -6,6 +6,8 @@ import { NativeTypes } from 'react-dnd-html5-backend'
 
 const {FILE} = NativeTypes
 
+import Head from 'next/head'
+
 import _ from 'lodash'
 import keycode from 'keycode'
 
@@ -29,6 +31,8 @@ import DateLine from 'src/views/components/common/DateLine'
 import Tooltip from 'src/views/components/common/Tooltip'
 import Editor from 'src/views/components/common/Editor'
 import SvgIcon from 'src/views/components/common/SvgIcon'
+
+import { baseUrl, staticFolder } from 'src/views/constants/config'
 
 import moment from 'src/views/utils/moment'
 import storage from 'src/views/utils/storage'
@@ -676,8 +680,27 @@ const Show = enhanceChatContent((props) => {
 })
 
 export default enhance((props) => {
+  const {
+    unreadComments,
+    channel
+  } = props
+
+  let title = `#${channel.name} | sub-labo chat`
+  if (unreadComments.length > 0) {
+    title = `* ${title}`
+  }
+
   return (
     <Layout>
+      <Head>
+        <title>{title}</title>
+        <meta property="og:title" content={title} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`${baseUrl}/c/${channel.name}`} />
+        <meta property="og:image" content={`${baseUrl}${staticFolder}/assets/images/ogp.png`} />
+        <meta property="og:site_name" content="sub-labo.com" />
+        <meta property="og:description" content={`sub-labo chat channel of #${channel.name} related things`} />
+      </Head>
       <Sidebar/>
       <Show {...props}/>
     </Layout>

@@ -5,6 +5,8 @@ import _ from 'lodash'
 import { toHtml } from 'src/views/utils/markdown'
 import Router from 'next/router'
 
+import Head from 'next/head'
+
 import ActiveLink from 'src/views/components/common/ActiveLink'
 import FloatingActionButton from 'src/views/components/common/FloatingActionButton'
 import Editor from 'src/views/components/common/Editor'
@@ -46,6 +48,8 @@ import connect from './connect'
 import storage from 'src/views/utils/storage'
 
 const isBrowser = typeof window !== 'undefined'
+
+import { baseUrl, staticFolder } from 'src/views/constants/config'
 
 const enhanceContent = compose(
   branch(
@@ -400,12 +404,24 @@ export default enhance((props) => {
 
   if (!article) return null
 
-  const {title, isPublished, content, author, id} = article
+  const {isPublished, content, author, id} = article
   const nickname = _.get(author, 'nickname')
   const createdAt = moment(article.created_at).format('MMMM Do YYYY')
 
+  let title = `${article.title} | sub-labo wiki`
+
   return (
     <Layout>
+      <Head>
+        <title>{title}</title>
+        <meta property="og:title" content={title} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`${baseUrl}/w/${article.title}`} />
+        <meta property="og:image" content={`${baseUrl}${staticFolder}/assets/images/ogp.png`} />
+        <meta property="og:site_name" content="sub-labo.com" />
+        <meta property="og:description" content={article.summary} />
+      </Head>
+
       <div className={styles.ScrollContainer}>
         <Sidebar/>
 
@@ -518,7 +534,7 @@ export default enhance((props) => {
               </MaterialButton>
             )}
 
-            <h4 className={styles.Title}>{title}</h4>
+            <h4 className={styles.Title}>{article.title}</h4>
 
             <div className={styles.SubTitle}>
               <small className="created-at">{createdAt}</small>

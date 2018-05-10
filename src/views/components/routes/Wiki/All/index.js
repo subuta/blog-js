@@ -1,5 +1,6 @@
 import moment from 'src/views/utils/moment'
 import Router, { withRouter } from 'next/router'
+import Head from 'next/head'
 import _ from 'lodash'
 
 import Layout from 'src/views/components/layout/Layout'
@@ -29,6 +30,8 @@ import connect from './connect'
 import Sidebar from '../_Sidebar'
 import Header from '../_Header'
 import Content from '../_Content'
+
+import { baseUrl, staticFolder } from 'src/views/constants/config'
 
 const enhance = compose(
   withStyles,
@@ -119,8 +122,20 @@ export default enhance((props) => {
     articles = [...props.draftArticles, ...props.articles]
   }
 
+  let title = `Articles | sub-labo wiki`
+
   return (
     <Layout>
+      <Head>
+        <title>{title}</title>
+        <meta property="og:title" content={title} />
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`${baseUrl}/w`} />
+        <meta property="og:image" content={`${baseUrl}${staticFolder}/assets/images/ogp.png`} />
+        <meta property="og:site_name" content="sub-labo.com" />
+        <meta property="og:description" content={`sub-labo wiki articles`} />
+      </Head>
+
       <div className={styles.ScrollContainer}>
         <Sidebar/>
 
