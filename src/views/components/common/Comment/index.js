@@ -110,9 +110,9 @@ const enhance = compose(
       } = this.props
 
       // Call onLoad at this hook for no-attachment comment.
-      if (!attachment) {
-        onLoad()
-      }
+      // if (!attachment) {
+      //   onLoad()
+      // }
     },
 
     componentDidUpdate (prevProps) {
