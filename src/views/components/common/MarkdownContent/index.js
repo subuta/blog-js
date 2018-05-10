@@ -15,7 +15,8 @@ import withStyles from './style'
 
 const isBrowser = typeof window !== 'undefined'
 
-let embedlyEventListener = []
+let embedlyRenderedListener = []
+let embedlyResizeListener = []
 
 if (isBrowser) {
   // FIXME: More performant way to manage embedly.
@@ -23,10 +24,10 @@ if (isBrowser) {
   import('src/views/utils/embedly').then(({getEmbedly}) => {
     const embedly = getEmbedly()
     embedly('on', 'card.rendered', (node) => {
-      _.each(embedlyEventListener, (fn) => fn())
+      _.each(embedlyRenderedListener, (fn) => fn())
     });
     embedly('on', 'card.resize', (node) => {
-      _.each(embedlyEventListener, (fn) => fn())
+      _.each(embedlyResizeListener, (fn) => fn())
     });
   })
 }
@@ -35,11 +36,13 @@ const enhance = compose(
   withStyles,
   lifecycle({
     componentWillMount() {
-      embedlyEventListener.push(this.props.onLoad)
+      embedlyRenderedListener.push(this.props.onLoad)
+      embedlyResizeListener.push(this.props.onResized)
     },
 
     componentWillUnmount() {
-      embedlyEventListener = _.without(embedlyEventListener, this.props.onLoad)
+      embedlyRenderedListener = _.without(embedlyRenderedListener, this.props.onLoad)
+      embedlyResizeListener = _.without(embedlyResizeListener, this.props.onResized)
     }
   }),
   withPropsOnChange(

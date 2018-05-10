@@ -68,6 +68,8 @@ const enhance = compose(
         editorInstance.focus()
       },
 
+      handleResized: ({comment, onResized = _.noop}) => () => onResized(comment),
+
       onKeyDown: (props) => (e) => {
         const {
           comment,
@@ -209,11 +211,12 @@ export default enhance((props) => {
     setIsHover,
     isAuthenticated,
     currentUser,
+    handleResized,
     onLoad = _.noop, // Will be called on content loaded.
     onEdit = _.noop,
     onDelete = _.noop,
     onAddReaction = _.noop,
-    onRemoveReaction = _.noop
+    onRemoveReaction = _.noop,
   } = props
 
   const {
@@ -272,6 +275,7 @@ export default enhance((props) => {
           className="text"
           html={toHtml(text)}
           onLoad={onLoad}
+          onResized={handleResized}
         />
 
         {isEdited && (

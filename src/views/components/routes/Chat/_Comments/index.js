@@ -239,6 +239,13 @@ const enhance = compose(
 
       // Scroll to last row.
       loadMoreRows().then(() => scrollToRow(THRESHOLD + 1))
+    },
+
+    onCommentResized: ({comments, hasNext, refresh}) => (comment) => {
+      let rowIndex = _.findIndex(comments, ['id', comment.id])
+      rowIndex = hasNext ? rowIndex + 1 : rowIndex
+
+      refresh(rowIndex)
     }
   }),
   withHandlers({
@@ -251,9 +258,11 @@ const enhance = compose(
         onDelete,
         onAddReaction,
         onRemoveReaction,
+        onCommentResized,
         getCache,
         styles,
         onEdit,
+        refresh,
         editingRowIndex,
         isAuthenticated,
         isRowLoaded,
@@ -361,6 +370,7 @@ const enhance = compose(
                 onUpdate={onUpdateComment}
                 onDelete={() => onDelete(comment)}
                 onLoad={measure}
+                onResized={onCommentResized}
                 onEdit={() => onEdit(index)}
                 onEndEdit={() => onEdit(null)}
                 isEditing={editingRowIndex === index}
