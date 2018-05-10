@@ -702,12 +702,12 @@ export default enhance((props) => {
         <meta property="og:title" content={title} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`${baseUrl}/c/${channel.name}`} />
-        <meta property="og:image" content={`${baseUrl}${staticFolder}/assets/images/ogp.png`} />
+        <meta property="og:image" content={`${baseUrl}${staticFolder}/ass<meta property="fb:app_id" content={fbAppId} />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content={twitterSite} />ets/images/ogp.png`} />
         <meta property="og:site_name" content="sub-labo.com" />
         <meta property="og:description" content={`sub-labo chat channel of #${channel.name} related things`} />
-        <meta property="fb:app_id" content={fbAppId} />
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:site" content={twitterSite} />
+
       </Head>
       <Sidebar/>
       <Show {...props}/>

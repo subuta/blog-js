@@ -271,6 +271,7 @@ export default enhance((props) => {
         <MarkdownContent
           className="text"
           html={toHtml(text)}
+          onLoad={onLoad}
         />
 
         {isEdited && (
