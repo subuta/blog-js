@@ -63,15 +63,10 @@ const enhance = compose(
     let lastScrollTop = -1
     let scrollDirection = SCROLL_DOWN
     let isScrolled = false
-    let comments = []
 
     const cache = new CellMeasurerCache({
       defaultHeight,
-      fixedWidth: true,
-      keyMapper: (rowIndex, columnIndex) => {
-        // Fallback to default keyMapper.
-        return _.get(comments, [rowIndex, 'id']) || `${rowIndex}-${columnIndex}`
-      }
+      fixedWidth: true
     })
 
     // Get container size at DOM.
@@ -157,10 +152,6 @@ const enhance = compose(
 
       setListRef: () => (ref) => {
         listRef = ref
-      },
-
-      syncComments: (props) => () => {
-        comments = props.comments
       },
 
       refresh: () => refresh,

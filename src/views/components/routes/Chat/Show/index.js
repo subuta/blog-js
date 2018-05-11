@@ -707,7 +707,6 @@ export default enhance((props) => {
         <meta name="twitter:site" content={twitterSite} />ets/images/ogp.png`} />
         <meta property="og:site_name" content="sub-labo.com" />
         <meta property="og:description" content={`sub-labo chat channel of #${channel.name} related things`} />
-
       </Head>
       <Sidebar/>
       <Show {...props}/>
