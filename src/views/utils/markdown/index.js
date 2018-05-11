@@ -12,6 +12,7 @@ import table from './table'
 
 // parser & transformer
 import emoji from './emoji'
+import quoteUrl from './quote-url'
 import tag from './tag'
 import kbd from './kbd'
 import m2h from 'remark-rehype'
@@ -33,6 +34,7 @@ const processor = unified()
   .use(slug)
   .use(highlight)
   .use(emoji)
+  .use(quoteUrl)
   .use(tag)
   .use(table)
   .use(kbd)

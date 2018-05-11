@@ -77,6 +77,10 @@ const Editor = {
     ...blockquote
   },
 
+  '& .quote-url': {
+    ...GrayFont
+  },
+
   // RWD idea from http://codepen.io/geoffyuen/pen/FCBEg?editors=1100
   '& .table': {
     ...GrayFont

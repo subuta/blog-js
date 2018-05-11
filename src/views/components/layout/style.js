@@ -176,6 +176,10 @@ export const inlineCode = {
   color: ACCENT4_COLOR
 }
 
+export const quoteUrl = {
+
+}
+
 export const table = {
   // RWD idea from http://codepen.io/geoffyuen/pen/FCBEg?editors=1100
   margin: `8px 0`,
@@ -284,6 +288,7 @@ export const commonCss = {
     hr,
     code,
     blockquote,
+    '.quote-url': quoteUrl,
     'code.inline': inlineCode,
     'h1, h2, h3, h4, h5': headings,
     [`button, html [type="button"], [type="reset"], [type="submit"]`]: button

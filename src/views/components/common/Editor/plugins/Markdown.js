@@ -131,6 +131,16 @@ const renderMark = (props) => {
           {children}
         </span>
       )
+    // quote-url
+    case 'quote-url':
+      return (
+        <span
+          {...attributes}
+          className='quote-url'
+        >
+          {children}
+        </span>
+      )
     // tables
     case 'table':
       return (
