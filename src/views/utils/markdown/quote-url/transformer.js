@@ -5,20 +5,20 @@ const RE_QUOTE_URL = /{{ (https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]+(\.[a-z]{0,6}
 
 export default function transformer (settings = {}) {
   return tree => {
-    console.log('tree = ', tree)
-    visit(tree, 'text', (node) => {
-      console.log('node.value = ', node.value)
-      if (!node.value.match(RE_QUOTE_URL)) return
-      const url = node.value.match(RE_QUOTE_URL)
+    visit(tree, 'element', (node) => {
+      if (node.tagName !== 'blockquote' || !_.get(node, 'properties.data.isQuote')) return
 
-      node.type = 'element'
-      node.tagName = 'a'
+      const url = _.get(node, 'properties.data.url')
+      if (!url) return
+
+      node.tagName = 'div'
       node.properties = {
-        href: url[1] // link to articles(filtered by tag.)
+        className: 'quote-url',
+        href: url // link to articles(filtered by tag.)
       }
       node.children = [{
         type: 'text',
-        value: url[1]
+        value: url
       }]
 
       // Stop traverse this node.

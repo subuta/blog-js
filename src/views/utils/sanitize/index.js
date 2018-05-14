@@ -78,6 +78,12 @@ export default (html) => {
         'class'
       ],
 
+      // for add class
+      div: [
+        ...xss.whiteList.div,
+        'class'
+      ],
+
       // for Responsive table.
       td: [
         ...xss.whiteList.td,

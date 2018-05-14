@@ -132,7 +132,7 @@ const renderMark = (props) => {
         </span>
       )
     // quote-url
-    case 'quote-url':
+    case 'quoteUrl':
       return (
         <span
           {...attributes}

@@ -12,7 +12,7 @@ import table from './table'
 
 // parser & transformer
 import emoji from './emoji'
-import quoteUrl from './quote-url'
+import quoteUrl, { handler as quoteUrlHandler } from './quote-url'
 import tag from './tag'
 import kbd from './kbd'
 import m2h from 'remark-rehype'
@@ -25,7 +25,13 @@ const processor = unified()
     gfm: true,
     commonmark: true
   })
-  .use(m2h, {allowDangerousHTML: true})
+  .use(m2h, {
+    allowDangerousHTML: true,
+    commonmark: true,
+    handlers: {
+      'quoteUrl': quoteUrlHandler
+    }
+  })
   .use(math)
   .use(katex, {
     // ignore katex parser error.

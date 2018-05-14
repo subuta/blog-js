@@ -1,5 +1,6 @@
 // SEE: https://github.com/zestedesavoir/zmarkdown/blob/master/packages/remark-kbd/src/index.js
 const whitespace = require('is-whitespace-character')
+const _ = require('lodash')
 
 const C_OPEN_BRACKET = '{'
 const C_CLOSE_BRACKET = '}'
@@ -44,7 +45,14 @@ function plugin () {
         const content = subvalue
         subvalue = DOUBLE_OPEN_BRACKET + subvalue + DOUBLE_CLOSE_BRACKET
 
-        return eat(subvalue)({type: 'quote-url', value: _.trim(content)})
+        return eat(subvalue)({
+          type: 'quoteUrl',
+          data: {
+            url: _.trim(content),
+            isQuote: true,
+          },
+          children: []
+        })
       }
 
       subvalue += previous
