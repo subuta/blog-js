@@ -1,8 +1,6 @@
 import visit from 'unist-util-visit'
 import _ from 'lodash'
 
-const RE_QUOTE_URL = /{{ (https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]+(\.[a-z]{0,6})?\b([-a-zA-Z0-9@:%_+.~#?&//=]*)) }}/gi;
-
 export default function transformer (settings = {}) {
   return tree => {
     visit(tree, 'element', (node) => {
@@ -14,7 +12,7 @@ export default function transformer (settings = {}) {
       node.tagName = 'div'
       node.properties = {
         className: 'quote-url',
-        href: url // link to articles(filtered by tag.)
+        'data-quote-url': url
       }
       node.children = [{
         type: 'text',

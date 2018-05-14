@@ -4,12 +4,11 @@ import _ from 'lodash'
 import {
   compose,
   withPropsOnChange,
-  withProps,
   withHandlers,
   lifecycle
 } from 'recompose'
 
-import { sanitizeHtml } from 'src/views/utils/markdown'
+import { sanitizeHtml, upgradeDom } from 'src/views/utils/markdown'
 
 import withStyles from './style'
 
@@ -19,28 +18,45 @@ let embedlyRenderedListener = []
 let embedlyResizeListener = []
 
 if (isBrowser) {
-  // FIXME: More performant way to manage embedly.
   // load embedly
-  import('src/views/utils/embedly').then(({getEmbedly}) => {
-    const embedly = getEmbedly()
-    embedly('on', 'card.rendered', (node) => {
-      _.each(embedlyRenderedListener, (fn) => fn())
-    });
-    embedly('on', 'card.resize', (node) => {
-      _.each(embedlyResizeListener, (fn) => fn())
-    });
+  import('src/views/utils/embedly').then(({oembed, initialize}) => {
+    initialize(window, document).then((embedly) => {
+      embedly('on', 'card.rendered', (node) => {
+        _.each(embedlyRenderedListener, (fn) => fn())
+      })
+      embedly('on', 'card.resize', (node) => {
+        _.each(embedlyResizeListener, (fn) => fn())
+      })
+
+      upgradeDom('hoge')
+    })
   })
 }
 
 const enhance = compose(
   withStyles,
+  withHandlers(() => {
+    let nodeRef
+
+    return {
+      setNodeRef: () => (ref) => {
+        nodeRef = ref
+      },
+
+      getNodeRef: () => () => nodeRef
+    }
+  }),
   lifecycle({
-    componentWillMount() {
+    componentWillMount () {
       embedlyRenderedListener.push(this.props.onLoad)
       embedlyResizeListener.push(this.props.onResized)
     },
 
-    componentWillUnmount() {
+    componentDidMount () {
+      upgradeDom(this.props.getNodeRef())
+    },
+
+    componentWillUnmount () {
       embedlyRenderedListener = _.without(embedlyRenderedListener, this.props.onLoad)
       embedlyResizeListener = _.without(embedlyResizeListener, this.props.onResized)
     }
@@ -55,7 +71,8 @@ export default enhance((props) => {
   const {
     html,
     styles,
-    className
+    className,
+    setNodeRef
   } = props
 
   let markdownContentClass = styles.MarkdownContent
@@ -67,6 +84,7 @@ export default enhance((props) => {
     <div
       className={markdownContentClass}
       dangerouslySetInnerHTML={{__html: html}}
+      ref={setNodeRef}
     />
   )
 })

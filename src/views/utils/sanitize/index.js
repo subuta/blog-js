@@ -81,7 +81,8 @@ export default (html) => {
       // for add class
       div: [
         ...xss.whiteList.div,
-        'class'
+        'class',
+        'data-quote-url'
       ],
 
       // for Responsive table.

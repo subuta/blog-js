@@ -21,13 +21,6 @@ import {
 import storage from 'src/views/utils/storage'
 import _ from 'lodash'
 
-const isBrowser = typeof window !== 'undefined'
-
-if (isBrowser) {
-  // load embedly
-  import('src/views/utils/embedly').then(({initialize}) => initialize(window, document))
-}
-
 const enhance = compose(
   withStyles,
   connect,

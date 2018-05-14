@@ -1,4 +1,5 @@
 import unified from 'unified'
+import trough from 'trough'
 
 // parser
 import markdown from 'remark-parse'
@@ -12,7 +13,10 @@ import table from './table'
 
 // parser & transformer
 import emoji from './emoji'
-import quoteUrl, { handler as quoteUrlHandler } from './quote-url'
+import quoteUrl, {
+  handler as quoteUrlHandler,
+  upgradeDom as quoteUpgradeDom,
+} from './quote-url'
 import tag from './tag'
 import kbd from './kbd'
 import m2h from 'remark-rehype'
@@ -51,6 +55,12 @@ const processor = unified()
 export const tokenize = (markdown) => processor.parse(markdown)
 
 export const sanitizeHtml = (html) => sanitize(html)
+
+// The handlers used for upgrading dom.
+const upgradeDomPipeline = trough()
+  .use(quoteUpgradeDom)
+
+export const upgradeDom = (node, done = _.noop) => upgradeDomPipeline.run(node, done)
 
 export const toHtml = (markdown) => {
   const html = processor.processSync(markdown).toString()

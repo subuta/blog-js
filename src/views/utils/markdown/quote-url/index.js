@@ -1,9 +1,11 @@
 import transformer from './transformer'
 import parser from './parser'
 import handler from './handler'
+import upgradeDom from './upgradeDom'
 
 export {
-  handler
+  handler,
+  upgradeDom
 }
 
 export default function plugin (settings) {
