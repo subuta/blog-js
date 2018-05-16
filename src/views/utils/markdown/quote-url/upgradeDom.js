@@ -2,6 +2,10 @@ import { oembed } from 'src/views/utils/embedly'
 
 // Find and upgrade target node in the dom.
 export default (node) => {
+  node.querySelectorAll('.quote-url').forEach(n => {
+    console.log(n)
+  })
+
   // TODO: urlを元に、upgradeDomを呼んでnodeを装飾するやつを書く。
   oembed('https://www.youtube.com/watch?v=KdYms5pRwS4').then((res) => {
     console.log('res = ', res)

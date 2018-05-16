@@ -27,8 +27,6 @@ if (isBrowser) {
       embedly('on', 'card.resize', (node) => {
         _.each(embedlyResizeListener, (fn) => fn())
       })
-
-      upgradeDom('hoge')
     })
   })
 }
