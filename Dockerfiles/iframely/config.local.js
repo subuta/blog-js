@@ -1,4 +1,4 @@
-(function() {
+(function () {
   var config = {
 
     // Specify a path for custom plugins. Custom plugins will override core plugins.
@@ -8,11 +8,11 @@
     RICH_LOG_ENABLED: false,
 
     // For embeds that require render, baseAppUrl will be used as the host.
-    baseAppUrl: "http://yourdomain.com",
-    relativeStaticUrl: "/r",
+    baseAppUrl: 'http://localhost:8061',
+    relativeStaticUrl: '/r',
 
     // Or just skip built-in renders altogether
-    SKIP_IFRAMELY_RENDERS: true,
+    SKIP_IFRAMELY_RENDERS: false,
 
     // For legacy reasons the response format of Iframely open-source is
     // different by default as it does not group the links array by rel.
@@ -57,16 +57,16 @@
     - redis - https://github.com/mranney/node_redis.
     - memcached - https://github.com/3rd-Eden/node-memcached
     */
-    CACHE_ENGINE: 'node-cache',
+    CACHE_ENGINE: 'redis',
     CACHE_TTL: 0, // In milliseconds. 0 for 'never expire' to let cache engine decide itself when to evict the record
 
-    /*
     // Redis cache options.
     REDIS_OPTIONS: {
-        host: '127.0.0.1',
-        port: 6379
+      host: process.env.REDIS_HOST || '127.0.0.1',
+      port: process.env.REDIS_PORT || 6379,
+      db: process.env.REDIS_DB || 0,
+      password: process.env.REDIS_PASSWORD,
     },
-    */
 
     /*
     // Memcached options. See https://github.com/3rd-Eden/node-memcached#server-locations
@@ -75,13 +75,11 @@
     }
     */
 
-    /*
     // Access-Control-Allow-Origin list.
     allowedOrigins: [
-        "*",
-        "http://another_domain.com"
+        // "*",
+        "http://localhost:3000"
     ],
-    */
 
     /*
     // Uncomment to enable plugin testing framework.
@@ -147,12 +145,12 @@
 
     // Customize API calls to 3rd parties. At the very least - configure required keys.
     providerOptions: {
-      locale: "en_US",    // ISO 639-1 two-letter language code, e.g. en_CA or fr_CH.
+      locale: 'en_US',    // ISO 639-1 two-letter language code, e.g. en_CA or fr_CH.
                           // Will be added as highest priotity in accept-language header with each request.
                           // Plus is used in FB, YouTube and perhaps other plugins
-      "twitter": {
-        "max-width": 550,
-        "min-width": 250,
+      'twitter': {
+        'max-width': 550,
+        'min-width': 250,
         hide_media: false,
         hide_thread: false,
         omit_script: false,
@@ -167,12 +165,12 @@
         checkFavicon: false // if true, will verify all favicons
       },
       tumblr: {
-        consumer_key: "INSERT YOUR VALUE"
+        consumer_key: 'INSERT YOUR VALUE'
         // media_only: true     // disables status embeds for images and videos - will return plain media
       },
       google: {
         // https://developers.google.com/maps/documentation/embed/guide#api_key
-        maps_key: "INSERT YOUR VALUE"
+        maps_key: process.env.GOOGLE_MAPS_API_KEY
       },
 
       /*
@@ -188,11 +186,11 @@
       // API key is optional, youtube will work without it too.
       // It is probably the same API key you use for Google Maps.
       youtube: {
-        // api_key: "INSERT YOUR VALUE",
-        get_params: "?rel=0&showinfo=1"     // https://developers.google.com/youtube/player_parameters
+        // api_key: process.env.GOOGLE_MAPS_API_KEY,
+        get_params: '?rel=0&showinfo=1'     // https://developers.google.com/youtube/player_parameters
       },
       vimeo: {
-        get_params: "?byline=0&badge=0"     // https://developer.vimeo.com/player/embedding
+        get_params: '?byline=0&badge=0'     // https://developer.vimeo.com/player/embedding
       },
 
       /*
@@ -252,7 +250,7 @@
           }
     }
     */
-  };
+  }
 
-  module.exports = config;
-})();
+  module.exports = config
+})()

@@ -11,11 +11,18 @@ services:
     volumes:
       - ./db/redis:/data
   iframely:
-      image: iframely:latest
-      ports:
-        - "8061:8061"
-      volumes:
-        - ./Dockerfiles/iframely/config.local.js:/iframely/config.local.js
+    build:
+      context: ./Dockerfiles/iframely
+      dockerfile: ./Dockerfile
+    ports:
+      - "8061:8061"
+    env_file: .env
+    environment:
+      - REDIS_HOST=redis
+    volumes:
+      - ./Dockerfiles/iframely/config.local.js:/iframely/config.local.js
+    links:
+      - redis
   db:
     image: postgres:10-alpine
     env_file: .env

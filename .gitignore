@@ -3,6 +3,7 @@
 node_modules
 db/postgres
 db/s3
+db/redis*
 test.sqlite
 front/public
 dist
@@ -11,4 +12,3 @@ dist
 .next
 webpack-stats.txt
 repl.js
-Dockerfiles/iframely/config.local.js

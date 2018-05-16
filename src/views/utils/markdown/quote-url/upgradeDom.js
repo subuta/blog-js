@@ -1,16 +1,16 @@
-import { oembed } from 'src/views/utils/embedly'
+import iframely from 'src/views/utils/iframely'
 
 // Find and upgrade target node in the dom.
 export default (node) => {
-  node.querySelectorAll('.quote-url').forEach(n => {
-    console.log(n)
-  })
+  node.querySelectorAll('.quote-url').forEach(async n => {
+    const url = n.getAttribute('data-quote-url')
+    if (!url) return
 
-  // TODO: urlを元に、upgradeDomを呼んでnodeを装飾するやつを書く。
-  oembed('https://www.youtube.com/watch?v=KdYms5pRwS4').then((res) => {
-    console.log('res = ', res)
-    console.log('quote-url node', node)
-  })
+    const response = await iframely(url)
+    console.log('response = ', response)
 
+    console.log('n = ', n)
+    // n.outerHTML = res.html
+  })
   return node
 }

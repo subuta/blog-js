@@ -14,23 +14,6 @@ import withStyles from './style'
 
 const isBrowser = typeof window !== 'undefined'
 
-let embedlyRenderedListener = []
-let embedlyResizeListener = []
-
-if (isBrowser) {
-  // load embedly
-  import('src/views/utils/embedly').then(({oembed, initialize}) => {
-    initialize(window, document).then((embedly) => {
-      embedly('on', 'card.rendered', (node) => {
-        _.each(embedlyRenderedListener, (fn) => fn())
-      })
-      embedly('on', 'card.resize', (node) => {
-        _.each(embedlyResizeListener, (fn) => fn())
-      })
-    })
-  })
-}
-
 const enhance = compose(
   withStyles,
   withHandlers(() => {
@@ -46,8 +29,6 @@ const enhance = compose(
   }),
   lifecycle({
     componentWillMount () {
-      embedlyRenderedListener.push(this.props.onLoad)
-      embedlyResizeListener.push(this.props.onResized)
     },
 
     componentDidMount () {
@@ -55,8 +36,6 @@ const enhance = compose(
     },
 
     componentWillUnmount () {
-      embedlyRenderedListener = _.without(embedlyRenderedListener, this.props.onLoad)
-      embedlyResizeListener = _.without(embedlyResizeListener, this.props.onResized)
     }
   }),
   withPropsOnChange(
