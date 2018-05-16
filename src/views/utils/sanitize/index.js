@@ -82,7 +82,29 @@ export default (html) => {
       div: [
         ...xss.whiteList.div,
         'class',
+        'style',
         'data-quote-url'
+      ],
+
+      // for quote-url
+      img: [
+        ...xss.whiteList.img,
+        'style'
+      ],
+
+      // for quote-url
+      // SEE: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe
+      iframe: [
+        'src',
+        'style',
+        'allowfullscreen',
+        'scrolling',
+        'height',
+        'name',
+        'referrerpolicy',
+        'sandbox',
+        'srcdoc',
+        'width'
       ],
 
       // for Responsive table.

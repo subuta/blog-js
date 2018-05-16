@@ -65,6 +65,7 @@ const enhanceContent = compose(
         setIsEditorFocused,
         onSetDraftContent,
         draftContent,
+        renderedHtml,
         styles
       } = props
       return (
@@ -80,7 +81,7 @@ const enhanceContent = compose(
 
           <MarkdownContent
             className="content"
-            html={toHtml(draftContent)}
+            html={renderedHtml}
           />
         </div>
       )
@@ -89,12 +90,11 @@ const enhanceContent = compose(
   )
 )
 
-const ArticleContent = enhanceContent(({article}) => {
-  const {content} = article
+const ArticleContent = enhanceContent(({renderedHtml}) => {
   return (
     <MarkdownContent
       className="content"
-      html={toHtml(content)}
+      html={renderedHtml}
     />
   )
 })
@@ -181,6 +181,7 @@ const enhance = compose(
   withStyles,
   connect,
   withState('draftContent', 'setDraftContent', ({article}) => article ? article.content : ''),
+  withState('renderedHtml', 'setRenderedHtml', ''),
   withState('draftSlug', 'setDraftSlug', ({article}) => article ? article.slug : ''),
   withState('draftSummary', 'setDraftSummary', ({article}) => article ? article.summary : ''),
   withState('draftTitle', 'setDraftTitle', ({article}) => article ? article.title : ''),
@@ -245,6 +246,13 @@ const enhance = compose(
       return {
         isEditing: _.get(url, 'query.edit')
       }
+    }
+  ),
+  withPropsOnChange(
+    ['draftContent'],
+    ({draftContent, setRenderedHtml}) => {
+      // async render markdown to html.
+      toHtml(draftContent).then((html) => setRenderedHtml(html))
     }
   ),
   withPropsOnChange(
@@ -419,15 +427,15 @@ export default enhance((props) => {
     <Layout>
       <Head>
         <title>{title}</title>
-        <meta property="og:title" content={title} />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={`${baseUrl}/w/${article.title}`} />
-        <meta property="og:image" content={`${baseUrl}${staticFolder}/assets/images/ogp.png`} />
-        <meta property="og:site_name" content="sub-labo.com" />
-        <meta property="og:description" content={article.summary} />
-        <meta property="fb:app_id" content={fbAppId} />
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:site" content={twitterSite} />
+        <meta property="og:title" content={title}/>
+        <meta property="og:type" content="article"/>
+        <meta property="og:url" content={`${baseUrl}/w/${article.title}`}/>
+        <meta property="og:image" content={`${baseUrl}${staticFolder}/assets/images/ogp.png`}/>
+        <meta property="og:site_name" content="sub-labo.com"/>
+        <meta property="og:description" content={article.summary}/>
+        <meta property="fb:app_id" content={fbAppId}/>
+        <meta name="twitter:card" content="summary"/>
+        <meta name="twitter:site" content={twitterSite}/>
       </Head>
 
       <div className={styles.ScrollContainer}>

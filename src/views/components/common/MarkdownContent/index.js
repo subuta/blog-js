@@ -8,7 +8,7 @@ import {
   lifecycle
 } from 'recompose'
 
-import { sanitizeHtml, upgradeDom } from 'src/views/utils/markdown'
+import { sanitizeHtml } from 'src/views/utils/markdown'
 
 import withStyles from './style'
 
@@ -32,7 +32,6 @@ const enhance = compose(
     },
 
     componentDidMount () {
-      upgradeDom(this.props.getNodeRef())
     },
 
     componentWillUnmount () {
