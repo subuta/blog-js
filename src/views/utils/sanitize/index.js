@@ -78,6 +78,21 @@ export default (html) => {
         'class'
       ],
 
+      a: [
+        ...xss.whiteList.a,
+        'class'
+      ],
+
+      p: [
+        ...xss.whiteList.p,
+        'class'
+      ],
+
+      small: [
+        ...xss.whiteList.small,
+        'class'
+      ],
+
       // for add class
       div: [
         ...xss.whiteList.div,
@@ -89,6 +104,7 @@ export default (html) => {
       // for quote-url
       img: [
         ...xss.whiteList.img,
+        'class',
         'style'
       ],
 

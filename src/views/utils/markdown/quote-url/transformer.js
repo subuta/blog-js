@@ -51,25 +51,23 @@ export default function transformer (settings = {}) {
           thumbnail
         } = response.links
 
-        const themeColor = response.meta['theme-color']
+        const themeColor = response.meta['theme-color'] || 'inherit'
         const thumbnailImage = _.find(thumbnail, (t) => _.includes(t.rel, 'thumbnail'))
-        const iconImage = _.find(icon, (i) => i.type === 'image/x-icon')
-
-        // "<div><div style="left: 0; width: 100%; height: 0; position: relative; padding-bottom: 56.2493%;"><iframe src="https://www.youtube.com/embed/D-SQqppuGvc?feature=oembed" style="border: 0; top: 0; left: 0; width: 100%; height: 100%; position: absolute;" allowfullscreen scrolling="no"></iframe></div></div>"
+        const iconImage = _.find(icon, (i) => _.includes(i.rel, 'shortcut'))
 
         html = `
-          <div style="color: ${themeColor};">
-            <small>
-              ${iconImage ? `<img src="${iconImage.href}" alt="" style="height: 16px; width: 16px;">` : ''}
-              ${site}
-            </small>
+          <blockquote class="quote-url">
+            <span class="site">
+              ${iconImage ? `<img src="${iconImage.href}" alt="">` : ''}
+              <span style="color: ${themeColor};">${site}</span>
+            </span>
             
-            ${thumbnailImage ? `<img src="${thumbnailImage.href}" alt="" style="max-width: 100%; width: 400px; height: auto;" />` : ''}
-            <a href="${canonical}" target="_blank">${title}</a>
-            <p>${description}</p>
-            ${author ? '<small><a href="${author_url}">${author}</a></small>' : ''}
-            ${shortlink ? '<a href="${canonical}" target="_blank">${shortlink}</a>' : ''}
-          </div>
+            <a class="title" href="${canonical}" target="_blank">${title}</a>
+            <p class="description">${description.length > 140 ? `${description.substring(0, 140)}...` : description}</p>
+            ${thumbnailImage ? `<img class="thumbnail" src="${thumbnailImage.href}" alt="" />` : ''}
+            ${shortlink ? `<a class="shortlink" href="${canonical}" target="_blank">${shortlink}</a>` : ''}
+            ${author ? `<small class="author">by <a href="${author_url}">${author}</a></small>` : ''}
+          </blockquote>
         `
       }
 

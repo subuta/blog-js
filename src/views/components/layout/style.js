@@ -126,7 +126,8 @@ export const blockquote = {
     left: 0,
     top: 0,
     bottom: 0,
-    borderLeft: `4px solid ${BORDER_COLOR}`
+    borderLeft: `4px solid ${BORDER_COLOR}`,
+    borderRadius: 4
   }
 }
 
@@ -177,7 +178,53 @@ export const inlineCode = {
 }
 
 export const quoteUrl = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+  justifyContent: 'flex-start',
+  fontStyle: 'normal',
+  fontWeight: 'normal',
 
+  '.site': {
+    margin: '0 0 8px 0',
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    '& > img': {
+      margin: '0 4px 0 0',
+      display: 'inline-block',
+      height: 20,
+      width: 20
+    }
+  },
+
+  '.title': {
+    margin: '0 0 4px 0',
+    fontWeight: 'bold',
+    fontSize: 16,
+    lineHeight: 1.3
+  },
+
+  '.description': {
+    margin: '0 0 8px 0',
+    fontSize: 14
+  },
+
+  '.thumbnail': {
+    margin: '0 0 8px 0',
+    maxWidth: '100%',
+    height: 'auto',
+    borderRadius: 4
+  },
+
+  '.shortlink': {
+    margin: '0 0 8px 0',
+    display: 'inline-block'
+  },
+
+  '.author': {
+    margin: 0
+  }
 }
 
 export const table = {
