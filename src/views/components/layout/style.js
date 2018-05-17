@@ -185,6 +185,11 @@ export const quoteUrl = {
   fontStyle: 'normal',
   fontWeight: 'normal',
 
+  '& > *': {
+    width: '100%',
+    flex: '1 0 auto',
+  },
+
   '.site': {
     margin: '0 0 8px 0',
     display: 'flex',
@@ -212,9 +217,9 @@ export const quoteUrl = {
 
   '.thumbnail': {
     margin: '0 0 8px 0',
-    maxWidth: '100%',
+    maxWidth: 400,
     height: 'auto',
-    borderRadius: 4
+    borderRadius: 4,
   },
 
   '.shortlink': {
@@ -224,6 +229,12 @@ export const quoteUrl = {
 
   '.author': {
     margin: 0
+  },
+
+  [TABLET_MEDIA_QUERY]: {
+    '.thumbnail': {
+      maxWidth: '100%'
+    }
   }
 }
 

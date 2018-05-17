@@ -40,11 +40,27 @@ let whiteList = {
   ...mathMlWhiteList
 }
 
+// Match src="xxx" style url.
+const SRC_URL_REGEX = /src="(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]+(\.[a-z]{0,6})?\b([-a-zA-Z0-9@:%_+.~#?&//=]*))"/
+
+// 3rd party scripts that allowed to load into our app.
+const whitelistedScripts = [
+  'https://platform.twitter.com/widgets.js'
+]
+
 export default (html) => {
-  return xss(html, {
-    stripIgnoreTag: true,
-    // just ignore script tag.
-    stripIgnoreTagBody: ['script'],
+  let ignoredScripts = []
+
+  const sanitized = xss(html, {
+    onIgnoreTag (tag, html, options) {
+      if (tag === 'script' && html.match(SRC_URL_REGEX)) {
+        const url = html.match(SRC_URL_REGEX)[1]
+        if (!_.includes(whitelistedScripts, url)) return ''
+        ignoredScripts.push(url)
+      }
+      // Just ignore others.
+      return ''
+    },
 
     safeAttrValue (tag, name, value) {
       // pass-through style attribute for katex.
@@ -69,9 +85,12 @@ export default (html) => {
       blockquote: [
         'cite',
         'class',
+        'align',
+        'charset',
         'data-card-key',
         'data-card-align',
-        'data-card-controls'
+        'data-card-controls',
+        'data-lang'
       ],
 
       code: [
@@ -85,7 +104,9 @@ export default (html) => {
 
       p: [
         ...xss.whiteList.p,
-        'class'
+        'class',
+        'lang',
+        'dir'
       ],
 
       small: [
@@ -157,4 +178,9 @@ export default (html) => {
       kbd: []
     }
   })
+
+  return {
+    ignoredScripts,
+    html: sanitized
+  }
 }

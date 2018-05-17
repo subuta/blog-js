@@ -13,49 +13,46 @@ const parseHtml = (html) => {
     .parse(html)
 }
 
-let cache = {}
+// The html response for these sites will be ignored,
+// And constructed from oembed data by ourself for performant react
+const ignoredHtmlSites = [
+  'GIPHY',
+  'Twitter'
+]
 
-export default function transformer (settings = {}) {
-  return (tree) => new Promise((resolve) => {
-    visit(tree, 'element', async (node) => {
-      if (node.tagName !== 'blockquote' || !_.get(node, 'properties.data.isQuote')) return
+const parseResponse = (response) => {
+  // Try to use parsed html from iframely first.
+  let html = response.html
+  const site = _.get(response, 'meta.site', '')
 
-      const url = _.get(node, 'properties.data.url')
-      if (!url) return
+  if (!html || _.includes(ignoredHtmlSites, site)) {
+    const {
+      title,
+      author,
+      author_url,
+      media,
+      description,
+      keywords,
+      shortlink,
+      canonical
+    } = response.meta
 
-      if (!cache[url]) {
-        cache[url] = await iframely(url)
-      }
+    const {
+      icon,
+      image,
+      thumbnail
+    } = response.links
 
-      const response = cache[url]
+    const themeColor = response.meta['theme-color'] || 'inherit'
 
-      console.log('response = ', response)
+    let thumbnailImage = _.find(thumbnail, (t) => _.includes(t.rel, 'thumbnail'))
+    if (site === 'GIPHY') {
+      thumbnailImage = _.find(image, (t) => _.includes(t.rel, 'image'))
+    }
 
-      // Try to use parsed html from iframely first.
-      let html = response.html
-      if (!html) {
-        const {
-          title,
-          site,
-          author,
-          author_url,
-          media,
-          description,
-          keywords,
-          shortlink,
-          canonical
-        } = response.meta
+    const iconImage = _.find(icon, (i) => _.includes(i.rel, 'shortcut')) || _.find(icon, (i) => _.includes(i.rel, 'apple-touch-icon'))
 
-        const {
-          icon,
-          thumbnail
-        } = response.links
-
-        const themeColor = response.meta['theme-color'] || 'inherit'
-        const thumbnailImage = _.find(thumbnail, (t) => _.includes(t.rel, 'thumbnail'))
-        const iconImage = _.find(icon, (i) => _.includes(i.rel, 'shortcut'))
-
-        html = `
+    html = `
           <blockquote class="quote-url">
             <span class="site">
               ${iconImage ? `<img src="${iconImage.href}" alt="">` : ''}
@@ -69,21 +66,53 @@ export default function transformer (settings = {}) {
             ${author ? `<small class="author">by <a href="${author_url}">${author}</a></small>` : ''}
           </blockquote>
         `
+  }
+
+  return html
+}
+
+let htmlCache = {}
+
+export default function transformer (settings = {}) {
+  return (tree) => new Promise((resolve) => {
+    let promises = []
+
+    visit(tree, 'element', (node, index, parent) => {
+      const isLast = parent.type === 'root' && index === tree.children.length - 1
+
+      const finalize = () => {
+        if (!isLast) return
+        // Resolve root promise with rendered tree.
+        Promise.all(promises).then(() => resolve(tree))
       }
 
-      node.tagName = 'div'
-      node.properties = {
-        className: 'quote-url',
-        'data-quote-url': url
-      }
+      if (node.tagName !== 'blockquote' || !_.get(node, 'properties.data.isQuote')) return finalize()
 
-      node.children = [parseHtml(html)]
+      const url = _.get(node, 'properties.data.url')
+      if (!url) return finalize()
 
-      resolve()
+      // Push render promise to promises.
+      promises.push(new Promise(async (resolveRender) => {
+        if (!htmlCache[url]) {
+          const response = await iframely(url)
+          const html = parseResponse(response)
+          htmlCache[url] = parseHtml(html)
+        }
+
+        node.tagName = 'div'
+        node.properties = {
+          className: 'quote-url',
+          'data-quote-url': url
+        }
+
+        node.children = [htmlCache[url]]
+
+        resolveRender(node)
+      }))
 
       // Stop traverse this node.
       // SEE: https://github.com/syntax-tree/unist-util-visit
-      return visit.SKIP
+      return finalize()
     })
   })
 }

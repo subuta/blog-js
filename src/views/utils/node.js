@@ -1,7 +1,9 @@
 import _ from 'lodash'
 
 const isBrowser = typeof window !== 'undefined'
+const head = isBrowser ? document.head : null
 const body = isBrowser ? document.body : null
+const dataBlogJs = 'data-blog-js'
 
 // SEE: https://github.com/nefe/You-Dont-Need-jQuery#1.6
 const closest = (el, selector) => {
@@ -56,4 +58,24 @@ export const removePortalNode = (portalClass) => {
   if (!document.querySelector(`.${portalClass}`)) return
 
   return body.removeChild(document.querySelector(`.${portalClass}`));
+}
+
+// return style node.
+export const findOrInsertScriptNode = (url, cb = _.noop) => {
+  // skip at SSR
+  if (!isBrowser) return
+
+  if (!head.querySelector(`script[${dataBlogJs}="true"][src="${url}"]`)) {
+    const scriptElement = document.createElement('script')
+    scriptElement.setAttribute('async', 'true')
+    scriptElement.setAttribute('src', url)
+    scriptElement.setAttribute(dataBlogJs, 'true')
+    // Do callback onload.
+    scriptElement.onload = (url) => cb(url)
+    head.appendChild(scriptElement)
+  } else {
+    cb(url)
+  }
+
+  return head.querySelector(`script[${dataBlogJs}="true"][src="${url}"]`)
 }

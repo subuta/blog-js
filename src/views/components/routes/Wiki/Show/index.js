@@ -82,6 +82,7 @@ const enhanceContent = compose(
           <MarkdownContent
             className="content"
             html={renderedHtml}
+            ignoreScripts
           />
         </div>
       )

@@ -153,7 +153,7 @@
         'min-width': 250,
         hide_media: false,
         hide_thread: false,
-        omit_script: false,
+        omit_script: true,
         cache_ttl: 100 * 365 * 24 * 3600 // 100 Years.
       },
       readability: {
@@ -197,10 +197,12 @@
       soundcloud: {
           old_player: true // enables classic player
       },
-      giphy: {
-          media_only: true // disables branded player for gifs and returns just the image
-      }
       */
+
+      giphy: {
+        media_only: true // disables branded player for gifs and returns just the image
+      }
+
       /*
       bandcamp: {
           get_params: '/size=large/bgcol=333333/linkcol=ffffff/artwork=small/transparent=true/',

@@ -36,6 +36,14 @@ const enhance = compose(
   withStyles,
   withState('isHover', 'setIsHover', false),
   withState('draftText', 'setDraftText', ({comment}) => comment.text),
+  withState('renderedHtml', 'setRenderedHtml', ''),
+  withPropsOnChange(
+    ['draftText'],
+    ({draftText, setRenderedHtml}) => {
+      // async render markdown to html.
+      toHtml(draftText).then((html) => setRenderedHtml(html))
+    }
+  ),
   withHandlers(() => {
     let editorInstance
     let onSetEditorInstances = []
@@ -212,6 +220,7 @@ export default enhance((props) => {
     isAuthenticated,
     currentUser,
     handleResized,
+    renderedHtml,
     onLoad = _.noop, // Will be called on content loaded.
     onEdit = _.noop,
     onDelete = _.noop,
@@ -273,7 +282,7 @@ export default enhance((props) => {
 
         <MarkdownContent
           className="text"
-          html={toHtml(text)}
+          html={renderedHtml}
           onLoad={onLoad}
           onResized={handleResized}
         />
