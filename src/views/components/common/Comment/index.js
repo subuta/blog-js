@@ -36,12 +36,14 @@ const enhance = compose(
   withStyles,
   withState('isHover', 'setIsHover', false),
   withState('draftText', 'setDraftText', ({comment}) => comment.text),
-  withState('renderedHtml', 'setRenderedHtml', ''),
+  withState('html', 'setHtml', ''),
   withPropsOnChange(
     ['draftText'],
-    ({draftText, setRenderedHtml}) => {
+    ({draftText, comment, setHtml}) => {
+      // Ignore if already rendered by server.
+      if (comment.html) return
       // async render markdown to html.
-      toHtml(draftText).then((html) => setRenderedHtml(html))
+      toHtml(draftText).then((html) => setHtml(html))
     }
   ),
   withHandlers(() => {
@@ -76,8 +78,6 @@ const enhance = compose(
         editorInstance.focus()
       },
 
-      handleResized: ({comment, onResized = _.noop}) => () => onResized(comment),
-
       onKeyDown: (props) => (e) => {
         const {
           comment,
@@ -108,23 +108,11 @@ const enhance = compose(
           return false
         }
 
-        requestAnimationFrame(() => onLoad())
+        onLoad()
       }
     }
   }),
   lifecycle({
-    componentDidMount () {
-      const {
-        attachment,
-        onLoad = _.noop,
-      } = this.props
-
-      // Call onLoad at this hook for no-attachment comment.
-      // if (!attachment) {
-      //   onLoad()
-      // }
-    },
-
     componentDidUpdate (prevProps) {
       const {
         resetEditor,
@@ -140,7 +128,7 @@ const enhance = compose(
           focusEditor()
         }
 
-        requestAnimationFrame(() => onLoad())
+        onLoad()
       }
     }
   }),
@@ -219,8 +207,6 @@ export default enhance((props) => {
     setIsHover,
     isAuthenticated,
     currentUser,
-    handleResized,
-    renderedHtml,
     onLoad = _.noop, // Will be called on content loaded.
     onEdit = _.noop,
     onDelete = _.noop,
@@ -235,7 +221,8 @@ export default enhance((props) => {
     commentedBy,
     reactions,
     created_at,
-    updated_at
+    updated_at,
+    html
   } = comment
 
   const createdAt = moment(created_at).startOf('minute')
@@ -282,9 +269,8 @@ export default enhance((props) => {
 
         <MarkdownContent
           className="text"
-          html={renderedHtml}
+          html={html}
           onLoad={onLoad}
-          onResized={handleResized}
         />
 
         {isEdited && (

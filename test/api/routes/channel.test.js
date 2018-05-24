@@ -98,4 +98,21 @@ test('post should create channel', async (t) => {
 })
 
 /* mat Custom tests [start] */
+test('show by name should return channel', async (t) => {
+  const {request} = t.context
+
+  // mock jwks
+  const token = createToken(privateKey, '123', currentUser)
+  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
+
+  const response = await request
+    .get('/api/channels/name/holistic')
+    .set('Authorization', `Bearer ${token}`)
+
+  t.is(response.status, 200)
+
+  t.deepEqual(response.body.id, 93290)
+  t.deepEqual(response.body.name, 'holistic')
+  t.deepEqual(response.body.description, 'Central')
+})
 /* mat Custom tests [end] */

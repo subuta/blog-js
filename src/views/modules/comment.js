@@ -131,7 +131,6 @@ export const isRequestProgress = (state = false, action) => {
     return true
   } else if (
     action.type === SET_COMMENTS ||
-    action.type === SET_COMMENT_IDS ||
     action.type === REQUEST_COMMENTS_FAILURE
   ) {
     return false

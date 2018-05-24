@@ -32,7 +32,7 @@ const isBrowser = typeof window !== 'undefined'
 
 const defaultHeight = 50
 const defaultWidth = 300
-const THRESHOLD = 5
+const THRESHOLD = 3
 
 // For scroll event.
 const SCROLL_DOWN = 'SCROLL_DOWN'
@@ -230,13 +230,6 @@ const enhance = compose(
 
       // Scroll to last row.
       loadMoreRows().then(() => scrollToRow(THRESHOLD + 1))
-    },
-
-    onCommentResized: ({comments, hasNext, refresh}) => (comment) => {
-      let rowIndex = _.findIndex(comments, ['id', comment.id])
-      rowIndex = hasNext ? rowIndex + 1 : rowIndex
-
-      refresh(rowIndex)
     }
   }),
   withHandlers({
@@ -249,7 +242,6 @@ const enhance = compose(
         onDelete,
         onAddReaction,
         onRemoveReaction,
-        onCommentResized,
         getCache,
         styles,
         onEdit,
@@ -361,7 +353,6 @@ const enhance = compose(
                 onUpdate={onUpdateComment}
                 onDelete={() => onDelete(comment)}
                 onLoad={measure}
-                onResized={onCommentResized}
                 onEdit={() => onEdit(index)}
                 onEndEdit={() => onEdit(null)}
                 isEditing={editingRowIndex === index}
@@ -468,6 +459,7 @@ export default enhance((props) => {
               registerChild(_ref)
               setListRef(_ref)
             }}
+            overscanRowCount={20}
             onScroll={({clientHeight, scrollHeight, scrollTop}) => {
               const isScrolled = scrollTop + (clientHeight / 2) < scrollHeight - clientHeight
               setLastScrollTop(scrollTop, isScrolled)

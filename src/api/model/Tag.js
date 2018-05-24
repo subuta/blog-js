@@ -1,6 +1,8 @@
 import Model from './Model'
 import _ from 'lodash'
 
+
+
 export default class Tag extends Model {
   // SEE: https://github.com/Vincit/objection.js/issues/825
   $parseDatabaseJson(db) {

@@ -60,7 +60,7 @@ const parseResponse = (response) => {
             </span>
             
             <a class="title" href="${canonical}" target="_blank">${title}</a>
-            <p class="description">${description.length > 140 ? `${description.substring(0, 140)}...` : description}</p>
+            ${description ? `<p class="description">${description.length > 140 ? `${description.substring(0, 140)}...` : description}</p>` : ''}
             ${thumbnailImage ? `<img class="thumbnail" src="${thumbnailImage.href}" alt="" />` : ''}
             ${shortlink ? `<a class="shortlink" href="${canonical}" target="_blank">${shortlink}</a>` : ''}
             ${author ? `<small class="author">by <a href="${author_url}">${author}</a></small>` : ''}
@@ -73,6 +73,8 @@ const parseResponse = (response) => {
 
 let htmlCache = {}
 
+// TODO: Commentの高さのmeasureを呼ぶのをmarkdownの描画が終わったタイミングにする？
+// TODO: QuoteUrlの結果をサーバ側で直接HTMLとして埋め込んで、毎回renderしないようにする方が効率が良さそう。
 export default function transformer (settings = {}) {
   return (tree) => new Promise((resolve) => {
     let promises = []

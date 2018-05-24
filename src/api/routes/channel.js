@@ -67,9 +67,11 @@ channel.get('/name/:name', async (ctx) => {
   /* mat Before show [start] */
   /* mat Before show [end] */
 
-  ctx.body = await Channel.query()
+  let channel = await Channel.query()
     .eager('[comments(last30).[attachment, commentedBy, reactions.reactedBy]]')
     .findFirst({...params, name: ctx.params.name})
+
+  ctx.body = channel
 })
 /* mat Custom actions [end] */
 

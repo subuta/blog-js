@@ -59,7 +59,7 @@ const Comment = {
     }
   },
 
-  '& > img': {
+  '& img': {
     display: 'block',
     height: 'auto',
     maxWidth: 400,
@@ -67,6 +67,10 @@ const Comment = {
     [TABLET_MEDIA_QUERY]: {
       maxWidth: '100%'
     }
+  },
+
+  '& iframe': {
+    display: 'block'
   },
 
   '& > button': {
@@ -96,7 +100,7 @@ const Comment = {
   },
 
   '& .text': {
-    display: 'inline-block',
+    display: 'block',
 
     '& p': {
       margin: 0

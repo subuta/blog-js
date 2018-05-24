@@ -87,6 +87,10 @@ comment.post('/', auth, async (ctx) => {
     .eager('[attachment, commentedBy, reactions.reactedBy]')
 
   /* mat After create [start] */
+  // Reload comment for invoke $afterGet.
+  response = await response.$query()
+    .eager('[attachment, commentedBy, reactions.reactedBy]')
+
   publish(ChannelAll, {
     event: EventCommentCreated,
     data: {
@@ -125,7 +129,11 @@ comment.put('/:id', auth, async (ctx) => {
     })
     .eager('[attachment, commentedBy, reactions.reactedBy]')
 
-
+  /* mat After update [start] */
+  // Reload comment for invoke $afterGet.
+  response = await response.$query()
+    .eager('[attachment, commentedBy, reactions.reactedBy]')
+  /* mat After update [end] */
 
   ctx.body = response
 })

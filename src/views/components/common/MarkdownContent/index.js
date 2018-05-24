@@ -19,15 +19,36 @@ const isBrowser = typeof window !== 'undefined'
 const enhance = compose(
   withStyles,
   withState('ignoredScripts', 'setIgnoredScripts', []),
-  withHandlers(() => {
+  withHandlers((props) => {
     let nodeRef
+    let onLoad = _.noop
+
+    // Wait for img onLoad.
+    // https://stackoverflow.com/questions/5933230/javascript-image-onload
+    const waitForImgLoad = ($el) => new Promise((resolve) => {
+      if ($el.complete) return resolve()
+      $el.addEventListener('load', resolve)
+    })
 
     return {
       setNodeRef: () => (ref) => {
+        if (!ref) return
+        // if ref changed.
+        if (nodeRef !== ref) {
+          Promise.all(_.map(ref.querySelectorAll('img'), waitForImgLoad)).then(() => onLoad())
+        }
         nodeRef = ref
       },
 
-      getNodeRef: () => () => nodeRef
+      getNodeRef: () => () => nodeRef,
+
+      initialize: () => () => {
+        onLoad = props.onLoad
+      },
+
+      destroy: () => () => {
+        onLoad = _.noop
+      }
     }
   }),
   withHandlers({
@@ -43,7 +64,7 @@ const enhance = compose(
       const {
         onScriptLoaded,
         ignoreScripts,
-        setIgnoredScripts,
+        setIgnoredScripts
       } = props
 
       const sanitized = sanitizeHtml(props.html)
@@ -58,7 +79,16 @@ const enhance = compose(
         html: sanitized.html
       }
     }
-  )
+  ),
+  lifecycle({
+    componentWillMount () {
+      this.props.initialize();
+    },
+
+    componentWillUnmount () {
+      this.props.destroy();
+    }
+  })
 )
 
 export default enhance((props) => {

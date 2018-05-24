@@ -1,12 +1,13 @@
 import getConfig from 'next/config'
+import _ from 'lodash'
 
 const config = getConfig()
 const {
-  staticFolder,
+  staticFolder = '/static',
   baseUrl,
   fbAppId,
   twitterSite
-} = config.publicRuntimeConfig
+} = _.get(config, 'publicRuntimeConfig', {})
 
 export const ACCESS_TOKEN = 'ACCESS_TOKEN'
 export const AUTH0_EXPIRATION = 'AUTH0_EXPIRATION'
