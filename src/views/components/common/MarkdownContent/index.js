@@ -43,6 +43,7 @@ const enhance = compose(
       getNodeRef: () => () => nodeRef,
 
       initialize: () => () => {
+        if (!props.onLoad) return
         onLoad = props.onLoad
       },
 

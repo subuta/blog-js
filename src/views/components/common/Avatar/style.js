@@ -14,7 +14,9 @@ const Avatar = {
   },
 
   '&.is-rounded > img': {
-    borderRadius: '50%'
+    borderRadius: '50%',
+    height: avatarSize,
+    width: avatarSize
   }
 }
 

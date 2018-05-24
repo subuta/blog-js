@@ -73,8 +73,6 @@ const parseResponse = (response) => {
 
 let htmlCache = {}
 
-// TODO: Commentの高さのmeasureを呼ぶのをmarkdownの描画が終わったタイミングにする？
-// TODO: QuoteUrlの結果をサーバ側で直接HTMLとして埋め込んで、毎回renderしないようにする方が効率が良さそう。
 export default function transformer (settings = {}) {
   return (tree) => new Promise((resolve) => {
     let promises = []

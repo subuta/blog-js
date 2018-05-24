@@ -82,7 +82,6 @@ const enhanceContent = compose(
           <MarkdownContent
             className="content"
             html={renderedHtml}
-            ignoreScripts
           />
         </div>
       )
@@ -91,11 +90,11 @@ const enhanceContent = compose(
   )
 )
 
-const ArticleContent = enhanceContent(({renderedHtml}) => {
+const ArticleContent = enhanceContent(({article}) => {
   return (
     <MarkdownContent
       className="content"
-      html={renderedHtml}
+      html={article.html}
     />
   )
 })
@@ -250,8 +249,9 @@ const enhance = compose(
     }
   ),
   withPropsOnChange(
-    ['draftContent'],
-    ({draftContent, setRenderedHtml}) => {
+    ['isEditing', 'draftContent'],
+    ({isEditing, draftContent, setRenderedHtml}) => {
+      if (!isEditing) return;
       // async render markdown to html.
       toHtml(draftContent).then((html) => setRenderedHtml(html))
     }

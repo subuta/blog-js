@@ -7,7 +7,9 @@ import api from 'src/views/utils/api'
 
 import {SET_ARTICLES} from './article'
 
-
+/* mat Custom imports [start] */
+import {setArticleIds} from './article'
+/* mat Custom imports [end] */
 
 // -------------
 // Constants
@@ -54,8 +56,9 @@ export const requestTagByLabel = (label) => {
   return (dispatch) => {
     dispatch({type: REQUEST_TAGS})
     return api.tag.showByLabel(label).then((data) => {
-      /* mat Index data transform [start] */
-      /* mat Index data transform [end] */
+      const normalized = normalize(data, tag);
+      const _tag = _.get(normalized, ['entities', 'tag', normalized.result])
+      dispatch(setArticleIds(_tag.articles))
       dispatch(setTags(normalize(data, tag)))
       return data
     })

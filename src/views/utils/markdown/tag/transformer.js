@@ -5,8 +5,8 @@ const RE_TAG = /#([\w+!@\-1-:]+)/
 
 export default function transformer (settings = {}) {
   return tree => {
-    visit(tree, 'text', (node) => {
-      if (!node.value.match(RE_TAG)) return
+    visit(tree, 'text', (node, index, parent) => {
+      if (!node.value.match(RE_TAG) || parent.tagName !== 'p') return
       const tag = node.value.match(RE_TAG)
 
       node.type = 'element'

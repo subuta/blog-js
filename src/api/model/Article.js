@@ -1,7 +1,9 @@
 import Model from './Model'
 import _ from 'lodash'
 
-
+/* mat Custom imports [start] */
+import { toHtml } from 'src/views/utils/markdown'
+/* mat Custom imports [end] */
 
 export default class Article extends Model {
   // SEE: https://github.com/Vincit/objection.js/issues/825
@@ -83,6 +85,27 @@ export default class Article extends Model {
       .orderBy('created_at', 'desc')
       .orderBy('id', 'desc')
       .where('isPublished', false)
+  }
+
+  $afterGet = async (queryContext) => {
+    this.$html = await toHtml(this.content)
+  }
+
+  $parseJson(json, opt) {
+    // Remember to call the super class's implementation.
+    json = super.$parseJson(json, opt);
+    // Ignore html prop
+    delete json.html
+    // Do your conversion here.
+    return json;
+  }
+
+  $formatJson(json) {
+    // Remember to call the super class's implementation.
+    json = super.$formatJson(json);
+    // Append $html to json.
+    json.html = this.$html
+    return json;
   }
   /* mat Custom methods [end] */
 }
