@@ -32,11 +32,18 @@ const enhance = compose(
 
     return {
       setNodeRef: () => (ref) => {
-        if (!ref) return
-        // if ref changed.
-        if (nodeRef !== ref) {
-          Promise.all(_.map(ref.querySelectorAll('img'), waitForImgLoad)).then(() => onLoad())
+        if (nodeRef === ref || !ref) return
+
+        const imgNodes = ref.querySelectorAll('img');
+
+        if (!_.isEmpty(imgNodes)) {
+          // Wait for image loaded if found
+          Promise.all(_.map(imgNodes, waitForImgLoad)).then(() => onLoad())
+        } else {
+          // Immediately call onLoad otherwise.
+          onLoad()
         }
+
         nodeRef = ref
       },
 
