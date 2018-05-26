@@ -14,6 +14,11 @@ import {
   getCurrentUser,
 } from 'src/views/modules/user'
 
+import {
+  signAttachment,
+  uploadAttachment
+} from 'src/views/modules/attachment'
+
 const mapStateToProps = (state, oldProps) => {
   const entities = getArticleEntities(state)
   const slug = _.get(oldProps, 'url.query.slug', '')
@@ -29,6 +34,8 @@ const mapDispatchToProps = {
   updateArticle,
   deleteArticle,
   addReaction,
+  signAttachment,
+  uploadAttachment,
   removeReaction
 }
 

@@ -57,7 +57,7 @@ export default class Comment extends Model {
     $id: 'http://sub-labo.com/schemas/comment.json',
     type: 'object',
     required: ['text'],
-    properties: {id: {type: 'integer'}, text: {type: 'string', minLength: 1}}
+    properties: {id: {type: 'integer'}, text: {type: 'string'}}
   }
 
   /* mat Custom methods [start] */
@@ -72,7 +72,7 @@ export default class Comment extends Model {
   }
 
   $afterGet = async (queryContext) => {
-    this.$html = await toHtml(this.text)
+    this.$html = this.text ? await toHtml(this.text) : '';
   }
 
   $parseJson(json, opt) {

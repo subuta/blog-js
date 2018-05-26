@@ -1,5 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
+import { getEventRange, getEventTransfer } from 'slate-react'
 import { hasRegistered, highlight } from 'src/views/utils/highlight'
 import { tokenize } from 'src/views/utils/markdown'
 
@@ -427,9 +428,34 @@ const decorateNode = (document) => {
   return _.compact(decorations)
 }
 
+const onDrop = (opts) => (event, change, editor) => {
+  const {
+    onFileUpload = _.noop
+  } = opts
+
+  const target = getEventRange(event, change.value)
+  if (!target && event.type === 'drop') return
+
+  const transfer = getEventTransfer(event)
+  const { type, files } = transfer
+
+  if (target) {
+    change.select(target)
+  }
+
+  if (type === 'files') {
+    for (const file of files) {
+      // FIXME: More better way to expose onFileUpload
+      // We shouldn't expose `change` to onFileUpload handler.
+      onFileUpload(change, file)
+    }
+  }
+}
+
 export default function MarkdownPlugin (opts = {}) {
   return {
     decorateNode,
-    renderMark
+    renderMark,
+    onDrop: onDrop(opts)
   }
 }

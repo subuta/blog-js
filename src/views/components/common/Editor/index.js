@@ -4,7 +4,7 @@ import { Editor, getEventTransfer } from 'slate-react'
 import _ from 'lodash'
 import keycode from 'keycode'
 
-import plugins from './plugins'
+import createPlugins from './plugins'
 import Plain from 'slate-plain-serializer'
 
 import withStyles from './style'
@@ -62,6 +62,7 @@ const enhance = compose(
       onChange,
       onFocus = _.noop,
       onBlur = _.noop,
+      onFileUpload = _.noop,
       instance = _.noop
     } = props
 
@@ -105,6 +106,15 @@ const enhance = compose(
       onBlur(false)
     }
 
+    // Insert image into editor
+    const insertInlineImage = (change, imageUrl = '', alt = '') => {
+      const nextState = change
+        .insertText(`\n\n![${alt}](${imageUrl} "${alt}")\n\n`)
+        .focus()
+
+      onChange(nextState)
+    }
+
     // reset internal editorState.
     const reset = (initialValue = '') => {
       editorState = createInitialState(initialValue)
@@ -115,7 +125,13 @@ const enhance = compose(
     instance({
       focus,
       blur,
-      reset
+      reset,
+      insertInlineImage
+    })
+
+    // Statically define plugins.
+    const plugins = createPlugins({
+      onFileUpload
     })
 
     return {
@@ -186,8 +202,8 @@ const enhance = compose(
         } = props
 
         const removeIfNecessary = (change) => {
-          const { value } = change
-          const { anchorBlock } = value
+          const {value} = change
+          const {anchorBlock} = value
 
           // Remove emojiFilter text if text included at current row.
           if (_.endsWith(anchorBlock.text, emojiFilter)) {
@@ -207,7 +223,9 @@ const enhance = compose(
       },
 
       focus: () => focus,
-      blur: () => blur
+      blur: () => blur,
+
+      getPlugins: () => () => plugins
     }
   }),
   lifecycle({
@@ -236,6 +254,7 @@ export default enhance((props) => {
     setEditorRef,
     setEditorState,
     setIsFocused,
+    getPlugins,
     setIsShowEmojiPicker,
     uniqueId,
     styles,
@@ -271,7 +290,7 @@ export default enhance((props) => {
         id={uniqueId}
         className={`${styles.Editor} editor`}
         value={editorState}
-        plugins={plugins}
+        plugins={getPlugins()}
         spellCheck={false}
         onChange={onChange}
         onKeyDown={onKeyDown}

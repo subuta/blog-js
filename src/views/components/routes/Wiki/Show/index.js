@@ -64,6 +64,7 @@ const enhanceContent = compose(
         setEditorInstance,
         setIsEditorFocused,
         onSetDraftContent,
+        onFileUpload,
         draftContent,
         renderedHtml,
         styles
@@ -75,6 +76,7 @@ const enhanceContent = compose(
             onSave={onSetDraftContent}
             initialValue={draftContent}
             instance={setEditorInstance}
+            onFileUpload={onFileUpload}
             onFocus={() => setIsEditorFocused(true)}
             onBlur={() => setIsEditorFocused(false)}
           />
@@ -225,6 +227,11 @@ const enhance = compose(
         editorInstance.focus()
       },
 
+      insertInlineImageToEditor: () => (...args) => {
+        if (!editorInstance) return
+        editorInstance.insertInlineImage.apply(null, args)
+      },
+
       getTargetRef: () => () => targetRef
     }
   }),
@@ -322,6 +329,31 @@ const enhance = compose(
         })
       },
 
+      onFileUpload: (props) => async (change, file) => {
+        const {
+          signAttachment,
+          uploadAttachment,
+          insertInlineImageToEditor,
+          notify
+        } = props
+
+        const {name, type} = file
+
+        try {
+          // create attachment from file
+          const {id, signedRequest, url} = await signAttachment({name, type})
+
+          // then upload it to s3
+          await uploadAttachment(file, signedRequest, url)
+
+          insertInlineImageToEditor(change, url, name);
+        } catch (err) {
+          if (err.status === 401) {
+            notify('Log in to upload file, sorry ;)', 3000)
+          }
+        }
+      },
+
       onAddReaction: ({article, addReaction}) => (emoji) => {
         // toggle published state.
         addReaction(article.id, {emoji})
@@ -400,6 +432,7 @@ export default enhance((props) => {
     onDelete,
     onAddReaction,
     onRemoveReaction,
+    onFileUpload,
     draftSlug,
     draftTitle,
     draftSummary,
