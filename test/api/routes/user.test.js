@@ -213,7 +213,7 @@ test.serial(
 )
 
 /* mat Custom test [start] */
-test('put me should throw 422 if date is invalid', async (t) => {
+test.serial('put me should throw 422 if date is invalid', async (t) => {
   const {request, User} = t.context
 
   const user = await User.query().findOne({

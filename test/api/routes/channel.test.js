@@ -98,7 +98,7 @@ test.serial('post should create channel', async (t) => {
 })
 
 /* mat Custom tests [start] */
-test('show by name should return channel', async (t) => {
+test.serial('show by name should return channel', async (t) => {
   const {request} = t.context
 
   // mock jwks

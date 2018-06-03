@@ -374,7 +374,7 @@ test.serial('update should not update comment of other user if currentUser is no
   t.not(comment.text, 'Updated comment')
 })
 
-test('show should return channel with correct comments order', async (t) => {
+test.serial('show should return channel with correct comments order', async (t) => {
   const {request, Comment, User} = t.context
   const Promise = require('bluebird')
 
