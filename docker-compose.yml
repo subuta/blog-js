@@ -1,5 +1,26 @@
 version: '2'
 services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfiles/app/Dockerfile
+    command:
+      npm run serve
+    ports:
+      - "3000:3000"
+    env_file: .env
+    environment:
+      - POSTGRES_HOST=db
+      - REDIS_HOST=redis
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://postgres:password@db:5432/blog-js-development
+      - IFRAMELY_ENDPOINT=http://iframely:8061
+    volumes:
+      - ./Dockerfiles/iframely/config.local.js:/iframely/config.local.js
+    links:
+      - iframely
+      - db
+      - redis
   redis:
     image: redis:3.2.8
     command: >

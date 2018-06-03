@@ -28,9 +28,8 @@ redisSubscribeClient.on('message', (channel, data) => {
 })
 
 export const subscribe = (channel, cb) => {
-  redisSubscribeClient.subscribe(channel)
-
   if (!channelListeners[channel]) {
+    redisSubscribeClient.subscribe(channel)
     channelListeners[channel] = []
   }
 
@@ -40,11 +39,13 @@ export const subscribe = (channel, cb) => {
 }
 
 export const unsubscribe = (channel, cb) => {
-  redisSubscribeClient.unsubscribe(channel)
-
   // Just ignore if no-listeners found.
   if (!channelListeners[channel]) return
   channelListeners[channel] = _.without(channelListeners[channel], cb)
+
+  if (_.isEmpty(channelListeners[channel])) {
+    redisSubscribeClient.unsubscribe(channel)
+  }
 
   log(`UnSubscribed from '${channel}', listeners = ${channelListeners[channel].length}`)
 }

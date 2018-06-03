@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 // SEE: https://iframely.com/docs/oembed-api
-const IFRAMELY_ENDPOINT = 'http://localhost:8061'
+const IFRAMELY_ENDPOINT = process.env.IFRAMELY_ENDPOINT || 'http://localhost:8061'
 
 export const oembed = (url) => axios.get(`${IFRAMELY_ENDPOINT}/oembed`, {
   params: {url}
