@@ -73,8 +73,8 @@ workflows:
     jobs:
       - test
       - deploy-to-apps:
-        requires:
-          - test
-        filters:
-          branches:
-            only: /^(master)$/
+          requires:
+            - test
+          filters:
+            branches:
+              only: /^(master)$/
