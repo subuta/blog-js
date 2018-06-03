@@ -42,7 +42,7 @@ test.afterEach((t) => {
   sandbox.reset()
 })
 
-test('index should list comment', async (t) => {
+test.serial('index should list comment', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -58,7 +58,7 @@ test('index should list comment', async (t) => {
   t.deepEqual(_.map(response.body, 'id').sort(), [2826])
 })
 
-test('post should create comment', async (t) => {
+test.serial('post should create comment', async (t) => {
   const {request, Comment} = t.context
 
   // mock jwks
@@ -85,7 +85,7 @@ test('post should create comment', async (t) => {
   )
 })
 
-test('update should update comment', async (t) => {
+test.serial('update should update comment', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -121,7 +121,7 @@ test('update should update comment', async (t) => {
   )
 })
 
-test('delete should delete comment', async (t) => {
+test.serial('delete should delete comment', async (t) => {
   const {request, Comment} = t.context
 
   let comments = await Comment.query()
@@ -143,7 +143,7 @@ test('delete should delete comment', async (t) => {
 })
 
 /* mat Custom tests [start] */
-test('put reaction should add reaction to comment', async (t) => {
+test.serial('put reaction should add reaction to comment', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -176,7 +176,7 @@ test('put reaction should add reaction to comment', async (t) => {
   t.deepEqual(_.get(response.body.reactions, [0, 'emoji']), ':+1:')
 })
 
-test('put reaction should not add reaction to comment if duplicated', async (t) => {
+test.serial('put reaction should not add reaction to comment if duplicated', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -219,7 +219,7 @@ test('put reaction should not add reaction to comment if duplicated', async (t) 
   t.deepEqual(_.get(response.body.reactions, [0, 'emoji']), ':+1:')
 })
 
-test('delete reaction should delete reaction from comment', async (t) => {
+test.serial('delete reaction should delete reaction from comment', async (t) => {
   const {request, Comment, User} = t.context
 
   const _currentUser = await User.query().findOne({auth0Id: currentUser.sub})
@@ -270,7 +270,7 @@ test('delete reaction should delete reaction from comment', async (t) => {
   t.deepEqual(_.get(comment.reactions, [0, 'emoji']), undefined)
 })
 
-test('delete should delete comment of other user if currentUser is admin', async (t) => {
+test.serial('delete should delete comment of other user if currentUser is admin', async (t) => {
   const {request, User, Comment} = t.context
 
   let comments = await Comment.query()
@@ -295,7 +295,7 @@ test('delete should delete comment of other user if currentUser is admin', async
   t.deepEqual(response.body, {})
 })
 
-test('delete should not delete comment of other user if currentUser is not admin', async (t) => {
+test.serial('delete should not delete comment of other user if currentUser is not admin', async (t) => {
   const {request, User, Comment} = t.context
 
   let comments = await Comment.query()
@@ -320,7 +320,7 @@ test('delete should not delete comment of other user if currentUser is not admin
   t.deepEqual(response.body, {})
 })
 
-test('update should update comment of other user if currentUser is admin', async (t) => {
+test.serial('update should update comment of other user if currentUser is admin', async (t) => {
   const {request, User, Comment} = t.context
 
   // set User as admin
@@ -347,7 +347,7 @@ test('update should update comment of other user if currentUser is admin', async
   t.deepEqual(response.body.text, 'Updated comment')
 })
 
-test('update should not update comment of other user if currentUser is not admin', async (t) => {
+test.serial('update should not update comment of other user if currentUser is not admin', async (t) => {
   const {request, User, Comment} = t.context
 
   // set User as admin

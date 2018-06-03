@@ -42,7 +42,7 @@ test.afterEach((t) => {
   sandbox.reset()
 })
 
-test('index should list channel', async (t) => {
+test.serial('index should list channel', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -58,7 +58,7 @@ test('index should list channel', async (t) => {
   t.deepEqual(_.map(response.body, 'id').sort(), [17648, 76939, 93290])
 })
 
-test('show should return channel', async (t) => {
+test.serial('show should return channel', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -76,7 +76,7 @@ test('show should return channel', async (t) => {
   t.deepEqual(response.body.description, 'Central')
 })
 
-test('post should create channel', async (t) => {
+test.serial('post should create channel', async (t) => {
   const {request, Channel} = t.context
 
   // mock jwks

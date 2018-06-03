@@ -41,4 +41,7 @@ test.afterEach((t) => {
 })
 
 /* mat Custom tests [start] */
+test('placeholder ;)', t => {
+  t.true(true);
+});
 /* mat Custom tests [end] */

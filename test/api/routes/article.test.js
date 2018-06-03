@@ -42,7 +42,7 @@ test.afterEach((t) => {
   sandbox.reset()
 })
 
-test('index should list article', async (t) => {
+test.serial('index should list article', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -58,7 +58,7 @@ test('index should list article', async (t) => {
   t.deepEqual(_.map(response.body, 'id').sort(), [24271, 48587, 67738])
 })
 
-test('show should return article', async (t) => {
+test.serial('show should return article', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -83,7 +83,7 @@ test('show should return article', async (t) => {
   t.deepEqual(response.body.authorId, 61127)
 })
 
-test('post should create article', async (t) => {
+test.serial('post should create article', async (t) => {
   const {request, Article} = t.context
 
   // mock jwks
@@ -118,7 +118,7 @@ test('post should create article', async (t) => {
   )
 })
 
-test('update should update article', async (t) => {
+test.serial('update should update article', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -155,7 +155,7 @@ test('update should update article', async (t) => {
   t.deepEqual(response.body.authorId, 61127)
 })
 
-test('delete should delete article', async (t) => {
+test.serial('delete should delete article', async (t) => {
   const {request, Article} = t.context
 
   let articles = await Article.query()
@@ -177,7 +177,7 @@ test('delete should delete article', async (t) => {
 })
 
 /* mat Custom tests [start] */
-test('index should list article and filter by tag', async (t) => {
+test.serial('index should list article and filter by tag', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -194,7 +194,7 @@ test('index should list article and filter by tag', async (t) => {
   t.deepEqual(_.map(response.body, 'id').sort(), [24271])
 })
 
-test('get should return article by slug', async (t) => {
+test.serial('get should return article by slug', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -218,7 +218,7 @@ test('get should return article by slug', async (t) => {
   )
 })
 
-test('put reaction should add reaction to article', async (t) => {
+test.serial('put reaction should add reaction to article', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -248,7 +248,7 @@ test('put reaction should add reaction to article', async (t) => {
   t.deepEqual(_.get(response.body.reactions, [0, 'emoji']), ':+1:')
 })
 
-test('put reaction should not add reaction to article if duplicated', async (t) => {
+test.serial('put reaction should not add reaction to article if duplicated', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -287,7 +287,7 @@ test('put reaction should not add reaction to article if duplicated', async (t) 
   t.deepEqual(_.get(response.body.reactions, [0, 'emoji']), ':+1:')
 })
 
-test('delete reaction should delete reaction from article', async (t) => {
+test.serial('delete reaction should delete reaction from article', async (t) => {
   const {request, Article, User} = t.context
 
   const _currentUser = await User.query().findOne({auth0Id: currentUser.sub})
@@ -335,7 +335,7 @@ test('delete reaction should delete reaction from article', async (t) => {
   t.deepEqual(_.get(article.reactions, [0, 'emoji']), undefined)
 })
 
-test('delete should delete article of other user if currentUser is admin', async (t) => {
+test.serial('delete should delete article of other user if currentUser is admin', async (t) => {
   const {request, User, Article} = t.context
 
   let articles = await Article.query()
@@ -360,7 +360,7 @@ test('delete should delete article of other user if currentUser is admin', async
   t.deepEqual(response.body, {})
 })
 
-test('delete should not delete article of other user if currentUser is not admin', async (t) => {
+test.serial('delete should not delete article of other user if currentUser is not admin', async (t) => {
   const {request, User, Article} = t.context
 
   let articles = await Article.query()
@@ -385,7 +385,7 @@ test('delete should not delete article of other user if currentUser is not admin
   t.deepEqual(response.body, {})
 })
 
-test('update should update article of other user if currentUser is admin', async (t) => {
+test.serial('update should update article of other user if currentUser is admin', async (t) => {
   const {request, User, Article} = t.context
 
   // mock jwks
@@ -416,7 +416,7 @@ test('update should update article of other user if currentUser is admin', async
   )
 })
 
-test('update should not update article of other user if currentUser is not admin', async (t) => {
+test.serial('update should not update article of other user if currentUser is not admin', async (t) => {
   const {request, User, Article} = t.context
 
   // mock jwks
@@ -441,7 +441,7 @@ test('update should not update article of other user if currentUser is not admin
   t.is(response.status, 404)
 })
 
-test('put should create tag for article', async (t) => {
+test.serial('put should create tag for article', async (t) => {
   const {request, Article} = t.context
 
   // mock jwks

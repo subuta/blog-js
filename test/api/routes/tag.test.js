@@ -40,7 +40,7 @@ test.afterEach((t) => {
   sandbox.reset()
 })
 
-test('index should list tag', async (t) => {
+test.serial('index should list tag', async (t) => {
   const {request} = t.context
 
   // mock jwks

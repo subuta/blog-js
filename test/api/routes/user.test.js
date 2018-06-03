@@ -38,7 +38,7 @@ test.afterEach((t) => {
   sandbox.reset()
 })
 
-test('get me should return user', async (t) => {
+test.serial('get me should return user', async (t) => {
   const {request} = t.context
 
   // mock jwks
@@ -62,7 +62,7 @@ test('get me should return user', async (t) => {
   )
 })
 
-test('put me should update user if exists', async (t) => {
+test.serial('put me should update user if exists', async (t) => {
   const {request, User} = t.context
 
   const user = await User.query().findOne({
@@ -103,7 +103,7 @@ test('put me should update user if exists', async (t) => {
   )
 })
 
-test('post me should create user if not exists', async (t) => {
+test.serial('post me should create user if not exists', async (t) => {
   const {request, User} = t.context
 
   const user = await User.query().findOne({
@@ -151,39 +151,13 @@ test('post me should create user if not exists', async (t) => {
   )
 })
 
-test('post me should not create new user if already exists', async (t) => {
-  const {request, User} = t.context
+test.serial(
+  'post me should not create new user if already exists',
+  async (t) => {
+    const {request, User} = t.context
 
-  await User.query()
-    .insert({
-      id: 64548,
-      auth0Id: '4ed007fa-6ec1-4744-9205-db0bb81ab1bd',
-      locale: 'de_CH',
-      nickname: 'Alexane16',
-      status: 'Reverse-engineered lavender',
-      isAdmin: false,
-      avatar:
-        'https://s3.amazonaws.com/uifaces/faces/twitter/benoitboucart/128.jpg'
-    })
-    .eager('')
-
-  const user = await User.query().findOne({
-    auth0Id: '4ed007fa-6ec1-4744-9205-db0bb81ab1bd'
-  })
-
-  // mock jwks
-  const token = createToken(
-    privateKey,
-    '123',
-    createPayload('4ed007fa-6ec1-4744-9205-db0bb81ab1bd')
-  )
-  jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
-
-  const response = await request
-    .post('/api/users/me')
-    .set('Authorization', `Bearer ${token}`)
-    .send({
-      user: {
+    await User.query()
+      .insert({
         id: 64548,
         auth0Id: '4ed007fa-6ec1-4744-9205-db0bb81ab1bd',
         locale: 'de_CH',
@@ -192,22 +166,51 @@ test('post me should not create new user if already exists', async (t) => {
         isAdmin: false,
         avatar:
           'https://s3.amazonaws.com/uifaces/faces/twitter/benoitboucart/128.jpg'
-      }
+      })
+      .eager('')
+
+    const user = await User.query().findOne({
+      auth0Id: '4ed007fa-6ec1-4744-9205-db0bb81ab1bd'
     })
 
-  t.is(response.status, 200)
+    // mock jwks
+    const token = createToken(
+      privateKey,
+      '123',
+      createPayload('4ed007fa-6ec1-4744-9205-db0bb81ab1bd')
+    )
+    jwksEndpoint('http://localhost', [{pub: publicKey, kid: '123'}])
 
-  // All props should persisted.
-  t.deepEqual(response.body.id, 64548)
-  t.deepEqual(response.body.locale, 'de_CH')
-  t.deepEqual(response.body.nickname, 'Alexane16')
-  t.deepEqual(response.body.status, 'Reverse-engineered lavender')
-  t.deepEqual(response.body.isAdmin, false)
-  t.deepEqual(
-    response.body.avatar,
-    'https://s3.amazonaws.com/uifaces/faces/twitter/benoitboucart/128.jpg'
-  )
-})
+    const response = await request
+      .post('/api/users/me')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        user: {
+          id: 64548,
+          auth0Id: '4ed007fa-6ec1-4744-9205-db0bb81ab1bd',
+          locale: 'de_CH',
+          nickname: 'Alexane16',
+          status: 'Reverse-engineered lavender',
+          isAdmin: false,
+          avatar:
+            'https://s3.amazonaws.com/uifaces/faces/twitter/benoitboucart/128.jpg'
+        }
+      })
+
+    t.is(response.status, 200)
+
+    // All props should persisted.
+    t.deepEqual(response.body.id, 64548)
+    t.deepEqual(response.body.locale, 'de_CH')
+    t.deepEqual(response.body.nickname, 'Alexane16')
+    t.deepEqual(response.body.status, 'Reverse-engineered lavender')
+    t.deepEqual(response.body.isAdmin, false)
+    t.deepEqual(
+      response.body.avatar,
+      'https://s3.amazonaws.com/uifaces/faces/twitter/benoitboucart/128.jpg'
+    )
+  }
+)
 
 /* mat Custom test [start] */
 test('put me should throw 422 if date is invalid', async (t) => {

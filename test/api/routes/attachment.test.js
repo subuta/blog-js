@@ -40,7 +40,7 @@ test.afterEach((t) => {
   sandbox.reset()
 })
 
-test('post should create attachment', async (t) => {
+test.serial('post should create attachment', async (t) => {
   const {request, Attachment} = t.context
 
   // mock jwks
