@@ -4,7 +4,7 @@
 #
 references:
   container_config: &container_config
-    working_directory: ~/blogjs_app
+    working_directory: ~/blogjs
     docker:
       # available image list: https://circleci.com/docs/2.0/circleci-images
       - image: circleci/node:9.11.1
