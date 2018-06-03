@@ -14,6 +14,7 @@ references:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
           POSTGRES_DB: blog-js-test
+          REDIS_PASSWORD: password
           NODE_ENV: test
       - image: postgres:10-alpine
         environment:
@@ -22,6 +23,10 @@ references:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: password
           POSTGRES_DB: blog-js-test
+      - image: redis:3.2.8
+        environment:
+          TZ: /usr/share/zoneinfo/Asia/Tokyo
+          REDIS_PASSWORD: password
 
 version: 2
 jobs:
