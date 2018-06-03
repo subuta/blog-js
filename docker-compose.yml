@@ -4,11 +4,26 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfiles/app/Dockerfile
+      args:
+        - POSTGRES_USER
+        - POSTGRES_PASSWORD
+        - POSTGRES_DB
+        - REDIS_PASSWORD
+        - S3_BUCKET
+        - IFRAMELY_ENDPOINT
+        - AUTH0_API_IDENTIFIER
+        - AUTH0_CLIENT_ID
+        - AUTH0_AUDIENCE
+        - BASE_URL
+        - FB_APP_ID
+        - TWITTER_SITE
+        - GOOGLE_MAPS_API_KEY
     command:
       npm run serve
     ports:
       - "3000:3000"
-    env_file: .env
+    # Not use env file at app build for ease of deployment.
+    # env_file: .env
     environment:
       - POSTGRES_HOST=db
       - REDIS_HOST=redis
