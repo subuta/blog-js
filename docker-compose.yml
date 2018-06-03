@@ -21,6 +21,7 @@ services:
       - iframely
       - db
       - redis
+
   redis:
     image: redis:3.2.8
     command: >
@@ -31,6 +32,7 @@ services:
       - "6379:6379"
     volumes:
       - ./db/redis:/data
+
   iframely:
     build:
       context: ./Dockerfiles/iframely
@@ -44,6 +46,7 @@ services:
       - ./Dockerfiles/iframely/config.local.js:/iframely/config.local.js
     links:
       - redis
+
   db:
     image: postgres:10-alpine
     env_file: .env
@@ -54,6 +57,7 @@ services:
       - ./db/postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+
   s3:
     image: minio/minio:latest
     command: "server /data"

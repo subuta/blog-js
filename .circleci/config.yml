@@ -1,0 +1,52 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+references:
+  container_config: &container_config
+    working_directory: ~/app
+    docker:
+      # available image list: https://circleci.com/docs/2.0/circleci-images
+      - image: circleci/node:9.11.1
+        environment:
+          TZ: /usr/share/zoneinfo/Asia/Tokyo
+          POSTGRES_HOST: 127.0.0.1
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: blog-js-test
+          NODE_ENV: test
+      - image: postgres:10-alpine
+        environment:
+          TZ: /usr/share/zoneinfo/Asia/Tokyo
+          POSTGRES_HOST: 127.0.0.1
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: blog-js-test
+
+version: 2
+jobs:
+  build:
+    <<: *container_config
+    parallelism: 1
+    steps:
+      - checkout
+      - setup_remote_docker
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      # run tests!
+      - run: npm run test
+
+
