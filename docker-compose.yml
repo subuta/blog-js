@@ -23,7 +23,6 @@ services:
     ports:
       - "3000:3000"
     # Not use env file at app build for ease of deployment.
-    # env_file: .env
     environment:
       - POSTGRES_HOST=db
       - REDIS_HOST=redis
@@ -42,7 +41,8 @@ services:
     command: >
       --appendonly yes
       --requirepass password
-    env_file: .env
+    environment:
+      - REDIS_PASSWORD=password
     ports:
       - "6379:6379"
     volumes:
@@ -54,7 +54,6 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - "8061:8061"
-    env_file: .env
     environment:
       - REDIS_HOST=redis
     volumes:
@@ -64,10 +63,12 @@ services:
 
   db:
     image: postgres:10-alpine
-    env_file: .env
     restart: always
     environment:
       - POSTGRES_HOST=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=blog-js-development
     volumes:
       - ./db/postgres:/var/lib/postgresql/data
     ports:
