@@ -68,7 +68,7 @@ test.serial('post should create attachment', async (t) => {
 })
 
 /* mat Custom tests [start] */
-test('sign should return signedUrl', async (t) => {
+test.serial('sign should return signedUrl', async (t) => {
   const {request} = t.context
 
   // mock jwks
