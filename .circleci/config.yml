@@ -30,7 +30,7 @@ references:
 
 version: 2
 jobs:
-  build:
+  test:
     <<: *container_config
     parallelism: 1
     steps:
@@ -54,4 +54,27 @@ jobs:
       # run tests!
       - run: npm run test
 
+  deploy-to-apps:
+    <<: *container_config
+    parallelism: 1
+    steps:
+      - setup_remote_docker
+      - checkout
+      # build the application image
+      - run: docker-compose build app
+      # tag image for dokku
+      - run: docker tag blogjs_app:latest dokku/blogjs_app:latest
+      # push image
+      - run: docker save dokku/blogjs_app:latest | bzip2 | ssh root@sub-labo-apps.com -p $SSHD_PORT "bunzip2 | docker load | dokku tags:deploy blogjs_app latest"
 
+workflows:
+  version: 2
+  test_and_deploy:
+    jobs:
+      - test
+      - deploy-to-apps:
+        requires:
+          - test
+        filters:
+          branches:
+            only: /^(master)$/
