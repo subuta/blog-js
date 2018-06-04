@@ -61,7 +61,7 @@
     CACHE_TTL: 0, // In milliseconds. 0 for 'never expire' to let cache engine decide itself when to evict the record
 
     // Redis cache options.
-    REDIS_OPTIONS: {
+    REDIS_OPTIONS: process.env.REDIS_URL || {
       host: process.env.REDIS_HOST || '127.0.0.1',
       port: process.env.REDIS_PORT || 6379,
       db: process.env.REDIS_DB || 0,
