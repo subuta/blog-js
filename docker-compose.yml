@@ -29,8 +29,6 @@ services:
       - NODE_ENV=production
       - DATABASE_URL=postgres://postgres:password@db:5432/blog-js-development
       - IFRAMELY_ENDPOINT=http://iframely:8061
-    volumes:
-      - ./Dockerfiles/iframely/config.local.js:/iframely/config.local.js
     links:
       - iframely
       - db
@@ -52,6 +50,8 @@ services:
     build:
       context: ./Dockerfiles/iframely
       dockerfile: ./Dockerfile
+      args:
+        - GOOGLE_MAPS_API_KEY
     ports:
       - "8061:8061"
     environment:

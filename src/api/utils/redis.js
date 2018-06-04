@@ -28,7 +28,7 @@ redisSubscribeClient.on('message', (channel, data) => {
 })
 
 export const subscribe = (channel, cb) => {
-  if (!channelListeners[channel]) {
+  if (!channelListeners[channel] || _.isEmpty(channelListeners[channel])) {
     redisSubscribeClient.subscribe(channel)
     channelListeners[channel] = []
   }

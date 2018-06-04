@@ -17,4 +17,8 @@ RUN DEPS="libkrb5-dev" \
     apt-get autoremove && \
     apt-get clean
 
+# receive and Embed ENV from `--build-args`
+ARG GOOGLE_MAPS_API_KEY=xxx
+ENV GOOGLE_MAPS_API_KEY=$GOOGLE_MAPS_API_KEY
+
 ENTRYPOINT ["/iframely/docker/entrypoint.sh"]
