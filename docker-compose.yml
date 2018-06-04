@@ -18,8 +18,8 @@ services:
         - FB_APP_ID
         - TWITTER_SITE
         - GOOGLE_MAPS_API_KEY
-    command:
-      npm run serve
+    # command: npm run serve
+    command: echo "do nothing :)"
     ports:
       - "3000:3000"
     # Not use env file at app build for ease of deployment.
@@ -54,8 +54,10 @@ services:
         - GOOGLE_MAPS_API_KEY
     ports:
       - "8061:8061"
+    restart: always
     environment:
       - REDIS_HOST=redis
+      - REDIS_PASSWORD=password
     volumes:
       - ./Dockerfiles/iframely/config.local.js:/iframely/config.local.js
     links:
