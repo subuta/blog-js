@@ -1,4 +1,61 @@
 (function () {
+  var RETRY_BACKOFF = 1.7;
+  var RETRY_ATTEMPT = 100;
+
+  // SEE: https://github.com/NodeRedis/node_redis
+  var retryStrategy = function (options) {
+    if (options.total_retry_time > 1000 * 60 * 60) {
+      // End reconnecting after a specific timeout and flush all commands
+      // with a individual error
+      console.error('Retry time exhausted');
+      return undefined;
+    }
+
+    if (options.attempt >= RETRY_ATTEMPT) {
+      if (options.error && options.error.code === 'ECONNREFUSED') {
+        // End reconnecting on a specific error and flush all commands with
+        // a individual error
+        console.error('The server refused the connection');
+        return undefined;
+      }
+
+      console.error('Cannot reconnect to redis while ', RETRY_ATTEMPT, 'times. TOTAL_RETRY_TIME =', options.total_retry_time / 1000, 's')
+      console.error('Iframely will exit.')
+
+      // End reconnecting with built in error
+      process.exit(1);
+
+      return undefined;
+    }
+
+    // reconnect after
+    return Math.max(options.total_retry_time * RETRY_BACKOFF, 1000)
+  }
+
+  var redisParams = {
+    host: process.env.REDIS_HOST || '127.0.0.1',
+    port: process.env.REDIS_PORT || 6379,
+    db: process.env.REDIS_DB || 0,
+    password: process.env.REDIS_PASSWORD,
+    retry_strategy: retryStrategy
+  }
+
+  if (process.env.REDIS_URL) {
+    redisParams = {
+      url: process.env.REDIS_URL,
+      retry_strategy: retryStrategy
+    }
+  }
+
+  var allowedOrigins = ['http://localhost:3000']
+
+  if (process.env.APP_DOMAIN) {
+    allowedOrigins = [
+      'http://' + process.env.APP_DOMAIN,
+      'https://' + process.env.APP_DOMAIN
+    ]
+  }
+
   var config = {
 
     // Specify a path for custom plugins. Custom plugins will override core plugins.
@@ -61,12 +118,7 @@
     CACHE_TTL: 0, // In milliseconds. 0 for 'never expire' to let cache engine decide itself when to evict the record
 
     // Redis cache options.
-    REDIS_OPTIONS: process.env.REDIS_URL || {
-      host: process.env.REDIS_HOST || '127.0.0.1',
-      port: process.env.REDIS_PORT || 6379,
-      db: process.env.REDIS_DB || 0,
-      password: process.env.REDIS_PASSWORD,
-    },
+    REDIS_OPTIONS: redisParams,
 
     /*
     // Memcached options. See https://github.com/3rd-Eden/node-memcached#server-locations
@@ -76,10 +128,7 @@
     */
 
     // Access-Control-Allow-Origin list.
-    allowedOrigins: [
-        // "*",
-        "http://localhost:3000"
-    ],
+    allowedOrigins: allowedOrigins,
 
     /*
     // Uncomment to enable plugin testing framework.
