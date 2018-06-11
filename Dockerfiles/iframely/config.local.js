@@ -1,31 +1,31 @@
 (function () {
-  var RETRY_BACKOFF = 1.7;
-  var RETRY_ATTEMPT = 100;
+  var RETRY_BACKOFF = 1.7
+  var RETRY_ATTEMPT = 100
 
   // SEE: https://github.com/NodeRedis/node_redis
   var retryStrategy = function (options) {
     if (options.total_retry_time > 1000 * 60 * 60) {
       // End reconnecting after a specific timeout and flush all commands
       // with a individual error
-      console.error('Retry time exhausted');
-      return undefined;
+      console.error('Retry time exhausted')
+      return undefined
     }
 
     if (options.attempt >= RETRY_ATTEMPT) {
       if (options.error && options.error.code === 'ECONNREFUSED') {
         // End reconnecting on a specific error and flush all commands with
         // a individual error
-        console.error('The server refused the connection');
-        return undefined;
+        console.error('The server refused the connection')
+        return undefined
       }
 
       console.error('Cannot reconnect to redis while ', RETRY_ATTEMPT, 'times. TOTAL_RETRY_TIME =', options.total_retry_time / 1000, 's')
       console.error('Iframely will exit.')
 
       // End reconnecting with built in error
-      process.exit(1);
+      process.exit(1)
 
-      return undefined;
+      return undefined
     }
 
     // reconnect after
@@ -69,7 +69,7 @@
     relativeStaticUrl: '/r',
 
     // Or just skip built-in renders altogether
-    SKIP_IFRAMELY_RENDERS: false,
+    SKIP_IFRAMELY_RENDERS: true,
 
     // For legacy reasons the response format of Iframely open-source is
     // different by default as it does not group the links array by rel.
@@ -115,7 +115,9 @@
     - memcached - https://github.com/3rd-Eden/node-memcached
     */
     CACHE_ENGINE: 'redis',
-    CACHE_TTL: 0, // In milliseconds. 0 for 'never expire' to let cache engine decide itself when to evict the record
+    // In milliseconds. 0 for 'never expire' to let cache engine decide itself when to evict the record (for node-cache)
+    // 1000(ms) * 60(sec) * 60(minute) * 24(hour) = 1day.
+    CACHE_TTL: 1000 * 60 * 60 * 24,
 
     // Redis cache options.
     REDIS_OPTIONS: redisParams,
@@ -202,7 +204,9 @@
         'min-width': 250,
         hide_media: false,
         hide_thread: false,
-        omit_script: true,
+        omit_script: false,
+        center: false,
+        // dnt: true,
         cache_ttl: 100 * 365 * 24 * 3600 // 100 Years.
       },
       readability: {

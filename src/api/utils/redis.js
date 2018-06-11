@@ -81,7 +81,6 @@ redisSubscribeClient.on('end', () => {
 redisSubscribeClient.on('error', (err) => {
   error(`[redisSubscribeClient] Got error with redis connection, err = ${err.message}.`)
   error(err)
-  return true
 })
 
 export const subscribe = (channel, cb) => {

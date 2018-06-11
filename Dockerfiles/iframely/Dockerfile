@@ -1,4 +1,4 @@
-FROM node:5.8
+FROM node:8.4
 
 EXPOSE 8061
 
@@ -7,6 +7,14 @@ WORKDIR /iframely
 
 # Git clone into current dir.
 RUN git clone https://github.com/itteco/iframely .
+
+# Lock version to v1.2.5
+RUN git checkout tags/v1.2.5 -b v1.2.5
+
+# Add config to local.
+ADD config.local.js .
+# Override redis connection.
+# ADD custom-redis.js /iframely/lib/cache-engines/redis.js
 
 RUN DEPS="libkrb5-dev" \
     apt-get update && \
@@ -23,5 +31,8 @@ ENV GOOGLE_MAPS_API_KEY=$GOOGLE_MAPS_API_KEY
 
 ARG APP_DOMAIN
 ENV APP_DOMAIN=$APP_DOMAIN
+
+ARG REDIS_URL
+ENV REDIS_URL=$REDIS_URL
 
 ENTRYPOINT ["/iframely/docker/entrypoint.sh"]

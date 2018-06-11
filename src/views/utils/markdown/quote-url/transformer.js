@@ -93,11 +93,16 @@ export default function transformer (settings = {}) {
 
       // Push render promise to promises.
       promises.push(new Promise(async (resolveRender) => {
-        if (!htmlCache[url]) {
-          const response = await iframely(url)
-          const html = parseResponse(response)
-          htmlCache[url] = parseHtml(html)
-        }
+        // FIXME: Enable here If rendering oembed looks too slow ;)
+        // if (!htmlCache[url]) {
+        //   const response = await iframely(url)
+        //   const html = parseResponse(response)
+        //   htmlCache[url] = parseHtml(html)
+        // }
+
+        const response = await iframely(url)
+        const html = parseResponse(response)
+        // htmlCache[url] = parseHtml(html)
 
         node.tagName = 'div'
         node.properties = {
@@ -105,7 +110,7 @@ export default function transformer (settings = {}) {
           'data-quote-url': url
         }
 
-        node.children = [htmlCache[url]]
+        node.children = [parseHtml(html)]
 
         resolveRender(node)
       }))

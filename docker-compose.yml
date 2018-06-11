@@ -9,6 +9,7 @@ services:
         - POSTGRES_PASSWORD
         - POSTGRES_DB
         - REDIS_PASSWORD
+        - S3_ENDPOINT
         - S3_BUCKET
         - IFRAMELY_ENDPOINT
         - AUTH0_API_IDENTIFIER
@@ -18,6 +19,8 @@ services:
         - FB_APP_ID
         - TWITTER_SITE
         - GOOGLE_MAPS_API_KEY
+        - AWS_ACCESS_KEY_ID
+        - AWS_SECRET_ACCESS_KEY
     # command: npm run serve
     command: echo "do nothing :)"
     ports:
@@ -55,7 +58,6 @@ services:
         - APP_DOMAIN
     ports:
       - "8061:8061"
-    restart: always
     environment:
       - REDIS_HOST=redis
       - REDIS_PASSWORD=password

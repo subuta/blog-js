@@ -38,11 +38,10 @@ attachment.post('/', auth, async (ctx) => {
 attachment.post('/sign', auth, async (ctx) => {
   const {attachment} = ctx.request.body
 
-  /* mat Before create [start] */
   const ext = path.extname(attachment.name)
 
   const id = uuid()
-  const tmpFileName = `${id}${ext}`
+  const tmpFileName = `attachment/${id}${ext}`
 
   let result = await getSignedUrl(tmpFileName, attachment.type)
   ctx.body = {
