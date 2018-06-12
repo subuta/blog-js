@@ -128,6 +128,10 @@ const enhance = compose(
 
       setValidationError(null)
 
+      window.analytics.track('Update profile', {
+        user: user.id
+      })
+
       requestUpdateUser(user).catch(err => setValidationError(err.data))
     }
   }),
@@ -149,7 +153,7 @@ export default enhance((props) => {
   } = props
 
   return (
-    <Layout>
+    <Layout {...props}>
       <div className={styles.Content}>
         <Paper className={styles.Paper}>
           <h4>Update your profile</h4>

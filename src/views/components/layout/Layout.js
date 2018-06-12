@@ -9,7 +9,10 @@ import Navigation from './Navigation'
 import withStyles from './style'
 import connect from './connect'
 
-import { onRouteChangeStart } from 'src/views/utils/router'
+import {
+  onRouteChangeStart,
+  onRouteChangeComplete
+} from 'src/views/utils/router'
 
 import withDragDropContext from 'src/views/utils/withDragDropContext'
 
@@ -26,19 +29,26 @@ const enhance = compose(
   connect,
   withDragDropContext,
   withHandlers(() => {
-    let unlisten = _.noop
+    let unlistenOnRouteChangeStart = _.noop
+    let unlistenOnRouteChangeComplete = _.noop
 
     return {
       initialize: () => () => {
-        unlisten = onRouteChangeStart(() => {
+        unlistenOnRouteChangeStart = onRouteChangeStart(() => {
           // persist current pathname
           const currentPath = location.pathname
           storage.setItem('prev-path', currentPath)
         })
+
+        unlistenOnRouteChangeComplete = onRouteChangeComplete(() => {
+          // Emit page changes.
+          window.analytics.page();
+        })
       },
 
       destroy: () => () => {
-        unlisten()
+        unlistenOnRouteChangeStart()
+        unlistenOnRouteChangeComplete()
       }
     }
   }),

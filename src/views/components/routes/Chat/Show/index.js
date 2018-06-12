@@ -349,6 +349,11 @@ const enhance = compose(
 
       if (isLast) return Promise.resolve()
 
+      window.analytics.track('Pull comments', {
+        channelId,
+        page: paging.current || -1
+      })
+
       // Retrieve next page and save latest paging into state.
       return requestComments({
         channelId,
@@ -359,14 +364,24 @@ const enhance = compose(
       })
     },
 
-    onUpdateComment: ({updateComment}) => (comment, params) => {
+    onUpdateComment: ({updateComment, channelId}) => (comment, params) => {
+      window.analytics.track('Update comment', {
+        commentId: comment.id,
+        channelId: channelId
+      })
+
       return updateComment(comment.id, {
         ...comment,
         ...params
       })
     },
 
-    onDeleteComment: ({deleteComment}) => (comment) => {
+    onDeleteComment: ({deleteComment, channelId}) => (comment) => {
+      window.analytics.track('Delete comment', {
+        commentId: comment.id,
+        channelId: channelId
+      })
+
       return deleteComment(comment.id, comment)
     },
 
@@ -381,6 +396,7 @@ const enhance = compose(
         createComment,
         channel,
         draftText,
+        isAuthenticated,
         scrollComments,
         resetEditor,
         focusEditor,
@@ -403,6 +419,11 @@ const enhance = compose(
         onSetDraftText('')
         resetEditor('')
         focusEditor()
+
+        window.analytics.track('Post comment', {
+          channelId: channel.id,
+          isAuthenticated
+        })
 
         createComment({channelId: channel.id, text: draftText}).catch((err) => {
           if (err.status === 401) {
@@ -437,6 +458,11 @@ const enhance = compose(
         // create attachment from file
         const {id, signedRequest, url} = await signAttachment({name, type})
         const attachment = await createAttachment({id, name, type, imageUrl: url})
+
+        window.analytics.track('Upload attachment to channel', {
+          attachmentId: attachment.id,
+          channelId: channel.id
+        })
 
         // then upload it to s3
         await uploadAttachment(file, signedRequest, url)
@@ -696,7 +722,7 @@ export default enhance((props) => {
   }
 
   return (
-    <Layout>
+    <Layout {...props}>
       <Head>
         <title>{title}</title>
         <meta property="og:title" content={title} />

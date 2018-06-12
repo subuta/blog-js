@@ -24,6 +24,8 @@ import Tooltip from 'src/views/components/common/Tooltip'
 import withStyles from './style'
 import connect from './connect'
 
+const isBrowser = typeof window !== 'undefined'
+
 const enhance = compose(
   withStyles,
   connect,
@@ -46,7 +48,20 @@ const enhance = compose(
   }),
   lifecycle({
     componentWillMount () {
-      this.props.requestMe().catch(err => {
+      this.props.requestMe().then((data) => {
+        const { currentUser } = this.props
+        // SEE: https://segment.com/docs/spec/identify/#traits
+        if (!isBrowser) return
+        window.analytics.identify(currentUser.id, {
+          id: currentUser.id,
+          name: currentUser.nickname,
+          isAdmin: currentUser.isAdmin,
+          avatar: currentUser.avatar,
+          createdAt: currentUser.created_at,
+          // non-standard traits.
+          locale: currentUser.locale
+        })
+      }).catch(err => {
         if (err.status === 401) return
         // logout user if user not found (expired)
         if (err.status === 404) return Router.replace('/auth/logout')
@@ -142,6 +157,7 @@ export default enhance((props) => {
               <ActiveLink
                 href='/auth/logout'
                 as='/auth/logout'
+                onClick={() => window.analytics.track('Click logout link')}
               >
                 Logout
               </ActiveLink>
@@ -172,6 +188,7 @@ export default enhance((props) => {
               className={styles.IconWrapper}
               href='/auth/login'
               as='/auth/login'
+              onClick={() => window.analytics.track('Click login link')}
             >
               <SignInIcon/>
             </ActiveLink>

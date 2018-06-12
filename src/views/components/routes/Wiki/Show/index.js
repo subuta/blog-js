@@ -171,6 +171,7 @@ const ArticleAction = enhanceArticleAction((props) => {
         <ActiveLink
           href={`/article?slug=${article.slug}&edit=true`}
           as={`/w/${article.slug}/edit`}
+          onClick={() => window.analytics.track('Click edit article link')}
         >
           <MdEditIcon/>
         </ActiveLink>
@@ -316,6 +317,13 @@ const enhance = compose(
       onPublish: ({article, updateArticle}) => () => {
         const {isPublished} = article
 
+        let event = isPublished ? 'Mark article as draft' : 'Publish article'
+
+        window.analytics.track(event, {
+          articleId: article.id,
+          isPublished: article.isPublished
+        })
+
         // toggle published state.
         updateArticle(article.id, sanitizeArticleProps({
           ...article,
@@ -324,6 +332,11 @@ const enhance = compose(
       },
 
       onDelete: ({article, deleteArticle}) => () => {
+        window.analytics.track('Delete article', {
+          articleId: article.id,
+          isPublished: article.isPublished
+        })
+
         deleteArticle(article.id).then(() => {
           Router.push(`/articles`, `/w`)
         })
@@ -346,6 +359,8 @@ const enhance = compose(
           // then upload it to s3
           await uploadAttachment(file, signedRequest, url)
 
+          window.analytics.track('Upload attachment to article')
+
           insertInlineImageToEditor(change, url, name);
         } catch (err) {
           if (err.status === 401) {
@@ -355,12 +370,20 @@ const enhance = compose(
       },
 
       onAddReaction: ({article, addReaction}) => (emoji) => {
-        // toggle published state.
+        window.analytics.track('Add reaction to article', {
+          articleId: article.id,
+          emoji
+        })
+
         addReaction(article.id, {emoji})
       },
 
       onRemoveReaction: ({article, removeReaction}) => (emoji) => {
-        // toggle published state.
+        window.analytics.track('Remove reaction from article', {
+          articleId: article.id,
+          emoji
+        })
+
         removeReaction(article.id, {emoji})
       },
 
@@ -412,6 +435,11 @@ const enhance = compose(
           return Router.replace(`/article?slug=${article.slug}`, `/w/${article.slug}`)
         }
 
+        window.analytics.track('Update article', {
+          articleId: article.id,
+          isPublished: article.isPublished
+        })
+
         updateArticle(article.id, nextArticle).then(() => {
           Router.replace(`/article?slug=${slug}`, `/w/${slug}`)
         })
@@ -458,7 +486,7 @@ export default enhance((props) => {
   let title = `${article.title} | sub-labo wiki`
 
   return (
-    <Layout>
+    <Layout {...props}>
       <Head>
         <title>{title}</title>
         <meta property="og:title" content={title}/>

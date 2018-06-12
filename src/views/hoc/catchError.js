@@ -13,7 +13,7 @@ export default function (Component) {
     const fn = Component.getInitialProps || _.noop
 
     const props = await fn(ctx).catch((error) => {
-      if (error.status === 404) return throw404()
+      if (error && error.status === 404) return throw404()
       throw error
     })
 

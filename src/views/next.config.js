@@ -40,7 +40,8 @@ module.exports = {
     staticFolder: '/static',
     baseUrl: process.env.BASE_URL,
     fbAppId: process.env.FB_APP_ID,
-    twitterSite: process.env.TWITTER_SITE
+    twitterSite: process.env.TWITTER_SITE,
+    segmentWriteKey: process.env.SEGMENT_WRITE_KEY
   },
   // https://github.com/zeit/next.js/issues/706
   // the modules needs to be transpiled by babel.

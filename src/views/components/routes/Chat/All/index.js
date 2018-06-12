@@ -45,7 +45,7 @@ export default enhance((props) => {
   let title = `Channels | sub-labo chat`
 
   return (
-    <Layout>
+    <Layout {...props}>
       <Head>
         <title>{title}</title>
         <meta property="og:title" content={title} />

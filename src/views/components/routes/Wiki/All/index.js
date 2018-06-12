@@ -90,6 +90,8 @@ const enhance = compose(
         slug,
       }
 
+      window.analytics.track('Post article')
+
       createArticle(article).then(() => {
         Router.replace(`/article?slug=${slug}&edit=true`, `/w/${slug}/edit`)
       })
@@ -130,7 +132,7 @@ export default enhance((props) => {
   let title = `Articles | sub-labo wiki`
 
   return (
-    <Layout>
+    <Layout {...props}>
       <Head>
         <title>{title}</title>
         <meta property="og:title" content={title} />
@@ -154,6 +156,7 @@ export default enhance((props) => {
           onClose={() => {
             setDraftSlug('')
             setDraftTitle('')
+            window.analytics.track('Cancel post article')
             setIsShowCreateArticleModal(false)
           }}
           onSubmit={() => {
@@ -239,6 +242,7 @@ export default enhance((props) => {
                   <MdAddIcon
                     onClick={() => {
                       setIsShowCreateArticleModal(true)
+                      window.analytics.track('Click post article link')
                     }}
                   />
                 </Tooltip>

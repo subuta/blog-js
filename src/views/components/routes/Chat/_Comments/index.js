@@ -191,6 +191,12 @@ const enhance = compose(
       let rowIndex = _.findIndex(comments, ['id', comment.id])
       rowIndex = hasNext ? rowIndex + 1 : rowIndex
 
+      window.analytics.track('Add reaction to channel', {
+        commentId: comment.id,
+        channelId: comment.channelId,
+        emoji
+      })
+
       await addReaction(comment.id, {
         channelId: comment.channelId,
         emoji
@@ -202,6 +208,12 @@ const enhance = compose(
     onRemoveReaction: ({hasNext, removeReaction, comments, refresh}) => async (comment, emoji) => {
       let rowIndex = _.findIndex(comments, ['id', comment.id])
       rowIndex = hasNext ? rowIndex + 1 : rowIndex
+
+      window.analytics.track('Remove reaction from channel', {
+        commentId: comment.id,
+        channelId: comment.channelId,
+        emoji
+      })
 
       await removeReaction(comment.id, {
         channelId: comment.channelId,

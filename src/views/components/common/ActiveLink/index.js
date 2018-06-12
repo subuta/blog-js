@@ -5,14 +5,19 @@ import {
   withHandlers
 } from 'recompose'
 
+import _ from 'lodash'
 import withStyles from './style'
 
 const enhance = compose(
   withStyles,
   withRouter,
   withHandlers({
-    onClick: ({router, href, as}) => (e) => {
+    onClick: ({onClick = _.noop, router, href, as}) => (e) => {
       e.preventDefault()
+
+      // call original onClick if exists.
+      onClick(e)
+
       router.push(href, as)
     }
   })

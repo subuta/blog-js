@@ -88,7 +88,11 @@ export default class Article extends Model {
   }
 
   $afterGet = async (queryContext) => {
-    this.$html = await toHtml(this.content)
+    // default to blank.
+    this.$html = ''
+    if (this.content) {
+      this.$html = await toHtml(this.content)
+    }
   }
 
   $parseJson(json, opt) {
