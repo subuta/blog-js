@@ -4,6 +4,8 @@ import { findDOMNode } from 'react-dom'
 import { NativeTypes } from 'react-dnd-html5-backend'
 const {FILE} = NativeTypes
 
+import Head from 'next/head'
+
 import _ from 'lodash'
 
 import withStyles from './style'
@@ -152,8 +154,14 @@ export default enhance((props) => {
     currentUser
   } = props
 
+  const title = 'Edit profile | sub-labo'
+
   return (
     <Layout {...props}>
+      <Head>
+        <title>{title}</title>
+      </Head>
+
       <div className={styles.Content}>
         <Paper className={styles.Paper}>
           <h4>Update your profile</h4>

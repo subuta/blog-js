@@ -153,6 +153,7 @@ export default enhance((props) => {
                 Update your profile
               </ActiveLink>
             </li>
+
             <li>
               <ActiveLink
                 href='/auth/logout'
@@ -160,6 +161,15 @@ export default enhance((props) => {
                 onClick={() => window.analytics.track('Click logout link')}
               >
                 Logout
+              </ActiveLink>
+            </li>
+
+            <li>
+              <ActiveLink
+                href='/auth/agreement'
+                as='/auth/agreement'
+              >
+                Review agreement
               </ActiveLink>
             </li>
           </ul>

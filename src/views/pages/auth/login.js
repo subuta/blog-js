@@ -1,6 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
 
+import Head from 'next/head'
+
 import auth0 from 'src/views/utils/auth0'
 import storage from 'src/views/utils/storage'
 
@@ -21,6 +23,11 @@ const enhance = compose(
     componentWillMount () {
       const {router} = this.props
 
+      // User not yet read agreement.
+      if (!storage.getItem('auth.is-agreed')) {
+        return router.replace('/auth/agreement')
+      }
+
       if (!auth0.isAuthenticated()) {
         return auth0.authorize()
       }
@@ -32,8 +39,13 @@ const enhance = compose(
 )
 
 const Login = enhance(({styles}) => {
+  const title = 'Login | sub-labo'
   return (
     <div className={styles.Container}>
+      <Head>
+        <title>{title}</title>
+      </Head>
+
       <CustomLoader
         label="Log in to sub-labo.com ..."
         isShow={true}

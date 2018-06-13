@@ -5,6 +5,8 @@ import { withRouter } from 'next/router'
 import connext from 'src/views/hoc/connext'
 import auth0 from 'src/views/utils/auth0'
 
+import Head from 'next/head'
+
 import {
   requestUpdateUser
 } from 'src/views/modules/user'
@@ -41,8 +43,13 @@ const enhance = compose(
 )
 
 const Logout = enhance(({styles}) => {
+  const title = 'Logout | sub-labo'
   return (
     <div className={styles.Container}>
+      <Head>
+        <title>{title}</title>
+      </Head>
+
       <CustomLoader
         label="Log out from sub-labo.com ;)"
         isShow={true}

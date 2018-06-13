@@ -2,6 +2,8 @@ import React from 'react'
 import _ from 'lodash'
 import { withRouter } from 'next/router'
 
+import Head from 'next/head'
+
 import connext from 'src/views/hoc/connext'
 import auth0 from 'src/views/utils/auth0'
 import storage from 'src/views/utils/storage'
@@ -39,8 +41,13 @@ const enhance = compose(
 )
 
 const LoginCallback = enhance(({styles}) => {
+  const title = 'Auth callback | sub-labo'
   return (
     <div className={styles.Container}>
+      <Head>
+        <title>{title}</title>
+      </Head>
+
       <CustomLoader
         label="Auth0 login succeeded :) Redirect back to sub-labo.com ..."
         isShow={true}
