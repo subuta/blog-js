@@ -55,12 +55,13 @@ const Articles = {
     '& .description': {
       margin: 0,
       display: 'flex',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       justifyContent: 'flex-start',
       color: DIMMED_BLACK_COLOR
     },
 
     '.author': {
+      flex: '0 0 auto',
       display: 'inline-block',
       margin: '0 0 0 4px'
     },
@@ -76,11 +77,11 @@ const Articles = {
 
   [TABLET_MEDIA_QUERY]: {
     'h4': {
-      margin: 0
+      margin: '0 !important'
     },
 
     'li': {
-      margin: '0 0 24px 0',
+      margin: '0 0 32px 0',
 
       '.created-at': {
         margin: '4px 0 0',
