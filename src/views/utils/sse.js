@@ -1,10 +1,16 @@
 import _ from 'lodash'
 import request from 'src/views/utils/request'
 
+import {
+  EventHeartBeat
+} from 'src/api/constants/config'
+
 const isBrowser = typeof window !== 'undefined'
 
 // Create SSE Connection.
 const eventSource = isBrowser && new EventSource('/api/stream/all')
+
+const DEBUG_EVENTS = [EventHeartBeat]
 
 let eventListeners = {}
 
@@ -21,7 +27,12 @@ if (eventSource) {
     const {event, data} = JSON.parse(_event.data)
 
     const listeners = eventListeners[event]
-    console.log(`Got ${event}`)
+
+    if (_.includes(DEBUG_EVENTS, event)) {
+      console.debug(`Got ${event}`)
+    } else {
+      console.log(`Got ${event}`)
+    }
 
     if (!listeners) return
     listeners.forEach(cb => cb(data))

@@ -5,6 +5,8 @@ import {authenticate as auth} from 'src/api/middlewares/auth'
 /* mat Custom imports [start] */
 import {
   EventCommentCreated,
+  EventCommentUpdated,
+  EventCommentDeleted,
   EventCommentReactionCreated,
   EventCommentReactionDeleted,
   ChannelAll
@@ -133,6 +135,13 @@ comment.put('/:id', auth, async (ctx) => {
   // Reload comment for invoke $afterGet.
   response = await response.$query()
     .eager('[attachment, commentedBy, reactions.reactedBy]')
+
+  publish(ChannelAll, {
+    event: EventCommentUpdated,
+    data: {
+      comment: response
+    }
+  })
   /* mat After update [end] */
 
   ctx.body = response
@@ -154,6 +163,21 @@ comment.delete('/:id', auth, async (ctx) => {
   await Comment.query()
     .delete()
     .where(params)
+
+  /* mat After destroy [start] */
+  const channelId = Number(_.get(ctx, 'params.channelId'))
+
+  publish(ChannelAll, {
+    event: EventCommentDeleted,
+    data: {
+      comment: {
+        channelId,
+        id: Number(params.id)
+      }
+    }
+  })
+  /* mat After destroy [end] */
+
   ctx.body = null
 })
 

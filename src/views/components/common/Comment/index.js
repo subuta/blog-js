@@ -229,7 +229,8 @@ export default enhance((props) => {
   // UpdatedAt become undefined after create.
   const updatedAt = updated_at ? moment(updated_at).startOf('minute') : createdAt
 
-  const isEdited = !createdAt.isSame(updatedAt)
+  // Treat as updated if at least 1 minute elapsed from created_at
+  const isEdited = updatedAt.diff(createdAt, 'second') > 60
 
   const avatar = _.get(commentedBy, 'avatar')
   const nickname = _.get(commentedBy, 'nickname')

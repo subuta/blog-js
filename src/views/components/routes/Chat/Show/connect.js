@@ -92,6 +92,22 @@ const appendChannelComment = (comment) => {
   }
 }
 
+const removeChannelComment = (comment) => {
+  return (dispatch, getState) => {
+    const state = getState()
+    const entities = getChannelEntities(state)
+    const channel = _.clone(entities[comment.channelId])
+
+    dispatch(setComments(normalize(comment, commentSchema)))
+
+    if (!_.get(channel, 'comments')) return
+
+    // update channel comment.
+    channel.comments = _.without(channel.comments, comment.id)
+    dispatch(setChannels(normalize(channel, channelSchema)))
+  }
+}
+
 const setChannelComment = (comment) => {
   return (dispatch) => {
     dispatch(setComments(normalize(comment, commentSchema)))
@@ -176,6 +192,7 @@ const mapDispatchToProps = {
   requestComments,
   setChannelComment,
   appendChannelComment,
+  removeChannelComment,
   requestChannels
 }
 

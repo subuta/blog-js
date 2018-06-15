@@ -43,6 +43,8 @@ import moment from 'src/views/utils/moment'
 import storage from 'src/views/utils/storage'
 import {
   EventCommentCreated,
+  EventCommentDeleted,
+  EventCommentUpdated,
   EventCommentTyping,
   EventCommentReactionCreated,
   EventCommentReactionDeleted
@@ -251,6 +253,34 @@ const enhance = compose(
       }
     },
 
+    onEventCommentUpdated: (props) => ({comment}) => {
+      const {
+        setChannelComment,
+        refreshComments,
+        currentUser
+      } = props
+
+      setChannelComment(comment)
+
+      if (comment.commentedById !== _.get(currentUser, 'id')) {
+        return refreshComments()
+      }
+    },
+
+    onEventCommentDeleted: (props) => ({comment}) => {
+      const {
+        removeChannelComment,
+        scrollComments,
+        currentUser
+      } = props
+
+      removeChannelComment(comment)
+
+      if (comment.commentedById !== _.get(currentUser, 'id')) {
+        return scrollComments()
+      }
+    },
+
     onEventCommentTyping: ({setEditingUsers, removeEditingUser, currentUser}) => ({channelId, by}) => {
       // Skip your typing naturally ;)
       if (by.id === _.get(currentUser, 'id')) return
@@ -278,6 +308,8 @@ const enhance = compose(
   withHandlers((props) => {
     const {
       onEventCommentCreated,
+      onEventCommentUpdated,
+      onEventCommentDeleted,
       onEventCommentTyping,
       onEventCommentReactionCreated,
       onEventCommentReactionDeleted
@@ -294,6 +326,8 @@ const enhance = compose(
 
         // Subscribe events
         sse.subscribe(EventCommentCreated, onEventCommentCreated)
+        sse.subscribe(EventCommentDeleted, onEventCommentDeleted)
+        sse.subscribe(EventCommentUpdated, onEventCommentUpdated)
         sse.subscribe(EventCommentTyping, onEventCommentTyping)
         sse.subscribe(EventCommentReactionCreated, onEventCommentReactionCreated)
         sse.subscribe(EventCommentReactionDeleted, onEventCommentReactionDeleted)
@@ -301,6 +335,8 @@ const enhance = compose(
         unsubscribe = () => {
           // Unsubscribe events
           sse.unsubscribe(EventCommentCreated, onEventCommentCreated)
+          sse.unsubscribe(EventCommentDeleted, onEventCommentDeleted)
+          sse.unsubscribe(EventCommentUpdated, onEventCommentUpdated)
           sse.unsubscribe(EventCommentTyping, onEventCommentTyping)
           sse.unsubscribe(EventCommentReactionCreated, onEventCommentReactionCreated)
           sse.unsubscribe(EventCommentReactionDeleted, onEventCommentReactionDeleted)
@@ -599,8 +635,9 @@ const Show = enhanceChatContent((props) => {
   }
 
   return (
-    <Content ref={connectDropTargetToRef}>
-      <div className={channelsClass}>
+    <Content>
+      <div className={channelsClass}
+           ref={connectDropTargetToRef}>
         <div className={styles.DropTarget}>
           <h1>Drop file for upload.</h1>
         </div>
@@ -731,7 +768,7 @@ export default enhance((props) => {
         <meta property="og:image" content={`${baseUrl}${staticFolder}/assets/images/ogp.png`}/>
         <meta property="fb:app_id" content={fbAppId} />
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:site" content={twitterSite} />ets/images/ogp.png`} />
+        <meta name="twitter:site" content={twitterSite} />
         <meta property="og:site_name" content="sub-labo.com" />
         <meta property="og:description" content={`sub-labo chat channel of #${channel.name} related things`} />
       </Head>

@@ -24,8 +24,6 @@ services:
         - SEGMENT_WRITE_KEY
     # command: npm run serve
     command: echo "do nothing :)"
-    ports:
-      - "3000:3000"
     # Not use env file at app build for ease of deployment.
     environment:
       - POSTGRES_HOST=db

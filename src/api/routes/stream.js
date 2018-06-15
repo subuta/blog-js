@@ -10,7 +10,8 @@ import {
 } from 'src/api/utils/redis'
 
 import {
-  ChannelAll
+  ChannelAll,
+  EventHeartBeat
 } from 'src/api/constants/config'
 
 const stream = new Router({
@@ -29,9 +30,13 @@ stream.get('/all', async ctx => {
   // Send data to stream
   const send = (data) => stream.write(sse(data))
 
+  // Send heartbeat message to client, at each 15sec
+  const heartbeat = setInterval(() => send(JSON.stringify({event: EventHeartBeat, text: '💓'})), 1000 * 15);
+
   // Close subscription and stream.
   const close = () => {
     unsubscribe(ChannelAll, send)
+    clearInterval(heartbeat);
     ctx.res.end()
   }
 
@@ -42,6 +47,8 @@ stream.get('/all', async ctx => {
   ctx.req.on('error', close)
 
   ctx.type = 'text/event-stream'
+  ctx.set('Transfer-Encoding', 'chunked');
+
   ctx.flushHeaders()
 })
 

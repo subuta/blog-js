@@ -18,7 +18,7 @@ export let urlPrefix = (function () {
   }
 
   // Default to local minio
-  return 'http://localhost:9000'
+  return `http://localhost:9000/${S3_BUCKET}`
 })()
 
 let config = {
