@@ -1,15 +1,20 @@
 import AWS from 'aws-sdk'
-import env from 'src/api/utils/env'
+import {
+  NODE_ENV,
+  S3_ENDPOINT,
+  S3_BUCKET,
+  S3_URL_PREFIX,
+  AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY,
+} from 'src/api/utils/env'
 
-const S3_BUCKET = env.S3_BUCKET
-export let endpoint = env.S3_ENDPOINT || 'http://localhost:9000'
+const ENDPOINT = S3_ENDPOINT || 'http://localhost:9000'
 
 // Get urlPrefix for assets.
-export let urlPrefix = (function () {
-  if (env.NODE_ENV === 'production') {
+const urlPrefix = (function () {
+  if (NODE_ENV === 'production') {
     // If production and endpoint is GCS.
-    // SEE: https://qiita.com/ngyuki/items/fd3bb47cd4aeb2f61fec
-    if (env.S3_ENDPOINT === 'https://storage.googleapis.com') {
+    if (S3_URL_PREFIX === 'https://storage.googleapis.com') {
       return `https://storage.cloud.google.com/${S3_BUCKET}`
     }
 
@@ -17,17 +22,17 @@ export let urlPrefix = (function () {
     return `https://${S3_BUCKET}.s3.amazonaws.com`
   }
 
-  // Default to local minio
-  return `http://localhost:9000/${S3_BUCKET}`
+  // Use local minio as host otherwise
+  return `${ENDPOINT}/${S3_BUCKET}`
 })()
 
 let config = {
-  accessKeyId: env.AWS_ACCESS_KEY_ID || 'DUMMY_ACCESS_KEY',
-  secretAccessKey: env.AWS_SECRET_ACCESS_KEY || 'DUMMY_SECRET_KEY',
+  accessKeyId: AWS_ACCESS_KEY_ID || 'DUMMY_ACCESS_KEY',
+  secretAccessKey: AWS_SECRET_ACCESS_KEY || 'DUMMY_SECRET_KEY',
   s3ForcePathStyle: true,
   sslEnabled: false,
   signatureVersion: 'v4',
-  endpoint: new AWS.Endpoint(endpoint)
+  endpoint: new AWS.Endpoint(ENDPOINT)
 }
 
 const s3 = new AWS.S3(config)
@@ -39,7 +44,6 @@ export const getSignedUrl = (fileName, fileType) =>
       Key: fileName,
       Expires: 600,
       ContentType: fileType
-      // ACL: 'public-read'
     }
 
     s3.getSignedUrl('putObject', s3Params, (err, data) => {

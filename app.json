@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "dokku": {
+      "predeploy": "npm run db:migrate",
+      "postdeploy": "source .env && curl $POST_DEPLOY_NOTIFICATION_URL"
+    }
+  }
+}
