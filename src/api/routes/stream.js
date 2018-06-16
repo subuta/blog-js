@@ -18,7 +18,7 @@ const stream = new Router({
   prefix: '/stream'
 })
 
-// EventSource.onmessage expects event as 'message'
+// 'EventSource.onmessage' expects event as 'message'
 // Use EventSource.addEventListener for other event type.
 const sse = (data, event = 'message') => {
   return `event:${ event }\ndata: ${ data }\n\n`
