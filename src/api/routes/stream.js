@@ -48,6 +48,9 @@ stream.get('/all', async ctx => {
 
   ctx.type = 'text/event-stream'
   ctx.set('Transfer-Encoding', 'chunked');
+  ctx.set('Cache-Control', 'no-cache');
+  // SEE: https://serverfault.com/questions/801628/for-server-sent-events-sse-what-nginx-proxy-configuration-is-appropriate
+  ctx.set('X-Accel-Buffering', 'no');
 
   ctx.flushHeaders()
 })
