@@ -63,11 +63,11 @@ jobs:
       # build the application image
       - run: docker-compose build app
       # tag image for dokku
-      - run: docker tag blogjs_app:latest dokku/blogjs_app:latest
+      - run: docker tag blogjs_app:latest dokku/blogjs-app:latest
       # push image
-      - run: docker save dokku/blogjs_app:latest | bzip2 | ssh root@sub-labo-apps.com -o "StrictHostKeyChecking no" -p $SSHD_PORT "bunzip2 | docker load"
+      - run: docker save dokku/blogjs-app:latest | bzip2 | ssh root@sub-labo-apps.com -o "StrictHostKeyChecking no" -p $SSHD_PORT "bunzip2 | docker load"
       # deploy image
-      - run: ssh root@sub-labo-apps.com -o "StrictHostKeyChecking no" -p $SSHD_PORT "dokku tags:deploy blogjs_app latest"
+      - run: ssh root@sub-labo-apps.com -o "StrictHostKeyChecking no" -p $SSHD_PORT "dokku tags:deploy blogjs-app latest"
 workflows:
   version: 2
   test_and_deploy:
