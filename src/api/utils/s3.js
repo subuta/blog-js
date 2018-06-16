@@ -12,7 +12,7 @@ const ENDPOINT = S3_ENDPOINT || 'http://localhost:9000'
 
 // Get urlPrefix for assets.
 const urlPrefix = (function () {
-  if (NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production') {
     // If production and endpoint is GCS.
     if (S3_URL_PREFIX === 'https://storage.googleapis.com') {
       return `https://storage.cloud.google.com/${S3_BUCKET}`
