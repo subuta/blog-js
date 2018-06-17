@@ -51,6 +51,7 @@
 
   if (process.env.APP_DOMAIN) {
     allowedOrigins = [
+      'http://localhost:3000',
       'http://' + process.env.APP_DOMAIN,
       'https://' + process.env.APP_DOMAIN
     ]
